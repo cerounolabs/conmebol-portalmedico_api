@@ -13,7 +13,7 @@
         $val08      = $request->getParsedBody()['tipo_ip'];
 
         if (isset($val00)) {
-            $sql00  = "DELETE FROM DOMFIC WHERE DOMFICCOD = ?";
+            $sql00  = "DELETE FROM [adm].[DOMFIC] WHERE DOMFICCOD = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
