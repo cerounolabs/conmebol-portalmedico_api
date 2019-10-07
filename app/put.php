@@ -13,7 +13,7 @@
         $val08      = $request->getParsedBody()['tipo_ip'];
 
         if (isset($val00) && isset($val01) && isset($val02) && isset($val04) && isset($val06) && isset($val07) && isset($val08)) {
-            $sql00  = "UPDATE DOMFIC SET DOMFICEST = ?, DOMFICNOM = ?, DOMFICORD = ?, DOMFICOBS = ?, DOMFICAUS = ?, DOMFICAFH = ?, DOMFICAIP = ? WHERE DOMFICCOD = ?";
+            $sql00  = "UPDATE [adm].[DOMFIC] SET DOMFICEST = ?, DOMFICNOM = ?, DOMFICORD = ?, DOMFICOBS = ?, DOMFICAUS = ?, DOMFICAFH = ?, DOMFICAIP = ? WHERE DOMFICCOD = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();

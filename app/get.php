@@ -13,7 +13,7 @@
         a.DOMFICAFH                     AS      tipo_fecha_hora,
         a.DOMFICAIP                     AS      tipo_ip
         
-        FROM DOMFIC a
+        FROM [adm].[DOMFIC] a
 
         ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOM";
 
@@ -97,7 +97,7 @@
             a.DOMFICAFH                     AS      tipo_fecha_hora,
             a.DOMFICAIP                     AS      tipo_ip
             
-            FROM DOMFIC a
+            FROM [adm].[DOMFIC] a
             
             WHERE a.DOMFICCOD = ?
             
@@ -187,7 +187,7 @@
             a.DOMFICAFH                     AS      tipo_fecha_hora,
             a.DOMFICAIP                     AS      tipo_ip
             
-            FROM DOMFIC a
+            FROM [adm].[DOMFIC] a
             
             WHERE a.DOMFICVAL = ?
 
@@ -287,7 +287,7 @@
             a.DOMFICAVALNEW                 AS      auditoria_despues_tipo_dominio,
             a.DOMFICAOBSNEW                 AS      auditoria_despues_tipo_observacion
             
-            FROM DOMFICA a
+            FROM [adm].[DOMFIC] a
             
             WHERE a.DOMFICAVALOLD = ? OR a.DOMFICAVALNEW = ?
             

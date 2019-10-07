@@ -12,7 +12,7 @@
         $val08      = $request->getParsedBody()['tipo_ip'];
 
         if (isset($val01) && isset($val02) && isset($val04) && isset($val06) && isset($val07) && isset($val08)) {
-            $sql00  = "INSERT INTO DOMFIC (DOMFICEST, DOMFICNOM, DOMFICORD, DOMFICVAL, DOMFICOBS, DOMFICAUS, DOMFICAFH, DOMFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql00  = "INSERT INTO [adm].[DOMFIC] (DOMFICEST, DOMFICNOM, DOMFICORD, DOMFICVAL, DOMFICOBS, DOMFICAUS, DOMFICAFH, DOMFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
