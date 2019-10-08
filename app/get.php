@@ -36,10 +36,10 @@
                     'tipo_estado_codigo'    => $rowMSSQL['tipo_estado_codigo'],
                     'tipo_estado_nombre'    => $tipo_estado_nombre,
                     'tipo_orden'            => $rowMSSQL['tipo_orden'],
-                    'tipo_nombre'           => $rowMSSQL['tipo_nombre'],
-                    'tipo_dominio'          => $rowMSSQL['tipo_dominio'],
+                    'tipo_nombre'           => trim($rowMSSQL['tipo_nombre']),
+                    'tipo_dominio'          => trim($rowMSSQL['tipo_dominio']),
                     'tipo_observacion'      => $rowMSSQL['tipo_observacion'],
-                    'tipo_usuario'          => $rowMSSQL['tipo_usuario'],
+                    'tipo_usuario'          => trim($rowMSSQL['tipo_usuario']),
                     'tipo_fecha_hora'       => $rowMSSQL['tipo_fecha_hora'],
                     'tipo_ip'               => $rowMSSQL['tipo_ip']
                 );
@@ -122,10 +122,10 @@
                         'tipo_estado_codigo'    => $rowMSSQL['tipo_estado_codigo'],
                         'tipo_estado_nombre'    => $tipo_estado_nombre,
                         'tipo_orden'            => $rowMSSQL['tipo_orden'],
-                        'tipo_nombre'           => $rowMSSQL['tipo_nombre'],
-                        'tipo_dominio'          => $rowMSSQL['tipo_dominio'],
+                        'tipo_nombre'           => trim($rowMSSQL['tipo_nombre']),
+                        'tipo_dominio'          => trim($rowMSSQL['tipo_dominio']),
                         'tipo_observacion'      => $rowMSSQL['tipo_observacion'],
-                        'tipo_usuario'          => $rowMSSQL['tipo_usuario'],
+                        'tipo_usuario'          => trim($rowMSSQL['tipo_usuario']),
                         'tipo_fecha_hora'       => $rowMSSQL['tipo_fecha_hora'],
                         'tipo_ip'               => $rowMSSQL['tipo_ip']
                     );
@@ -212,10 +212,10 @@
                         'tipo_estado_codigo'    => $rowMSSQL['tipo_estado_codigo'],
                         'tipo_estado_nombre'    => $tipo_estado_nombre,
                         'tipo_orden'            => $rowMSSQL['tipo_orden'],
-                        'tipo_nombre'           => $rowMSSQL['tipo_nombre'],
-                        'tipo_dominio'          => $rowMSSQL['tipo_dominio'],
+                        'tipo_nombre'           => trim($rowMSSQL['tipo_nombre']),
+                        'tipo_dominio'          => trim($rowMSSQL['tipo_dominio']),
                         'tipo_observacion'      => $rowMSSQL['tipo_observacion'],
-                        'tipo_usuario'          => $rowMSSQL['tipo_usuario'],
+                        'tipo_usuario'          => trim($rowMSSQL['tipo_usuario']),
                         'tipo_fecha_hora'       => $rowMSSQL['tipo_fecha_hora'],
                         'tipo_ip'               => $rowMSSQL['tipo_ip']
                     );
@@ -318,7 +318,7 @@
                     $detalle    = array(
                         'auditoria_codigo'                      => $rowMSSQL['auditoria_codigo'],
                         'auditoria_metodo'                      => $rowMSSQL['auditoria_metodo'],
-                        'auditoria_usuario'                     => $rowMSSQL['auditoria_usuario'],
+                        'auditoria_usuario'                     => trim($rowMSSQL['auditoria_usuario']),
                         'auditoria_fecha_hora'                  => $rowMSSQL['auditoria_fecha_hora'],
                         'auditoria_ip'                          => $rowMSSQL['auditoria_ip'],
 
@@ -326,8 +326,8 @@
                         'auditoria_antes_tipo_estado_codigo'    => $rowMSSQL['auditoria_antes_tipo_estado_codigo'],
                         'auditoria_antes_tipo_estado_nombre'    => $tipo_estado_nombre_antes,
                         'auditoria_antes_tipo_orden'            => $rowMSSQL['auditoria_antes_tipo_orden'],
-                        'auditoria_antes_tipo_nombre'           => $rowMSSQL['auditoria_antes_tipo_nombre'],
-                        'auditoria_antes_tipo_dominio'          => $rowMSSQL['auditoria_antes_tipo_dominio'],
+                        'auditoria_antes_tipo_nombre'           => trim($rowMSSQL['auditoria_antes_tipo_nombre']),
+                        'auditoria_antes_tipo_dominio'          => trim($rowMSSQL['auditoria_antes_tipo_dominio']),
                         'auditoria_antes_tipo_observacion'      => $rowMSSQL['auditoria_antes_tipo_observacion'],
 
                         'auditoria_despues_tipo_codigo'         => $rowMSSQL['auditoria_despues_tipo_codigo'],
