@@ -693,11 +693,7 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    foreach ($rowMSSQL['juego_horario'] as $key => $value) {
-                        if($key == 'date'){
-                            $juego_horario = date_format(date_create($value), 'd/m/Y H:i:s');
-                        }
-                    }
+                    $juego_horario = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
 
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
