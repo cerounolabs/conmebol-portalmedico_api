@@ -681,7 +681,7 @@
             a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
             a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
             
-            FROM [view].[juego]
+            FROM [view].[juego] a
             
             WHERE a.COMPETICION_PADRE_ID = ?
 
