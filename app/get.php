@@ -793,7 +793,9 @@
             $stmtMSSQL  = $connMSSQL->prepare($sql00);
             $stmtMSSQL->execute(); 
 
-            while ($rowMSSQL = $stmtMSSQL->fetch()) {    
+            while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                $juego_horario = date_format(date_create($rowMSSQL['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
+
                 $detalle    = array(
                     'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
                     'equipo_estado'                         => trim($rowMSSQL['equipo_estado']),
@@ -804,7 +806,7 @@
                     'equipo_region'                         => trim($rowMSSQL['equipo_region']),
                     'equipo_ciudad'                         => trim($rowMSSQL['equipo_ciudad']),
                     'equipo_postal_codigo'                  => $rowMSSQL['equipo_postal_codigo'],
-                    'equipo_ultima_actualizacion'           => $rowMSSQL['equipo_ultima_actualizacion'],
+                    'equipo_ultima_actualizacion'           => $juego_horario,
                     'organizacion_codigo'                   => $rowMSSQL['organizacion_codigo'],
                     'organizacion_nombre'                   => trim($rowMSSQL['organizacion_nombre']),
                     'organizacion_nombre_corto'             => trim($rowMSSQL['organizacion_nombre_corto']),
@@ -893,6 +895,8 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {    
+                    $juego_horario = date_format(date_create($rowMSSQL['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
+
                     $detalle    = array(
                         'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
                         'equipo_estado'                         => trim($rowMSSQL['equipo_estado']),
@@ -903,7 +907,7 @@
                         'equipo_region'                         => trim($rowMSSQL['equipo_region']),
                         'equipo_ciudad'                         => trim($rowMSSQL['equipo_ciudad']),
                         'equipo_postal_codigo'                  => $rowMSSQL['equipo_postal_codigo'],
-                        'equipo_ultima_actualizacion'           => $rowMSSQL['equipo_ultima_actualizacion'],
+                        'equipo_ultima_actualizacion'           => $juego_horario,
                         'organizacion_codigo'                   => $rowMSSQL['organizacion_codigo'],
                         'organizacion_nombre'                   => trim($rowMSSQL['organizacion_nombre']),
                         'organizacion_nombre_corto'             => trim($rowMSSQL['organizacion_nombre_corto']),
@@ -996,6 +1000,8 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {    
+                    $juego_horario = date_format(date_create($rowMSSQL['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
+
                     $detalle    = array(
                         'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
                         'equipo_estado'                         => trim($rowMSSQL['equipo_estado']),
@@ -1006,13 +1012,13 @@
                         'equipo_region'                         => trim($rowMSSQL['equipo_region']),
                         'equipo_ciudad'                         => trim($rowMSSQL['equipo_ciudad']),
                         'equipo_postal_codigo'                  => $rowMSSQL['equipo_postal_codigo'],
-                        'equipo_ultima_actualizacion'           => $rowMSSQL['equipo_ultima_actualizacion'],
+                        'equipo_ultima_actualizacion'           => $juego_horario,
                         'organizacion_codigo'                   => $rowMSSQL['organizacion_codigo'],
                         'organizacion_nombre'                   => trim($rowMSSQL['organizacion_nombre']),
                         'organizacion_nombre_corto'             => trim($rowMSSQL['organizacion_nombre_corto']),
                         'organizacion_imagen_tipo'              => trim($rowMSSQL['organizacion_imagen_tipo']),
                         'organizacion_image_link'               => trim($rowMSSQL['organizacion_image_link']),
-                        'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor'],
+                        'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor']
                     );
 
                     $result[]   = $detalle;
