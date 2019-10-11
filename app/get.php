@@ -763,8 +763,6 @@
 
     $app->get('/v1/300', function($request) {
         require __DIR__.'/../src/connect.php';
-
-		$val01      = $request->getAttribute('codigo');
         
         $sql00  = "SELECT
         a.teamFifaId                        AS          equipo_codigo,
@@ -802,7 +800,7 @@
                     'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
                     'equipo_nombre_corto'                   => trim($rowMSSQL['equipo_nombre_corto']),
                     'equipo_naturaleza'                     => trim($rowMSSQL['equipo_naturaleza']),
-                    'equipo_pais'                           => trim($rowMSSQL['equipo_pais'])),
+                    'equipo_pais'                           => trim($rowMSSQL['equipo_pais']),
                     'equipo_region'                         => trim($rowMSSQL['equipo_region']),
                     'equipo_ciudad'                         => trim($rowMSSQL['equipo_ciudad']),
                     'equipo_postal_codigo'                  => $rowMSSQL['equipo_postal_codigo'],
@@ -812,7 +810,7 @@
                     'organizacion_nombre_corto'             => trim($rowMSSQL['organizacion_nombre_corto']),
                     'organizacion_imagen_tipo'              => trim($rowMSSQL['organizacion_imagen_tipo']),
                     'organizacion_image_link'               => trim($rowMSSQL['organizacion_image_link']),
-                    'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor'],
+                    'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor']
                 );
 
                 $result[]   = $detalle;
@@ -901,7 +899,7 @@
                         'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
                         'equipo_nombre_corto'                   => trim($rowMSSQL['equipo_nombre_corto']),
                         'equipo_naturaleza'                     => trim($rowMSSQL['equipo_naturaleza']),
-                        'equipo_pais'                           => trim($rowMSSQL['equipo_pais'])),
+                        'equipo_pais'                           => trim($rowMSSQL['equipo_pais']),
                         'equipo_region'                         => trim($rowMSSQL['equipo_region']),
                         'equipo_ciudad'                         => trim($rowMSSQL['equipo_ciudad']),
                         'equipo_postal_codigo'                  => $rowMSSQL['equipo_postal_codigo'],
@@ -911,7 +909,7 @@
                         'organizacion_nombre_corto'             => trim($rowMSSQL['organizacion_nombre_corto']),
                         'organizacion_imagen_tipo'              => trim($rowMSSQL['organizacion_imagen_tipo']),
                         'organizacion_image_link'               => trim($rowMSSQL['organizacion_image_link']),
-                        'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor'],
+                        'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor']
                     );
 
                     $result[]   = $detalle;
@@ -1004,7 +1002,7 @@
                         'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
                         'equipo_nombre_corto'                   => trim($rowMSSQL['equipo_nombre_corto']),
                         'equipo_naturaleza'                     => trim($rowMSSQL['equipo_naturaleza']),
-                        'equipo_pais'                           => trim($rowMSSQL['equipo_pais'])),
+                        'equipo_pais'                           => trim($rowMSSQL['equipo_pais']),
                         'equipo_region'                         => trim($rowMSSQL['equipo_region']),
                         'equipo_ciudad'                         => trim($rowMSSQL['equipo_ciudad']),
                         'equipo_postal_codigo'                  => $rowMSSQL['equipo_postal_codigo'],
