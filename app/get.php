@@ -436,7 +436,25 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]); 
 
-                while ($rowMSSQL = $stmtMSSQL->fetch()) {    
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    switch ($rowMSSQL['competicion_imagen_tipo']) {
+                        case 'image/jpeg':
+                            $ext = 'jpeg';
+                            break;
+                        
+                        case 'image/jpg':
+                            $ext = 'jpg';
+                            break;
+
+                        case 'image/png':
+                            $ext = 'png';
+                            break;
+
+                        case 'image/gif':
+                            $ext = 'gif';
+                            break;
+                    }
+
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
@@ -462,6 +480,7 @@
                         'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
                         'competicion_image_link'                => trim($rowMSSQL['competicion_image_link']),
                         'competicion_imagen_valor'              => trim($rowMSSQL['competicion_imagen_valor']),
+                        'competicion_imagen_path'               => 'imagen/competencia/img_'.$rowMSSQL['competicion_codigo'].'.'.$ext,
                         'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
                         'organizacion_codigo'                   => $rowMSSQL['organizacion_codigo'],
                         'organizacion_nombre'                   => trim($rowMSSQL['organizacion_nombre'])
@@ -499,6 +518,7 @@
                         'competicion_imagen_tipo'               => '',
                         'competicion_image_link'                => '',
                         'competicion_imagen_valor'              => '',
+                        'competicion_imagen_path'               => '',
                         'competicion_ultima_actualizacion'      => '',
                         'organizacion_codigo'                   => '',
                         'organizacion_nombre'                   => ''
@@ -572,7 +592,25 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]); 
 
-                while ($rowMSSQL = $stmtMSSQL->fetch()) {    
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    switch ($rowMSSQL['competicion_imagen_tipo']) {
+                        case 'image/jpeg':
+                            $ext = 'jpeg';
+                            break;
+                        
+                        case 'image/jpg':
+                            $ext = 'jpg';
+                            break;
+
+                        case 'image/png':
+                            $ext = 'png';
+                            break;
+
+                        case 'image/gif':
+                            $ext = 'gif';
+                            break;
+                    }
+
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
@@ -598,6 +636,7 @@
                         'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
                         'competicion_image_link'                => trim($rowMSSQL['competicion_image_link']),
                         'competicion_imagen_valor'              => trim($rowMSSQL['competicion_imagen_valor']),
+                        'competicion_imagen_path'               => 'imagen/competencia/img_'.$rowMSSQL['competicion_codigo'].'.'.$ext,
                         'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
                         'organizacion_codigo'                   => $rowMSSQL['organizacion_codigo'],
                         'organizacion_nombre'                   => trim($rowMSSQL['organizacion_nombre'])
@@ -635,6 +674,7 @@
                         'competicion_imagen_tipo'               => '',
                         'competicion_image_link'                => '',
                         'competicion_imagen_valor'              => '',
+                        'competicion_imagen_path'               => '',
                         'competicion_ultima_actualizacion'      => '',
                         'organizacion_codigo'                   => '',
                         'organizacion_nombre'                   => ''
@@ -796,6 +836,24 @@
             while ($rowMSSQL = $stmtMSSQL->fetch()) {
                 $juego_horario = date_format(date_create($rowMSSQL['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
 
+                switch ($rowMSSQL['organizacion_imagen_tipo']) {
+                    case 'image/jpeg':
+                        $ext = 'jpeg';
+                        break;
+                    
+                    case 'image/jpg':
+                        $ext = 'jpg';
+                        break;
+
+                    case 'image/png':
+                        $ext = 'png';
+                        break;
+
+                    case 'image/gif':
+                        $ext = 'gif';
+                        break;
+                }
+
                 $detalle    = array(
                     'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
                     'equipo_estado'                         => trim($rowMSSQL['equipo_estado']),
@@ -812,7 +870,8 @@
                     'organizacion_nombre_corto'             => trim($rowMSSQL['organizacion_nombre_corto']),
                     'organizacion_imagen_tipo'              => trim($rowMSSQL['organizacion_imagen_tipo']),
                     'organizacion_image_link'               => trim($rowMSSQL['organizacion_image_link']),
-                    'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor']
+                    'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor'],
+                    'organizacion_imagen_path'              => 'imagen/organizacion/img_'.$rowMSSQL['organizacion_codigo'].'.'.$ext
                 );
 
                 $result[]   = $detalle;
@@ -838,7 +897,8 @@
                     'organizacion_nombre_corto'             => '',
                     'organizacion_imagen_tipo'              => '',
                     'organizacion_image_link'               => '',
-                    'organizacion_imagen_valor'             => ''
+                    'organizacion_imagen_valor'             => '',
+                    'organizacion_imagen_path'              => ''
                 );
 
                 header("Content-Type: application/json; charset=utf-8");
@@ -897,6 +957,24 @@
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {    
                     $juego_horario = date_format(date_create($rowMSSQL['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
 
+                    switch ($rowMSSQL['organizacion_imagen_tipo']) {
+                        case 'image/jpeg':
+                            $ext = 'jpeg';
+                            break;
+                        
+                        case 'image/jpg':
+                            $ext = 'jpg';
+                            break;
+
+                        case 'image/png':
+                            $ext = 'png';
+                            break;
+
+                        case 'image/gif':
+                            $ext = 'gif';
+                            break;
+                    }
+
                     $detalle    = array(
                         'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
                         'equipo_estado'                         => trim($rowMSSQL['equipo_estado']),
@@ -913,7 +991,8 @@
                         'organizacion_nombre_corto'             => trim($rowMSSQL['organizacion_nombre_corto']),
                         'organizacion_imagen_tipo'              => trim($rowMSSQL['organizacion_imagen_tipo']),
                         'organizacion_image_link'               => trim($rowMSSQL['organizacion_image_link']),
-                        'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor']
+                        'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor'],
+                        'organizacion_imagen_path'              => 'imagen/organizacion/img_'.$rowMSSQL['organizacion_codigo'].'.'.$ext
                     );
 
                     $result[]   = $detalle;
@@ -939,7 +1018,8 @@
                         'organizacion_nombre_corto'             => '',
                         'organizacion_imagen_tipo'              => '',
                         'organizacion_image_link'               => '',
-                        'organizacion_imagen_valor'             => ''
+                        'organizacion_imagen_valor'             => '',
+                        'organizacion_imagen_path'              => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
@@ -1002,6 +1082,24 @@
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {    
                     $juego_horario = date_format(date_create($rowMSSQL['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
 
+                    switch ($rowMSSQL['organizacion_imagen_tipo']) {
+                        case 'image/jpeg':
+                            $ext = 'jpeg';
+                            break;
+                        
+                        case 'image/jpg':
+                            $ext = 'jpg';
+                            break;
+
+                        case 'image/png':
+                            $ext = 'png';
+                            break;
+
+                        case 'image/gif':
+                            $ext = 'gif';
+                            break;
+                    }
+
                     $detalle    = array(
                         'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
                         'equipo_estado'                         => trim($rowMSSQL['equipo_estado']),
@@ -1018,7 +1116,8 @@
                         'organizacion_nombre_corto'             => trim($rowMSSQL['organizacion_nombre_corto']),
                         'organizacion_imagen_tipo'              => trim($rowMSSQL['organizacion_imagen_tipo']),
                         'organizacion_image_link'               => trim($rowMSSQL['organizacion_image_link']),
-                        'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor']
+                        'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor'],
+                        'organizacion_imagen_path'              => 'imagen/organizacion/img_'.$rowMSSQL['organizacion_codigo'].'.'.$ext
                     );
 
                     $result[]   = $detalle;
@@ -1044,7 +1143,8 @@
                         'organizacion_nombre_corto'             => '',
                         'organizacion_imagen_tipo'              => '',
                         'organizacion_image_link'               => '',
-                        'organizacion_imagen_valor'             => ''
+                        'organizacion_imagen_valor'             => '',
+                        'organizacion_imagen_path'              => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
