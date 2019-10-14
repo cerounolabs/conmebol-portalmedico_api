@@ -727,7 +727,7 @@
                 
                 FROM [view].[juego] a
                 
-                WHERE a.COMPETICION_PADRE_ID = ?
+                WHERE a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?
     
                 ORDER BY a.COMPETICION_PADRE_ID DESC";
             } else {
@@ -750,7 +750,7 @@
                 
                 FROM [view].[juego] a
                 
-                WHERE a.COMPETICION_PADRE_ID = ? AND (a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?)
+                WHERE (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?) AND (a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?)
     
                 ORDER BY a.COMPETICION_PADRE_ID DESC";
             }
@@ -760,9 +760,9 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val02 == 39393) {
-                    $stmtMSSQL->execute([$val01]); 
+                    $stmtMSSQL->execute([$val01, $val01]); 
                 } else {
-                    $stmtMSSQL->execute([$val01, $val02, $val02]); 
+                    $stmtMSSQL->execute([$val01, $val01, $val02, $val02]); 
                 }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
