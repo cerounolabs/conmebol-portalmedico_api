@@ -707,7 +707,7 @@
         $val02      = $request->getAttribute('equipo');
 
         if (isset($val01) && isset($val02)) {
-            if ($val02 === 39393) {
+            if ($val02 == 39393) {
                 $sql00  = "SELECT
                 a.COMPETICION_ID                                AS          competicion_codigo,
                 a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
@@ -759,7 +759,7 @@
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
-                if ($val02 === 39393) {
+                if ($val02 == 39393) {
                     $stmtMSSQL->execute([$val01]); 
                 } else {
                     $stmtMSSQL->execute([$val01, $val02, $val02]); 
