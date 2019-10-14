@@ -38,4 +38,5 @@ AS
     LEFT JOIN [comet].[matches_phases] e1 ON b.matchFifaId = e1.matchFifaId AND e1.phase = 'FIRST_HALF'
     LEFT JOIN [comet].[matches_phases] e2 ON b.matchFifaId = e2.matchFifaId AND e2.phase = 'SECOND_HALF'
 
+    WHERE d1.teamFifaId IS NOT NULL AND  d2.teamFifaId IS NOT NULL
 GO
