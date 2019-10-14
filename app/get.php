@@ -760,9 +760,9 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val02 === 39393) {
-                    $stmtMSSQL->execute([$val02]); 
+                    $stmtMSSQL->execute([$val01]); 
                 } else {
-                    $stmtMSSQL->execute([$val02, $val01, $val01]); 
+                    $stmtMSSQL->execute([$val01, $val02, $val02]); 
                 }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
