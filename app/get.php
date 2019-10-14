@@ -700,37 +700,70 @@
         return $json;
     });
 
-    $app->get('/v1/200/juego/{codigo}', function($request) {
+    $app->get('/v1/200/juego/{competicion}/{equipo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
-		$val01      = $request->getAttribute('codigo');
-        
-        if (isset($val01)) {
-            $sql00  = "SELECT
-            a.COMPETICION_ID                                AS          competicion_codigo,
-            a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
-            a.COMPETICION_ESTADO                            AS          competicion_estado,
-            a.COMPETICION_ANHO                              AS          competicion_anho,
-            a.JUEGO_NOMBRE                                  AS          juego_fase,
-            a.JUEGO_ESTADO                                  AS          juego_estado,
-            a.JUEGO_HORARIO                                 AS          juego_horario,
-            a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
-            a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
-            a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
-            a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
-            a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
-            a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
-            
-            FROM [view].[juego] a
-            
-            WHERE a.COMPETICION_PADRE_ID = ?
+        $val01      = $request->getAttribute('competicion');
+        $val02      = $request->getAttribute('equipo');
 
-            ORDER BY a.COMPETICION_PADRE_ID DESC";
+        if (isset($val01) && isset($val02)) {
+            if ($val02 === 39393) {
+                $sql00  = "SELECT
+                a.COMPETICION_ID                                AS          competicion_codigo,
+                a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
+                a.COMPETICION_ESTADO                            AS          competicion_estado,
+                a.COMPETICION_ANHO                              AS          competicion_anho,
+                a.JUEGO_NOMBRE                                  AS          juego_fase,
+                a.JUEGO_ESTADO                                  AS          juego_estado,
+                a.JUEGO_HORARIO                                 AS          juego_horario,
+                a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
+                a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
+                a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
+                a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
+                a.EQUIPO_VISITANTE_CODIGO                       AS          equipo_visitante_codigo,
+                a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
+                a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
+                a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
+                
+                FROM [view].[juego] a
+                
+                WHERE a.COMPETICION_PADRE_ID = ?
+    
+                ORDER BY a.COMPETICION_PADRE_ID DESC";
+            } else {
+                $sql00  = "SELECT
+                a.COMPETICION_ID                                AS          competicion_codigo,
+                a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
+                a.COMPETICION_ESTADO                            AS          competicion_estado,
+                a.COMPETICION_ANHO                              AS          competicion_anho,
+                a.JUEGO_NOMBRE                                  AS          juego_fase,
+                a.JUEGO_ESTADO                                  AS          juego_estado,
+                a.JUEGO_HORARIO                                 AS          juego_horario,
+                a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
+                a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
+                a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
+                a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
+                a.EQUIPO_VISITANTE_CODIGO                       AS          equipo_visitante_codigo,
+                a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
+                a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
+                a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
+                
+                FROM [view].[juego] a
+                
+                WHERE a.COMPETICION_PADRE_ID = ? AND (a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?)
+    
+                ORDER BY a.COMPETICION_PADRE_ID DESC";
+            }
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01]); 
+
+                if ($val02 === 39393) {
+                    $stmtMSSQL->execute([$val02]); 
+                } else {
+                    $stmtMSSQL->execute([$val02, $val01, $val01]); 
+                }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $juego_horario = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
@@ -744,10 +777,12 @@
                         'juego_fase'                            => trim($rowMSSQL['juego_fase']),
                         'juego_estado'                          => trim($rowMSSQL['juego_estado']),
                         'juego_horario'                         => $juego_horario,
+                        'equipo_local_codigo'                   => $rowMSSQL['equipo_local_codigo'],
                         'equipo_local_nombre'                   => trim($rowMSSQL['equipo_local_nombre']),
                         'equipo_local_resultado_primer'         => $rowMSSQL['equipo_local_resultado_primer'],
                         'equipo_local_resultado_segundo'        => $rowMSSQL['equipo_local_resultado_segundo'],
                         'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_primer'] + $rowMSSQL['equipo_local_resultado_segundo'],
+                        'equipo_visitante_codigo'               => $rowMSSQL['equipo_visitante_codigo'],
                         'equipo_visitante_nombre'               => trim($rowMSSQL['equipo_visitante_nombre']),
                         'equipo_visitante_resultado_primer'     => $rowMSSQL['equipo_visitante_resultado_primer'],
                         'equipo_visitante_resultado_segundo'    => $rowMSSQL['equipo_visitante_resultado_segundo'],
@@ -771,10 +806,12 @@
                         'juego_fase'                            => '',
                         'juego_estado'                          => '',
                         'juego_horario'                         => '',
+                        'equipo_local_codigo'                   => '',
                         'equipo_local_nombre'                   => '',
                         'equipo_local_resultado_primer'         => '',
                         'equipo_local_resultado_segundo'        => '',
                         'equipo_local_resultado_final'          => '',
+                        'equipo_visitante_codigo'               => '',
                         'equipo_visitante_nombre'               => '',
                         'equipo_visitante_resultado_primer'     => '',
                         'equipo_visitante_resultado_segundo'    => '',
