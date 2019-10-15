@@ -707,12 +707,13 @@
         $val02      = $request->getAttribute('equipo');
 
         if (isset($val01) && isset($val02)) {
-            if ($val02 == 39393) {
+            if ($val02 === 39393) {
                 $sql00  = "SELECT
                 a.COMPETICION_ID                                AS          competicion_codigo,
                 a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
                 a.COMPETICION_ESTADO                            AS          competicion_estado,
                 a.COMPETICION_ANHO                              AS          competicion_anho,
+                a.JUEGO_CODIGO                                  AS          juego_codigo,
                 a.JUEGO_NOMBRE                                  AS          juego_fase,
                 a.JUEGO_ESTADO                                  AS          juego_estado,
                 a.JUEGO_HORARIO                                 AS          juego_horario,
@@ -736,6 +737,7 @@
                 a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
                 a.COMPETICION_ESTADO                            AS          competicion_estado,
                 a.COMPETICION_ANHO                              AS          competicion_anho,
+                a.JUEGO_CODIGO                                  AS          juego_codigo,
                 a.JUEGO_NOMBRE                                  AS          juego_fase,
                 a.JUEGO_ESTADO                                  AS          juego_estado,
                 a.JUEGO_HORARIO                                 AS          juego_horario,
@@ -759,7 +761,7 @@
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
-                if ($val02 == 39393) {
+                if ($val02 === 39393) {
                     $stmtMSSQL->execute([$val01, $val01]); 
                 } else {
                     $stmtMSSQL->execute([$val01, $val01, $val02, $val02]); 
@@ -772,8 +774,8 @@
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
                         'competicion_estado'                    => trim($rowMSSQL['competicion_estado']),
-                        'competicion_nombre'                    => trim($rowMSSQL['competicion_nombre']),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+                        'juego_codigo'                          => $rowMSSQL['juego_codigo'],
                         'juego_fase'                            => trim($rowMSSQL['juego_fase']),
                         'juego_estado'                          => trim($rowMSSQL['juego_estado']),
                         'juego_horario'                         => $juego_horario,
@@ -801,7 +803,6 @@
                         'competicion_codigo'                    => '',
                         'competicion_codigo_padre'              => '',
                         'competicion_estado'                    => '',
-                        'competicion_nombre'                    => '',
                         'competicion_anho'                      => '',
                         'juego_fase'                            => '',
                         'juego_estado'                          => '',
