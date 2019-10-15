@@ -786,7 +786,7 @@
                         'equipo_visitante_nombre'               => trim($rowMSSQL['equipo_visitante_nombre']),
                         'equipo_visitante_resultado_primer'     => $rowMSSQL['equipo_visitante_resultado_primer'],
                         'equipo_visitante_resultado_segundo'    => $rowMSSQL['equipo_visitante_resultado_segundo'],
-                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_primer'] + $rowMSSQL['equipo_visitante_resultado_segundo']
+                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_segundo']
                     );
 
                     $result[]   = $detalle;
