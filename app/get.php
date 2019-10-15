@@ -781,7 +781,7 @@
                         'equipo_local_nombre'                   => trim($rowMSSQL['equipo_local_nombre']),
                         'equipo_local_resultado_primer'         => $rowMSSQL['equipo_local_resultado_primer'],
                         'equipo_local_resultado_segundo'        => $rowMSSQL['equipo_local_resultado_segundo'],
-                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_primer'] + $rowMSSQL['equipo_local_resultado_segundo'],
+                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_segundo'],
                         'equipo_visitante_codigo'               => $rowMSSQL['equipo_visitante_codigo'],
                         'equipo_visitante_nombre'               => trim($rowMSSQL['equipo_visitante_nombre']),
                         'equipo_visitante_resultado_primer'     => $rowMSSQL['equipo_visitante_resultado_primer'],
