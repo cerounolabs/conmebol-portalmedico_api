@@ -63,7 +63,7 @@
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val10]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $connMSSQL->lastInsertId()), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
