@@ -3,15 +3,16 @@
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT
-        a.DOMFICCOD                     AS      tipo_codigo,
-        a.DOMFICEST                     AS      tipo_estado_codigo,
-        a.DOMFICORD                     AS      tipo_orden,
-        a.DOMFICNOM                     AS      tipo_nombre,
-        a.DOMFICVAL                     AS      tipo_dominio,
-        a.DOMFICOBS                     AS      tipo_observacion,
-        a.DOMFICAUS                     AS      tipo_usuario,
-        a.DOMFICAFH                     AS      tipo_fecha_hora,
-        a.DOMFICAIP                     AS      tipo_ip
+        a.DOMFICCOD         AS          tipo_codigo,
+        a.DOMFICEST         AS          tipo_estado_codigo,
+        a.DOMFICORD         AS          tipo_orden,
+        a.DOMFICNOM         AS          tipo_nombre,
+        a.DOMFICPAT         AS          tipo_path,
+        a.DOMFICVAL         AS          tipo_dominio,
+        a.DOMFICOBS         AS          tipo_observacion,
+        a.DOMFICAUS         AS          tipo_usuario,
+        a.DOMFICAFH         AS          tipo_fecha_hora,
+        a.DOMFICAIP         AS          tipo_ip
         
         FROM [adm].[DOMFIC] a
 
@@ -32,16 +33,17 @@
                 }
 
                 $detalle    = array(
-                    'tipo_codigo'           => $rowMSSQL['tipo_codigo'],
-                    'tipo_estado_codigo'    => $rowMSSQL['tipo_estado_codigo'],
-                    'tipo_estado_nombre'    => $tipo_estado_nombre,
-                    'tipo_orden'            => $rowMSSQL['tipo_orden'],
-                    'tipo_nombre'           => trim($rowMSSQL['tipo_nombre']),
-                    'tipo_dominio'          => trim($rowMSSQL['tipo_dominio']),
-                    'tipo_observacion'      => $rowMSSQL['tipo_observacion'],
-                    'tipo_usuario'          => trim($rowMSSQL['tipo_usuario']),
-                    'tipo_fecha_hora'       => $rowMSSQL['tipo_fecha_hora'],
-                    'tipo_ip'               => $rowMSSQL['tipo_ip']
+                    'tipo_codigo'                   => $rowMSSQL['tipo_codigo'],
+                    'tipo_estado_codigo'            => $rowMSSQL['tipo_estado_codigo'],
+                    'tipo_estado_nombre'            => $tipo_estado_nombre,
+                    'tipo_orden'                    => $rowMSSQL['tipo_orden'],
+                    'tipo_nombre'                   => trim($rowMSSQL['tipo_nombre']),
+                    'tipo_path'                     => trim($rowMSSQL['tipo_path']),
+                    'tipo_dominio'                  => trim($rowMSSQL['tipo_dominio']),
+                    'tipo_observacion'              => trim($rowMSSQL['tipo_observacion']),
+                    'tipo_usuario'                  => trim($rowMSSQL['tipo_usuario']),
+                    'tipo_fecha_hora'               => $rowMSSQL['tipo_fecha_hora'],
+                    'tipo_ip'                       => trim($rowMSSQL['tipo_ip'])
                 );
 
                 $result[]   = $detalle;
@@ -52,16 +54,17 @@
                 $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
             } else {
                 $detalle = array(
-                    'tipo_codigo'           => '',
-                    'tipo_estado_codigo'    => '',
-                    'tipo_estado_nombre'    => '',
-                    'tipo_orden'            => '',
-                    'tipo_nombre'           => '',
-                    'tipo_dominio'          => '',
-                    'tipo_observacion'      => '',
-                    'tipo_usuario'          => '',
-                    'tipo_fecha_hora'       => '',
-                    'tipo_ip'               => ''
+                    'tipo_codigo'                   => '',
+                    'tipo_estado_codigo'            => '',
+                    'tipo_estado_nombre'            => '',
+                    'tipo_orden'                    => '',
+                    'tipo_nombre'                   => '',
+                    'tipo_path'                     => '',
+                    'tipo_dominio'                  => '',
+                    'tipo_observacion'              => '',
+                    'tipo_usuario'                  => '',
+                    'tipo_fecha_hora'               => '',
+                    'tipo_ip'                       => ''
                 );
 
                 header("Content-Type: application/json; charset=utf-8");
@@ -87,15 +90,16 @@
         
         if (isset($val01)) {
             $sql00  = "SELECT
-            a.DOMFICCOD                     AS      tipo_codigo,
-            a.DOMFICEST                     AS      tipo_estado_codigo,
-            a.DOMFICORD                     AS      tipo_orden,
-            a.DOMFICNOM                     AS      tipo_nombre,
-            a.DOMFICVAL                     AS      tipo_dominio,
-            a.DOMFICOBS                     AS      tipo_observacion,
-            a.DOMFICAUS                     AS      tipo_usuario,
-            a.DOMFICAFH                     AS      tipo_fecha_hora,
-            a.DOMFICAIP                     AS      tipo_ip
+            a.DOMFICCOD         AS          tipo_codigo,
+            a.DOMFICEST         AS          tipo_estado_codigo,
+            a.DOMFICORD         AS          tipo_orden,
+            a.DOMFICNOM         AS          tipo_nombre,
+            a.DOMFICPAT         AS          tipo_path,
+            a.DOMFICVAL         AS          tipo_dominio,
+            a.DOMFICOBS         AS          tipo_observacion,
+            a.DOMFICAUS         AS          tipo_usuario,
+            a.DOMFICAFH         AS          tipo_fecha_hora,
+            a.DOMFICAIP         AS          tipo_ip
             
             FROM [adm].[DOMFIC] a
             
@@ -118,38 +122,40 @@
                     }
     
                     $detalle    = array(
-                        'tipo_codigo'           => $rowMSSQL['tipo_codigo'],
-                        'tipo_estado_codigo'    => $rowMSSQL['tipo_estado_codigo'],
-                        'tipo_estado_nombre'    => $tipo_estado_nombre,
-                        'tipo_orden'            => $rowMSSQL['tipo_orden'],
-                        'tipo_nombre'           => trim($rowMSSQL['tipo_nombre']),
-                        'tipo_dominio'          => trim($rowMSSQL['tipo_dominio']),
-                        'tipo_observacion'      => $rowMSSQL['tipo_observacion'],
-                        'tipo_usuario'          => trim($rowMSSQL['tipo_usuario']),
-                        'tipo_fecha_hora'       => $rowMSSQL['tipo_fecha_hora'],
-                        'tipo_ip'               => $rowMSSQL['tipo_ip']
+                        'tipo_codigo'                   => $rowMSSQL['tipo_codigo'],
+                        'tipo_estado_codigo'            => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_nombre'            => $tipo_estado_nombre,
+                        'tipo_orden'                    => $rowMSSQL['tipo_orden'],
+                        'tipo_nombre'                   => trim($rowMSSQL['tipo_nombre']),
+                        'tipo_path'                     => trim($rowMSSQL['tipo_path']),
+                        'tipo_dominio'                  => trim($rowMSSQL['tipo_dominio']),
+                        'tipo_observacion'              => trim($rowMSSQL['tipo_observacion']),
+                        'tipo_usuario'                  => trim($rowMSSQL['tipo_usuario']),
+                        'tipo_fecha_hora'               => $rowMSSQL['tipo_fecha_hora'],
+                        'tipo_ip'                       => trim($rowMSSQL['tipo_ip'])
                     );
-
+    
                     $result[]   = $detalle;
                 }
-
+    
                 if (isset($result)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'tipo_codigo'           => '',
-                        'tipo_estado_codigo'    => '',
-                        'tipo_estado_nombre'    => '',
-                        'tipo_orden'            => '',
-                        'tipo_nombre'           => '',
-                        'tipo_dominio'          => '',
-                        'tipo_observacion'      => '',
-                        'tipo_usuario'          => '',
-                        'tipo_fecha_hora'       => '',
-                        'tipo_ip'               => ''
+                        'tipo_codigo'                   => '',
+                        'tipo_estado_codigo'            => '',
+                        'tipo_estado_nombre'            => '',
+                        'tipo_orden'                    => '',
+                        'tipo_nombre'                   => '',
+                        'tipo_path'                     => '',
+                        'tipo_dominio'                  => '',
+                        'tipo_observacion'              => '',
+                        'tipo_usuario'                  => '',
+                        'tipo_fecha_hora'               => '',
+                        'tipo_ip'                       => ''
                     );
-
+    
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 }
@@ -177,15 +183,16 @@
         
         if (isset($val01)) {
             $sql00  = "SELECT
-            a.DOMFICCOD                     AS      tipo_codigo,
-            a.DOMFICEST                     AS      tipo_estado_codigo,
-            a.DOMFICORD                     AS      tipo_orden,
-            a.DOMFICNOM                     AS      tipo_nombre,
-            a.DOMFICVAL                     AS      tipo_dominio,
-            a.DOMFICOBS                     AS      tipo_observacion,
-            a.DOMFICAUS                     AS      tipo_usuario,
-            a.DOMFICAFH                     AS      tipo_fecha_hora,
-            a.DOMFICAIP                     AS      tipo_ip
+            a.DOMFICCOD         AS          tipo_codigo,
+            a.DOMFICEST         AS          tipo_estado_codigo,
+            a.DOMFICORD         AS          tipo_orden,
+            a.DOMFICNOM         AS          tipo_nombre,
+            a.DOMFICPAT         AS          tipo_path,
+            a.DOMFICVAL         AS          tipo_dominio,
+            a.DOMFICOBS         AS          tipo_observacion,
+            a.DOMFICAUS         AS          tipo_usuario,
+            a.DOMFICAFH         AS          tipo_fecha_hora,
+            a.DOMFICAIP         AS          tipo_ip
             
             FROM [adm].[DOMFIC] a
             
@@ -208,38 +215,40 @@
                     }
     
                     $detalle    = array(
-                        'tipo_codigo'           => $rowMSSQL['tipo_codigo'],
-                        'tipo_estado_codigo'    => $rowMSSQL['tipo_estado_codigo'],
-                        'tipo_estado_nombre'    => $tipo_estado_nombre,
-                        'tipo_orden'            => $rowMSSQL['tipo_orden'],
-                        'tipo_nombre'           => trim($rowMSSQL['tipo_nombre']),
-                        'tipo_dominio'          => trim($rowMSSQL['tipo_dominio']),
-                        'tipo_observacion'      => $rowMSSQL['tipo_observacion'],
-                        'tipo_usuario'          => trim($rowMSSQL['tipo_usuario']),
-                        'tipo_fecha_hora'       => $rowMSSQL['tipo_fecha_hora'],
-                        'tipo_ip'               => $rowMSSQL['tipo_ip']
+                        'tipo_codigo'                   => $rowMSSQL['tipo_codigo'],
+                        'tipo_estado_codigo'            => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_nombre'            => $tipo_estado_nombre,
+                        'tipo_orden'                    => $rowMSSQL['tipo_orden'],
+                        'tipo_nombre'                   => trim($rowMSSQL['tipo_nombre']),
+                        'tipo_path'                     => trim($rowMSSQL['tipo_path']),
+                        'tipo_dominio'                  => trim($rowMSSQL['tipo_dominio']),
+                        'tipo_observacion'              => trim($rowMSSQL['tipo_observacion']),
+                        'tipo_usuario'                  => trim($rowMSSQL['tipo_usuario']),
+                        'tipo_fecha_hora'               => $rowMSSQL['tipo_fecha_hora'],
+                        'tipo_ip'                       => trim($rowMSSQL['tipo_ip'])
                     );
-
+    
                     $result[]   = $detalle;
                 }
-
+    
                 if (isset($result)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'tipo_codigo'           => '',
-                        'tipo_estado_codigo'    => '',
-                        'tipo_estado_nombre'    => '',
-                        'tipo_orden'            => '',
-                        'tipo_nombre'           => '',
-                        'tipo_dominio'          => '',
-                        'tipo_observacion'      => '',
-                        'tipo_usuario'          => '',
-                        'tipo_fecha_hora'       => '',
-                        'tipo_ip'               => ''
+                        'tipo_codigo'                   => '',
+                        'tipo_estado_codigo'            => '',
+                        'tipo_estado_nombre'            => '',
+                        'tipo_orden'                    => '',
+                        'tipo_nombre'                   => '',
+                        'tipo_path'                     => '',
+                        'tipo_dominio'                  => '',
+                        'tipo_observacion'              => '',
+                        'tipo_usuario'                  => '',
+                        'tipo_fecha_hora'               => '',
+                        'tipo_ip'                       => ''
                     );
-
+    
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 }
@@ -277,6 +286,7 @@
             a.DOMFICAESTOLD                 AS      auditoria_antes_tipo_estado_codigo,
             a.DOMFICAORDOLD                 AS      auditoria_antes_tipo_orden,
             a.DOMFICANOMOLD                 AS      auditoria_antes_tipo_nombre,
+            a.DOMFICAPATOLD                 AS      auditoria_antes_tipo_path,
             a.DOMFICAVALOLD                 AS      auditoria_antes_tipo_dominio,
             a.DOMFICAOBSOLD                 AS      auditoria_antes_tipo_observacion,
 
@@ -284,10 +294,11 @@
             a.DOMFICAESTNEW                 AS      auditoria_despues_tipo_estado_codigo,
             a.DOMFICAORDNEW                 AS      auditoria_despues_tipo_orden,
             a.DOMFICANOMNEW                 AS      auditoria_despues_tipo_nombre,
+            a.DOMFICAPATNEW                 AS      auditoria_despues_tipo_path,
             a.DOMFICAVALNEW                 AS      auditoria_despues_tipo_dominio,
             a.DOMFICAOBSNEW                 AS      auditoria_despues_tipo_observacion
             
-            FROM [adm].[DOMFIC] a
+            FROM [adm].[DOMFICA] a
             
             WHERE a.DOMFICAVALOLD = ? OR a.DOMFICAVALNEW = ?
             
@@ -316,27 +327,29 @@
                     }
 
                     $detalle    = array(
-                        'auditoria_codigo'                      => $rowMSSQL['auditoria_codigo'],
-                        'auditoria_metodo'                      => $rowMSSQL['auditoria_metodo'],
-                        'auditoria_usuario'                     => trim($rowMSSQL['auditoria_usuario']),
-                        'auditoria_fecha_hora'                  => $rowMSSQL['auditoria_fecha_hora'],
-                        'auditoria_ip'                          => $rowMSSQL['auditoria_ip'],
+                        'auditoria_codigo'                              => $rowMSSQL['auditoria_codigo'],
+                        'auditoria_metodo'                              => trim($rowMSSQL['auditoria_metodo']),
+                        'auditoria_usuario'                             => trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                          => $rowMSSQL['auditoria_fecha_hora'],
+                        'auditoria_ip'                                  => trim($rowMSSQL['auditoria_ip']),
 
-                        'auditoria_antes_tipo_codigo'           => $rowMSSQL['auditoria_antes_tipo_codigo'],
-                        'auditoria_antes_tipo_estado_codigo'    => $rowMSSQL['auditoria_antes_tipo_estado_codigo'],
-                        'auditoria_antes_tipo_estado_nombre'    => $tipo_estado_nombre_antes,
-                        'auditoria_antes_tipo_orden'            => $rowMSSQL['auditoria_antes_tipo_orden'],
-                        'auditoria_antes_tipo_nombre'           => trim($rowMSSQL['auditoria_antes_tipo_nombre']),
-                        'auditoria_antes_tipo_dominio'          => trim($rowMSSQL['auditoria_antes_tipo_dominio']),
-                        'auditoria_antes_tipo_observacion'      => $rowMSSQL['auditoria_antes_tipo_observacion'],
+                        'auditoria_antes_tipo_codigo'                   => $rowMSSQL['auditoria_antes_tipo_codigo'],
+                        'auditoria_antes_tipo_estado_codigo'            => $rowMSSQL['auditoria_antes_tipo_estado_codigo'],
+                        'auditoria_antes_tipo_estado_nombre'            => $tipo_estado_nombre_antes,
+                        'auditoria_antes_tipo_orden'                    => $rowMSSQL['auditoria_antes_tipo_orden'],
+                        'auditoria_antes_tipo_nombre'                   => trim($rowMSSQL['auditoria_antes_tipo_nombre']),
+                        'auditoria_antes_tipo_path'                     => trim($rowMSSQL['auditoria_antes_tipo_path']),
+                        'auditoria_antes_tipo_dominio'                  => trim($rowMSSQL['auditoria_antes_tipo_dominio']),
+                        'auditoria_antes_tipo_observacion'              => trim($rowMSSQL['auditoria_antes_tipo_observacion']),
 
-                        'auditoria_despues_tipo_codigo'         => $rowMSSQL['auditoria_despues_tipo_codigo'],
-                        'auditoria_despues_tipo_estado_codigo'  => $rowMSSQL['auditoria_despues_tipo_estado_codigo'],
-                        'auditoria_despues_tipo_estado_nombre'  => $tipo_estado_nombre_despues,
-                        'auditoria_despues_tipo_orden'          => $rowMSSQL['auditoria_despues_tipo_orden'],
-                        'auditoria_despues_tipo_nombre'         => $rowMSSQL['auditoria_despues_tipo_nombre'],
-                        'auditoria_despues_tipo_dominio'        => $rowMSSQL['auditoria_despues_tipo_dominio'],
-                        'auditoria_despues_tipo_observacion'    => $rowMSSQL['auditoria_despues_tipo_observacion']
+                        'auditoria_despues_tipo_codigo'                 => $rowMSSQL['auditoria_despues_tipo_codigo'],
+                        'auditoria_despues_tipo_estado_codigo'          => $rowMSSQL['auditoria_despues_tipo_estado_codigo'],
+                        'auditoria_despues_tipo_estado_nombre'          => $tipo_estado_nombre_despues,
+                        'auditoria_despues_tipo_orden'                  => $rowMSSQL['auditoria_despues_tipo_orden'],
+                        'auditoria_despues_tipo_nombre'                 => trim($rowMSSQL['auditoria_despues_tipo_nombre']),
+                        'auditoria_despues_tipo_path'                   => trim($rowMSSQL['auditoria_despues_tipo_path']),
+                        'auditoria_despues_tipo_dominio'                => trim($rowMSSQL['auditoria_despues_tipo_dominio']),
+                        'auditoria_despues_tipo_observacion'            => trim($rowMSSQL['auditoria_despues_tipo_observacion'])
                     );
 
                     $result[]   = $detalle;
@@ -347,25 +360,473 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'auditoria_codigo'                      => '',
-                        'auditoria_metodo'                      => '',
-                        'auditoria_usuario'                     => '',
-                        'auditoria_fecha_hora'                  => '',
-                        'auditoria_ip'                          => '',
-                        'auditoria_antes_tipo_codigo'           => '',
-                        'auditoria_antes_tipo_estado_codigo'    => '',
-                        'auditoria_antes_tipo_estado_nombre'    => '',
-                        'auditoria_antes_tipo_orden'            => '',
-                        'auditoria_antes_tipo_nombre'           => '',
-                        'auditoria_antes_tipo_dominio'          => '',
-                        'auditoria_antes_tipo_observacion'      => '',
-                        'auditoria_despues_tipo_codigo'         => '',
-                        'auditoria_despues_tipo_estado_codigo'  => '',
-                        'auditoria_despues_tipo_estado_nombre'  => '',
-                        'auditoria_despues_tipo_orden'          => '',
-                        'auditoria_despues_tipo_nombre'         => '',
-                        'auditoria_despues_tipo_dominio'        => '',
-                        'auditoria_despues_tipo_observacion'    => ''
+                        'auditoria_codigo'                              => '',
+                        'auditoria_metodo'                              => '',
+                        'auditoria_usuario'                             => '',
+                        'auditoria_fecha_hora'                          => '',
+                        'auditoria_ip'                                  => '',
+
+                        'auditoria_antes_tipo_codigo'                   => '',
+                        'auditoria_antes_tipo_estado_codigo'            => '',
+                        'auditoria_antes_tipo_estado_nombre'            => '',
+                        'auditoria_antes_tipo_orden'                    => '',
+                        'auditoria_antes_tipo_nombre'                   => '',
+                        'auditoria_antes_tipo_path'                     => '',
+                        'auditoria_antes_tipo_dominio'                  => '',
+                        'auditoria_antes_tipo_observacion'              => '',
+
+                        'auditoria_despues_tipo_codigo'                 => '',
+                        'auditoria_despues_tipo_estado_codigo'          => '',
+                        'auditoria_despues_tipo_estado_nombre'          => '',
+                        'auditoria_despues_tipo_orden'                  => '',
+                        'auditoria_despues_tipo_nombre'                 => '',
+                        'auditoria_despues_tipo_path'                   => '',
+                        'auditoria_despues_tipo_dominio'                => '',
+                        'auditoria_despues_tipo_observacion'            => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/100', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $sql00  = "SELECT
+        a.DOMSUBCOD         AS          tipo_sub_codigo,
+        a.DOMSUBEST         AS          tipo_sub_estado_codigo,
+        a.DOMSUBORD         AS          tipo_sub_orden,
+        a.DOMSUBNOM         AS          tipo_sub_nombre,
+        a.DOMSUBPAT         AS          tipo_sub_path,
+        a.DOMSUBVAL         AS          tipo_sub_dominio,
+        a.DOMSUBOBS         AS          tipo_sub_observacion,
+        a.DOMSUBAUS         AS          tipo_sub_usuario,
+        a.DOMSUBAFH         AS          tipo_sub_fecha_hora,
+        a.DOMSUBAIP         AS          tipo_sub_ip,
+
+        b.DOMFICCOD         AS          tipo_codigo,
+        b.DOMFICNOM         AS          tipo_nombre        
+        
+        FROM [adm].[DOMSUB] a
+        INNER JOIN [adm].[DOMFIC] b ON a.DOMSUBTIC = b.DOMFICCOD
+
+        ORDER BY a.DOMSUBVAL, b.DOMFICNOM, a.DOMSUBNOM";
+
+        try {
+            $connMSSQL  = getConnectionMSSQL();
+            $stmtMSSQL  = $connMSSQL->prepare($sql00);
+            $stmtMSSQL->execute(); 
+
+            while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                if ($rowMSSQL['tipo_sub_estado_codigo'] === 'A') {
+                    $tipo_sub_estado_nombre = 'ACTIVO';
+                } 
+                
+                if ($rowMSSQL['tipo_sub_estado_codigo'] === 'I') {
+                    $tipo_sub_estado_nombre = 'INACTIVO';
+                }
+
+                $detalle    = array(
+                    'tipo_sub_codigo'                   => $rowMSSQL['tipo_sub_codigo'],
+                    'tipo_sub_estado_codigo'            => $rowMSSQL['tipo_sub_estado_codigo'],
+                    'tipo_sub_estado_nombre'            => $tipo_sub_estado_nombre,
+                    'tipo_codigo'                       => $rowMSSQL['tipo_codigo'],
+                    'tipo_nombre'                       => trim($rowMSSQL['tipo_nombre']),
+                    'tipo_sub_orden'                    => $rowMSSQL['tipo_sub_orden'],
+                    'tipo_sub_nombre'                   => trim($rowMSSQL['tipo_sub_nombre']),
+                    'tipo_sub_path'                     => trim($rowMSSQL['tipo_sub_path']),
+                    'tipo_sub_dominio'                  => trim($rowMSSQL['tipo_sub_dominio']),
+                    'tipo_sub_observacion'              => trim($rowMSSQL['tipo_sub_observacion']),
+                    'tipo_sub_usuario'                  => trim($rowMSSQL['tipo_sub_usuario']),
+                    'tipo_sub_fecha_hora'               => $rowMSSQL['tipo_sub_fecha_hora'],
+                    'tipo_sub_ip'                       => trim($rowMSSQL['tipo_sub_ip'])
+                );
+
+                $result[]   = $detalle;
+            }
+
+            if (isset($result)){
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } else {
+                $detalle = array(
+                    'tipo_sub_codigo'                   => '',
+                    'tipo_sub_estado_codigo'            => '',
+                    'tipo_sub_estado_nombre'            => '',
+                    'tipo_codigo'                       => '',
+                    'tipo_nombre'                       => '',
+                    'tipo_sub_orden'                    => '',
+                    'tipo_sub_nombre'                   => '',
+                    'tipo_sub_path'                     => '',
+                    'tipo_sub_dominio'                  => '',
+                    'tipo_sub_observacion'              => '',
+                    'tipo_sub_usuario'                  => '',
+                    'tipo_sub_fecha_hora'               => '',
+                    'tipo_sub_ip'                       => ''
+                );
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/100/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val01      = $request->getAttribute('codigo');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT
+            a.DOMSUBCOD         AS          tipo_sub_codigo,
+            a.DOMSUBEST         AS          tipo_sub_estado_codigo,
+            a.DOMSUBORD         AS          tipo_sub_orden,
+            a.DOMSUBNOM         AS          tipo_sub_nombre,
+            a.DOMSUBPAT         AS          tipo_sub_path,
+            a.DOMSUBVAL         AS          tipo_sub_dominio,
+            a.DOMSUBOBS         AS          tipo_sub_observacion,
+            a.DOMSUBAUS         AS          tipo_sub_usuario,
+            a.DOMSUBAFH         AS          tipo_sub_fecha_hora,
+            a.DOMSUBAIP         AS          tipo_sub_ip,
+
+            b.DOMFICCOD         AS          tipo_codigo,
+            b.DOMFICNOM         AS          tipo_nombre        
+            
+            FROM [adm].[DOMSUB] a
+            INNER JOIN [adm].[DOMFIC] b ON a.DOMSUBTIC = b.DOMFICCOD
+
+            WHERE a.DOMSUBCOD = ?
+
+            ORDER BY a.DOMSUBVAL, b.DOMFICNOM, a.DOMSUBNOM";
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['tipo_sub_estado_codigo'] === 'A') {
+                        $tipo_sub_estado_nombre = 'ACTIVO';
+                    } 
+                    
+                    if ($rowMSSQL['tipo_sub_estado_codigo'] === 'I') {
+                        $tipo_sub_estado_nombre = 'INACTIVO';
+                    }
+
+                    $detalle    = array(
+                        'tipo_sub_codigo'                   => $rowMSSQL['tipo_sub_codigo'],
+                        'tipo_sub_estado_codigo'            => $rowMSSQL['tipo_sub_estado_codigo'],
+                        'tipo_sub_estado_nombre'            => $tipo_sub_estado_nombre,
+                        'tipo_codigo'                       => $rowMSSQL['tipo_codigo'],
+                        'tipo_nombre'                       => trim($rowMSSQL['tipo_nombre']),
+                        'tipo_sub_orden'                    => $rowMSSQL['tipo_sub_orden'],
+                        'tipo_sub_nombre'                   => trim($rowMSSQL['tipo_sub_nombre']),
+                        'tipo_sub_path'                     => trim($rowMSSQL['tipo_sub_path']),
+                        'tipo_sub_dominio'                  => trim($rowMSSQL['tipo_sub_dominio']),
+                        'tipo_sub_observacion'              => trim($rowMSSQL['tipo_sub_observacion']),
+                        'tipo_sub_usuario'                  => trim($rowMSSQL['tipo_sub_usuario']),
+                        'tipo_sub_fecha_hora'               => $rowMSSQL['tipo_sub_fecha_hora'],
+                        'tipo_sub_ip'                       => trim($rowMSSQL['tipo_sub_ip'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'tipo_sub_codigo'                   => '',
+                        'tipo_sub_estado_codigo'            => '',
+                        'tipo_sub_estado_nombre'            => '',
+                        'tipo_codigo'                       => '',
+                        'tipo_nombre'                       => '',
+                        'tipo_sub_orden'                    => '',
+                        'tipo_sub_nombre'                   => '',
+                        'tipo_sub_path'                     => '',
+                        'tipo_sub_dominio'                  => '',
+                        'tipo_sub_observacion'              => '',
+                        'tipo_sub_usuario'                  => '',
+                        'tipo_sub_fecha_hora'               => '',
+                        'tipo_sub_ip'                       => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/100/dominio/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val01      = $request->getAttribute('codigo');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT
+            a.DOMSUBCOD         AS          tipo_sub_codigo,
+            a.DOMSUBEST         AS          tipo_sub_estado_codigo,
+            a.DOMSUBORD         AS          tipo_sub_orden,
+            a.DOMSUBNOM         AS          tipo_sub_nombre,
+            a.DOMSUBPAT         AS          tipo_sub_path,
+            a.DOMSUBVAL         AS          tipo_sub_dominio,
+            a.DOMSUBOBS         AS          tipo_sub_observacion,
+            a.DOMSUBAUS         AS          tipo_sub_usuario,
+            a.DOMSUBAFH         AS          tipo_sub_fecha_hora,
+            a.DOMSUBAIP         AS          tipo_sub_ip,
+
+            b.DOMFICCOD         AS          tipo_codigo,
+            b.DOMFICNOM         AS          tipo_nombre         
+            
+            FROM [adm].[DOMSUB] a
+            INNER JOIN [adm].[DOMFIC] b ON a.DOMSUBTIC = b.DOMFICCOD
+
+            WHERE a.DOMSUBVAL = ?
+
+            ORDER BY a.DOMSUBVAL, b.DOMFICNOM, a.DOMSUBNOM";
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['tipo_sub_estado_codigo'] === 'A') {
+                        $tipo_sub_estado_nombre = 'ACTIVO';
+                    } 
+                    
+                    if ($rowMSSQL['tipo_sub_estado_codigo'] === 'I') {
+                        $tipo_sub_estado_nombre = 'INACTIVO';
+                    }
+
+                    $detalle    = array(
+                        'tipo_sub_codigo'                   => $rowMSSQL['tipo_sub_codigo'],
+                        'tipo_sub_estado_codigo'            => $rowMSSQL['tipo_sub_estado_codigo'],
+                        'tipo_sub_estado_nombre'            => $tipo_sub_estado_nombre,
+                        'tipo_codigo'                       => $rowMSSQL['tipo_codigo'],
+                        'tipo_nombre'                       => trim($rowMSSQL['tipo_nombre']),
+                        'tipo_sub_orden'                    => $rowMSSQL['tipo_sub_orden'],
+                        'tipo_sub_nombre'                   => trim($rowMSSQL['tipo_sub_nombre']),
+                        'tipo_sub_path'                     => trim($rowMSSQL['tipo_sub_path']),
+                        'tipo_sub_dominio'                  => trim($rowMSSQL['tipo_sub_dominio']),
+                        'tipo_sub_observacion'              => trim($rowMSSQL['tipo_sub_observacion']),
+                        'tipo_sub_usuario'                  => trim($rowMSSQL['tipo_sub_usuario']),
+                        'tipo_sub_fecha_hora'               => $rowMSSQL['tipo_sub_fecha_hora'],
+                        'tipo_sub_ip'                       => trim($rowMSSQL['tipo_sub_ip'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'tipo_sub_codigo'                   => '',
+                        'tipo_sub_estado_codigo'            => '',
+                        'tipo_sub_estado_nombre'            => '',
+                        'tipo_codigo'                       => '',
+                        'tipo_nombre'                       => '',
+                        'tipo_sub_orden'                    => '',
+                        'tipo_sub_nombre'                   => '',
+                        'tipo_sub_path'                     => '',
+                        'tipo_sub_dominio'                  => '',
+                        'tipo_sub_observacion'              => '',
+                        'tipo_sub_usuario'                  => '',
+                        'tipo_sub_fecha_hora'               => '',
+                        'tipo_sub_ip'                       => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/100/auditoria/{dominio}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+		$val01      = $request->getAttribute('dominio');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT
+            a.DOMSUBACOD            AS          auditoria_codigo,
+            a.DOMSUBAMET            AS          auditoria_metodo,
+            a.DOMSUBAUSU            AS          auditoria_usuario,
+            a.DOMSUBAFEC            AS          auditoria_fecha_hora,
+            a.DOMSUBADIP            AS          auditoria_ip,
+
+            a.DOMSUBACODOLD         AS          auditoria_antes_tipo_sub_codigo,
+            a.DOMSUBAESTOLD         AS          auditoria_antes_tipo_sub_estado_codigo,
+            a.DOMSUBAORDOLD         AS          auditoria_antes_tipo_sub_orden,
+            a.DOMSUBANOMOLD         AS          auditoria_antes_tipo_sub_nombre,
+            a.DOMSUBAPATOLD         AS          auditoria_antes_tipo_sub_path,
+            a.DOMSUBAVALOLD         AS          auditoria_antes_tipo_sub_dominio,
+            a.DOMSUBAOBSOLD         AS          auditoria_antes_tipo_sub_observacion,
+            b1.DOMFICCOD            AS          auditoria_antes_tipo_codigo,
+            b1.DOMFICNOM            AS          auditoria_antes_tipo_nombre,
+
+            a.DOMSUBACODNEW         AS          auditoria_despues_tipo_sub_codigo,
+            a.DOMSUBAESTNEW         AS          auditoria_despues_tipo_sub_estado_codigo,
+            a.DOMSUBAORDNEW         AS          auditoria_despues_tipo_sub_orden,
+            a.DOMSUBANOMNEW         AS          auditoria_despues_tipo_sub_nombre,
+            a.DOMSUBAPATNEW         AS          auditoria_despues_tipo_sub_path,
+            a.DOMSUBAVALNEW         AS          auditoria_despues_tipo_sub_dominio,
+            a.DOMSUBAOBSNEW         AS          auditoria_despues_tipo_sub_observacion,
+            b2.DOMFICCOD            AS          auditoria_despues_tipo_codigo,
+            b2.DOMFICNOM            AS          auditoria_despues_tipo_nombre 
+            
+            FROM [adm].[DOMSUBA] a
+            
+            WHERE a.DOMSUBAVALOLD = ? OR a.DOMSUBAVALNEW = ?
+            INNER JOIN [adm].[DOMFIC] b1 ON a.DOMSUBATICOLD = b1.DOMFICCOD
+            INNER JOIN [adm].[DOMFIC] b2 ON a.DOMSUBATICNEW = b2.DOMFICCOD
+            
+            ORDER BY a.DOMSUBACOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01, $val01]); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['auditoria_antes_tipo_sub_estado_codigo'] === 'A') {
+                        $tipo_sub_estado_nombre_antes   = 'ACTIVO';
+                    }
+
+                    if ($rowMSSQL['auditoria_antes_tipo_sub_estado_codigo'] === 'I') {
+                        $tipo_sub_estado_nombre_antes   = 'INACTIVO';
+                    }
+
+                    if ($rowMSSQL['auditoria_despues_tipo_sub_estado_codigo'] === 'A') {
+                        $tipo_sub_estado_nombre_despues = 'ACTIVO';
+                    }
+
+                    if ($rowMSSQL['auditoria_despues_tipo_sub_estado_codigo'] === 'I') {
+                        $tipo_sub_estado_nombre_despues = 'INACTIVO';
+                    }
+
+                    $detalle    = array(
+                        'auditoria_codigo'                                  => $rowMSSQL['auditoria_codigo'],
+                        'auditoria_metodo'                                  => $rowMSSQL['auditoria_metodo'],
+                        'auditoria_usuario'                                 => trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                              => $rowMSSQL['auditoria_fecha_hora'],
+                        'auditoria_ip'                                      => $rowMSSQL['auditoria_ip'],
+
+                        'auditoria_antes_tipo_sub_codigo'                   => $rowMSSQL['auditoria_antes_tipo_sub_codigo'],
+                        'auditoria_antes_tipo_sub_estado_codigo'            => $rowMSSQL['auditoria_antes_tipo_sub_estado_codigo'],
+                        'auditoria_antes_tipo_sub_estado_nombre'            => $tipo_sub_estado_nombre_antes,
+                        'auditoria_antes_tipo_sub_orden'                    => $rowMSSQL['auditoria_antes_tipo_sub_orden'],
+                        'auditoria_antes_tipo_sub_nombre'                   => trim($rowMSSQL['auditoria_antes_tipo_sub_nombre']),
+                        'auditoria_antes_tipo_sub_path'                     => trim($rowMSSQL['auditoria_antes_tipo_sub_path']),
+                        'auditoria_antes_tipo_sub_dominio'                  => trim($rowMSSQL['auditoria_antes_tipo_sub_dominio']),
+                        'auditoria_antes_tipo_sub_observacion'              => $rowMSSQL['auditoria_antes_tipo_sub_observacion'],
+                        'auditoria_antes_tipo_codigo'                       => $rowMSSQL['auditoria_antes_tipo_codigo'],
+                        'auditoria_antes_tipo_nombre'                       => trim($rowMSSQL['auditoria_antes_tipo_nombre']),
+
+                        'auditoria_despues_tipo_sub_codigo'                 => $rowMSSQL['auditoria_despues_tipo_sub_codigo'],
+                        'auditoria_despues_tipo_sub_estado_codigo'          => $rowMSSQL['auditoria_despues_tipo_sub_estado_codigo'],
+                        'auditoria_despues_tipo_sub_estado_nombre'          => $tipo_sub_estado_nombre_despues,
+                        'auditoria_despues_tipo_sub_orden'                  => $rowMSSQL['auditoria_despues_tipo_sub_orden'],
+                        'auditoria_despues_tipo_sub_nombre'                 => trim($rowMSSQL['auditoria_despues_tipo_sub_nombre']),
+                        'auditoria_despues_tipo_sub_path'                   => trim($rowMSSQL['auditoria_despues_tipo_sub_path']),
+                        'auditoria_despues_tipo_sub_dominio'                => trim($rowMSSQL['auditoria_despues_tipo_sub_dominio']),
+                        'auditoria_despues_tipo_sub_observacion'            => $rowMSSQL['auditoria_despues_tipo_sub_observacion'],
+                        'auditoria_despues_tipo_codigo'                     => $rowMSSQL['auditoria_despues_tipo_codigo'],
+                        'auditoria_despues_tipo_nombre'                     => trim($rowMSSQL['auditoria_despues_tipo_nombre'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'auditoria_codigo'                                  => '',
+                        'auditoria_metodo'                                  => '',
+                        'auditoria_usuario'                                 => '',
+                        'auditoria_fecha_hora'                              => '',
+                        'auditoria_ip'                                      => '',
+
+                        'auditoria_antes_tipo_sub_codigo'                   => '',
+                        'auditoria_antes_tipo_sub_estado_codigo'            => '',
+                        'auditoria_antes_tipo_sub_estado_nombre'            => '',
+                        'auditoria_antes_tipo_sub_orden'                    => '',
+                        'auditoria_antes_tipo_sub_nombre'                   => '',
+                        'auditoria_antes_tipo_sub_path'                     => '',
+                        'auditoria_antes_tipo_sub_dominio'                  => '',
+                        'auditoria_antes_tipo_sub_observacion'              => '',
+                        'auditoria_antes_tipo_codigo'                       => '',
+                        'auditoria_antes_tipo_nombre'                       => '',
+
+                        'auditoria_despues_tipo_sub_codigo'                 => '',
+                        'auditoria_despues_tipo_sub_estado_codigo'          => '',
+                        'auditoria_despues_tipo_sub_estado_nombre'          => '',
+                        'auditoria_despues_tipo_sub_orden'                  => '',
+                        'auditoria_despues_tipo_sub_nombre'                 => '',
+                        'auditoria_despues_tipo_sub_path'                   => '',
+                        'auditoria_despues_tipo_sub_dominio'                => '',
+                        'auditoria_despues_tipo_sub_observacion'            => '',
+                        'auditoria_despues_tipo_codigo'                     => '',
+                        'auditoria_despues_tipo_nombre'                     => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
