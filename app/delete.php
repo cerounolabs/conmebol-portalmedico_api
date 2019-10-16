@@ -5,13 +5,15 @@
         $val00      = $request->getAttribute('codigo');
         $val01      = $request->getParsedBody()['tipo_estado_codigo'];
         $val02      = $request->getParsedBody()['tipo_orden'];
-        $val03      = $request->getParsedBody()['tipo_nombre'];
-        $val04      = $request->getParsedBody()['tipo_path'];
-        $val05      = $request->getParsedBody()['tipo_dominio'];
-        $val06      = $request->getParsedBody()['tipo_observacion'];
-        $val07      = $request->getParsedBody()['tipo_usuario'];
-        $val08      = $request->getParsedBody()['tipo_fecha_hora'];
-        $val09      = $request->getParsedBody()['tipo_ip'];
+        $val03      = $request->getParsedBody()['tipo_nombre_inlges'];
+        $val04      = $request->getParsedBody()['tipo_nombre_castellano'];
+        $val05      = $request->getParsedBody()['tipo_nombre_portugues'];
+        $val06      = $request->getParsedBody()['tipo_path'];
+        $val07      = $request->getParsedBody()['tipo_dominio'];
+        $val08      = $request->getParsedBody()['tipo_observacion'];
+        $val09      = $request->getParsedBody()['tipo_usuario'];
+        $val10      = $request->getParsedBody()['tipo_fecha_hora'];
+        $val11      = $request->getParsedBody()['tipo_ip'];
 
         if (isset($val00)) {
             $sql00  = "DELETE FROM [adm].[DOMFIC] WHERE DOMFICCOD = ?";
@@ -47,13 +49,15 @@
         $val01      = $request->getParsedBody()['tipo_sub_estado_codigo'];
         $val02      = $request->getParsedBody()['tipo_codigo'];
         $val03      = $request->getParsedBody()['tipo_sub_orden'];
-        $val04      = $request->getParsedBody()['tipo_sub_nombre'];
-        $val05      = $request->getParsedBody()['tipo_sub_path'];
-        $val06      = $request->getParsedBody()['tipo_sub_dominio'];
-        $val07      = $request->getParsedBody()['tipo_sub_observacion'];
-        $val08      = $request->getParsedBody()['tipo_sub_usuario'];
-        $val09      = $request->getParsedBody()['tipo_sub_fecha_hora'];
-        $val10      = $request->getParsedBody()['tipo_sub_ip'];
+        $val04      = $request->getParsedBody()['tipo_sub_nombre_inlges'];
+        $val05      = $request->getParsedBody()['tipo_sub_nombre_castellano'];
+        $val06      = $request->getParsedBody()['tipo_sub_nombre_portugues'];
+        $val07      = $request->getParsedBody()['tipo_sub_path'];
+        $val08      = $request->getParsedBody()['tipo_sub_dominio'];
+        $val09      = $request->getParsedBody()['tipo_sub_observacion'];
+        $val10      = $request->getParsedBody()['tipo_sub_usuario'];
+        $val11      = $request->getParsedBody()['tipo_sub_fecha_hora'];
+        $val12      = $request->getParsedBody()['tipo_sub_ip'];
 
         if (isset($val00)) {
             $sql00  = "DELETE FROM [adm].[DOMSUB] WHERE DOMFICCOD = ?";
