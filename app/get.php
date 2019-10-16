@@ -18,7 +18,7 @@
         
         FROM [adm].[DOMFIC] a
 
-        ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOM";
+        ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOC";
 
         try {
             $connMSSQL  = getConnectionMSSQL();
@@ -113,7 +113,7 @@
             
             WHERE a.DOMFICCOD = ?
             
-            ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOM";
+            ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOC";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
@@ -212,7 +212,7 @@
             
             WHERE a.DOMFICVAL = ?
 
-            ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOM";
+            ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOC";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
@@ -460,7 +460,7 @@
         FROM [adm].[DOMSUB] a
         INNER JOIN [adm].[DOMFIC] b ON a.DOMSUBTIC = b.DOMFICCOD
 
-        ORDER BY a.DOMSUBVAL, b.DOMFICNOM, a.DOMSUBNOM";
+        ORDER BY a.DOMSUBVAL, b.DOMFICNOM, a.DOMSUBNOC";
 
         try {
             $connMSSQL  = getConnectionMSSQL();
@@ -569,7 +569,7 @@
 
             WHERE a.DOMSUBCOD = ?
 
-            ORDER BY a.DOMSUBVAL, b.DOMFICNOM, a.DOMSUBNOM";
+            ORDER BY a.DOMSUBVAL, b.DOMFICNOM, a.DOMSUBNOC";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
@@ -682,7 +682,7 @@
 
             WHERE a.DOMSUBVAL = ?
 
-            ORDER BY a.DOMSUBVAL, b.DOMFICNOM, a.DOMSUBNOM";
+            ORDER BY a.DOMSUBVAL, b.DOMFICNOM, a.DOMSUBNOC";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
