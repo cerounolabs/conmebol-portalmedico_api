@@ -4,7 +4,7 @@
 
         $val01      = $request->getParsedBody()['tipo_estado_codigo'];
         $val02      = $request->getParsedBody()['tipo_orden'];
-        $val03      = $request->getParsedBody()['tipo_nombre_inlges'];
+        $val03      = $request->getParsedBody()['tipo_nombre_ingles'];
         $val04      = $request->getParsedBody()['tipo_nombre_castellano'];
         $val05      = $request->getParsedBody()['tipo_nombre_portugues'];
         $val06      = $request->getParsedBody()['tipo_path'];
@@ -47,7 +47,7 @@
         $val01      = $request->getParsedBody()['tipo_sub_estado_codigo'];
         $val02      = $request->getParsedBody()['tipo_codigo'];
         $val03      = $request->getParsedBody()['tipo_sub_orden'];
-        $val04      = $request->getParsedBody()['tipo_sub_nombre_inlges'];
+        $val04      = $request->getParsedBody()['tipo_sub_nombre_ingles'];
         $val05      = $request->getParsedBody()['tipo_sub_nombre_castellano'];
         $val06      = $request->getParsedBody()['tipo_sub_nombre_portugues'];
         $val07      = $request->getParsedBody()['tipo_sub_path'];
