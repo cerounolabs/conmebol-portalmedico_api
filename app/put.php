@@ -14,12 +14,12 @@
         $val09      = $request->getParsedBody()['tipo_ip'];
 
         if (isset($val01) && isset($val03) && isset($val05) && isset($val07) && isset($val08) && isset($val09)) {
-            $sql00  = "UPDATE [adm].[DOMFIC] SET DOMFICEST = ?, DOMFICORD = ?, DOMFICNOM = ?, DOMFICPAT = ?, DOMFICOBS = ?, DOMFICAUS = ?, DOMFICAFH = ?, DOMFICAIP = ? WHERE DOMFICCOD = ?";
+            $sql00  = "UPDATE [adm].[DOMFIC] SET DOMFICEST = ?, DOMFICORD = ?, DOMFICNOM = ?, DOMFICPAT = ?, DOMFICOBS = ?, DOMFICAUS = ?, DOMFICAFH = GETDATE(), DOMFICAIP = ? WHERE DOMFICCOD = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val06, $val07, $val08, $val09, $val00]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val06, $val07, $val09, $val00]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
@@ -56,12 +56,12 @@
         $val10      = $request->getParsedBody()['tipo_sub_ip'];
 
         if (isset($val01) && isset($val02) && isset($val04) && isset($val06) && isset($val08) && isset($val09) && isset($val10)) {
-            $sql00  = "UPDATE [adm].[DOMSUB] SET DOMSUBEST = ?, DOMSUBTIC = ?, DOMSUBORD = ?, DOMSUBNOM = ?, DOMSUBPAT = ?, DOMSUBOBS = ?, DOMSUBAUS = ?, DOMSUBAFH = ?, DOMSUBAIP = ? WHERE DOMSUBCOD = ?";
+            $sql00  = "UPDATE [adm].[DOMSUB] SET DOMSUBEST = ?, DOMSUBTIC = ?, DOMSUBORD = ?, DOMSUBNOM = ?, DOMSUBPAT = ?, DOMSUBOBS = ?, DOMSUBAUS = ?, DOMSUBAFH = GETDATE(), DOMSUBAIP = ? WHERE DOMSUBCOD = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $val00]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val07, $val08, $val10, $val00]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
