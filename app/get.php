@@ -294,37 +294,26 @@
         
         if (isset($val01)) {
             $sql00  = "SELECT
-            a.DOMFICACOD                    AS      auditoria_codigo,
-            a.DOMFICAMET                    AS      auditoria_metodo,
-            a.DOMFICAUSU                    AS      auditoria_usuario,
-            a.DOMFICAFEC                    AS      auditoria_fecha_hora,
-            a.DOMFICADIP                    AS      auditoria_ip,
-
-            a.DOMFICACODOLD                 AS      auditoria_antes_tipo_codigo,
-            a.DOMFICAESTOLD                 AS      auditoria_antes_tipo_estado_codigo,
-            a.DOMFICAORDOLD                 AS      auditoria_antes_tipo_orden,
-            a.DOMFICANOIOLD                 AS      auditoria_antes_tipo_nombre_ingles,
-            a.DOMFICANOCOLD                 AS      auditoria_antes_tipo_nombre_castellano,
-            a.DOMFICANOPOLD                 AS      auditoria_antes_tipo_nombre_portugues,
-            a.DOMFICAPATOLD                 AS      auditoria_antes_tipo_path,
-            a.DOMFICAVALOLD                 AS      auditoria_antes_tipo_dominio,
-            a.DOMFICAOBSOLD                 AS      auditoria_antes_tipo_observacion,
-
-            a.DOMFICACODNEW                 AS      auditoria_despues_tipo_codigo,
-            a.DOMFICAESTNEW                 AS      auditoria_despues_tipo_estado_codigo,
-            a.DOMFICAORDNEW                 AS      auditoria_despues_tipo_orden,
-            a.DOMFICANOINEW                 AS      auditoria_despues_tipo_nombre_ingles,
-            a.DOMFICANOCNEW                 AS      auditoria_despues_tipo_nombre_castellano,
-            a.DOMFICANOPNEW                 AS      auditoria_despues_tipo_nombre_portugues,
-            a.DOMFICAPATNEW                 AS      auditoria_despues_tipo_path,
-            a.DOMFICAVALNEW                 AS      auditoria_despues_tipo_dominio,
-            a.DOMFICAOBSNEW                 AS      auditoria_despues_tipo_observacion
+            a.DOMFICAIDD            AS          auditoria_codigo,
+            a.DOMFICAMET            AS          auditoria_metodo,
+            a.DOMFICAUSU            AS          auditoria_usuario,
+            a.DOMFICAFEC            AS          auditoria_fecha_hora,
+            a.DOMFICADIP            AS          auditoria_ip,
+            a.DOMFICACOD            AS          auditoria_tipo_codigo,
+            a.DOMFICAEST            AS          auditoria_tipo_estado_codigo,
+            a.DOMFICAORD            AS          auditoria_tipo_orden,
+            a.DOMFICANOI            AS          auditoria_tipo_nombre_ingles,
+            a.DOMFICANOC            AS          auditoria_tipo_nombre_castellano,
+            a.DOMFICANOP            AS          auditoria_tipo_nombre_portugues,
+            a.DOMFICAPAT            AS          auditoria_tipo_path,
+            a.DOMFICAVAL            AS          auditoria_tipo_dominio,
+            a.DOMFICAOBS            AS          auditoria_tipo_observacion
             
             FROM [adm].[DOMFICA] a
             
-            WHERE a.DOMFICAVALOLD = ? OR a.DOMFICAVALNEW = ?
+            WHERE a.DOMFICAVAL = ?
             
-            ORDER BY a.DOMFICACOD DESC";
+            ORDER BY a.DOMFICAIDD DESC";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
@@ -332,50 +321,30 @@
                 $stmtMSSQL->execute([$val01, $val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    if ($rowMSSQL['auditoria_antes_tipo_estado_codigo'] === 'A') {
-                        $tipo_estado_nombre_antes   = 'ACTIVO';
+                    if ($rowMSSQL['auditoria_tipo_estado_codigo'] === 'A') {
+                        $tipo_estado_nombre   = 'ACTIVO';
                     }
 
-                    if ($rowMSSQL['auditoria_antes_tipo_estado_codigo'] === 'I') {
-                        $tipo_estado_nombre_antes   = 'INACTIVO';
-                    }
-
-                    if ($rowMSSQL['auditoria_despues_tipo_estado_codigo'] === 'A') {
-                        $tipo_estado_nombre_despues = 'ACTIVO';
-                    }
-
-                    if ($rowMSSQL['auditoria_despues_tipo_estado_codigo'] === 'I') {
-                        $tipo_estado_nombre_despues = 'INACTIVO';
+                    if ($rowMSSQL['auditoria_tipo_estado_codigo'] === 'I') {
+                        $tipo_estado_nombre   = 'INACTIVO';
                     }
 
                     $detalle    = array(
-                        'auditoria_codigo'                                  => $rowMSSQL['auditoria_codigo'],
-                        'auditoria_metodo'                                  => trim($rowMSSQL['auditoria_metodo']),
-                        'auditoria_usuario'                                 => trim($rowMSSQL['auditoria_usuario']),
-                        'auditoria_fecha_hora'                              => $rowMSSQL['auditoria_fecha_hora'],
-                        'auditoria_ip'                                      => trim($rowMSSQL['auditoria_ip']),
-
-                        'auditoria_antes_tipo_codigo'                       => $rowMSSQL['auditoria_antes_tipo_codigo'],
-                        'auditoria_antes_tipo_estado_codigo'                => $rowMSSQL['auditoria_antes_tipo_estado_codigo'],
-                        'auditoria_antes_tipo_estado_nombre'                => $tipo_estado_nombre_antes,
-                        'auditoria_antes_tipo_orden'                        => $rowMSSQL['auditoria_antes_tipo_orden'],
-                        'auditoria_antes_tipo_nombre_ingles'                => trim($rowMSSQL['auditoria_antes_tipo_nombre_ingles']),
-                        'auditoria_antes_tipo_nombre_castellano'            => trim($rowMSSQL['auditoria_antes_tipo_nombre_castellano']),
-                        'auditoria_antes_tipo_nombre_portugues'             => trim($rowMSSQL['auditoria_antes_tipo_nombre_portugues']),
-                        'auditoria_antes_tipo_path'                         => trim($rowMSSQL['auditoria_antes_tipo_path']),
-                        'auditoria_antes_tipo_dominio'                      => trim($rowMSSQL['auditoria_antes_tipo_dominio']),
-                        'auditoria_antes_tipo_observacion'                  => trim($rowMSSQL['auditoria_antes_tipo_observacion']),
-
-                        'auditoria_despues_tipo_codigo'                     => $rowMSSQL['auditoria_despues_tipo_codigo'],
-                        'auditoria_despues_tipo_estado_codigo'              => $rowMSSQL['auditoria_despues_tipo_estado_codigo'],
-                        'auditoria_despues_tipo_estado_nombre'              => $tipo_estado_nombre_despues,
-                        'auditoria_despues_tipo_orden'                      => $rowMSSQL['auditoria_despues_tipo_orden'],
-                        'auditoria_despues_tipo_nombre_ingles'              => trim($rowMSSQL['auditoria_despues_tipo_nombre_ingles']),
-                        'auditoria_despues_tipo_nombre_castellano'          => trim($rowMSSQL['auditoria_despues_tipo_nombre_castellano']),
-                        'auditoria_despues_tipo_nombre_portugues'           => trim($rowMSSQL['auditoria_despues_tipo_nombre_portugues']),
-                        'auditoria_despues_tipo_path'                       => trim($rowMSSQL['auditoria_despues_tipo_path']),
-                        'auditoria_despues_tipo_dominio'                    => trim($rowMSSQL['auditoria_despues_tipo_dominio']),
-                        'auditoria_despues_tipo_observacion'                => trim($rowMSSQL['auditoria_despues_tipo_observacion'])
+                        'auditoria_codigo'                          => $rowMSSQL['auditoria_codigo'],
+                        'auditoria_metodo'                          => trim($rowMSSQL['auditoria_metodo']),
+                        'auditoria_usuario'                         => trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                      => $rowMSSQL['auditoria_fecha_hora'],
+                        'auditoria_ip'                              => trim($rowMSSQL['auditoria_ip']),
+                        'auditoria_tipo_codigo'                     => $rowMSSQL['auditoria_tipo_codigo'],
+                        'auditoria_tipo_estado_codigo'              => $rowMSSQL['auditoria_tipo_estado_codigo'],
+                        'auditoria_tipo_estado_nombre'              => $tipo_estado_nombre,
+                        'auditoria_tipo_orden'                      => $rowMSSQL['auditoria_tipo_orden'],
+                        'auditoria_tipo_nombre_ingles'              => trim($rowMSSQL['auditoria_tipo_nombre_ingles']),
+                        'auditoria_tipo_nombre_castellano'          => trim($rowMSSQL['auditoria_tipo_nombre_castellano']),
+                        'auditoria_tipo_nombre_portugues'           => trim($rowMSSQL['auditoria_tipo_nombre_portugues']),
+                        'auditoria_tipo_path'                       => trim($rowMSSQL['auditoria_tipo_path']),
+                        'auditoria_tipo_dominio'                    => trim($rowMSSQL['auditoria_tipo_dominio']),
+                        'auditoria_tipo_observacion'                => trim($rowMSSQL['auditoria_tipo_observacion'])
                     );
 
                     $result[]   = $detalle;
@@ -386,33 +355,21 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'auditoria_codigo'                                  => '',
-                        'auditoria_metodo'                                  => '',
-                        'auditoria_usuario'                                 => '',
-                        'auditoria_fecha_hora'                              => '',
-                        'auditoria_ip'                                      => '',
-
-                        'auditoria_antes_tipo_codigo'                       => '',
-                        'auditoria_antes_tipo_estado_codigo'                => '',
-                        'auditoria_antes_tipo_estado_nombre'                => '',
-                        'auditoria_antes_tipo_orden'                        => '',
-                        'auditoria_antes_tipo_nombre_ingles'                => '',
-                        'auditoria_antes_tipo_nombre_castellano'            => '',
-                        'auditoria_antes_tipo_nombre_portugues'             => '',
-                        'auditoria_antes_tipo_path'                         => '',
-                        'auditoria_antes_tipo_dominio'                      => '',
-                        'auditoria_antes_tipo_observacion'                  => '',
-
-                        'auditoria_despues_tipo_codigo'                     => '',
-                        'auditoria_despues_tipo_estado_codigo'              => '',
-                        'auditoria_despues_tipo_estado_nombre'              => '',
-                        'auditoria_despues_tipo_orden'                      => '',
-                        'auditoria_despues_tipo_nombre_ingles'              => '',
-                        'auditoria_despues_tipo_nombre_castellano'          => '',
-                        'auditoria_despues_tipo_nombre_portugues'           => '',
-                        'auditoria_despues_tipo_path'                       => '',
-                        'auditoria_despues_tipo_dominio'                    => '',
-                        'auditoria_despues_tipo_observacion'                => ''
+                        'auditoria_codigo'                          => '',
+                        'auditoria_metodo'                          => '',
+                        'auditoria_usuario'                         => '',
+                        'auditoria_fecha_hora'                      => '',
+                        'auditoria_ip'                              => '',
+                        'auditoria_tipo_codigo'                     => '',
+                        'auditoria_tipo_estado_codigo'              => '',
+                        'auditoria_tipo_estado_nombre'              => '',
+                        'auditoria_tipo_orden'                      => '',
+                        'auditoria_tipo_nombre_ingles'              => '',
+                        'auditoria_tipo_nombre_castellano'          => '',
+                        'auditoria_tipo_nombre_portugues'           => '',
+                        'auditoria_tipo_path'                       => '',
+                        'auditoria_tipo_dominio'                    => '',
+                        'auditoria_tipo_observacion'                => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
@@ -772,47 +729,31 @@
         
         if (isset($val01)) {
             $sql00  = "SELECT
-            a.DOMSUBACOD            AS          auditoria_codigo,
+            a.DOMSUBAIDD            AS          auditoria_codigo,
             a.DOMSUBAMET            AS          auditoria_metodo,
             a.DOMSUBAUSU            AS          auditoria_usuario,
             a.DOMSUBAFEC            AS          auditoria_fecha_hora,
             a.DOMSUBADIP            AS          auditoria_ip,
-
-            a.DOMSUBACODOLD         AS          auditoria_antes_tipo_sub_codigo,
-            a.DOMSUBAESTOLD         AS          auditoria_antes_tipo_sub_estado_codigo,
-            a.DOMSUBAORDOLD         AS          auditoria_antes_tipo_sub_orden,
-            a.DOMSUBANOIOLD         AS          auditoria_antes_tipo_sub_nombre_ingles,
-            a.DOMSUBANOCOLD         AS          auditoria_antes_tipo_sub_nombre_castellano,
-            a.DOMSUBANOPOLD         AS          auditoria_antes_tipo_sub_nombre_portugues,
-            a.DOMSUBAPATOLD         AS          auditoria_antes_tipo_sub_path,
-            a.DOMSUBAVALOLD         AS          auditoria_antes_tipo_sub_dominio,
-            a.DOMSUBAOBSOLD         AS          auditoria_antes_tipo_sub_observacion,
-            b1.DOMFICCOD            AS          auditoria_antes_tipo_codigo,
-            b1.DOMFICNOI            AS          auditoria_antes_tipo_nombre_ingles,
-            b1.DOMFICNOC            AS          auditoria_antes_tipo_nombre_castellano,
-            b1.DOMFICNOP            AS          auditoria_antes_tipo_nombre_portugues,
-
-            a.DOMSUBACODNEW         AS          auditoria_despues_tipo_sub_codigo,
-            a.DOMSUBAESTNEW         AS          auditoria_despues_tipo_sub_estado_codigo,
-            a.DOMSUBAORDNEW         AS          auditoria_despues_tipo_sub_orden,
-            a.DOMSUBANOINEW         AS          auditoria_despues_tipo_sub_nombre_ingles,
-            a.DOMSUBANOCNEW         AS          auditoria_despues_tipo_sub_nombre_castellano,
-            a.DOMSUBANOPNEW         AS          auditoria_despues_tipo_sub_nombre_portugues,
-            a.DOMSUBAPATNEW         AS          auditoria_despues_tipo_sub_path,
-            a.DOMSUBAVALNEW         AS          auditoria_despues_tipo_sub_dominio,
-            a.DOMSUBAOBSNEW         AS          auditoria_despues_tipo_sub_observacion,
-            b2.DOMFICCOD            AS          auditoria_despues_tipo_codigo,
-            b2.DOMFICNOI            AS          auditoria_despues_tipo_nombre_ingles,
-            b2.DOMFICNOC            AS          auditoria_despues_tipo_nombre_castellano,
-            b2.DOMFICNOP            AS          auditoria_despues_tipo_nombre_portugues
+            a.DOMSUBACOD            AS          auditoria_tipo_sub_codigo,
+            a.DOMSUBAEST            AS          auditoria_tipo_sub_estado_codigo,
+            a.DOMSUBAORD            AS          auditoria_tipo_sub_orden,
+            a.DOMSUBANOI            AS          auditoria_tipo_sub_nombre_ingles,
+            a.DOMSUBANOC            AS          auditoria_tipo_sub_nombre_castellano,
+            a.DOMSUBANOP            AS          auditoria_tipo_sub_nombre_portugues,
+            a.DOMSUBAPAT            AS          auditoria_tipo_sub_path,
+            a.DOMSUBAVAL            AS          auditoria_tipo_sub_dominio,
+            a.DOMSUBAOBS            AS          auditoria_tipo_sub_observacion,
+            b.DOMFICCOD             AS          auditoria_tipo_codigo,
+            b.DOMFICNOI             AS          auditoria_tipo_nombre_ingles,
+            b.DOMFICNOC             AS          auditoria_tipo_nombre_castellano,
+            b.DOMFICNOP             AS          auditoria_tipo_nombre_portugues
             
             FROM [adm].[DOMSUBA] a
             
-            WHERE a.DOMSUBAVALOLD = ? OR a.DOMSUBAVALNEW = ?
-            INNER JOIN [adm].[DOMFIC] b1 ON a.DOMSUBATICOLD = b1.DOMFICCOD
-            INNER JOIN [adm].[DOMFIC] b2 ON a.DOMSUBATICNEW = b2.DOMFICCOD
+            WHERE a.DOMSUBAVAL
+            INNER JOIN [adm].[DOMFIC] b ON a.DOMSUBATIC = b1.DOMFICCOD
             
-            ORDER BY a.DOMSUBACOD DESC";
+            ORDER BY a.DOMSUBAIDD DESC";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
@@ -820,58 +761,34 @@
                 $stmtMSSQL->execute([$val01, $val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    if ($rowMSSQL['auditoria_antes_tipo_sub_estado_codigo'] === 'A') {
-                        $tipo_sub_estado_nombre_antes   = 'ACTIVO';
+                    if ($rowMSSQL['auditoria_tipo_sub_estado_codigo'] === 'A') {
+                        $tipo_sub_estado_nombre   = 'ACTIVO';
                     }
 
-                    if ($rowMSSQL['auditoria_antes_tipo_sub_estado_codigo'] === 'I') {
-                        $tipo_sub_estado_nombre_antes   = 'INACTIVO';
-                    }
-
-                    if ($rowMSSQL['auditoria_despues_tipo_sub_estado_codigo'] === 'A') {
-                        $tipo_sub_estado_nombre_despues = 'ACTIVO';
-                    }
-
-                    if ($rowMSSQL['auditoria_despues_tipo_sub_estado_codigo'] === 'I') {
-                        $tipo_sub_estado_nombre_despues = 'INACTIVO';
+                    if ($rowMSSQL['auditoria_tipo_sub_estado_codigo'] === 'I') {
+                        $tipo_sub_estado_nombre   = 'INACTIVO';
                     }
 
                     $detalle    = array(
-                        'auditoria_codigo'                                      => $rowMSSQL['auditoria_codigo'],
-                        'auditoria_metodo'                                      => $rowMSSQL['auditoria_metodo'],
-                        'auditoria_usuario'                                     => trim($rowMSSQL['auditoria_usuario']),
-                        'auditoria_fecha_hora'                                  => $rowMSSQL['auditoria_fecha_hora'],
-                        'auditoria_ip'                                          => $rowMSSQL['auditoria_ip'],
-
-                        'auditoria_antes_tipo_sub_codigo'                       => $rowMSSQL['auditoria_antes_tipo_sub_codigo'],
-                        'auditoria_antes_tipo_sub_estado_codigo'                => $rowMSSQL['auditoria_antes_tipo_sub_estado_codigo'],
-                        'auditoria_antes_tipo_sub_estado_nombre'                => $tipo_sub_estado_nombre_antes,
-                        'auditoria_antes_tipo_sub_orden'                        => $rowMSSQL['auditoria_antes_tipo_sub_orden'],
-                        'auditoria_antes_tipo_sub_nombre_ingles'                => trim($rowMSSQL['auditoria_antes_tipo_sub_nombre_ingles']),
-                        'auditoria_antes_tipo_sub_nombre_castellano'            => trim($rowMSSQL['auditoria_antes_tipo_sub_nombre_castellano']),
-                        'auditoria_antes_tipo_sub_nombre_portugues'             => trim($rowMSSQL['auditoria_antes_tipo_sub_nombre_portugues']),
-                        'auditoria_antes_tipo_sub_path'                         => trim($rowMSSQL['auditoria_antes_tipo_sub_path']),
-                        'auditoria_antes_tipo_sub_dominio'                      => trim($rowMSSQL['auditoria_antes_tipo_sub_dominio']),
-                        'auditoria_antes_tipo_sub_observacion'                  => $rowMSSQL['auditoria_antes_tipo_sub_observacion'],
-                        'auditoria_antes_tipo_codigo'                           => $rowMSSQL['auditoria_antes_tipo_codigo'],
-                        'auditoria_antes_tipo_nombre_ingles'                    => trim($rowMSSQL['auditoria_antes_tipo_nombre_ingles']),
-                        'auditoria_antes_tipo_nombre_castellano'                => trim($rowMSSQL['auditoria_antes_tipo_nombre_castellano']),
-                        'auditoria_antes_tipo_nombre_portugues'                 => trim($rowMSSQL['auditoria_antes_tipo_nombre_portugues']),
-
-                        'auditoria_despues_tipo_sub_codigo'                     => $rowMSSQL['auditoria_despues_tipo_sub_codigo'],
-                        'auditoria_despues_tipo_sub_estado_codigo'              => $rowMSSQL['auditoria_despues_tipo_sub_estado_codigo'],
-                        'auditoria_despues_tipo_sub_estado_nombre'              => $tipo_sub_estado_nombre_despues,
-                        'auditoria_despues_tipo_sub_orden'                      => $rowMSSQL['auditoria_despues_tipo_sub_orden'],
-                        'auditoria_despues_tipo_sub_nombre_ingles'              => trim($rowMSSQL['auditoria_despues_tipo_sub_nombre_ingles']),
-                        'auditoria_despues_tipo_sub_nombre_castellano'          => trim($rowMSSQL['auditoria_despues_tipo_sub_nombre_castellano']),
-                        'auditoria_despues_tipo_sub_nombre_portugues'           => trim($rowMSSQL['auditoria_despues_tipo_sub_nombre']),
-                        'auditoria_despues_tipo_sub_path'                       => trim($rowMSSQL['auditoria_despues_tipo_sub_path']),
-                        'auditoria_despues_tipo_sub_dominio'                    => trim($rowMSSQL['auditoria_despues_tipo_sub_dominio']),
-                        'auditoria_despues_tipo_sub_observacion'                => $rowMSSQL['auditoria_despues_tipo_sub_observacion'],
-                        'auditoria_despues_tipo_codigo'                         => $rowMSSQL['auditoria_despues_tipo_codigo'],
-                        'auditoria_despues_tipo_nombre_ingles'                  => trim($rowMSSQL['auditoria_despues_tipo_nombre_ingles']),
-                        'auditoria_despues_tipo_nombre_castellano'              => trim($rowMSSQL['auditoria_despues_tipo_nombre_castellano']),
-                        'auditoria_despues_tipo_nombre_portugues'               => trim($rowMSSQL['auditoria_despues_tipo_nombre'])
+                        'auditoria_codigo'                              => $rowMSSQL['auditoria_codigo'],
+                        'auditoria_metodo'                              => $rowMSSQL['auditoria_metodo'],
+                        'auditoria_usuario'                             => trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                          => $rowMSSQL['auditoria_fecha_hora'],
+                        'auditoria_ip'                                  => $rowMSSQL['auditoria_ip'],
+                        'auditoria_tipo_sub_codigo'                     => $rowMSSQL['auditoria_tipo_sub_codigo'],
+                        'auditoria_tipo_sub_estado_codigo'              => $rowMSSQL['auditoria_tipo_sub_estado_codigo'],
+                        'auditoria_tipo_sub_estado_nombre'              => $tipo_sub_estado_nombre,
+                        'auditoria_tipo_sub_orden'                      => $rowMSSQL['auditoria_tipo_sub_orden'],
+                        'auditoria_tipo_sub_nombre_ingles'              => trim($rowMSSQL['auditoria_tipo_sub_nombre_ingles']),
+                        'auditoria_tipo_sub_nombre_castellano'          => trim($rowMSSQL['auditoria_tipo_sub_nombre_castellano']),
+                        'auditoria_tipo_sub_nombre_portugues'           => trim($rowMSSQL['auditoria_tipo_sub_nombre_portugues']),
+                        'auditoria_tipo_sub_path'                       => trim($rowMSSQL['auditoria_tipo_sub_path']),
+                        'auditoria_tipo_sub_dominio'                    => trim($rowMSSQL['auditoria_tipo_sub_dominio']),
+                        'auditoria_tipo_sub_observacion'                => $rowMSSQL['auditoria_tipo_sub_observacion'],
+                        'auditoria_tipo_codigo'                         => $rowMSSQL['auditoria_tipo_codigo'],
+                        'auditoria_tipo_nombre_ingles'                  => trim($rowMSSQL['auditoria_tipo_nombre_ingles']),
+                        'auditoria_tipo_nombre_castellano'              => trim($rowMSSQL['auditoria_tipo_nombre_castellano']),
+                        'auditoria_tipo_nombre_portugues'               => trim($rowMSSQL['auditoria_tipo_nombre_portugues'])
                     );
 
                     $result[]   = $detalle;
@@ -882,41 +799,25 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'auditoria_codigo'                                      => '',
-                        'auditoria_metodo'                                      => '',
-                        'auditoria_usuario'                                     => '',
-                        'auditoria_fecha_hora'                                  => '',
-                        'auditoria_ip'                                          => '',
-
-                        'auditoria_antes_tipo_sub_codigo'                       => '',
-                        'auditoria_antes_tipo_sub_estado_codigo'                => '',
-                        'auditoria_antes_tipo_sub_estado_nombre'                => '',
-                        'auditoria_antes_tipo_sub_orden'                        => '',
-                        'auditoria_antes_tipo_sub_nombre_ingles'                => '',
-                        'auditoria_antes_tipo_sub_nombre_castellano'            => '',
-                        'auditoria_antes_tipo_sub_nombre_portugues'             => '',
-                        'auditoria_antes_tipo_sub_path'                         => '',
-                        'auditoria_antes_tipo_sub_dominio'                      => '',
-                        'auditoria_antes_tipo_sub_observacion'                  => '',
-                        'auditoria_antes_tipo_codigo'                           => '',
-                        'auditoria_antes_tipo_nombre_ingles'                    => '',
-                        'auditoria_antes_tipo_nombre_castellano'                => '',
-                        'auditoria_antes_tipo_nombre_portugues'                 => '',
-
-                        'auditoria_despues_tipo_sub_codigo'                     => '',
-                        'auditoria_despues_tipo_sub_estado_codigo'              => '',
-                        'auditoria_despues_tipo_sub_estado_nombre'              => '',
-                        'auditoria_despues_tipo_sub_orden'                      => '',
-                        'auditoria_despues_tipo_sub_nombre_ingles'              => '',
-                        'auditoria_despues_tipo_sub_nombre_castellano'          => '',
-                        'auditoria_despues_tipo_sub_nombre_portugues'           => '',
-                        'auditoria_despues_tipo_sub_path'                       => '',
-                        'auditoria_despues_tipo_sub_dominio'                    => '',
-                        'auditoria_despues_tipo_sub_observacion'                => '',
-                        'auditoria_despues_tipo_codigo'                         => '',
-                        'auditoria_despues_tipo_nombre_ingles'                  => '',
-                        'auditoria_despues_tipo_nombre_castellano'              => '',
-                        'auditoria_despues_tipo_nombre_portugues'               => ''
+                        'auditoria_codigo'                              => '',
+                        'auditoria_metodo'                              => '',
+                        'auditoria_usuario'                             => '',
+                        'auditoria_fecha_hora'                          => '',
+                        'auditoria_ip'                                  => '',
+                        'auditoria_tipo_sub_codigo'                     => '',
+                        'auditoria_tipo_sub_estado_codigo'              => '',
+                        'auditoria_tipo_sub_estado_nombre'              => '',
+                        'auditoria_tipo_sub_orden'                      => '',
+                        'auditoria_tipo_sub_nombre_ingles'              => '',
+                        'auditoria_tipo_sub_nombre_castellano'          => '',
+                        'auditoria_tipo_sub_nombre_portugues'           => '',
+                        'auditoria_tipo_sub_path'                       => '',
+                        'auditoria_tipo_sub_dominio'                    => '',
+                        'auditoria_tipo_sub_observacion'                => '',
+                        'auditoria_tipo_codigo'                         => '',
+                        'auditoria_tipo_nombre_ingles'                  => '',
+                        'auditoria_tipo_nombre_castellano'              => '',
+                        'auditoria_tipo_nombre_portugues'               => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
