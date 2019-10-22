@@ -1994,3 +1994,91 @@
         
         return $json;
     });
+
+    $app->get('/v1/500', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $sql00  = "SELECT
+        a.organisationFifaId            AS          organizacion_codigo,
+        a.status                        AS          organizacion_estado,
+        a.organisationName              AS          organizacion_nombre,
+        a.organisationShortName         AS          organizacion_nombre_corto,
+        a.pictureContentType            AS          organizacion_imagen_tipo,
+        a.pictureLink                   AS          organizacion_image_link,
+        a.pictureValue                  AS          organizacion_imagen_valor,
+        a.lastUpdate                    AS          organizacion_ultima_actualizacion
+        
+        FROM [comet].[organisations] a
+        
+        ORDER BY a.organisationShortName";
+
+        try {
+            $connMSSQL  = getConnectionMSSQL();
+            $stmtMSSQL  = $connMSSQL->prepare($sql00);
+            $stmtMSSQL->execute(); 
+
+            while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                $actualizacion_horario = date_format(date_create($rowMSSQL['organizacion_ultima_actualizacion']), 'd/m/Y H:i:s');
+
+                switch ($rowMSSQL['organizacion_imagen_tipo']) {
+                    case 'image/jpeg':
+                        $ext = 'jpeg';
+                        break;
+                    
+                    case 'image/jpg':
+                        $ext = 'jpg';
+                        break;
+
+                    case 'image/png':
+                        $ext = 'png';
+                        break;
+
+                    case 'image/gif':
+                        $ext = 'gif';
+                        break;
+                }
+
+                $detalle    = array(
+                    'organizacion_codigo'                       => $rowMSSQL['organizacion_codigo'],
+                    'organizacion_nombre'                       => trim($rowMSSQL['organizacion_nombre']),
+                    'organizacion_nombre_corto'                 => trim($rowMSSQL['organizacion_nombre_corto']),
+                    'organizacion_imagen_tipo'                  => trim($rowMSSQL['organizacion_imagen_tipo']),
+                    'organizacion_image_link'                   => trim($rowMSSQL['organizacion_image_link']),
+                    'organizacion_imagen_valor'                 => $rowMSSQL['organizacion_imagen_valor'],
+                    'organizacion_imagen_path'                  => 'imagen/organizacion/img_'.$rowMSSQL['organizacion_codigo'].'.'.$ext,
+                    'organizacion_ultima_actualizacion'         => $actualizacion_horario,
+                );
+
+                $result[]   = $detalle;
+            }
+
+            if (isset($result)){
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } else {
+                $detalle    = array(
+                    'organizacion_codigo'                       => '',
+                    'organizacion_nombre'                       => '',
+                    'organizacion_nombre_corto'                 => '',
+                    'organizacion_imagen_tipo'                  => '',
+                    'organizacion_image_link'                   => '',
+                    'organizacion_imagen_valor'                 => '',
+                    'organizacion_imagen_path'                  => '',
+                    'organizacion_ultima_actualizacion'         => ''
+                );
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
