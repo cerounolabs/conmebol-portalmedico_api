@@ -1657,7 +1657,7 @@
         return $json;
     });
 
-    $app->get('/v1/400/persona/{codigo}', function($request) {
+    $app->get('/v1/400/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
 		$val01      = $request->getAttribute('codigo');
@@ -1803,7 +1803,7 @@
         return $json;
     });
 
-    $app->get('/v1/400/persona/equipo/{codigo}', function($request) {
+    $app->get('/v1/400/equipo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
 		$val01      = $request->getAttribute('codigo');
