@@ -85,3 +85,49 @@
         
         return $json;
     });
+
+    $app->post('/v1/400/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val00      = $request->getAttribute('codigo');
+        $val01      = $request->getParsedBody()['tipo_estado_codigo'];
+        $val02      = $request->getParsedBody()['tipo_acceso_codigo'];
+        $val03      = $request->getParsedBody()['tipo_perfil_codigo'];
+        $val04      = $request->getParsedBody()['equipo_codigo'];
+        $val05      = $request->getParsedBody()['persona_nombre'];
+        $val06      = $request->getParsedBody()['persona_user'];
+        $val07      = $request->getParsedBody()['persona_contrasenha'];
+        $val08      = $request->getParsedBody()['persona_path'];
+        $val09      = $request->getParsedBody()['persona_email'];
+        $val10      = $request->getParsedBody()['persona_telefono'];
+        $val11      = $request->getParsedBody()['persona_observacion'];
+        $val12      = $request->getParsedBody()['persona_usuario'];
+        $val13      = $request->getParsedBody()['persona_fecha_hora'];
+        $val14      = $request->getParsedBody()['persona_ip'];
+
+        if (isset($val00)) {
+            $sql00  = "DELETE FROM [adm].[PERFIC] WHERE PERFICCOD = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val00]); 
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $connMSSQL->lastInsertId()), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
