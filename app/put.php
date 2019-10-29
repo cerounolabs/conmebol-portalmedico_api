@@ -106,7 +106,7 @@
         $val14      = $request->getParsedBody()['persona_fecha_hora'];
         $val15      = $request->getParsedBody()['persona_ip'];
 
-        if (isset($val00) && isset($val01) && isset($val02) && isset($val03) && isset($val04) && isset($val05) && isset($val06) && isset($val07) && isset($val08) && isset($val10) && isset($val13) && isset($val14) && isset($val15)) {
+        if (isset($val00) && isset($val01) && isset($val02) && isset($val03) && isset($val04) && isset($val05) && isset($val06) && isset($val13) && isset($val14) && isset($val15)) {
             $sql00  = "UPDATE [adm].[PERFIC] SET PERFICEST = ?, PERFICTIP = ?, PERFICROL = ?, PERFICEQU = ?,  PERFICCAT = ?, PERFICNOM = ?, PERFICPAT = ?, PERFICTEF = ?, PERFICOBS = ?, PERFICAUS = ?, PERFICAFH = GETDATE(), PERFICAIP = ? WHERE PERFICCOD = ?";
 
             try {
