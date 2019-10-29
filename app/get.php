@@ -1692,13 +1692,19 @@
             d.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
 
             e.teamFifaId                        AS          equipo_codigo,
-            e.internationalShortName            AS          equipo_nombre
+            e.internationalShortName            AS          equipo_nombre,
+
+            f.DOMFICCOD                         AS          tipo_categoria_codigo,
+            f.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
+            f.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
+            f.DOMFICNOP                         AS          tipo_categoria_nombre_portugues
             
             FROM [adm].[PERFIC] a
             INNER JOIN [adm].[DOMFIC] b ON a.PERFICEST = b.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] c ON a.PERFICTIP = c.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] d ON a.PERFICROL = d.DOMFICCOD
             INNER JOIN [comet].[teams] e ON a.PERFICEQU = e.teamFifaId
+            INNER JOIN [adm].[DOMFIC] f ON a.PERFICCAT = f.DOMFICCOD
 
             WHERE a.PERFICCOD = ?
             
@@ -1741,7 +1747,12 @@
                         'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
 
                         'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
-                        'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre'])
+                        'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
+
+                        'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
+                        'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
+                        'tipo_categoria_nombre_castellano'      => trim($rowMSSQL['tipo_categoria_nombre_castellano']),
+                        'tipo_categoria_nombre_portugues'       => trim($rowMSSQL['tipo_categoria_nombre_portugues'])
                     );
 
                     $result[]   = $detalle;
@@ -1780,7 +1791,12 @@
                         'tipo_perfil_nombre_portugues'          => '',
 
                         'equipo_codigo'                         => '',
-                        'equipo_nombre'                         => ''
+                        'equipo_nombre'                         => '',
+
+                        'tipo_categoria_codigo'                 => '',
+                        'tipo_categoria_nombre_ingles'          => '',
+                        'tipo_categoria_nombre_castellano'      => '',
+                        'tipo_categoria_nombre_portugues'       => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
@@ -1839,13 +1855,19 @@
                 d.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
 
                 e.teamFifaId                        AS          equipo_codigo,
-                e.internationalShortName            AS          equipo_nombre
+                e.internationalShortName            AS          equipo_nombre,
+
+                f.DOMFICCOD                         AS          tipo_categoria_codigo,
+                f.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
+                f.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
+                f.DOMFICNOP                         AS          tipo_categoria_nombre_portugues
                 
                 FROM [adm].[PERFIC] a
                 INNER JOIN [adm].[DOMFIC] b ON a.PERFICEST = b.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] c ON a.PERFICTIP = c.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] d ON a.PERFICROL = d.DOMFICCOD
                 INNER JOIN [comet].[teams] e ON a.PERFICEQU = e.teamFifaId
+                INNER JOIN [adm].[DOMFIC] f ON a.PERFICCAT = f.DOMFICCOD
                 
                 ORDER BY a.PERFICNOM";
             } else {
@@ -1878,13 +1900,19 @@
                 d.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
 
                 e.teamFifaId                        AS          equipo_codigo,
-                e.internationalShortName            AS          equipo_nombre
+                e.internationalShortName            AS          equipo_nombre,
+
+                f.DOMFICCOD                         AS          tipo_categoria_codigo,
+                f.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
+                f.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
+                f.DOMFICNOP                         AS          tipo_categoria_nombre_portugues
                 
                 FROM [adm].[PERFIC] a
                 INNER JOIN [adm].[DOMFIC] b ON a.PERFICEST = b.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] c ON a.PERFICTIP = c.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] d ON a.PERFICROL = d.DOMFICCOD
                 INNER JOIN [comet].[teams] e ON a.PERFICEQU = e.teamFifaId
+                INNER JOIN [adm].[DOMFIC] f ON a.PERFICCAT = f.DOMFICCOD
 
                 WHERE e.teamFifaId = ?
                 
@@ -1933,7 +1961,12 @@
                         'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
 
                         'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
-                        'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre'])
+                        'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
+
+                        'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
+                        'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
+                        'tipo_categoria_nombre_castellano'      => trim($rowMSSQL['tipo_categoria_nombre_castellano']),
+                        'tipo_categoria_nombre_portugues'       => trim($rowMSSQL['tipo_categoria_nombre_portugues'])
                     );
 
                     $result[]   = $detalle;
@@ -1972,7 +2005,12 @@
                         'tipo_perfil_nombre_portugues'          => '',
 
                         'equipo_codigo'                         => '',
-                        'equipo_nombre'                         => ''
+                        'equipo_nombre'                         => '',
+
+                        'tipo_categoria_codigo'                 => '',
+                        'tipo_categoria_nombre_ingles'          => '',
+                        'tipo_categoria_nombre_castellano'      => '',
+                        'tipo_categoria_nombre_portugues'       => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
