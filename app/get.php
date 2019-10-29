@@ -1721,7 +1721,7 @@
                     if (isset($rowMSSQL['persona_path'])){
                         $persona_path = $rowMSSQL['persona_path'];
                     } else {
-                        $persona_path = '../assets/images/users/defaul.png';
+                        $persona_path = 'assets/images/users/defaul.png';
                     }
 
                     $detalle    = array(
@@ -1941,7 +1941,7 @@
                     if (isset($rowMSSQL['persona_path'])){
                         $persona_path = $rowMSSQL['persona_path'];
                     } else {
-                        $persona_path = '../assets/images/users/defaul.png';
+                        $persona_path = 'assets/images/users/defaul.png';
                     }
 
                     $detalle    = array(
