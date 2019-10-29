@@ -94,16 +94,17 @@
         $val02      = $request->getParsedBody()['tipo_acceso_codigo'];
         $val03      = $request->getParsedBody()['tipo_perfil_codigo'];
         $val04      = $request->getParsedBody()['equipo_codigo'];
-        $val05      = $request->getParsedBody()['persona_nombre'];
-        $val06      = $request->getParsedBody()['persona_user'];
-        $val07      = $request->getParsedBody()['persona_contrasenha'];
-        $val08      = $request->getParsedBody()['persona_path'];
-        $val09      = $request->getParsedBody()['persona_email'];
-        $val10      = $request->getParsedBody()['persona_telefono'];
-        $val11      = $request->getParsedBody()['persona_observacion'];
-        $val12      = $request->getParsedBody()['persona_usuario'];
-        $val13      = $request->getParsedBody()['persona_fecha_hora'];
-        $val14      = $request->getParsedBody()['persona_ip'];
+        $val05      = $request->getParsedBody()['tipo_categoria_codigo'];
+        $val06      = $request->getParsedBody()['persona_nombre'];
+        $val07      = $request->getParsedBody()['persona_user'];
+        $val08      = $request->getParsedBody()['persona_contrasenha'];
+        $val09      = $request->getParsedBody()['persona_path'];
+        $val10      = $request->getParsedBody()['persona_email'];
+        $val11      = $request->getParsedBody()['persona_telefono'];
+        $val12      = $request->getParsedBody()['persona_observacion'];
+        $val13      = $request->getParsedBody()['persona_usuario'];
+        $val14      = $request->getParsedBody()['persona_fecha_hora'];
+        $val15      = $request->getParsedBody()['persona_ip'];
 
         if (isset($val00)) {
             $sql00  = "DELETE FROM [adm].[PERFIC] WHERE PERFICCOD = ?";

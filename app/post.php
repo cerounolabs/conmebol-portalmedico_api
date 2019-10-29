@@ -91,24 +91,25 @@
         $val02      = $request->getParsedBody()['tipo_acceso_codigo'];
         $val03      = $request->getParsedBody()['tipo_perfil_codigo'];
         $val04      = $request->getParsedBody()['equipo_codigo'];
-        $val05      = $request->getParsedBody()['persona_nombre'];
-        $val06      = $request->getParsedBody()['persona_user'];
-        $val07      = $request->getParsedBody()['persona_contrasenha'];
-        $val08      = $request->getParsedBody()['persona_path'];
-        $val09      = $request->getParsedBody()['persona_email'];
-        $val10      = $request->getParsedBody()['persona_telefono'];
-        $val11      = $request->getParsedBody()['persona_observacion'];
-        $val12      = $request->getParsedBody()['persona_usuario'];
-        $val13      = $request->getParsedBody()['persona_fecha_hora'];
-        $val14      = $request->getParsedBody()['persona_ip'];
+        $val05      = $request->getParsedBody()['tipo_categoria_codigo'];
+        $val06      = $request->getParsedBody()['persona_nombre'];
+        $val07      = $request->getParsedBody()['persona_user'];
+        $val08      = $request->getParsedBody()['persona_contrasenha'];
+        $val09      = $request->getParsedBody()['persona_path'];
+        $val10      = $request->getParsedBody()['persona_email'];
+        $val11      = $request->getParsedBody()['persona_telefono'];
+        $val12      = $request->getParsedBody()['persona_observacion'];
+        $val13      = $request->getParsedBody()['persona_usuario'];
+        $val14      = $request->getParsedBody()['persona_fecha_hora'];
+        $val15      = $request->getParsedBody()['persona_ip'];
 
-        if (isset($val01) && isset($val02) && isset($val03) && isset($val04) && isset($val05) && isset($val06) && isset($val07) && isset($val09) && isset($val12) && isset($val13) && isset($val14)) {
-            $sql00  = "INSERT INTO [adm].[PERFIC] (PERFICEST, PERFICTIP, PERFICROL, PERFICEQU, PERFICNOM, PERFICUSE, PERFICCON, PERFICPAT, PERFICMAI, PERFICTEF, PERFICOBS, PERFICAUS, PERFICAFH, PERFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+        if (isset($val01) && isset($val02) && isset($val03) && isset($val04) && isset($val05) && isset($val06) && isset($val07) && isset($val08) && isset($val10) && isset($val13) && isset($val14) && isset($val15)) {
+            $sql00  = "INSERT INTO [adm].[PERFIC] (PERFICEST, PERFICTIP, PERFICROL, PERFICEQU, PERFICCAT, PERFICNOM, PERFICUSE, PERFICCON, PERFICPAT, PERFICMAI, PERFICTEF, PERFICOBS, PERFICAUS, PERFICAFH, PERFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val14]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val15]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $connMSSQL->lastInsertId()), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
