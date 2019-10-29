@@ -1716,14 +1716,20 @@
                 $stmtMSSQL->execute([$val01]);
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {    
-                    $persona_fecha_hora = date_format(date_create($rowMSSQL['persona_fecha_hora']), 'd/m/Y H:i:s');        
+                    $persona_fecha_hora = date_format(date_create($rowMSSQL['persona_fecha_hora']), 'd/m/Y H:i:s');
+                    
+                    if (isset($rowMSSQL['persona_path'])){
+                        $persona_path = $rowMSSQL['persona_path'];
+                    } else {
+                        $persona_path = '../assets/images/users/defaul.png';
+                    }
 
                     $detalle    = array(
                         'persona_codigo'                        => $rowMSSQL['persona_codigo'],
                         'persona_nombre'                        => trim($rowMSSQL['persona_nombre']),
                         'persona_user'                          => trim($rowMSSQL['persona_user']),
                         'persona_contrasenha'                   => trim($rowMSSQL['persona_contrasenha']),
-                        'persona_path'                          => trim($rowMSSQL['persona_path']),
+                        'persona_path'                          => $persona_path,
                         'persona_email'                         => trim($rowMSSQL['persona_email']),
                         'persona_telefono'                      => trim($rowMSSQL['persona_telefono']),
                         'persona_observacion'                   => trim($rowMSSQL['persona_observacion']),
@@ -1929,15 +1935,21 @@
                     $stmtMSSQL->execute([$val01]);
                 }
 
-                while ($rowMSSQL = $stmtMSSQL->fetch()) {    
-                    $persona_fecha_hora = date_format(date_create($rowMSSQL['persona_fecha_hora']), 'd/m/Y H:i:s');        
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $persona_fecha_hora = date_format(date_create($rowMSSQL['persona_fecha_hora']), 'd/m/Y H:i:s');
+                    
+                    if (isset($rowMSSQL['persona_path'])){
+                        $persona_path = $rowMSSQL['persona_path'];
+                    } else {
+                        $persona_path = '../assets/images/users/defaul.png';
+                    }
 
                     $detalle    = array(
                         'persona_codigo'                        => $rowMSSQL['persona_codigo'],
                         'persona_nombre'                        => trim($rowMSSQL['persona_nombre']),
                         'persona_user'                          => trim($rowMSSQL['persona_user']),
                         'persona_contrasenha'                   => trim($rowMSSQL['persona_contrasenha']),
-                        'persona_path'                          => trim($rowMSSQL['persona_path']),
+                        'persona_path'                          => $persona_path,
                         'persona_email'                         => trim($rowMSSQL['persona_email']),
                         'persona_telefono'                      => trim($rowMSSQL['persona_telefono']),
                         'persona_observacion'                   => trim($rowMSSQL['persona_observacion']),
