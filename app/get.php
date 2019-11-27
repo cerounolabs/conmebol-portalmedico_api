@@ -417,7 +417,7 @@
         FROM [adm].[DOMSUB] a
         INNER JOIN [adm].[DOMFIC] b ON a.DOMSUBTIC = b.DOMFICCOD
 
-        ORDER BY a.DOMSUBVAL, b.DOMFICNOC, a.DOMSUBNOC";
+        ORDER BY a.DOMSUBVAL, a.DOMSUBORD, b.DOMFICNOC, a.DOMSUBNOC";
 
         try {
             $connMSSQL  = getConnectionMSSQL();
@@ -526,7 +526,7 @@
 
             WHERE a.DOMSUBCOD = ?
 
-            ORDER BY a.DOMSUBVAL, b.DOMFICNOC, a.DOMSUBNOC";
+            ORDER BY a.DOMSUBVAL, a.DOMSUBORD, b.DOMFICNOC, a.DOMSUBNOC";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
@@ -639,7 +639,7 @@
 
             WHERE a.DOMSUBVAL = ?
 
-            ORDER BY a.DOMSUBVAL, b.DOMFICNOC, a.DOMSUBNOC";
+            ORDER BY a.DOMSUBVAL, a.DOMSUBORD, b.DOMFICNOC, a.DOMSUBNOC";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
