@@ -129,3 +129,66 @@
         
         return $json;
     });
+
+    $app->post('/v1/600', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val01      = $request->getParsedBody()['estado_codigo'];
+        $val02      = $request->getParsedBody()['competencia_codigo'];
+        $val03      = $request->getParsedBody()['juego_codigo'];
+        $val04      = $request->getParsedBody()['equipo_codigo'];
+        $val05      = $request->getParsedBody()['jugador_codigo'];
+        $val06      = $request->getParsedBody()['lesion_fecha_hora'];
+        $val07      = $request->getParsedBody()['clima_codigo'];
+        $val08      = $request->getParsedBody()['temperatura_codigo'];
+        $val09      = $request->getParsedBody()['distancia_codigo'];
+        $val10      = $request->getParsedBody()['traslado_codigo'];
+
+        $val11      = $request->getParsedBody()['posicion_codigo'];
+        $val12      = $request->getParsedBody()['minuto_codigo'];
+        $val13      = $request->getParsedBody()['campo_codigo'];
+        $val14      = $request->getParsedBody()['cuerpo_lugar_codigo'];
+        $val15      = $request->getParsedBody()['cuerpo_zona_codigo'];
+        $val16      = $request->getParsedBody()['lesion_tipo_codigo'];
+        $val17      = $request->getParsedBody()['lesion_motivo_codigo'];
+        $val18      = $request->getParsedBody()['lesion_reincidencia_codigo'];
+        $val19      = $request->getParsedBody()['diagnostico_tipo_codigo'];
+        $val20      = $request->getParsedBody()['diagnostico_recuperacion_codigo'];
+
+        $val21      = $request->getParsedBody()['diagnostico_tiempo_codigo'];
+        $val22      = $request->getParsedBody()['diagnostico_observacion'];
+        $val23      = $request->getParsedBody()['causa_bandera'];
+        $val24      = $request->getParsedBody()['causa_tipo_codigo'];
+        $val25      = $request->getParsedBody()['falta_bandera'];
+        $val26      = $request->getParsedBody()['falta_tipo_codigo'];
+
+        $aud01      = $request->getParsedBody()['auditoria_usuario'];
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = $request->getParsedBody()['auditoria_ip'];
+
+        if (isset($val01) && isset($val02) && isset($val03) && isset($val04) && isset($val05) && isset($val06)) {
+            $sql00  = "INSERT INTO [lesion].[LESFIC](LESFICESC, LESFICCOC, LESFICJUC, LESFICEQC, LESFICPEC, LESFICFEC, LESFICCLI, LESFICTEM, LESFICDIS, LESFICTRA, LESFICPOS, LESFICMIN, LESFICCAM, LESFICCUL, LESFICCUZ, LESFICLES, LESFICMOT, LESFICREI, LESFICDIA, LESFICREC, LESFICTIE, LESFICOBS, LESFICCAB, LESFICCAU, LESFICFAB, LESFICFAL, LESFICAUS, LESFICAFH, LESFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $val16, $val17, $val18, $val19, $val20, $val21, $val22, $val23, $val24, $val25, $val26, $aud01, $aud03]); 
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $connMSSQL->lastInsertId()), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
