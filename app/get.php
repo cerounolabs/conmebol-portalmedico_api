@@ -840,53 +840,101 @@
         return $json;
     });
 
-    $app->get('/v1/200/disciplina/{codigo}', function($request) {
+    $app->get('/v1/200/disciplina/{codigo}/{equipo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
-		$val01      = $request->getAttribute('codigo');
+        $val01      = $request->getAttribute('codigo');
+        $val02      = $request->getAttribute('equipo');
         
         if (isset($val01)) {
-            $sql00  = "SELECT
-            a.competitionFifaId                 AS          competicion_codigo,
-            a.superiorCompetitionFifaId         AS          competicion_codigo_padre,
-            a.status                            AS          competicion_estado,
-            a.internationalName                 AS          competicion_nombre,
-            a.internationalShortName            AS          competicion_nombre_corto,
-            a.season                            AS          competicion_anho,
-            a.ageCategory                       AS          competicion_categoria_codigo,
-            a.ageCategoryName                   AS          competicion_categoria_nombre,
-            a.dateFrom                          AS          competicion_desde,
-            a.dateTo                            AS          competicion_hasta,
-            a.discipline                        AS          competicion_disciplina,
-            a.gender                            AS          competicion_genero,
-            a.imageId                           AS          competicion_imagen_codigo,
-            a.multiplier                        AS          competicion_multiplicador,
-            a.nature                            AS          competicion_naturaleza,
-            a.numberOfParticipants              AS          competicion_numero_participante,
-            a.orderNumber                       AS          competicion_numero_orden,
-            a.teamCharacter                     AS          competicion_equipo_tipo,
-            a.flyingSubstitutions               AS          competicion_sustitucion,
-            a.penaltyShootout                   AS          competicion_penal,
-            a.matchType                         AS          competicion_tipo,
-            a.pictureContentType                AS          competicion_imagen_tipo,
-            a.pictureLink                       AS          competicion_image_link,
-            a.pictureValue                      AS          competicion_imagen_valor,
-            a.lastUpdate                        AS          competicion_ultima_actualizacion,
+            $sql00  = "";
 
-            b.organisationFifaId                AS          organizacion_codigo,
-            b.organisationName                  AS          organizacion_nombre
-            
-            FROM [comet].[competitions] a
-            LEFT JOIN [comet].[organisations] b ON a.organisationFifaId = b.organisationFifaId
-            
-            WHERE a.superiorCompetitionFifaId IS NULL AND a.discipline = ?
+            if ($val02 == 39393) {
+                $sql00  = "SELECT
+                a.competitionFifaId                 AS          competicion_codigo,
+                a.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                a.status                            AS          competicion_estado,
+                a.internationalName                 AS          competicion_nombre,
+                a.internationalShortName            AS          competicion_nombre_corto,
+                a.season                            AS          competicion_anho,
+                a.ageCategory                       AS          competicion_categoria_codigo,
+                a.ageCategoryName                   AS          competicion_categoria_nombre,
+                a.dateFrom                          AS          competicion_desde,
+                a.dateTo                            AS          competicion_hasta,
+                a.discipline                        AS          competicion_disciplina,
+                a.gender                            AS          competicion_genero,
+                a.imageId                           AS          competicion_imagen_codigo,
+                a.multiplier                        AS          competicion_multiplicador,
+                a.nature                            AS          competicion_naturaleza,
+                a.numberOfParticipants              AS          competicion_numero_participante,
+                a.orderNumber                       AS          competicion_numero_orden,
+                a.teamCharacter                     AS          competicion_equipo_tipo,
+                a.flyingSubstitutions               AS          competicion_sustitucion,
+                a.penaltyShootout                   AS          competicion_penal,
+                a.matchType                         AS          competicion_tipo,
+                a.pictureContentType                AS          competicion_imagen_tipo,
+                a.pictureLink                       AS          competicion_image_link,
+                a.pictureValue                      AS          competicion_imagen_valor,
+                a.lastUpdate                        AS          competicion_ultima_actualizacion,
 
-            ORDER BY a.discipline, a.season, a.competitionFifaId";
+                b.organisationFifaId                AS          organizacion_codigo,
+                b.organisationName                  AS          organizacion_nombre
+                
+                FROM [comet].[competitions] a
+                LEFT JOIN [comet].[organisations] b ON a.organisationFifaId = b.organisationFifaId
+                
+                WHERE a.superiorCompetitionFifaId IS NULL AND a.discipline = ?
+
+                ORDER BY a.discipline, a.season, a.competitionFifaId";
+            } else {
+                $sql00  = "SELECT
+                a.competitionFifaId                 AS          competicion_codigo,
+                a.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                a.status                            AS          competicion_estado,
+                a.internationalName                 AS          competicion_nombre,
+                a.internationalShortName            AS          competicion_nombre_corto,
+                a.season                            AS          competicion_anho,
+                a.ageCategory                       AS          competicion_categoria_codigo,
+                a.ageCategoryName                   AS          competicion_categoria_nombre,
+                a.dateFrom                          AS          competicion_desde,
+                a.dateTo                            AS          competicion_hasta,
+                a.discipline                        AS          competicion_disciplina,
+                a.gender                            AS          competicion_genero,
+                a.imageId                           AS          competicion_imagen_codigo,
+                a.multiplier                        AS          competicion_multiplicador,
+                a.nature                            AS          competicion_naturaleza,
+                a.numberOfParticipants              AS          competicion_numero_participante,
+                a.orderNumber                       AS          competicion_numero_orden,
+                a.teamCharacter                     AS          competicion_equipo_tipo,
+                a.flyingSubstitutions               AS          competicion_sustitucion,
+                a.penaltyShootout                   AS          competicion_penal,
+                a.matchType                         AS          competicion_tipo,
+                a.pictureContentType                AS          competicion_imagen_tipo,
+                a.pictureLink                       AS          competicion_image_link,
+                a.pictureValue                      AS          competicion_imagen_valor,
+                a.lastUpdate                        AS          competicion_ultima_actualizacion,
+
+                b.organisationFifaId                AS          organizacion_codigo,
+                b.organisationName                  AS          organizacion_nombre
+                
+                FROM [comet].[competitions] a
+                LEFT JOIN [comet].[organisations] b ON a.organisationFifaId = b.organisationFifaId
+                INNER JOIN [comet].[competitions_teams] c ON a.competitionFifaId = c.competitionFifaId
+                
+                WHERE a.superiorCompetitionFifaId IS NULL AND a.discipline = ? AND c.teamFifaId = ?
+
+                ORDER BY a.discipline, a.season, a.competitionFifaId";
+            }
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01]); 
+
+                if ($val02 == 39393) {
+                    $stmtMSSQL->execute([$val01]);
+                } else {
+                    $stmtMSSQL->execute([$val01, $val02]);
+                }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     switch ($rowMSSQL['competicion_imagen_tipo']) {
