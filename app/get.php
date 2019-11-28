@@ -2132,3 +2132,68 @@
         
         return $json;
     });
+
+    $app->get('/v1/700/competicion/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+		$val01      = $request->getAttribute('codigo');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT
+            a.competitionFifaId                 AS          competicion_codigo,
+            b.internationalLastName             AS          jugador_apellido,
+            b.internationalFirstName            AS          jugador_nombre
+            
+            FROM [comet].[competitions_teams_players] a
+            INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
+            
+            WHERE a.competitionFifaId = ?
+
+            ORDER BY a.competitionFifaId";
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $detalle    = array(
+                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'jugador_apellido'                      => trim($rowMSSQL['jugador_apellido']),
+                        'jugador_nombre'                        => trim($rowMSSQL['jugador_nombre']),
+                        'jugador_completo'                      => trim($rowMSSQL['jugador_apellido']).', '.trim($rowMSSQL['jugador_nombre'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'                    => '',
+                        'jugador_apellido'                      => '',
+                        'jugador_nombre'                        => '',
+                        'jugador_completo'                      => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
