@@ -2141,6 +2141,7 @@
         if (isset($val01)) {
             $sql00  = "SELECT
             a.competitionFifaId                 AS          competicion_codigo,
+            b.personFifaId                      AS          jugador_codigo,
             b.internationalLastName             AS          jugador_apellido,
             b.internationalFirstName            AS          jugador_nombre
             
@@ -2159,6 +2160,7 @@
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'jugador_codigo'                        => trim($rowMSSQL['jugador_codigo']),
                         'jugador_apellido'                      => trim($rowMSSQL['jugador_apellido']),
                         'jugador_nombre'                        => trim($rowMSSQL['jugador_nombre']),
                         'jugador_completo'                      => trim($rowMSSQL['jugador_apellido']).', '.trim($rowMSSQL['jugador_nombre'])
