@@ -2137,26 +2137,48 @@
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('competicion');
-        $val02      = $request->getAttribute('connect');
+        $val02      = $request->getAttribute('equipo');
         
         if (isset($val01) && isset($val02)) {
-            $sql00  = "SELECT
-            a.competitionFifaId                 AS          competicion_codigo,
-            b.personFifaId                      AS          jugador_codigo,
-            b.internationalLastName             AS          jugador_apellido,
-            b.internationalFirstName            AS          jugador_nombre
-            
-            FROM [comet].[competitions_teams_players] a
-            INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
-            
-            WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
+            $sql00  = "";
 
-            ORDER BY a.competitionFifaId";
+            if ($val02 == 39393) {
+                $sql00  = "SELECT
+                a.competitionFifaId                 AS          competicion_codigo,
+                b.personFifaId                      AS          jugador_codigo,
+                b.internationalLastName             AS          jugador_apellido,
+                b.internationalFirstName            AS          jugador_nombre
+                
+                FROM [comet].[competitions_teams_players] a
+                INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
+                
+                WHERE a.competitionFifaId = ?
+
+                ORDER BY a.competitionFifaId";
+            } else {
+                $sql00  = "SELECT
+                a.competitionFifaId                 AS          competicion_codigo,
+                b.personFifaId                      AS          jugador_codigo,
+                b.internationalLastName             AS          jugador_apellido,
+                b.internationalFirstName            AS          jugador_nombre
+                
+                FROM [comet].[competitions_teams_players] a
+                INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
+                
+                WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
+
+                ORDER BY a.competitionFifaId";
+            }
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02]); 
+
+                if ($val02 == 39393) {
+                    $stmtMSSQL->execute([$val01]);
+                } else {
+                    $stmtMSSQL->execute([$val01, $val02]);
+                }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $detalle    = array(
