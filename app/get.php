@@ -1254,7 +1254,7 @@
                 
                 WHERE (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?) AND (a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?)
     
-                ORDER BY a.COMPETICION_PADRE_ID DESC";
+                ORDER BY a.COMPETICION_PADRE_ID DESC, a.JUEGO_CODIGO DESC";
             }
 
             try {
