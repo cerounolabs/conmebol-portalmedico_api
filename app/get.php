@@ -2133,10 +2133,11 @@
         return $json;
     });
 
-    $app->get('/v1/700/competicion/{codigo}', function($request) {
+    $app->get('/v1/700/{competicion}/{equipo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
-		$val01      = $request->getAttribute('codigo');
+        $val01      = $request->getAttribute('competicion');
+        $val01      = $request->getAttribute('connect');
         
         if (isset($val01)) {
             $sql00  = "SELECT
@@ -2148,7 +2149,7 @@
             FROM [comet].[competitions_teams_players] a
             INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
             
-            WHERE a.competitionFifaId = ?
+            WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
 
             ORDER BY a.competitionFifaId";
 
