@@ -2137,9 +2137,9 @@
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('competicion');
-        $val01      = $request->getAttribute('connect');
+        $val02      = $request->getAttribute('connect');
         
-        if (isset($val01)) {
+        if (isset($val01) && isset($val02)) {
             $sql00  = "SELECT
             a.competitionFifaId                 AS          competicion_codigo,
             b.personFifaId                      AS          jugador_codigo,
@@ -2156,7 +2156,7 @@
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01]); 
+                $stmtMSSQL->execute([$val01, $val02]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $detalle    = array(
