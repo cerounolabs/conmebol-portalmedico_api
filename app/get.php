@@ -2563,11 +2563,112 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $detalle    = array(
-                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
-                        'jugador_codigo'                        => trim($rowMSSQL['jugador_codigo']),
-                        'jugador_apellido'                      => trim($rowMSSQL['jugador_apellido']),
+                        'competicion_codigo'                        => ($rowMSSQL['competicion_codigo']),
+                        'lesion_fecha_alta'                        => trim($rowMSSQL['lesion_fecha_alta']),
+                        'temperatura_numero'                        => trim($rowMSSQL['temperatura_numero']),
+
+                        'tipo_estado_codigo'                        => ($rowMSSQL['tipo_estado_codigo']),
+                        'tipo_estado_nombre_ingles'                        => trim($rowMSSQL['tipo_estado_nombre_ingles']),
+                        'tipo_estado_nombre_castellano'                        => trim($rowMSSQL['tipo_estado_nombre_castellano']),
+                        'tipo_estado_nombre_portugues'                        => trim($rowMSSQL['tipo_estado_nombre_portugues']),
+
+                        'tipo_clima_codigo'                        => ($rowMSSQL['tipo_clima_codigo']),
+                        'tipo_clima_nombre_ingles'                        => trim($rowMSSQL['tipo_clima_nombre_ingles']),
+                        'tipo_clima_nombre_castellano'                        => trim($rowMSSQL['tipo_clima_nombre_castellano']),
+                        'tipo_clima_nombre_portugues'                        => trim($rowMSSQL['tipo_clima_nombre_portugues']),
+
+                        'tipo_distancia_codigo'                        => ($rowMSSQL['tipo_distancia_codigo']),
+                        'tipo_distancia_nombre_ingles'                        => trim($rowMSSQL['tipo_distancia_nombre_ingles']),
+                        'tipo_distancia_nombre_castellano'                        => trim($rowMSSQL['tipo_distancia_nombre_castellano']),
+                        'tipo_distancia_nombre_portugues'                        => trim($rowMSSQL['tipo_distancia_nombre_portugues']),
+
+                        'tipo_traslado_codigo'                        => ($rowMSSQL['tipo_traslado_codigo']),
+                        'tipo_traslado_nombre_ingles'                        => trim($rowMSSQL['tipo_traslado_nombre_ingles']),
+                        'tipo_traslado_nombre_castellano'                        => trim($rowMSSQL['tipo_traslado_nombre_castellano']),
+                        'tipo_traslado_nombre_portugues'                        => trim($rowMSSQL['tipo_traslado_nombre_portugues']),
+
+                        'tipo_posicion_codigo'                        => ($rowMSSQL['tipo_posicion_codigo']),
+                        'tipo_posicion_nombre_ingles'                        => trim($rowMSSQL['tipo_posicion_nombre_ingles']),
+                        'tipo_posicion_nombre_castellano'                        => trim($rowMSSQL['tipo_posicion_nombre_castellano']),
+                        'tipo_posicion_nombre_portugues'                        => trim($rowMSSQL['tipo_posicion_nombre_portugues']),
+
+                        'tipo_minuto_codigo'                        => ($rowMSSQL['tipo_minuto_codigo']),
+                        'tipo_minuto_nombre_ingles'                        => trim($rowMSSQL['tipo_minuto_nombre_ingles']),
+                        'tipo_minuto_nombre_castellano'                        => trim($rowMSSQL['tipo_minuto_nombre_castellano']),
+                        'tipo_minuto_nombre_portugues'                        => trim($rowMSSQL['tipo_minuto_nombre_portugues']),
+
+                        'tipo_campo_codigo'                        => ($rowMSSQL['tipo_campo_codigo']),
+                        'tipo_campo_nombre_ingles'                        => trim($rowMSSQL['tipo_campo_nombre_ingles']),
+                        'tipo_campo_nombre_castellano'                        => trim($rowMSSQL['tipo_campo_nombre_castellano']),
+                        'tipo_campo_nombre_portugues'                        => trim($rowMSSQL['tipo_campo_nombre_portugues']),
+
+                        'tipo_cuerpo_zona_codigo'                        => ($rowMSSQL['tipo_cuerpo_zona_codigo']),
+                        'tipo_cuerpo_zona_nombre_ingles'                        => trim($rowMSSQL['tipo_cuerpo_zona_nombre_ingles']),
+                        'tipo_cuerpo_zona_nombre_castellano'                        => trim($rowMSSQL['tipo_cuerpo_zona_nombre_castellano']),
+                        'tipo_cuerpo_zona_nombre_portugues'                        => trim($rowMSSQL['tipo_cuerpo_zona_nombre_portugues']),
+
+                        'tipo_cuerpo_lugar_codigo'                        => ($rowMSSQL['tipo_cuerpo_lugar_codigo']),
+                        'tipo_cuerpo_lugar_nombre_ingles'                        => trim($rowMSSQL['tipo_cuerpo_lugar_nombre_ingles']),
+                        'tipo_cuerpo_lugar_nombre_castellano'                        => trim($rowMSSQL['tipo_cuerpo_lugar_nombre_castellano']),
+                        'tipo_cuerpo_lugar_nombre_portugues'                        => trim($rowMSSQL['tipo_cuerpo_lugar_nombre_portugues']),
+
+                        'tipo_lesion_codigo'                        => ($rowMSSQL['tipo_lesion_codigo']),
+                        'tipo_lesion_nombre_ingles'                        => trim($rowMSSQL['tipo_lesion_nombre_ingles']),
+                        'tipo_lesion_nombre_castellano'                        => trim($rowMSSQL['tipo_lesion_nombre_castellano']),
+                        'tipo_lesion_nombre_portugues'                        => trim($rowMSSQL['tipo_lesion_nombre_portugues']),
+
+                        'tipo_lesion_origen_codigo'                        => ($rowMSSQL['tipo_lesion_origen_codigo']),
+                        'tipo_lesion_origen_nombre_ingles'                        => trim($rowMSSQL['tipo_lesion_origen_nombre_ingles']),
+                        'tipo_lesion_origen_nombre_castellano'                        => trim($rowMSSQL['tipo_lesion_origen_nombre_castellano']),
+                        'tipo_lesion_origen_nombre_portugues'                        => trim($rowMSSQL['tipo_lesion_origen_nombre_portugues']),
+
+                        'tipo_lesion_reincidencia_codigo'                        => ($rowMSSQL['tipo_lesion_reincidencia_codigo']),
+                        'tipo_lesion_reincidencia_nombre_ingles'                        => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_ingles']),
+                        'tipo_lesion_reincidencia_nombre_castellano'                        => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_castellano']),
+                        'tipo_lesion_reincidencia_nombre_portugues'                        => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_portugues']),
+
+                        'tipo_lesion_causa_codigo'                        => ($rowMSSQL['tipo_lesion_causa_codigo']),
+                        'tipo_lesion_causa_nombre_ingles'                        => trim($rowMSSQL['tipo_lesion_causa_nombre_ingles']),
+                        'tipo_lesion_causa_nombre_castellano'                        => trim($rowMSSQL['tipo_lesion_causa_nombre_castellano']),
+                        'tipo_lesion_causa_nombre_portugues'                        => trim($rowMSSQL['tipo_lesion_causa_nombre_portugues']),
+
+                        'tipo_lesion_falta_codigo'                        => ($rowMSSQL['tipo_lesion_falta_codigo']),
+                        'tipo_lesion_falta_nombre_ingles'                        => trim($rowMSSQL['tipo_lesion_falta_nombre_ingles']),
+                        'tipo_lesion_falta_nombre_castellano'                        => trim($rowMSSQL['tipo_lesion_falta_nombre_castellano']),
+                        'tipo_lesion_falta_nombre_portugues'                        => trim($rowMSSQL['tipo_lesion_falta_nombre_portugues']),
+
+                        'tipo_diagnostico_codigo'                        => ($rowMSSQL['tipo_diagnostico_codigo']),
+                        'tipo_diagnostico_nombre_ingles'                        => trim($rowMSSQL['tipo_diagnostico_nombre_ingles']),
+                        'tipo_diagnostico_nombre_castellano'                        => trim($rowMSSQL['tipo_diagnostico_nombre_castellano']),
+                        'tipo_diagnostico_nombre_portugues'                        => trim($rowMSSQL['tipo_diagnostico_nombre_portugues']),
+                        'tipo_diagnostico_observacion'                        => trim($rowMSSQL['tipo_diagnostico_observacion']),
+
+                        'tipo_diagnostico_recuperacion_codigo'                        => ($rowMSSQL['tipo_diagnostico_recuperacion_codigo']),
+                        'tipo_diagnostico_recuperacion_nombre_ingles'                        => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_ingles']),
+                        'tipo_diagnostico_recuperacion_nombre_castellano'                        => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_castellano']),
+                        'tipo_diagnostico_recuperacion_nombre_portugues'                        => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_portugues']),
+
+                        'tipo_diagnostico_tiempo_codigo'                        => ($rowMSSQL['tipo_diagnostico_tiempo_codigo']),
+                        'tipo_diagnostico_tiempo_nombre_ingles'                        => trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_ingles']),
+                        'tipo_diagnostico_tiempo_nombre_castellano'                        => trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_castellano']),
+                        'tipo_diagnostico_tiempo_nombre_portugues'                        => trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_portugues']),
+
+                        'competencia_codigo'                        => ($rowMSSQL['competencia_codigo']),
+                        'competencia_nombre'                        => trim($rowMSSQL['competencia_nombre']),
+
+                        'juego_codigo'                        => ($rowMSSQL['juego_codigo']),
+                        'juego_nombre'                        => trim($rowMSSQL['juego_equipo_local']).' vs '.trim($rowMSSQL['juego_equpo_visitante']),
+
+                        'equipo_codigo'                        => ($rowMSSQL['equipo_codigo']),
+                        'equipo_nombre'                        => trim($rowMSSQL['equipo_nombre']),
+
+                        'jugador_codigo'                        => ($rowMSSQL['jugador_codigo']),
                         'jugador_nombre'                        => trim($rowMSSQL['jugador_nombre']),
-                        'jugador_completo'                      => trim($rowMSSQL['jugador_apellido']).', '.trim($rowMSSQL['jugador_nombre'])
+                        'jugador_apellido'                        => trim($rowMSSQL['jugador_apellido']),
+
+                        'auditoria_usuario'                        => trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                        => trim($rowMSSQL['auditoria_fecha_hora']),
+                        'auditoria_ip'                        => trim($rowMSSQL['auditoria_ip'])   
                     );
 
                     $result[]   = $detalle;
@@ -2578,10 +2679,112 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'competicion_codigo'                    => '',
-                        'jugador_apellido'                      => '',
+                        'competicion_codigo'                        => '',
+                        'lesion_fecha_alta'                        => '',
+                        'temperatura_numero'                        => '',
+
+                        'tipo_estado_codigo'                        => '',
+                        'tipo_estado_nombre_ingles'                        => '',
+                        'tipo_estado_nombre_castellano'                        => '',
+                        'tipo_estado_nombre_portugues'                        => '',
+
+                        'tipo_clima_codigo'                        => '',
+                        'tipo_clima_nombre_ingles'                        => '',
+                        'tipo_clima_nombre_castellano'                        => '',
+                        'tipo_clima_nombre_portugues'                        => '',
+
+                        'tipo_distancia_codigo'                        => '',
+                        'tipo_distancia_nombre_ingles'                        => '',
+                        'tipo_distancia_nombre_castellano'                        => '',
+                        'tipo_distancia_nombre_portugues'                        => '',
+
+                        'tipo_traslado_codigo'                        => '',
+                        'tipo_traslado_nombre_ingles'                        => '',
+                        'tipo_traslado_nombre_castellano'                        => '',
+                        'tipo_traslado_nombre_portugues'                        => '',
+
+                        'tipo_posicion_codigo'                        => '',
+                        'tipo_posicion_nombre_ingles'                        => '',
+                        'tipo_posicion_nombre_castellano'                        => '',
+                        'tipo_posicion_nombre_portugues'                        => '',
+
+                        'tipo_minuto_codigo'                        => '',
+                        'tipo_minuto_nombre_ingles'                        => '',
+                        'tipo_minuto_nombre_castellano'                        => '',
+                        'tipo_minuto_nombre_portugues'                        => '',
+
+                        'tipo_campo_codigo'                        => '',
+                        'tipo_campo_nombre_ingles'                        => '',
+                        'tipo_campo_nombre_castellano'                        => '',
+                        'tipo_campo_nombre_portugues'                        => '',
+
+                        'tipo_cuerpo_zona_codigo'                        => '',
+                        'tipo_cuerpo_zona_nombre_ingles'                        => '',
+                        'tipo_cuerpo_zona_nombre_castellano'                        => '',
+                        'tipo_cuerpo_zona_nombre_portugues'                        => '',
+
+                        'tipo_cuerpo_lugar_codigo'                        => '',
+                        'tipo_cuerpo_lugar_nombre_ingles'                        => '',
+                        'tipo_cuerpo_lugar_nombre_castellano'                        => '',
+                        'tipo_cuerpo_lugar_nombre_portugues'                        => '',
+
+                        'tipo_lesion_codigo'                        => '',
+                        'tipo_lesion_nombre_ingles'                        => '',
+                        'tipo_lesion_nombre_castellano'                        => '',
+                        'tipo_lesion_nombre_portugues'                        => '',
+
+                        'tipo_lesion_origen_codigo'                        => '',
+                        'tipo_lesion_origen_nombre_ingles'                        => '',
+                        'tipo_lesion_origen_nombre_castellano'                        => '',
+                        'tipo_lesion_origen_nombre_portugues'                        => '',
+
+                        'tipo_lesion_reincidencia_codigo'                        => '',
+                        'tipo_lesion_reincidencia_nombre_ingles'                        => '',
+                        'tipo_lesion_reincidencia_nombre_castellano'                        => '',
+                        'tipo_lesion_reincidencia_nombre_portugues'                        => '',
+
+                        'tipo_lesion_causa_codigo'                        => '',
+                        'tipo_lesion_causa_nombre_ingles'                        => '',
+                        'tipo_lesion_causa_nombre_castellano'                        => '',
+                        'tipo_lesion_causa_nombre_portugues'                        => '',
+
+                        'tipo_lesion_falta_codigo'                        => '',
+                        'tipo_lesion_falta_nombre_ingles'                        => '',
+                        'tipo_lesion_falta_nombre_castellano'                        => '',
+                        'tipo_lesion_falta_nombre_portugues'                        => '',
+
+                        'tipo_diagnostico_codigo'                        => '',
+                        'tipo_diagnostico_nombre_ingles'                        => '',
+                        'tipo_diagnostico_nombre_castellano'                        => '',
+                        'tipo_diagnostico_nombre_portugues'                        => '',
+                        'tipo_diagnostico_observacion'                        => '',
+
+                        'tipo_diagnostico_recuperacion_codigo'                        => '',
+                        'tipo_diagnostico_recuperacion_nombre_ingles'                        => '',
+                        'tipo_diagnostico_recuperacion_nombre_castellano'                        => '',
+                        'tipo_diagnostico_recuperacion_nombre_portugues'                        => '',
+
+                        'tipo_diagnostico_tiempo_codigo'                        => '',
+                        'tipo_diagnostico_tiempo_nombre_ingles'                        => '',
+                        'tipo_diagnostico_tiempo_nombre_castellano'                        => '',
+                        'tipo_diagnostico_tiempo_nombre_portugues'                        => '',
+
+                        'competencia_codigo'                        => '',
+                        'competencia_nombre'                        => '',
+
+                        'juego_codigo'                        => '',
+                        'juego_nombre'                        => '',
+
+                        'equipo_codigo'                        => '',
+                        'equipo_nombre'                        => '',
+
+                        'jugador_codigo'                        => '',
                         'jugador_nombre'                        => '',
-                        'jugador_completo'                      => ''
+                        'jugador_apellido'                        => '',
+
+                        'auditoria_usuario'                        => '',
+                        'auditoria_fecha_hora'                        => '',
+                        'auditoria_ip'                        => ''  
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
