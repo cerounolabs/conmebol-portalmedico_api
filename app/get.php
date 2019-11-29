@@ -2270,3 +2270,336 @@
         
         return $json;
     });
+
+    $app->get('/v1/600/{equipo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('equipo');
+        
+        if (isset($val01)) {
+            $sql00  = "";
+
+            if ($val01 == 39393) {
+                $sql00  = "SELECT
+                a.LESFICCOD                 AS          competicion_codigo,
+                a.LESFICFEC                 AS          lesion_fecha_alta,
+                a.LESFICTEM                 AS          temperatura_numero,
+
+                b.DOMFICCOD                 AS          tipo_estado_codigo,
+                b.DOMFICNOI                 AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC                 AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP                 AS          tipo_estado_nombre_portugues,
+
+                c.DOMFICCOD                 AS          tipo_clima_codigo,
+                c.DOMFICNOI                 AS          tipo_clima_nombre_ingles,
+                c.DOMFICNOC                 AS          tipo_clima_nombre_castellano,
+                c.DOMFICNOP                 AS          tipo_clima_nombre_portugues,
+
+                d.DOMFICCOD                 AS          tipo_distancia_codigo,
+                d.DOMFICNOI                 AS          tipo_distancia_nombre_ingles,
+                d.DOMFICNOC                 AS          tipo_distancia_nombre_castellano,
+                d.DOMFICNOP                 AS          tipo_distancia_nombre_portugues,
+
+                e.DOMFICCOD                 AS          tipo_traslado_codigo,
+                e.DOMFICNOI                 AS          tipo_traslado_nombre_ingles,
+                e.DOMFICNOC                 AS          tipo_traslado_nombre_castellano,
+                e.DOMFICNOP                 AS          tipo_traslado_nombre_portugues,
+
+                f.DOMFICCOD                 AS          tipo_posicion_codigo,
+                f.DOMFICNOI                 AS          tipo_posicion_nombre_ingles,
+                f.DOMFICNOC                 AS          tipo_posicion_nombre_castellano,
+                f.DOMFICNOP                 AS          tipo_posicion_nombre_portugues,
+
+                g.DOMFICCOD                 AS          tipo_minuto_codigo,
+                g.DOMFICNOI                 AS          tipo_minuto_nombre_ingles,
+                g.DOMFICNOC                 AS          tipo_minuto_nombre_castellano,
+                g.DOMFICNOP                 AS          tipo_minuto_nombre_portugues,
+
+                h.DOMFICCOD                 AS          tipo_campo_codigo,
+                h.DOMFICNOI                 AS          tipo_campo_nombre_ingles,
+                h.DOMFICNOC                 AS          tipo_campo_nombre_castellano,
+                h.DOMFICNOP                 AS          tipo_campo_nombre_portugues,
+
+                i.DOMSUBCOD                 AS          tipo_cuerpo_zona_codigo,
+                i.DOMSUBNOI                 AS          tipo_cuerpo_zona_nombre_ingles,
+                i.DOMSUBNOC                 AS          tipo_cuerpo_zona_nombre_castellano,
+                i.DOMSUBNOP                 AS          tipo_cuerpo_zona_nombre_portugues,
+
+                j.DOMFICCOD                 AS          tipo_cuerpo_lugar_codigo,
+                j.DOMFICNOI                 AS          tipo_cuerpo_lugar_nombre_ingles,
+                j.DOMFICNOC                 AS          tipo_cuerpo_lugar_nombre_castellano,
+                j.DOMFICNOP                 AS          tipo_cuerpo_lugar_nombre_portugues,
+
+                k.DOMFICCOD                 AS          tipo_lesion_codigo,
+                k.DOMFICNOI                 AS          tipo_lesion_nombre_ingles,
+                k.DOMFICNOC                 AS          tipo_lesion_nombre_castellano,
+                k.DOMFICNOP                 AS          tipo_lesion_nombre_portugues,
+
+                l.DOMFICCOD                 AS          tipo_lesion_origen_codigo,
+                l.DOMFICNOI                 AS          tipo_lesion_origen_nombre_ingles,
+                l.DOMFICNOC                 AS          tipo_lesion_origen_nombre_castellano,
+                l.DOMFICNOP                 AS          tipo_lesion_origen_nombre_portugues,
+
+                m.DOMFICCOD                 AS          tipo_lesion_reincidencia_codigo,
+                m.DOMFICNOI                 AS          tipo_lesion_reincidencia_nombre_ingles,
+                m.DOMFICNOC                 AS          tipo_lesion_reincidencia_nombre_castellano,
+                m.DOMFICNOP                 AS          tipo_lesion_reincidencia_nombre_portugues,
+
+                n.DOMFICCOD                 AS          tipo_lesion_causa_codigo,
+                n.DOMFICNOI                 AS          tipo_lesion_causa_nombre_ingles,
+                n.DOMFICNOC                 AS          tipo_lesion_causa_nombre_castellano,
+                n.DOMFICNOP                 AS          tipo_lesion_causa_nombre_portugues,
+
+                o.DOMFICCOD                 AS          tipo_lesion_falta_codigo,
+                o.DOMFICNOI                 AS          tipo_lesion_falta_nombre_ingles,
+                o.DOMFICNOC                 AS          tipo_lesion_falta_nombre_castellano,
+                o.DOMFICNOP                 AS          tipo_lesion_falta_nombre_portugues,
+
+                p.DOMSUBCOD                 AS          tipo_diagnostico_codigo,
+                p.DOMSUBNOI                 AS          tipo_diagnostico_nombre_ingles,
+                p.DOMSUBNOC                 AS          tipo_diagnostico_nombre_castellano,
+                p.DOMSUBNOP                 AS          tipo_diagnostico_nombre_portugues,
+                a.LESFICOBS                 AS          tipo_diagnostico_observacion,
+
+                q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
+                q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
+                q.DOMFICNOC                 AS          tipo_diagnostico_recuperacion_nombre_castellano,
+                q.DOMFICNOP                 AS          tipo_diagnostico_recuperacion_nombre_portugues,
+
+                r.DOMFICCOD                 AS          tipo_diagnostico_tiempo_codigo,
+                r.DOMFICNOI                 AS          tipo_diagnostico_tiempo_nombre_ingles,
+                r.DOMFICNOC                 AS          tipo_diagnostico_tiempo_nombre_castellano,
+                r.DOMFICNOP                 AS          tipo_diagnostico_tiempo_nombre_portugues,
+
+                s.competitionFifaId         AS          competencia_codigo,
+                s.internationalName         AS          competencia_nombre,
+
+                t.JUEGO_CODIGO              AS          juego_codigo,
+                t.EQUIPO_LOCAL_NOMBRE       AS          juego_equipo_local,
+                t.EQUIPO_VISITANTE_NOMBRE   AS          juego_equpo_visitante,
+
+                u.teamFifaId                AS          equipo_codigo,
+                u.internationalName         AS          equipo_nombre,
+
+                v.personFifaId              AS          jugador_codigo,
+                v.internationalFirstName    AS          jugador_nombre,
+                v.internationalLastName     AS          jugador_apellido,
+
+                a.LESFICAUS                 AS          auditoria_usuario,
+                a.LESFICAFH                 AS          auditoria_fecha_hora,
+                a.LESFICAIP                 AS          auditoria_ip
+
+                FROM [lesion].[LESFIC] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LESFICESC = b.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] c ON a.LESFICCLI = c.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] d ON a.LESFICDIS = d.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] e ON a.LESFICTRA = e.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] f ON a.LESFICPOS = f.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] g ON a.LESFICMIN = g.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] h ON a.LESFICCAM = h.DOMFICCOD
+                INNER JOIN [adm].[DOMSUB] i ON a.LESFICCUZ = i.DOMSUBCOD
+                INNER JOIN [adm].[DOMFIC] j ON a.LESFICCUL = j.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] k ON a.LESFICLES = k.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] l ON a.LESFICORI = l.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] m ON a.LESFICREI = m.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
+                INNER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
+                INNER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
+                INNER JOIN [comet].[competitions] s ON a.LESFICCOC = s.competitionFifaId
+                INNER JOIN [view].[juego] t ON a.LESFICJUC = t.JUEGO_CODIGO
+                INNER JOIN [comet].[teams] u ON a.LESFICEQC = u.teamFifaId
+                INNER JOIN [comet].[persons] v ON a.LESFICPEC = v.personFifaId
+
+                ORDER BY a.LESFICFEC DESC";
+            } else {
+                $sql00  = "SELECT
+                a.LESFICCOD                 AS          competicion_codigo,
+                a.LESFICFEC                 AS          lesion_fecha_alta,
+                a.LESFICTEM                 AS          temperatura_numero,
+
+                b.DOMFICCOD                 AS          tipo_estado_codigo,
+                b.DOMFICNOI                 AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC                 AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP                 AS          tipo_estado_nombre_portugues,
+
+                c.DOMFICCOD                 AS          tipo_clima_codigo,
+                c.DOMFICNOI                 AS          tipo_clima_nombre_ingles,
+                c.DOMFICNOC                 AS          tipo_clima_nombre_castellano,
+                c.DOMFICNOP                 AS          tipo_clima_nombre_portugues,
+
+                d.DOMFICCOD                 AS          tipo_distancia_codigo,
+                d.DOMFICNOI                 AS          tipo_distancia_nombre_ingles,
+                d.DOMFICNOC                 AS          tipo_distancia_nombre_castellano,
+                d.DOMFICNOP                 AS          tipo_distancia_nombre_portugues,
+
+                e.DOMFICCOD                 AS          tipo_traslado_codigo,
+                e.DOMFICNOI                 AS          tipo_traslado_nombre_ingles,
+                e.DOMFICNOC                 AS          tipo_traslado_nombre_castellano,
+                e.DOMFICNOP                 AS          tipo_traslado_nombre_portugues,
+
+                f.DOMFICCOD                 AS          tipo_posicion_codigo,
+                f.DOMFICNOI                 AS          tipo_posicion_nombre_ingles,
+                f.DOMFICNOC                 AS          tipo_posicion_nombre_castellano,
+                f.DOMFICNOP                 AS          tipo_posicion_nombre_portugues,
+
+                g.DOMFICCOD                 AS          tipo_minuto_codigo,
+                g.DOMFICNOI                 AS          tipo_minuto_nombre_ingles,
+                g.DOMFICNOC                 AS          tipo_minuto_nombre_castellano,
+                g.DOMFICNOP                 AS          tipo_minuto_nombre_portugues,
+
+                h.DOMFICCOD                 AS          tipo_campo_codigo,
+                h.DOMFICNOI                 AS          tipo_campo_nombre_ingles,
+                h.DOMFICNOC                 AS          tipo_campo_nombre_castellano,
+                h.DOMFICNOP                 AS          tipo_campo_nombre_portugues,
+
+                i.DOMSUBCOD                 AS          tipo_cuerpo_zona_codigo,
+                i.DOMSUBNOI                 AS          tipo_cuerpo_zona_nombre_ingles,
+                i.DOMSUBNOC                 AS          tipo_cuerpo_zona_nombre_castellano,
+                i.DOMSUBNOP                 AS          tipo_cuerpo_zona_nombre_portugues,
+
+                j.DOMFICCOD                 AS          tipo_cuerpo_lugar_codigo,
+                j.DOMFICNOI                 AS          tipo_cuerpo_lugar_nombre_ingles,
+                j.DOMFICNOC                 AS          tipo_cuerpo_lugar_nombre_castellano,
+                j.DOMFICNOP                 AS          tipo_cuerpo_lugar_nombre_portugues,
+
+                k.DOMFICCOD                 AS          tipo_lesion_codigo,
+                k.DOMFICNOI                 AS          tipo_lesion_nombre_ingles,
+                k.DOMFICNOC                 AS          tipo_lesion_nombre_castellano,
+                k.DOMFICNOP                 AS          tipo_lesion_nombre_portugues,
+
+                l.DOMFICCOD                 AS          tipo_lesion_origen_codigo,
+                l.DOMFICNOI                 AS          tipo_lesion_origen_nombre_ingles,
+                l.DOMFICNOC                 AS          tipo_lesion_origen_nombre_castellano,
+                l.DOMFICNOP                 AS          tipo_lesion_origen_nombre_portugues,
+
+                m.DOMFICCOD                 AS          tipo_lesion_reincidencia_codigo,
+                m.DOMFICNOI                 AS          tipo_lesion_reincidencia_nombre_ingles,
+                m.DOMFICNOC                 AS          tipo_lesion_reincidencia_nombre_castellano,
+                m.DOMFICNOP                 AS          tipo_lesion_reincidencia_nombre_portugues,
+
+                n.DOMFICCOD                 AS          tipo_lesion_causa_codigo,
+                n.DOMFICNOI                 AS          tipo_lesion_causa_nombre_ingles,
+                n.DOMFICNOC                 AS          tipo_lesion_causa_nombre_castellano,
+                n.DOMFICNOP                 AS          tipo_lesion_causa_nombre_portugues,
+
+                o.DOMFICCOD                 AS          tipo_lesion_falta_codigo,
+                o.DOMFICNOI                 AS          tipo_lesion_falta_nombre_ingles,
+                o.DOMFICNOC                 AS          tipo_lesion_falta_nombre_castellano,
+                o.DOMFICNOP                 AS          tipo_lesion_falta_nombre_portugues,
+
+                p.DOMSUBCOD                 AS          tipo_diagnostico_codigo,
+                p.DOMSUBNOI                 AS          tipo_diagnostico_nombre_ingles,
+                p.DOMSUBNOC                 AS          tipo_diagnostico_nombre_castellano,
+                p.DOMSUBNOP                 AS          tipo_diagnostico_nombre_portugues,
+                a.LESFICOBS                 AS          tipo_diagnostico_observacion,
+
+                q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
+                q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
+                q.DOMFICNOC                 AS          tipo_diagnostico_recuperacion_nombre_castellano,
+                q.DOMFICNOP                 AS          tipo_diagnostico_recuperacion_nombre_portugues,
+
+                r.DOMFICCOD                 AS          tipo_diagnostico_tiempo_codigo,
+                r.DOMFICNOI                 AS          tipo_diagnostico_tiempo_nombre_ingles,
+                r.DOMFICNOC                 AS          tipo_diagnostico_tiempo_nombre_castellano,
+                r.DOMFICNOP                 AS          tipo_diagnostico_tiempo_nombre_portugues,
+
+                s.competitionFifaId         AS          competencia_codigo,
+                s.internationalName         AS          competencia_nombre,
+
+                t.JUEGO_CODIGO              AS          juego_codigo,
+                t.EQUIPO_LOCAL_NOMBRE       AS          juego_equipo_local,
+                t.EQUIPO_VISITANTE_NOMBRE   AS          juego_equpo_visitante,
+
+                u.teamFifaId                AS          equipo_codigo,
+                u.internationalName         AS          equipo_nombre,
+
+                v.personFifaId              AS          jugador_codigo,
+                v.internationalFirstName    AS          jugador_nombre,
+                v.internationalLastName     AS          jugador_apellido,
+
+                a.LESFICAUS                 AS          auditoria_usuario,
+                a.LESFICAFH                 AS          auditoria_fecha_hora,
+                a.LESFICAIP                 AS          auditoria_ip
+
+                FROM [lesion].[LESFIC] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LESFICESC = b.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] c ON a.LESFICCLI = c.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] d ON a.LESFICDIS = d.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] e ON a.LESFICTRA = e.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] f ON a.LESFICPOS = f.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] g ON a.LESFICMIN = g.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] h ON a.LESFICCAM = h.DOMFICCOD
+                INNER JOIN [adm].[DOMSUB] i ON a.LESFICCUZ = i.DOMSUBCOD
+                INNER JOIN [adm].[DOMFIC] j ON a.LESFICCUL = j.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] k ON a.LESFICLES = k.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] l ON a.LESFICORI = l.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] m ON a.LESFICREI = m.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
+                INNER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
+                INNER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
+                INNER JOIN [comet].[competitions] s ON a.LESFICCOC = s.competitionFifaId
+                INNER JOIN [view].[juego] t ON a.LESFICJUC = t.JUEGO_CODIGO
+                INNER JOIN [comet].[teams] u ON a.LESFICEQC = u.teamFifaId
+                INNER JOIN [comet].[persons] v ON a.LESFICPEC = v.personFifaId
+
+                WHERE a.LESFICEQC = ?
+                
+                ORDER BY a.LESFICFEC DESC";
+            }
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                if ($val01 == 39393) {
+                    $stmtMSSQL->execute([]);
+                } else {
+                    $stmtMSSQL->execute([$val01]);
+                }
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $detalle    = array(
+                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'jugador_codigo'                        => trim($rowMSSQL['jugador_codigo']),
+                        'jugador_apellido'                      => trim($rowMSSQL['jugador_apellido']),
+                        'jugador_nombre'                        => trim($rowMSSQL['jugador_nombre']),
+                        'jugador_completo'                      => trim($rowMSSQL['jugador_apellido']).', '.trim($rowMSSQL['jugador_nombre'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'                    => '',
+                        'jugador_apellido'                      => '',
+                        'jugador_nombre'                        => '',
+                        'jugador_completo'                      => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
