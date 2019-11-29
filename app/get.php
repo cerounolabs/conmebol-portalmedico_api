@@ -2648,6 +2648,7 @@
                         'tipo_diagnostico_recuperacion_nombre_ingles'                        => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_ingles']),
                         'tipo_diagnostico_recuperacion_nombre_castellano'                        => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_castellano']),
                         'tipo_diagnostico_recuperacion_nombre_portugues'                        => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_portugues']),
+                        'tipo_diagnostico_recuperacion'                                         => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_castellano']).' '.trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_castellano']),
 
                         'tipo_diagnostico_tiempo_codigo'                        => ($rowMSSQL['tipo_diagnostico_tiempo_codigo']),
                         'tipo_diagnostico_tiempo_nombre_ingles'                        => trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_ingles']),
@@ -2763,6 +2764,7 @@
                         'tipo_diagnostico_recuperacion_nombre_ingles'                        => '',
                         'tipo_diagnostico_recuperacion_nombre_castellano'                        => '',
                         'tipo_diagnostico_recuperacion_nombre_portugues'                        => '',
+                        'tipo_diagnostico_recuperacion'                             => '',
 
                         'tipo_diagnostico_tiempo_codigo'                        => '',
                         'tipo_diagnostico_tiempo_nombre_ingles'                        => '',
