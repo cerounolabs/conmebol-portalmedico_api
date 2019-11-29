@@ -2565,7 +2565,7 @@
                     $detalle    = array(
                         'lesion_codigo'                        => ($rowMSSQL['lesion_codigo']),
                         'competicion_codigo'                        => ($rowMSSQL['competicion_codigo']),
-                        'lesion_fecha_alta'                        => trim($rowMSSQL['lesion_fecha_alta']),
+                        'lesion_fecha_alta'                        => date_format(date_create($rowMSSQL['lesion_fecha_alta']), 'd/m/Y H:i:s'),
                         'temperatura_numero'                        => trim($rowMSSQL['temperatura_numero']),
 
                         'tipo_estado_codigo'                        => ($rowMSSQL['tipo_estado_codigo']),
