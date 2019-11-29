@@ -2415,7 +2415,7 @@
                 ORDER BY a.LESFICFEC DESC";
             } else {
                 $sql00  = "SELECT
-                a.LESFICCOD                 AS          competicion_codigo,
+                a.LESFICCOD                 AS          lesion_codigo,
                 a.LESFICFEC                 AS          lesion_fecha_alta,
                 a.LESFICTEM                 AS          temperatura_numero,
 
@@ -2563,6 +2563,7 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $detalle    = array(
+                        'lesion_codigo'                        => ($rowMSSQL['lesion_codigo']),
                         'competicion_codigo'                        => ($rowMSSQL['competicion_codigo']),
                         'lesion_fecha_alta'                        => trim($rowMSSQL['lesion_fecha_alta']),
                         'temperatura_numero'                        => trim($rowMSSQL['temperatura_numero']),
@@ -2663,8 +2664,7 @@
                         'equipo_nombre'                        => trim($rowMSSQL['equipo_nombre']),
 
                         'jugador_codigo'                        => ($rowMSSQL['jugador_codigo']),
-                        'jugador_nombre'                        => trim($rowMSSQL['jugador_nombre']),
-                        'jugador_apellido'                        => trim($rowMSSQL['jugador_apellido']),
+                        'jugador_nombre'                        => trim($rowMSSQL['jugador_apellido']).', '.trim($rowMSSQL['jugador_nombre']),
 
                         'auditoria_usuario'                        => trim($rowMSSQL['auditoria_usuario']),
                         'auditoria_fecha_hora'                        => trim($rowMSSQL['auditoria_fecha_hora']),
@@ -2679,7 +2679,7 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'competicion_codigo'                        => '',
+                        'lesion_codigo'                        => '',
                         'lesion_fecha_alta'                        => '',
                         'temperatura_numero'                        => '',
 
