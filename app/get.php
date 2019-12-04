@@ -977,9 +977,6 @@
                         'competicion_penal'                     => $rowMSSQL['competicion_penal'],
                         'competicion_tipo'                      => trim($rowMSSQL['competicion_tipo']),
                         'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
-                        'competicion_image_link'                => trim($rowMSSQL['competicion_image_link']),
-                        'competicion_imagen_valor'              => trim($rowMSSQL['competicion_imagen_valor']),
-                        'competicion_imagen_path'               => 'imagen/competencia/img_'.$rowMSSQL['competicion_codigo'].'.'.$ext,
                         'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
                         'organizacion_codigo'                   => $rowMSSQL['organizacion_codigo'],
                         'organizacion_nombre'                   => trim($rowMSSQL['organizacion_nombre'])
