@@ -954,12 +954,24 @@
                             break;
                     }
 
+                    $competicion_nombre         = trim($rowMSSQL['competicion_nombre']);
+                    $competicion_nombre         = str_replace('\u00da', 'Ú', $competicion_nombre);
+                    $competicion_nombre         = str_replace('\u00d3', 'Ó', $competicion_nombre);
+                    $competicion_nombre         = str_replace('\u00c9', 'É', $competicion_nombre);
+                    $competicion_nombre         = str_replace('\"', '', $competicion_nombre);
+
+                    $competicion_nombre_corto   = trim($rowMSSQL['competicion_nombre']);
+                    $competicion_nombre_corto   = str_replace('\u00da', 'Ú', $competicion_nombre_corto);
+                    $competicion_nombre_corto   = str_replace('\u00d3', 'Ó', $competicion_nombre_corto);
+                    $competicion_nombre_corto   = str_replace('\u00c9', 'É', $competicion_nombre_corto);
+                    $competicion_nombre_corto   = str_replace('\"', '', $competicion_nombre_corto);
+
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
                         'competicion_estado'                    => trim($rowMSSQL['competicion_estado']),
-                        'competicion_nombre'                    => trim($rowMSSQL['competicion_nombre']),
-                        'competicion_nombre_corto'              => trim($rowMSSQL['competicion_nombre_corto']),
+                        'competicion_nombre'                    => $competicion_nombre,
+                        'competicion_nombre_corto'              => $competicion_nombre_corto,
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
                         'competicion_categoria_codigo'          => trim($rowMSSQL['competicion_categoria_codigo']),
                         'competicion_categoria_nombre'          => trim($rowMSSQL['competicion_categoria_nombre']),
