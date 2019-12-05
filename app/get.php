@@ -960,7 +960,7 @@
                     $competicion_nombre         = str_replace('\u00c9', 'É', $competicion_nombre);
                     $competicion_nombre         = str_replace('\"', '', $competicion_nombre);
 
-                    $competicion_nombre_corto   = trim($rowMSSQL['competicion_nombre']);
+                    $competicion_nombre_corto   = trim($rowMSSQL['competicion_nombre_corto']);
                     $competicion_nombre_corto   = str_replace('\u00da', 'Ú', $competicion_nombre_corto);
                     $competicion_nombre_corto   = str_replace('\u00d3', 'Ó', $competicion_nombre_corto);
                     $competicion_nombre_corto   = str_replace('\u00c9', 'É', $competicion_nombre_corto);
