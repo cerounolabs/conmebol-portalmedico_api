@@ -3312,14 +3312,14 @@
                 
             } elseif ($val01 == 39393 && $val03 != 0) {
                 $sql00  = "SELECT
-                b.DOMFICCOD                 AS          tipo_codigo,
-                b.DOMFICNOI                 AS          tipo_nombre_ingles,
-                b.DOMFICNOC                 AS          tipo_nombre_castellano,
-                b.DOMFICNOP                 AS          tipo_nombre_portugues,
+                b.DOMSUBCOD                 AS          tipo_codigo,
+                b.DOMSUBNOI                 AS          tipo_nombre_ingles,
+                b.DOMSUBNOC                 AS          tipo_nombre_castellano,
+                b.DOMSUBNOP                 AS          tipo_nombre_portugues,
                 COUNT(*)                    AS          tipo_cantidad
 
                 FROM [lesion].[LESFIC] a
-                INNER JOIN [adm].[DOMFIC] b ON a.LESFICDIA = b.DOMFICCOD
+                INNER JOIN [adm].[DOMSUB] b ON a.LESFICDIA = b.DOMSUBCOD
 
                 WHERE a.LESFICCOC = ? AND a.LESFICDIA = ?
 
@@ -3327,14 +3327,14 @@
 
             } elseif ($val01 != 39393 && $val03 == 0) {
                 $sql00  = "SELECT
-                b.DOMFICCOD                 AS          tipo_codigo,
-                b.DOMFICNOI                 AS          tipo_nombre_ingles,
-                b.DOMFICNOC                 AS          tipo_nombre_castellano,
-                b.DOMFICNOP                 AS          tipo_nombre_portugues,
+                b.DOMSUBCOD                 AS          tipo_codigo,
+                b.DOMSUBNOI                 AS          tipo_nombre_ingles,
+                b.DOMSUBNOC                 AS          tipo_nombre_castellano,
+                b.DOMSUBNOP                 AS          tipo_nombre_portugues,
                 COUNT(*)                    AS          tipo_cantidad
 
                 FROM [lesion].[LESFIC] a
-                INNER JOIN [adm].[DOMFIC] b ON a.LESFICDIA = b.DOMFICCOD
+                INNER JOIN [adm].[DOMSUB] b ON a.LESFICDIA = b.DOMSUBCOD
 
                 WHERE a.LESFICCOC = ? AND a.LESFICEQC = ?
 
@@ -3342,14 +3342,14 @@
 
             } elseif ($val01 != 39393 && $val03 != 0) {
                 $sql00  = "SELECT
-                b.DOMFICCOD                 AS          tipo_codigo,
-                b.DOMFICNOI                 AS          tipo_nombre_ingles,
-                b.DOMFICNOC                 AS          tipo_nombre_castellano,
-                b.DOMFICNOP                 AS          tipo_nombre_portugues,
+                b.DOMSUBCOD                 AS          tipo_codigo,
+                b.DOMSUBNOI                 AS          tipo_nombre_ingles,
+                b.DOMSUBNOC                 AS          tipo_nombre_castellano,
+                b.DOMSUBNOP                 AS          tipo_nombre_portugues,
                 COUNT(*)                    AS          tipo_cantidad
 
                 FROM [lesion].[LESFIC] a
-                INNER JOIN [adm].[DOMFIC] b ON a.LESFICDIA = b.DOMFICCOD
+                INNER JOIN [adm].[DOMSUB] b ON a.LESFICDIA = b.DOMSUBCOD
 
                 WHERE a.LESFICCOC = ? AND a.LESFICEQC = ? AND a.LESFICDIA = ?
 
