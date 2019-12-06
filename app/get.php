@@ -3285,7 +3285,7 @@
         return $json;
     });
 
-    $app->get('/v1/600/DIAGNOSTICOGRUPO/{equipo}/{competicion}/{estado}', function($request) {
+    $app->get('/v1/600/DIAGNOSTICOTIPO/{equipo}/{competicion}/{estado}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('equipo');
