@@ -1,4 +1,213 @@
 <?php
+    $app->post('/v1/login', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getParsedBody()['usuario_var01'];
+        $val02      = $request->getParsedBody()['usuario_var02'];
+        $val03      = $request->getParsedBody()['usuario_var03'];
+        $val04      = $request->getParsedBody()['usuario_var04'];
+        $val05      = $request->getParsedBody()['usuario_var05'];
+        $val06      = $request->getParsedBody()['usuario_var06'];
+
+        if (isset($val01) && isset($val02) && isset($val03) && isset($val04) && isset($val05) && isset($val06)) {
+            $sql00  = "SELECT
+            a.PERFICCOD                         AS          persona_codigo,
+            a.PERFICNOM                         AS          persona_nombre,
+            a.PERFICUSE                         AS          persona_user,
+            a.PERFICCON                         AS          persona_contrasenha,
+            a.PERFICPAT                         AS          persona_path,
+            a.PERFICMAI                         AS          persona_email,
+            a.PERFICTEF                         AS          persona_telefono,
+            a.PERFICOBS                         AS          persona_observacion,
+            a.PERFICAUS                         AS          persona_usuario,
+            a.PERFICAFH                         AS          persona_fecha_hora,
+            a.PERFICAIP                         AS          persona_ip,
+
+            b.DOMFICCOD                         AS          tipo_estado_codigo,
+            b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+            b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+            b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+
+            c.DOMFICCOD                         AS          tipo_acceso_codigo,
+            c.DOMFICNOI                         AS          tipo_acceso_nombre_ingles,
+            c.DOMFICNOC                         AS          tipo_acceso_nombre_castellano,
+            c.DOMFICNOP                         AS          tipo_acceso_nombre_portugues,
+
+            d.DOMFICCOD                         AS          tipo_perfil_codigo,
+            d.DOMFICNOI                         AS          tipo_perfil_nombre_ingles,
+            d.DOMFICNOC                         AS          tipo_perfil_nombre_castellano,
+            d.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
+
+            e.teamFifaId                        AS          equipo_codigo,
+            e.internationalShortName            AS          equipo_nombre,
+
+            f.DOMFICCOD                         AS          tipo_categoria_codigo,
+            f.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
+            f.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
+            f.DOMFICNOP                         AS          tipo_categoria_nombre_portugues
+            
+            FROM [adm].[PERFIC] a
+            INNER JOIN [adm].[DOMFIC] b ON a.PERFICEST = b.DOMFICCOD
+            INNER JOIN [adm].[DOMFIC] c ON a.PERFICTIP = c.DOMFICCOD
+            INNER JOIN [adm].[DOMFIC] d ON a.PERFICROL = d.DOMFICCOD
+            INNER JOIN [comet].[teams] e ON a.PERFICEQU = e.teamFifaId
+            INNER JOIN [adm].[DOMFIC] f ON a.PERFICCAT = f.DOMFICCOD
+
+            WHERE a.PERFICMAI = ?
+            
+            ORDER BY a.PERFICNOM";
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]);
+                
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $pass = trim($rowMSSQL['persona_contrasenha']);
+
+                    if (password_verify($val02, $pass)) {
+                        $detalle    = array(
+                            'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                            'persona_nombre'                        => trim($rowMSSQL['persona_nombre']),
+                            'persona_user'                          => trim($rowMSSQL['persona_user']),
+                            'persona_contrasenha'                   => trim($rowMSSQL['persona_contrasenha']),
+                            'persona_path'                          => $persona_path,
+                            'persona_email'                         => trim($rowMSSQL['persona_email']),
+                            'persona_telefono'                      => trim($rowMSSQL['persona_telefono']),
+                            'persona_observacion'                   => trim($rowMSSQL['persona_observacion']),
+                            'persona_usuario'                       => trim($rowMSSQL['persona_usuario']),
+                            'persona_fecha_hora'                    => $persona_fecha_hora,
+                            'persona_ip'                            => trim($rowMSSQL['persona_ip']),
+
+                            'tipo_estado_codigo'                    => $rowMSSQL['tipo_estado_codigo'],
+                            'tipo_estado_nombre_ingles'             => trim($rowMSSQL['tipo_estado_nombre_ingles']),
+                            'tipo_estado_nombre_castellano'         => trim($rowMSSQL['tipo_estado_nombre_castellano']),
+                            'tipo_estado_nombre_portugues'          => trim($rowMSSQL['tipo_estado_nombre_portugues']),
+
+                            'tipo_acceso_codigo'                    => $rowMSSQL['tipo_acceso_codigo'],
+                            'tipo_acceso_nombre_ingles'             => trim($rowMSSQL['tipo_acceso_nombre_ingles']),
+                            'tipo_acceso_nombre_castellano'         => trim($rowMSSQL['tipo_acceso_nombre_castellano']),
+                            'tipo_acceso_nombre_portugues'          => trim($rowMSSQL['tipo_acceso_nombre_portugues']),
+
+                            'tipo_perfil_codigo'                    => $rowMSSQL['tipo_perfil_codigo'],
+                            'tipo_perfil_nombre_ingles'             => trim($rowMSSQL['tipo_perfil_nombre_ingles']),
+                            'tipo_perfil_nombre_castellano'         => trim($rowMSSQL['tipo_perfil_nombre_castellano']),
+                            'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
+
+                            'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
+                            'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
+
+                            'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
+                            'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
+                            'tipo_categoria_nombre_castellano'      => trim($rowMSSQL['tipo_categoria_nombre_castellano']),
+                            'tipo_categoria_nombre_portugues'       => trim($rowMSSQL['tipo_categoria_nombre_portugues'])
+                        );
+
+                        $result[]   = $detalle;
+
+                        header("Content-Type: application/json; charset=utf-8");
+                        $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                    } else {
+                        $detalle    = array(
+                            'persona_codigo'                        => '',
+                            'persona_nombre'                        => '',
+                            'persona_user'                          => '',
+                            'persona_contrasenha'                   => '',
+                            'persona_path'                          => '',
+                            'persona_email'                         => '',
+                            'persona_telefono'                      => '',
+                            'persona_observacion'                   => '',
+                            'persona_usuario'                       => '',
+                            'persona_fecha_hora'                    => '',
+                            'persona_ip'                            => '',
+
+                            'tipo_estado_codigo'                    => '',
+                            'tipo_estado_nombre_ingles'             => '',
+                            'tipo_estado_nombre_castellano'         => '',
+                            'tipo_estado_nombre_portugues'          => '',
+
+                            'tipo_acceso_codigo'                    => '',
+                            'tipo_acceso_nombre_ingles'             => '',
+                            'tipo_acceso_nombre_castellano'         => '',
+                            'tipo_acceso_nombre_portugues'          => '',
+
+                            'tipo_perfil_codigo'                    => '',
+                            'tipo_perfil_nombre_ingles'             => '',
+                            'tipo_perfil_nombre_castellano'         => '',
+                            'tipo_perfil_nombre_portugues'          => '',
+
+                            'equipo_codigo'                         => '',
+                            'equipo_nombre'                         => '',
+
+                            'tipo_categoria_codigo'                 => '',
+                            'tipo_categoria_nombre_ingles'          => '',
+                            'tipo_categoria_nombre_castellano'      => '',
+                            'tipo_categoria_nombre_portugues'       => ''
+                        );
+
+                        header("Content-Type: application/json; charset=utf-8");
+                        $json = json_encode(array('code' => 401, 'status' => 'failure', 'message' => 'Contraseña invalida, vuelve a intentar', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                    }
+                }
+
+                if (!isset($result)){
+                    $detalle    = array(
+                        'persona_codigo'                        => '',
+                        'persona_nombre'                        => '',
+                        'persona_user'                          => '',
+                        'persona_contrasenha'                   => '',
+                        'persona_path'                          => '',
+                        'persona_email'                         => '',
+                        'persona_telefono'                      => '',
+                        'persona_observacion'                   => '',
+                        'persona_usuario'                       => '',
+                        'persona_fecha_hora'                    => '',
+                        'persona_ip'                            => '',
+
+                        'tipo_estado_codigo'                    => '',
+                        'tipo_estado_nombre_ingles'             => '',
+                        'tipo_estado_nombre_castellano'         => '',
+                        'tipo_estado_nombre_portugues'          => '',
+
+                        'tipo_acceso_codigo'                    => '',
+                        'tipo_acceso_nombre_ingles'             => '',
+                        'tipo_acceso_nombre_castellano'         => '',
+                        'tipo_acceso_nombre_portugues'          => '',
+
+                        'tipo_perfil_codigo'                    => '',
+                        'tipo_perfil_nombre_ingles'             => '',
+                        'tipo_perfil_nombre_castellano'         => '',
+                        'tipo_perfil_nombre_portugues'          => '',
+
+                        'equipo_codigo'                         => '',
+                        'equipo_nombre'                         => '',
+
+                        'tipo_categoria_codigo'                 => '',
+                        'tipo_categoria_nombre_ingles'          => '',
+                        'tipo_categoria_nombre_castellano'      => '',
+                        'tipo_categoria_nombre_portugues'       => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'ERROR: Verifique el usuario', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->post('/v1/000', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -94,7 +303,7 @@
         $val05      = $request->getParsedBody()['tipo_categoria_codigo'];
         $val06      = $request->getParsedBody()['persona_nombre'];
         $val07      = $request->getParsedBody()['persona_user'];
-        $val08      = $request->getParsedBody()['persona_contrasenha'];
+        $val08      = password_hash($request->getParsedBody()['persona_contrasenha'], PASSWORD_DEFAULT);
         $val09      = $request->getParsedBody()['persona_path'];
         $val10      = $request->getParsedBody()['persona_email'];
         $val11      = $request->getParsedBody()['persona_telefono'];
