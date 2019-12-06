@@ -66,6 +66,22 @@
                     $pass = trim($rowMSSQL['persona_contrasenha']);
 
                     if (password_verify($val02, $pass)) {
+                        if ($rowMSSQL['equipo_codigo'] == 1) {
+                            $equipo_codigo  = 39393;
+                            $equipo_nombre  = 'CONFEDERACIÓN SUDAMERICANA DE FÚTBOL';
+                        } else {
+                            $equipo_codigo  = $rowMSSQL['equipo_codigo'];
+                            $equipo_nombre  = trim($rowMSSQL['equipo_nombre']);
+                        }
+
+                        $persona_fecha_hora = date_format(date_create($rowMSSQL['persona_fecha_hora']), 'd/m/Y H:i:s');
+                    
+                        if (isset($rowMSSQL['persona_path'])){
+                            $persona_path = $rowMSSQL['persona_path'];
+                        } else {
+                            $persona_path = 'assets/images/users/defaul.png';
+                        }
+
                         $detalle    = array(
                             'persona_codigo'                        => $rowMSSQL['persona_codigo'],
                             'persona_nombre'                        => trim($rowMSSQL['persona_nombre']),
@@ -94,8 +110,8 @@
                             'tipo_perfil_nombre_castellano'         => trim($rowMSSQL['tipo_perfil_nombre_castellano']),
                             'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
 
-                            'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
-                            'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
+                            'equipo_codigo'                         => $equipo_codigo,
+                            'equipo_nombre'                         => $equipo_nombre,
 
                             'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
                             'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
