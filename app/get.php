@@ -3812,3 +3812,135 @@
         
         return $json;
     });
+
+    $app->get('/v1/600/CAMPOPOSICION/{equipo}/{competicion}/{estado}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('equipo');
+        $val02      = $request->getAttribute('competicion');
+        $val03      = $request->getAttribute('estado');
+        
+        if (isset($val01) && isset($val02) && isset($val03)) {
+            $sql00  = "";
+
+            if($val01 == 39393 && $val03 == 0) {
+                $sql00  = "SELECT
+                b.DOMFICCOD                 AS          tipo_codigo,
+                b.DOMFICNOI                 AS          tipo_nombre_ingles,
+                b.DOMFICNOC                 AS          tipo_nombre_castellano,
+                b.DOMFICNOP                 AS          tipo_nombre_portugues,
+                COUNT(*)                    AS          tipo_cantidad
+
+                FROM [lesion].[LESFIC] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LESFICPOS = b.DOMFICCOD
+
+                WHERE a.LESFICCOC = ?
+
+                GROUP BY b.DOMFICCOD, b.DOMFICNOI, b.DOMFICNOC, b.DOMFICNOP";
+                
+            } elseif ($val01 == 39393 && $val03 != 0) {
+                $sql00  = "SELECT
+                b.DOMFICCOD                 AS          tipo_codigo,
+                b.DOMFICNOI                 AS          tipo_nombre_ingles,
+                b.DOMFICNOC                 AS          tipo_nombre_castellano,
+                b.DOMFICNOP                 AS          tipo_nombre_portugues,
+                COUNT(*)                    AS          tipo_cantidad
+
+                FROM [lesion].[LESFIC] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LESFICPOS = b.DOMFICCOD
+
+                WHERE a.LESFICCOC = ? AND a.LESFICPOS = ?
+
+                GROUP BY b.DOMFICCOD, b.DOMFICNOI, b.DOMFICNOC, b.DOMFICNOP";
+
+            } elseif ($val01 != 39393 && $val03 == 0) {
+                $sql00  = "SELECT
+                b.DOMFICCOD                 AS          tipo_codigo,
+                b.DOMFICNOI                 AS          tipo_nombre_ingles,
+                b.DOMFICNOC                 AS          tipo_nombre_castellano,
+                b.DOMFICNOP                 AS          tipo_nombre_portugues,
+                COUNT(*)                    AS          tipo_cantidad
+
+                FROM [lesion].[LESFIC] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LESFICPOS = b.DOMFICCOD
+
+                WHERE a.LESFICCOC = ? AND a.LESFICEQC = ?
+
+                GROUP BY b.DOMFICCOD, b.DOMFICNOI, b.DOMFICNOC, b.DOMFICNOP";
+
+            } elseif ($val01 != 39393 && $val03 != 0) {
+                $sql00  = "SELECT
+                b.DOMFICCOD                 AS          tipo_codigo,
+                b.DOMFICNOI                 AS          tipo_nombre_ingles,
+                b.DOMFICNOC                 AS          tipo_nombre_castellano,
+                b.DOMFICNOP                 AS          tipo_nombre_portugues,
+                COUNT(*)                    AS          tipo_cantidad
+
+                FROM [lesion].[LESFIC] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LESFICPOS = b.DOMFICCOD
+
+                WHERE a.LESFICCOC = ? AND a.LESFICEQC = ? AND a.LESFICPOS = ?
+
+                GROUP BY b.DOMFICCOD, b.DOMFICNOI, b.DOMFICNOC, b.DOMFICNOP";
+            }
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                if($val01 == 39393 && $val03 == 0) {
+                    $stmtMSSQL->execute([$val02]);
+                    
+                } elseif ($val01 == 39393 && $val03 != 0) {
+                    $stmtMSSQL->execute([$val02, $val03]);
+    
+                } elseif ($val01 != 39393 && $val03 == 0) {
+                    $stmtMSSQL->execute([$val02, $val01]);
+    
+                } elseif ($val01 != 39393 && $val03 != 0) {
+                    $stmtMSSQL->execute([$val02, $val01, $val03]);
+                }
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $detalle    = array(
+                        'tipo_codigo'                       => $rowMSSQL['tipo_codigo'],
+                        'tipo_nombre_ingles'                => trim($rowMSSQL['tipo_nombre_ingles']),
+                        'tipo_nombre_castellano'            => trim($rowMSSQL['tipo_nombre_castellano']),
+                        'tipo_nombre_portugues'             => trim($rowMSSQL['tipo_nombre_portugues']),
+                        'tipo_cantidad'                     => $rowMSSQL['tipo_cantidad']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'tipo_codigo'                       => '',
+                        'tipo_nombre_ingles'                => '',
+                        'tipo_nombre_castellano'            => '',
+                        'tipo_nombre_portugues'             => '',
+                        'tipo_cantidad'                     => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
