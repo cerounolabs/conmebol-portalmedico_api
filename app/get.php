@@ -4400,7 +4400,7 @@
                             break;
                     }
 
-                    $fecFinal   = date('d/m/Y', strtotime($fecha_actual.'+ '.$cantDia.' days'));
+                    $fecFinal   = date('d/m/Y', strtotime(date_format(date_create($rowMSSQL['lesion_fecha_alta']), 'Y-m-d').'+ '.$cantDia.' days'));
                     $fecTrans1  = new DateTime(date_format(date_create($rowMSSQL['lesion_fecha_alta']), 'Y-m-d'));
                     $fecTrans2  = new DateTime(date('Y-m-d'));
                     $fecTransT  = ($fecTrans1->diff($fecTrans2))->days;
