@@ -39,7 +39,7 @@
             d.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
 
             e.teamFifaId                        AS          equipo_codigo,
-            e.internationalShortName            AS          equipo_nombre,
+            e.internationalName                 AS          equipo_nombre,
 
             f.DOMFICCOD                         AS          tipo_categoria_codigo,
             f.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
