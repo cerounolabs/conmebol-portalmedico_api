@@ -2493,7 +2493,7 @@
 
             if ($val01 == 39393) {
                 $sql00  = "SELECT
-                a.LESFICCOD                 AS          competicion_codigo,
+                a.LESFICCOD                 AS          lesion_codigo,
                 a.LESFICFEC                 AS          lesion_fecha_alta,
                 a.LESFICFER                 AS          lesion_fecha_retorno,
                 a.LESFICCIR                 As          lesion_cirugia,
@@ -2660,7 +2660,7 @@
                 ORDER BY a.LESFICFEC DESC";
             } else {
                 $sql00  = "SELECT
-                a.LESFICCOD                 AS          competicion_codigo,
+                a.LESFICCOD                 AS          lesion_codigo,
                 a.LESFICFEC                 AS          lesion_fecha_alta,
                 a.LESFICFER                 AS          lesion_fecha_retorno,
                 a.LESFICCIR                 As          lesion_cirugia,
