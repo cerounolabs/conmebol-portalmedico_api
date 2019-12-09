@@ -2495,6 +2495,8 @@
                 $sql00  = "SELECT
                 a.LESFICCOD                 AS          competicion_codigo,
                 a.LESFICFEC                 AS          lesion_fecha_alta,
+                a.LESFICFER                 AS          lesion_fecha_retorno,
+                a.LESFICCIR                 As          lesion_cirugia,
                 a.LESFICTEM                 AS          temperatura_numero,
 
                 b.DOMFICCOD                 AS          tipo_estado_codigo,
@@ -2562,6 +2564,26 @@
                 n.DOMFICNOC                 AS          tipo_lesion_causa_nombre_castellano,
                 n.DOMFICNOP                 AS          tipo_lesion_causa_nombre_portugues,
 
+                w1.DOMFICCOD                AS          tipo_lesion_examen1_codigo,
+                w1.DOMFICNOI                AS          tipo_lesion_examen1_nombre_ingles,
+                w1.DOMFICNOC                AS          tipo_lesion_examen1_nombre_castellano,
+                w1.DOMFICNOP                AS          tipo_lesion_examen1_nombre_portugues,
+
+                w2.DOMFICCOD                AS          tipo_lesion_examen2_codigo,
+                w2.DOMFICNOI                AS          tipo_lesion_examen2_nombre_ingles,
+                w2.DOMFICNOC                AS          tipo_lesion_examen2_nombre_castellano,
+                w2.DOMFICNOP                AS          tipo_lesion_examen2_nombre_portugues,
+
+                w3.DOMFICCOD                AS          tipo_lesion_examen3_codigo,
+                w3.DOMFICNOI                AS          tipo_lesion_examen3_nombre_ingles,
+                w3.DOMFICNOC                AS          tipo_lesion_examen3_nombre_castellano,
+                w3.DOMFICNOP                AS          tipo_lesion_examen3_nombre_portugues,
+
+                w4.DOMFICCOD                AS          tipo_lesion_examen4_codigo,
+                w4.DOMFICNOI                AS          tipo_lesion_examen4_nombre_ingles,
+                w4.DOMFICNOC                AS          tipo_lesion_examen4_nombre_castellano,
+                w4.DOMFICNOP                AS          tipo_lesion_examen4_nombre_portugues,
+
                 o.DOMFICCOD                 AS          tipo_lesion_falta_codigo,
                 o.DOMFICNOI                 AS          tipo_lesion_falta_nombre_ingles,
                 o.DOMFICNOC                 AS          tipo_lesion_falta_nombre_castellano,
@@ -2572,6 +2594,12 @@
                 p.DOMSUBNOC                 AS          tipo_diagnostico_nombre_castellano,
                 p.DOMSUBNOP                 AS          tipo_diagnostico_nombre_portugues,
                 a.LESFICOBS                 AS          tipo_diagnostico_observacion,
+
+                p1.DOMSUBCOD                AS          tipo_diagnostico_retorno_codigo,
+                p1.DOMSUBNOI                AS          tipo_diagnostico_retorno_nombre_ingles,
+                p1.DOMSUBNOC                AS          tipo_diagnostico_retorno_nombre_castellano,
+                p1.DOMSUBNOP                AS          tipo_diagnostico_retorno_nombre_portugues,
+                a.LESFICOBF                 AS          tipo_diagnostico_retorno_observacion,
 
                 q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
                 q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
@@ -2602,33 +2630,40 @@
                 a.LESFICAIP                 AS          auditoria_ip
 
                 FROM [lesion].[LESFIC] a
-                INNER JOIN [adm].[DOMFIC] b ON a.LESFICESC = b.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] c ON a.LESFICCLI = c.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] d ON a.LESFICDIS = d.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] e ON a.LESFICTRA = e.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] f ON a.LESFICPOS = f.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] g ON a.LESFICMIN = g.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] h ON a.LESFICCAM = h.DOMFICCOD
-                INNER JOIN [adm].[DOMSUB] i ON a.LESFICCUZ = i.DOMSUBCOD
-                INNER JOIN [adm].[DOMFIC] j ON a.LESFICCUL = j.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] k ON a.LESFICLES = k.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] l ON a.LESFICORI = l.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] m ON a.LESFICREI = m.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
-                INNER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
-                INNER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
-                INNER JOIN [comet].[competitions] s ON a.LESFICCOC = s.competitionFifaId
-                INNER JOIN [view].[juego] t ON a.LESFICJUC = t.JUEGO_CODIGO
-                INNER JOIN [comet].[teams] u ON a.LESFICEQC = u.teamFifaId
-                INNER JOIN [comet].[persons] v ON a.LESFICPEC = v.personFifaId
+                LEFT OUTER JOIN [adm].[DOMFIC] b ON a.LESFICESC = b.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] c ON a.LESFICCLI = c.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] d ON a.LESFICDIS = d.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] e ON a.LESFICTRA = e.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] f ON a.LESFICPOS = f.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] g ON a.LESFICMIN = g.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] h ON a.LESFICCAM = h.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMSUB] i ON a.LESFICCUZ = i.DOMSUBCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] j ON a.LESFICCUL = j.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] k ON a.LESFICLES = k.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] l ON a.LESFICORI = l.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] m ON a.LESFICREI = m.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
+                LEFT OUTER JOIN [adm].[DOMSUB] p1 ON a.LESFICDIF = p1.DOMSUBCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
+                LEFT OUTER JOIN [comet].[competitions] s ON a.LESFICCOC = s.competitionFifaId
+                LEFT OUTER JOIN [view].[juego] t ON a.LESFICJUC = t.JUEGO_CODIGO
+                LEFT OUTER JOIN [comet].[teams] u ON a.LESFICEQC = u.teamFifaId
+                LEFT OUTER JOIN [comet].[persons] v ON a.LESFICPEC = v.personFifaId
+                LEFT OUTER JOIN [adm].[DOMFIC] w1 ON a.LESFICEX1 = w1.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w2 ON a.LESFICEX2 = w2.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
 
                 ORDER BY a.LESFICFEC DESC";
             } else {
                 $sql00  = "SELECT
-                a.LESFICCOD                 AS          lesion_codigo,
+                a.LESFICCOD                 AS          competicion_codigo,
                 a.LESFICFEC                 AS          lesion_fecha_alta,
+                a.LESFICFER                 AS          lesion_fecha_retorno,
+                a.LESFICCIR                 As          lesion_cirugia,
                 a.LESFICTEM                 AS          temperatura_numero,
 
                 b.DOMFICCOD                 AS          tipo_estado_codigo,
@@ -2696,6 +2731,26 @@
                 n.DOMFICNOC                 AS          tipo_lesion_causa_nombre_castellano,
                 n.DOMFICNOP                 AS          tipo_lesion_causa_nombre_portugues,
 
+                w1.DOMFICCOD                AS          tipo_lesion_examen1_codigo,
+                w1.DOMFICNOI                AS          tipo_lesion_examen1_nombre_ingles,
+                w1.DOMFICNOC                AS          tipo_lesion_examen1_nombre_castellano,
+                w1.DOMFICNOP                AS          tipo_lesion_examen1_nombre_portugues,
+
+                w2.DOMFICCOD                AS          tipo_lesion_examen2_codigo,
+                w2.DOMFICNOI                AS          tipo_lesion_examen2_nombre_ingles,
+                w2.DOMFICNOC                AS          tipo_lesion_examen2_nombre_castellano,
+                w2.DOMFICNOP                AS          tipo_lesion_examen2_nombre_portugues,
+
+                w3.DOMFICCOD                AS          tipo_lesion_examen3_codigo,
+                w3.DOMFICNOI                AS          tipo_lesion_examen3_nombre_ingles,
+                w3.DOMFICNOC                AS          tipo_lesion_examen3_nombre_castellano,
+                w3.DOMFICNOP                AS          tipo_lesion_examen3_nombre_portugues,
+
+                w4.DOMFICCOD                AS          tipo_lesion_examen4_codigo,
+                w4.DOMFICNOI                AS          tipo_lesion_examen4_nombre_ingles,
+                w4.DOMFICNOC                AS          tipo_lesion_examen4_nombre_castellano,
+                w4.DOMFICNOP                AS          tipo_lesion_examen4_nombre_portugues,
+
                 o.DOMFICCOD                 AS          tipo_lesion_falta_codigo,
                 o.DOMFICNOI                 AS          tipo_lesion_falta_nombre_ingles,
                 o.DOMFICNOC                 AS          tipo_lesion_falta_nombre_castellano,
@@ -2706,6 +2761,12 @@
                 p.DOMSUBNOC                 AS          tipo_diagnostico_nombre_castellano,
                 p.DOMSUBNOP                 AS          tipo_diagnostico_nombre_portugues,
                 a.LESFICOBS                 AS          tipo_diagnostico_observacion,
+
+                p1.DOMSUBCOD                AS          tipo_diagnostico_retorno_codigo,
+                p1.DOMSUBNOI                AS          tipo_diagnostico_retorno_nombre_ingles,
+                p1.DOMSUBNOC                AS          tipo_diagnostico_retorno_nombre_castellano,
+                p1.DOMSUBNOP                AS          tipo_diagnostico_retorno_nombre_portugues,
+                a.LESFICOBF                 AS          tipo_diagnostico_retorno_observacion,
 
                 q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
                 q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
@@ -2736,27 +2797,32 @@
                 a.LESFICAIP                 AS          auditoria_ip
 
                 FROM [lesion].[LESFIC] a
-                INNER JOIN [adm].[DOMFIC] b ON a.LESFICESC = b.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] c ON a.LESFICCLI = c.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] d ON a.LESFICDIS = d.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] e ON a.LESFICTRA = e.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] f ON a.LESFICPOS = f.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] g ON a.LESFICMIN = g.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] h ON a.LESFICCAM = h.DOMFICCOD
-                INNER JOIN [adm].[DOMSUB] i ON a.LESFICCUZ = i.DOMSUBCOD
-                INNER JOIN [adm].[DOMFIC] j ON a.LESFICCUL = j.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] k ON a.LESFICLES = k.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] l ON a.LESFICORI = l.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] m ON a.LESFICREI = m.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
-                INNER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
-                INNER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
-                INNER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
-                INNER JOIN [comet].[competitions] s ON a.LESFICCOC = s.competitionFifaId
-                INNER JOIN [view].[juego] t ON a.LESFICJUC = t.JUEGO_CODIGO
-                INNER JOIN [comet].[teams] u ON a.LESFICEQC = u.teamFifaId
-                INNER JOIN [comet].[persons] v ON a.LESFICPEC = v.personFifaId
+                LEFT OUTER JOIN [adm].[DOMFIC] b ON a.LESFICESC = b.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] c ON a.LESFICCLI = c.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] d ON a.LESFICDIS = d.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] e ON a.LESFICTRA = e.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] f ON a.LESFICPOS = f.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] g ON a.LESFICMIN = g.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] h ON a.LESFICCAM = h.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMSUB] i ON a.LESFICCUZ = i.DOMSUBCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] j ON a.LESFICCUL = j.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] k ON a.LESFICLES = k.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] l ON a.LESFICORI = l.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] m ON a.LESFICREI = m.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
+                LEFT OUTER JOIN [adm].[DOMSUB] p1 ON a.LESFICDIF = p1.DOMSUBCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
+                LEFT OUTER JOIN [comet].[competitions] s ON a.LESFICCOC = s.competitionFifaId
+                LEFT OUTER JOIN [view].[juego] t ON a.LESFICJUC = t.JUEGO_CODIGO
+                LEFT OUTER JOIN [comet].[teams] u ON a.LESFICEQC = u.teamFifaId
+                LEFT OUTER JOIN [comet].[persons] v ON a.LESFICPEC = v.personFifaId
+                LEFT OUTER JOIN [adm].[DOMFIC] w1 ON a.LESFICEX1 = w1.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w2 ON a.LESFICEX2 = w2.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
 
                 WHERE a.LESFICEQC = ?
                 
@@ -2778,6 +2844,8 @@
                         'lesion_codigo'                                             => ($rowMSSQL['lesion_codigo']),
                         'competicion_codigo'                                        => ($rowMSSQL['competicion_codigo']),
                         'lesion_fecha_alta'                                         => date_format(date_create($rowMSSQL['lesion_fecha_alta']), 'd/m/Y H:i:s'),
+                        'lesion_fecha_retorno'                                      => date_format(date_create($rowMSSQL['lesion_fecha_retorno']), 'd/m/Y H:i:s'),
+                        'lesion_cirugia'                                            => trim($rowMSSQL['lesion_cirugia']),
                         'temperatura_numero'                                        => trim($rowMSSQL['temperatura_numero']),
 
                         'tipo_estado_codigo'                                        => ($rowMSSQL['tipo_estado_codigo']),
@@ -2840,6 +2908,26 @@
                         'tipo_lesion_reincidencia_nombre_castellano'                => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_castellano']),
                         'tipo_lesion_reincidencia_nombre_portugues'                 => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_portugues']),
 
+                        'tipo_lesion_examen1_codigo'                                => ($rowMSSQL['tipo_lesion_examen1_codigo']),
+                        'tipo_lesion_examen1_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen1_nombre_ingles']),
+                        'tipo_lesion_examen1_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen1_nombre_castellano']),
+                        'tipo_lesion_examen1_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen1_nombre_portugues']),
+
+                        'tipo_lesion_examen2_codigo'                                => ($rowMSSQL['tipo_lesion_examen2_codigo']),
+                        'tipo_lesion_examen2_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen2_nombre_ingles']),
+                        'tipo_lesion_examen2_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen2_nombre_castellano']),
+                        'tipo_lesion_examen2_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen2_nombre_portugues']),
+
+                        'tipo_lesion_examen3_codigo'                                => ($rowMSSQL['tipo_lesion_examen3_codigo']),
+                        'tipo_lesion_examen3_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen3_nombre_ingles']),
+                        'tipo_lesion_examen3_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen3_nombre_castellano']),
+                        'tipo_lesion_examen3_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen3_nombre_portugues']),
+
+                        'tipo_lesion_examen4_codigo'                                => ($rowMSSQL['tipo_lesion_examen4_codigo']),
+                        'tipo_lesion_examen4_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen4_nombre_ingles']),
+                        'tipo_lesion_examen4_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen4_nombre_castellano']),
+                        'tipo_lesion_examen4_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen4_nombre_portugues']),
+
                         'tipo_lesion_causa_codigo'                                  => ($rowMSSQL['tipo_lesion_causa_codigo']),
                         'tipo_lesion_causa_nombre_ingles'                           => trim($rowMSSQL['tipo_lesion_causa_nombre_ingles']),
                         'tipo_lesion_causa_nombre_castellano'                       => trim($rowMSSQL['tipo_lesion_causa_nombre_castellano']),
@@ -2855,6 +2943,12 @@
                         'tipo_diagnostico_nombre_castellano'                        => trim($rowMSSQL['tipo_diagnostico_nombre_castellano']),
                         'tipo_diagnostico_nombre_portugues'                         => trim($rowMSSQL['tipo_diagnostico_nombre_portugues']),
                         'tipo_diagnostico_observacion'                              => trim($rowMSSQL['tipo_diagnostico_observacion']),
+
+                        'tipo_diagnostico_retorno_codigo'                           => ($rowMSSQL['tipo_diagnostico_retorno_codigo']),
+                        'tipo_diagnostico_retorno_nombre_ingles'                    => trim($rowMSSQL['tipo_diagnostico_retorno_nombre_ingles']),
+                        'tipo_diagnostico_retorno_nombre_castellano'                => trim($rowMSSQL['tipo_diagnostico_retorno_nombre_castellano']),
+                        'tipo_diagnostico_retorno_nombre_portugues'                 => trim($rowMSSQL['tipo_diagnostico_retorno_nombre_portugues']),
+                        'tipo_diagnostico_retorno_observacion'                      => trim($rowMSSQL['tipo_diagnostico_retorno_observacion']),
 
                         'tipo_diagnostico_recuperacion_codigo'                      => ($rowMSSQL['tipo_diagnostico_recuperacion_codigo']),
                         'tipo_diagnostico_recuperacion_nombre_ingles'               => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_ingles']),
@@ -2893,7 +2987,10 @@
                 } else {
                     $detalle = array(
                         'lesion_codigo'                                             => '',
+                        'competicion_codigo'                                        => '',
                         'lesion_fecha_alta'                                         => '',
+                        'lesion_fecha_retorno'                                      => '',
+                        'lesion_cirugia'                                            => '',
                         'temperatura_numero'                                        => '',
 
                         'tipo_estado_codigo'                                        => '',
@@ -2956,6 +3053,26 @@
                         'tipo_lesion_reincidencia_nombre_castellano'                => '',
                         'tipo_lesion_reincidencia_nombre_portugues'                 => '',
 
+                        'tipo_lesion_examen1_codigo'                                => '',
+                        'tipo_lesion_examen1_nombre_ingles'                         => '',
+                        'tipo_lesion_examen1_nombre_castellano'                     => '',
+                        'tipo_lesion_examen1_nombre_portugues'                      => '',
+
+                        'tipo_lesion_examen2_codigo'                                => '',
+                        'tipo_lesion_examen2_nombre_ingles'                         => '',
+                        'tipo_lesion_examen2_nombre_castellano'                     => '',
+                        'tipo_lesion_examen2_nombre_portugues'                      => '',
+
+                        'tipo_lesion_examen3_codigo'                                => '',
+                        'tipo_lesion_examen3_nombre_ingles'                         => '',
+                        'tipo_lesion_examen3_nombre_castellano'                     => '',
+                        'tipo_lesion_examen3_nombre_portugues'                      => '',
+
+                        'tipo_lesion_examen4_codigo'                                => '',
+                        'tipo_lesion_examen4_nombre_ingles'                         => '',
+                        'tipo_lesion_examen4_nombre_castellano'                     => '',
+                        'tipo_lesion_examen4_nombre_portugues'                      => '',
+
                         'tipo_lesion_causa_codigo'                                  => '',
                         'tipo_lesion_causa_nombre_ingles'                           => '',
                         'tipo_lesion_causa_nombre_castellano'                       => '',
@@ -2971,6 +3088,12 @@
                         'tipo_diagnostico_nombre_castellano'                        => '',
                         'tipo_diagnostico_nombre_portugues'                         => '',
                         'tipo_diagnostico_observacion'                              => '',
+
+                        'tipo_diagnostico_retorno_codigo'                           => '',
+                        'tipo_diagnostico_retorno_nombre_ingles'                    => '',
+                        'tipo_diagnostico_retorno_nombre_castellano'                => '',
+                        'tipo_diagnostico_retorno_nombre_portugues'                 => '',
+                        'tipo_diagnostico_retorno_observacion'                      => '',
 
                         'tipo_diagnostico_recuperacion_codigo'                      => '',
                         'tipo_diagnostico_recuperacion_nombre_ingles'               => '',
@@ -2994,11 +3117,10 @@
 
                         'jugador_codigo'                                            => '',
                         'jugador_nombre'                                            => '',
-                        'jugador_apellido'                                          => '',
 
                         'auditoria_usuario'                                         => '',
                         'auditoria_fecha_hora'                                      => '',
-                        'auditoria_ip'                                              => '' 
+                        'auditoria_ip'                                              => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
