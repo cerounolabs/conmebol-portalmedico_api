@@ -2662,7 +2662,7 @@
                 LEFT OUTER JOIN [adm].[DOMFIC] w2 ON a.LESFICEX2 = w2.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX4 = w5.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX5 = w5.DOMFICCOD
 
                 ORDER BY a.LESFICFEC DESC";
             } else {
@@ -2836,7 +2836,7 @@
                 LEFT OUTER JOIN [adm].[DOMFIC] w2 ON a.LESFICEX2 = w2.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX4 = w5.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX5 = w5.DOMFICCOD
 
                 WHERE a.LESFICEQC = ?
                 
