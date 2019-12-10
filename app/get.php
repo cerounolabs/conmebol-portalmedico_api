@@ -2745,6 +2745,7 @@
                 p1.DOMSUBNOC                AS          tipo_diagnostico_retorno_nombre_castellano,
                 p1.DOMSUBNOP                AS          tipo_diagnostico_retorno_nombre_portugues,
                 a.LESFICOBR                 AS          tipo_diagnostico_retorno_observacion,
+                a.LESFICTRR                 AS          tipo_diagnostico_retorno_tratamiento,
 
                 q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
                 q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
@@ -2919,6 +2920,7 @@
                 p1.DOMSUBNOC                AS          tipo_diagnostico_retorno_nombre_castellano,
                 p1.DOMSUBNOP                AS          tipo_diagnostico_retorno_nombre_portugues,
                 a.LESFICOBR                 AS          tipo_diagnostico_retorno_observacion,
+                a.LESFICTRR                 AS          tipo_diagnostico_retorno_tratamiento,
 
                 q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
                 q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
@@ -3108,6 +3110,7 @@
                         'tipo_diagnostico_retorno_nombre_castellano'                => trim($rowMSSQL['tipo_diagnostico_retorno_nombre_castellano']),
                         'tipo_diagnostico_retorno_nombre_portugues'                 => trim($rowMSSQL['tipo_diagnostico_retorno_nombre_portugues']),
                         'tipo_diagnostico_retorno_observacion'                      => trim($rowMSSQL['tipo_diagnostico_retorno_observacion']),
+                        'tipo_diagnostico_retorno_tratamiento'                      => trim($rowMSSQL['tipo_diagnostico_retorno_tratamiento']),
 
                         'tipo_diagnostico_recuperacion_codigo'                      => ($rowMSSQL['tipo_diagnostico_recuperacion_codigo']),
                         'tipo_diagnostico_recuperacion_nombre_ingles'               => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_ingles']),
@@ -3259,6 +3262,7 @@
                         'tipo_diagnostico_retorno_nombre_castellano'                => '',
                         'tipo_diagnostico_retorno_nombre_portugues'                 => '',
                         'tipo_diagnostico_retorno_observacion'                      => '',
+                        'tipo_diagnostico_retorno_tratamiento'                      => '',
 
                         'tipo_diagnostico_recuperacion_codigo'                      => '',
                         'tipo_diagnostico_recuperacion_nombre_ingles'               => '',

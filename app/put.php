@@ -148,18 +148,19 @@
         $val09      = $request->getParsedBody()['tipo_diagnostico_retorno_codigo'];
         $val10      = $request->getParsedBody()['diagnostico_retorno_observacion'];
         $val11      = $request->getParsedBody()['tipo_estado_codigo'];
+        $val12      = $request->getParsedBody()['diagnostico_retorno_tratamiento'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val00) && isset($val01)) {
-            $sql00  = "UPDATE [lesion].[LESFIC] SET LESFICESC = ?, LESFICEX1 = ?, LESFICEX2 = ?, LESFICEX3 = ?,  LESFICEX4 = ?, LESFICEX5 = ?, LESFICFER = ?, LESFICCIR = ?, LESFICDIR = ?, LESFICOBR = ?, LESFICAUS = ?, LESFICAFH = GETDATE(), LESFICAIP = ? WHERE LESFICCOD = ?";
+            $sql00  = "UPDATE [lesion].[LESFIC] SET LESFICESC = ?, LESFICEX1 = ?, LESFICEX2 = ?, LESFICEX3 = ?,  LESFICEX4 = ?, LESFICEX5 = ?, LESFICFER = ?, LESFICCIR = ?, LESFICDIR = ?, LESFICOBR = ?, LESFICTRR = ?, LESFICAUS = ?, LESFICAFH = GETDATE(), LESFICAIP = ? WHERE LESFICCOD = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val11, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $aud01, $aud03, $val00]); 
+                $stmtMSSQL->execute([$val11, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03, $val00]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
