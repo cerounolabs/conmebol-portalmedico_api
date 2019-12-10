@@ -2651,7 +2651,7 @@
                 LEFT OUTER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
-                LEFT OUTER JOIN [adm].[DOMSUB] p1 ON a.LESFICDIF = p1.DOMSUBCOD
+                LEFT OUTER JOIN [adm].[DOMSUB] p1 ON a.LESFICDIR = p1.DOMSUBCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
                 LEFT OUTER JOIN [comet].[competitions] s ON a.LESFICCOC = s.competitionFifaId
@@ -2825,7 +2825,7 @@
                 LEFT OUTER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
-                LEFT OUTER JOIN [adm].[DOMSUB] p1 ON a.LESFICDIF = p1.DOMSUBCOD
+                LEFT OUTER JOIN [adm].[DOMSUB] p1 ON a.LESFICDIR = p1.DOMSUBCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
                 LEFT OUTER JOIN [comet].[competitions] s ON a.LESFICCOC = s.competitionFifaId
