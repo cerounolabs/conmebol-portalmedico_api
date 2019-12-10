@@ -185,7 +185,7 @@
         $val00      = $request->getAttribute('codigo');
         $val01      = $request->getParsedBody()['lesion_codigo'];
         $val02      = $request->getParsedBody()['tipo_estado_codigo'];
-        $val03      = $request->getParsedBody()['diagnostico_observacion'];
+        $val03      = $request->getParsedBody()['lesion_observacion'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];

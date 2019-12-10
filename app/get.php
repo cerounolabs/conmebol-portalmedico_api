@@ -2498,6 +2498,7 @@
                 a.LESFICFER                 AS          lesion_fecha_retorno,
                 a.LESFICCIR                 As          lesion_cirugia,
                 a.LESFICTEM                 AS          temperatura_numero,
+                a.LESFICOBS                 As          lesion_observacion,
 
                 b.DOMFICCOD                 AS          tipo_estado_codigo,
                 b.DOMFICNOI                 AS          tipo_estado_nombre_ingles,
@@ -2584,6 +2585,11 @@
                 w4.DOMFICNOC                AS          tipo_lesion_examen4_nombre_castellano,
                 w4.DOMFICNOP                AS          tipo_lesion_examen4_nombre_portugues,
 
+                w5.DOMFICCOD                AS          tipo_lesion_examen5_codigo,
+                w5.DOMFICNOI                AS          tipo_lesion_examen5_nombre_ingles,
+                w5.DOMFICNOC                AS          tipo_lesion_examen5_nombre_castellano,
+                w5.DOMFICNOP                AS          tipo_lesion_examen5_nombre_portugues,
+
                 o.DOMFICCOD                 AS          tipo_lesion_falta_codigo,
                 o.DOMFICNOI                 AS          tipo_lesion_falta_nombre_ingles,
                 o.DOMFICNOC                 AS          tipo_lesion_falta_nombre_castellano,
@@ -2593,13 +2599,13 @@
                 p.DOMSUBNOI                 AS          tipo_diagnostico_nombre_ingles,
                 p.DOMSUBNOC                 AS          tipo_diagnostico_nombre_castellano,
                 p.DOMSUBNOP                 AS          tipo_diagnostico_nombre_portugues,
-                a.LESFICOBS                 AS          tipo_diagnostico_observacion,
+                a.LESFICOBD                 AS          tipo_diagnostico_observacion,
 
                 p1.DOMSUBCOD                AS          tipo_diagnostico_retorno_codigo,
                 p1.DOMSUBNOI                AS          tipo_diagnostico_retorno_nombre_ingles,
                 p1.DOMSUBNOC                AS          tipo_diagnostico_retorno_nombre_castellano,
                 p1.DOMSUBNOP                AS          tipo_diagnostico_retorno_nombre_portugues,
-                a.LESFICOBF                 AS          tipo_diagnostico_retorno_observacion,
+                a.LESFICOBR                 AS          tipo_diagnostico_retorno_observacion,
 
                 q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
                 q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
@@ -2656,6 +2662,7 @@
                 LEFT OUTER JOIN [adm].[DOMFIC] w2 ON a.LESFICEX2 = w2.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX4 = w5.DOMFICCOD
 
                 ORDER BY a.LESFICFEC DESC";
             } else {
@@ -2665,6 +2672,7 @@
                 a.LESFICFER                 AS          lesion_fecha_retorno,
                 a.LESFICCIR                 As          lesion_cirugia,
                 a.LESFICTEM                 AS          temperatura_numero,
+                a.LESFICOBS                 As          lesion_observacion,
 
                 b.DOMFICCOD                 AS          tipo_estado_codigo,
                 b.DOMFICNOI                 AS          tipo_estado_nombre_ingles,
@@ -2751,6 +2759,11 @@
                 w4.DOMFICNOC                AS          tipo_lesion_examen4_nombre_castellano,
                 w4.DOMFICNOP                AS          tipo_lesion_examen4_nombre_portugues,
 
+                w5.DOMFICCOD                AS          tipo_lesion_examen5_codigo,
+                w5.DOMFICNOI                AS          tipo_lesion_examen5_nombre_ingles,
+                w5.DOMFICNOC                AS          tipo_lesion_examen5_nombre_castellano,
+                w5.DOMFICNOP                AS          tipo_lesion_examen5_nombre_portugues,
+
                 o.DOMFICCOD                 AS          tipo_lesion_falta_codigo,
                 o.DOMFICNOI                 AS          tipo_lesion_falta_nombre_ingles,
                 o.DOMFICNOC                 AS          tipo_lesion_falta_nombre_castellano,
@@ -2760,13 +2773,13 @@
                 p.DOMSUBNOI                 AS          tipo_diagnostico_nombre_ingles,
                 p.DOMSUBNOC                 AS          tipo_diagnostico_nombre_castellano,
                 p.DOMSUBNOP                 AS          tipo_diagnostico_nombre_portugues,
-                a.LESFICOBS                 AS          tipo_diagnostico_observacion,
+                a.LESFICOBD                 AS          tipo_diagnostico_observacion,
 
                 p1.DOMSUBCOD                AS          tipo_diagnostico_retorno_codigo,
                 p1.DOMSUBNOI                AS          tipo_diagnostico_retorno_nombre_ingles,
                 p1.DOMSUBNOC                AS          tipo_diagnostico_retorno_nombre_castellano,
                 p1.DOMSUBNOP                AS          tipo_diagnostico_retorno_nombre_portugues,
-                a.LESFICOBF                 AS          tipo_diagnostico_retorno_observacion,
+                a.LESFICOBR                 AS          tipo_diagnostico_retorno_observacion,
 
                 q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
                 q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
@@ -2823,6 +2836,7 @@
                 LEFT OUTER JOIN [adm].[DOMFIC] w2 ON a.LESFICEX2 = w2.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX4 = w5.DOMFICCOD
 
                 WHERE a.LESFICEQC = ?
                 
@@ -2847,6 +2861,7 @@
                         'lesion_fecha_retorno'                                      => date_format(date_create($rowMSSQL['lesion_fecha_retorno']), 'd/m/Y H:i:s'),
                         'lesion_cirugia'                                            => trim($rowMSSQL['lesion_cirugia']),
                         'temperatura_numero'                                        => trim($rowMSSQL['temperatura_numero']),
+                        'lesion_observacion'                                        => trim($rowMSSQL['lesion_observacion']),
 
                         'tipo_estado_codigo'                                        => ($rowMSSQL['tipo_estado_codigo']),
                         'tipo_estado_nombre_ingles'                                 => trim($rowMSSQL['tipo_estado_nombre_ingles']),
@@ -2928,6 +2943,11 @@
                         'tipo_lesion_examen4_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen4_nombre_castellano']),
                         'tipo_lesion_examen4_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen4_nombre_portugues']),
 
+                        'tipo_lesion_examen5_codigo'                                => ($rowMSSQL['tipo_lesion_examen5_codigo']),
+                        'tipo_lesion_examen5_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen5_nombre_ingles']),
+                        'tipo_lesion_examen5_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen5_nombre_castellano']),
+                        'tipo_lesion_examen5_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen5_nombre_portugues']),
+
                         'tipo_lesion_causa_codigo'                                  => ($rowMSSQL['tipo_lesion_causa_codigo']),
                         'tipo_lesion_causa_nombre_ingles'                           => trim($rowMSSQL['tipo_lesion_causa_nombre_ingles']),
                         'tipo_lesion_causa_nombre_castellano'                       => trim($rowMSSQL['tipo_lesion_causa_nombre_castellano']),
@@ -2992,6 +3012,7 @@
                         'lesion_fecha_retorno'                                      => '',
                         'lesion_cirugia'                                            => '',
                         'temperatura_numero'                                        => '',
+                        'lesion_observacion'                                        => '',
 
                         'tipo_estado_codigo'                                        => '',
                         'tipo_estado_nombre_ingles'                                 => '',
@@ -3072,6 +3093,11 @@
                         'tipo_lesion_examen4_nombre_ingles'                         => '',
                         'tipo_lesion_examen4_nombre_castellano'                     => '',
                         'tipo_lesion_examen4_nombre_portugues'                      => '',
+
+                        'tipo_lesion_examen5_codigo'                                => '',
+                        'tipo_lesion_examen5_nombre_ingles'                         => '',
+                        'tipo_lesion_examen5_nombre_castellano'                     => '',
+                        'tipo_lesion_examen5_nombre_portugues'                      => '',
 
                         'tipo_lesion_causa_codigo'                                  => '',
                         'tipo_lesion_causa_nombre_ingles'                           => '',
