@@ -3148,7 +3148,7 @@
                         'lesion_codigo'                                             => ($rowMSSQL['lesion_codigo']),
                         'competicion_codigo'                                        => ($rowMSSQL['competicion_codigo']),
                         'lesion_fecha_alta'                                         => date_format(date_create($rowMSSQL['lesion_fecha_alta']), 'd/m/Y H:i:s'),
-                        'lesion_fecha_retorno'                                      => date_format(date_create($rowMSSQL['lesion_fecha_retorno']), 'd/m/Y H:i:s'),
+                        'lesion_fecha_retorno'                                      => date_format(date_create($rowMSSQL['lesion_fecha_retorno']), 'd/m/Y'),
                         'lesion_cirugia'                                            => trim($rowMSSQL['lesion_cirugia']),
                         'temperatura_numero'                                        => trim($rowMSSQL['temperatura_numero']),
                         'lesion_observacion'                                        => trim($rowMSSQL['lesion_observacion']),
