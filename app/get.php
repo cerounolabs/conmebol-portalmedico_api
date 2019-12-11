@@ -1624,7 +1624,7 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
-                    $juego_cierra   = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
+                    $juego_cierra   = date("d/m/Y", strtotime(date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y')."+ 10 days"));
 
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
@@ -1635,7 +1635,7 @@
                         'juego_fase'                            => trim($rowMSSQL['juego_fase']),
                         'juego_estado'                          => trim($rowMSSQL['juego_estado']),
                         'juego_horario'                         => $juego_horario,
-                        'juego_cierra'                         => $juego_cierra,
+                        'juego_cierra'                          => $juego_cierra,
                         'equipo_local_codigo'                   => $rowMSSQL['equipo_local_codigo'],
                         'equipo_local_nombre'                   => trim($rowMSSQL['equipo_local_nombre']),
                         'equipo_local_resultado_primer'         => $rowMSSQL['equipo_local_resultado_primer'],
@@ -1647,6 +1647,8 @@
                         'equipo_visitante_resultado_segundo'    => $rowMSSQL['equipo_visitante_resultado_segundo'],
                         'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_segundo']
                     );
+
+                    $result[]   = $detalle;
                 }
 
                 if (isset($result)){
