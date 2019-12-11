@@ -1481,7 +1481,7 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
-                    $juego_cierra   = date("d/m/Y", strtotime(date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y')."+ 10 days"));
+                    $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
 
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
@@ -1624,7 +1624,7 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
-                    $juego_cierra   = date("d/m/Y", strtotime(date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y')."+ 10 days"));
+                    $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
 
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
