@@ -133,55 +133,30 @@
         return $json;
     });
 
-    $app->put('/v1/400/password/{codigo}', function($request) {
+    $app->put('/v1/400/reseteo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $val00      = $request->getAttribute('codigo');
-        $val01      = $request->getParsedBody()['tipo_estado_codigo'];
-        $val02      = $request->getParsedBody()['tipo_acceso_codigo'];
-        $val03      = $request->getParsedBody()['tipo_perfil_codigo'];
-        $val04      = $request->getParsedBody()['equipo_codigo'];
-        $val05      = $request->getParsedBody()['tipo_categoria_codigo'];
-        $val06      = $request->getParsedBody()['persona_nombre'];
-        $val07      = $request->getParsedBody()['persona_user'];
-        $val08_1    = $request->getParsedBody()['persona_contrasenha'];
-        $val08_2    = password_hash($request->getParsedBody()['persona_contrasenha'], PASSWORD_DEFAULT);
-        $val09      = $request->getParsedBody()['persona_path'];
-        $val10      = $request->getParsedBody()['persona_email'];
-        $val11      = $request->getParsedBody()['persona_telefono'];
-        $val12      = $request->getParsedBody()['persona_observacion'];
+        $val01      = $request->getParsedBody()['persona_user'];
+        $val02      = password_hash($request->getParsedBody()['persona_contrasenha'], PASSWORD_DEFAULT);
+        $val03      = $request->getParsedBody()['persona_email'];
         $aud01      = $request->getParsedBody()['persona_usuario'];
         $aud02      = $request->getParsedBody()['persona_fecha_hora'];
         $aud03      = $request->getParsedBody()['persona_ip'];
 
-        if (isset($val00) && isset($val08_1) && isset($val08_2) && isset($val07) && isset($val10) && isset($aud01) && isset($aud02) && isset($aud03)) {
-            $sql00  = "SELECT a.PERFICCOD AS persona_codigo, a.PERFICUSE AS persona_user, a.PERFICCON AS persona_contrasenha, a.PERFICMAI AS persona_email FROM [adm].[PERFIC] a WHERE a.PERFICCOD = ? AND a.PERFICUSE = ? AND a.PERFICMAI = ?";
-            $sql01  = "UPDATE [adm].[PERFIC] SET PERFICCON = ?, PERFICAUS = ?, PERFICAFH = GETDATE(), PERFICAIP = ? WHERE PERFICCOD = ? AND PERFICUSE = ? AND PERFICMAI = ?";
+        if (isset($val00) && isset($val01) && isset($val02) && isset($val03) && isset($aud01) && isset($aud02) && isset($aud03)) {
+            $sql00  = "UPDATE [adm].[PERFIC] SET PERFICCON = ?, PERFICAUS = ?, PERFICAFH = GETDATE(), PERFICAIP = ? WHERE PERFICCOD = ? AND PERFICUSE = ? AND PERFICMAI = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
-
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
-                $stmtMSSQL00->execute([$val00, $val07, $val010]);
-
-                $stmtMSSQL01= $connMSSQL->prepare($sql01);
-
-                while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    $pass = trim($rowMSSQL['persona_contrasenha']);
-
-                    if (password_verify($val08_1, $pass)) {
-                        $stmtMSSQL01->execute([$val08_2, $aud01, $aud03, $val00, $val07, $val10]);
-                    }
-                }
+                $stmtMSSQL00->execute([$val02, $aud01, $aud03, $val00, $val01, $val03]);
 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success. Se realizo con éxito el cambio de contraseña', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
 
                 $stmtMSSQL00->closeCursor();
                 $stmtMSSQL00 = null;
-
-                $stmtMSSQL01->closeCursor();
-                $stmtMSSQL01 = null;
             } catch (PDOException $e) {
                 header("Content-Type: application/json; charset=utf-8");
                 $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
