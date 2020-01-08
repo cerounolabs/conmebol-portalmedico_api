@@ -2848,6 +2848,11 @@
                 m.DOMFICNOC                 AS          tipo_lesion_reincidencia_nombre_castellano,
                 m.DOMFICNOP                 AS          tipo_lesion_reincidencia_nombre_portugues,
 
+                x.DOMFICCOD                 AS          tipo_lesion_retiro_codigo,
+                x.DOMFICNOI                 AS          tipo_lesion_retiro_nombre_ingles,
+                x.DOMFICNOC                 AS          tipo_lesion_retiro_nombre_castellano,
+                x.DOMFICNOP                 AS          tipo_lesion_retiro_nombre_portugues,
+
                 n.DOMFICCOD                 AS          tipo_lesion_causa_codigo,
                 n.DOMFICNOI                 AS          tipo_lesion_causa_nombre_ingles,
                 n.DOMFICNOC                 AS          tipo_lesion_causa_nombre_castellano,
@@ -2952,6 +2957,7 @@
                 LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX5 = w5.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] x ON a.LESFICRET = x.DOMFICCOD
 
                 ORDER BY a.LESFICFEC DESC";
             } else {
@@ -3023,6 +3029,11 @@
                 m.DOMFICNOC                 AS          tipo_lesion_reincidencia_nombre_castellano,
                 m.DOMFICNOP                 AS          tipo_lesion_reincidencia_nombre_portugues,
 
+                x.DOMFICCOD                 AS          tipo_lesion_retiro_codigo,
+                x.DOMFICNOI                 AS          tipo_lesion_retiro_nombre_ingles,
+                x.DOMFICNOC                 AS          tipo_lesion_retiro_nombre_castellano,
+                x.DOMFICNOP                 AS          tipo_lesion_retiro_nombre_portugues,
+
                 n.DOMFICCOD                 AS          tipo_lesion_causa_codigo,
                 n.DOMFICNOI                 AS          tipo_lesion_causa_nombre_ingles,
                 n.DOMFICNOC                 AS          tipo_lesion_causa_nombre_castellano,
@@ -3127,6 +3138,7 @@
                 LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX5 = w5.DOMFICCOD
+                LEFT OUTER JOIN [adm].[DOMFIC] x ON a.LESFICRET = x.DOMFICCOD
 
                 WHERE a.LESFICEQC = ?
                 
@@ -3212,6 +3224,11 @@
                         'tipo_lesion_reincidencia_nombre_ingles'                    => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_ingles']),
                         'tipo_lesion_reincidencia_nombre_castellano'                => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_castellano']),
                         'tipo_lesion_reincidencia_nombre_portugues'                 => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_portugues']),
+
+                        'tipo_lesion_retiro_codigo'                                 => ($rowMSSQL['tipo_lesion_retiro_codigo']),
+                        'tipo_lesion_retiro_nombre_ingles'                          => trim($rowMSSQL['tipo_lesion_retiro_nombre_ingles']),
+                        'tipo_lesion_retiro_nombre_castellano'                      => trim($rowMSSQL['tipo_lesion_retiro_nombre_castellano']),
+                        'tipo_lesion_retiro_nombre_portugues'                       => trim($rowMSSQL['tipo_lesion_retiro_nombre_portugues']),
 
                         'tipo_lesion_examen1_codigo'                                => ($rowMSSQL['tipo_lesion_examen1_codigo']),
                         'tipo_lesion_examen1_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen1_nombre_ingles']),
@@ -3364,6 +3381,11 @@
                         'tipo_lesion_reincidencia_nombre_ingles'                    => '',
                         'tipo_lesion_reincidencia_nombre_castellano'                => '',
                         'tipo_lesion_reincidencia_nombre_portugues'                 => '',
+
+                        'tipo_lesion_retiro_codigo'                                 => '',
+                        'tipo_lesion_retiro_nombre_ingles'                          => '',
+                        'tipo_lesion_retiro_nombre_castellano'                      => '',
+                        'tipo_lesion_retiro_nombre_portugues'                       => '',
 
                         'tipo_lesion_examen1_codigo'                                => '',
                         'tipo_lesion_examen1_nombre_ingles'                         => '',
