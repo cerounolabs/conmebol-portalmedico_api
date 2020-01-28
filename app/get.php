@@ -884,7 +884,7 @@
                 
                 WHERE a.superiorCompetitionFifaId IS NULL
 
-                ORDER BY a.discipline, a.season, a.competitionFifaId";
+                 ORDER BY a.season DESC, a.competitionFifaId DESC";
             } else {
                 $sql00  = "SELECT
                 a.competitionFifaId                 AS          competicion_codigo,
@@ -922,7 +922,7 @@
                 
                 WHERE a.superiorCompetitionFifaId IS NULL AND c.teamFifaId = ?
 
-                ORDER BY a.discipline, a.season, a.competitionFifaId";
+                 ORDER BY a.season DESC, a.competitionFifaId DESC";
             }
 
             try {
@@ -1097,7 +1097,7 @@
                 
                 WHERE a.superiorCompetitionFifaId IS NULL AND a.discipline = ?
 
-                ORDER BY a.discipline, a.season, a.competitionFifaId";
+                 ORDER BY a.season DESC, a.competitionFifaId DESC";
             } else {
                 $sql00  = "SELECT
                 a.competitionFifaId                 AS          competicion_codigo,
@@ -1135,7 +1135,7 @@
                 
                 WHERE a.superiorCompetitionFifaId IS NULL AND a.discipline = ? AND c.teamFifaId = ?
 
-                ORDER BY a.discipline, a.season, a.competitionFifaId";
+                 ORDER BY a.season DESC, a.competitionFifaId DESC";
             }
 
             try {
@@ -1297,7 +1297,7 @@
             
             WHERE a.superiorCompetitionFifaId = ?
 
-            ORDER BY a.discipline, a.season, a.competitionFifaId";
+            ORDER BY a.season DESC, a.competitionFifaId DESC";
 
             try {
                 $connMSSQL  = getConnectionMSSQL();
