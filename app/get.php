@@ -2911,8 +2911,8 @@
                 r.DOMFICNOC                 AS          tipo_diagnostico_tiempo_nombre_castellano,
                 r.DOMFICNOP                 AS          tipo_diagnostico_tiempo_nombre_portugues,
 
-                s.competitionFifaId         AS          competencia_codigo,
-                s.internationalName         AS          competencia_nombre,
+                s.competitionFifaId         AS          competicion_codigo,
+                s.internationalName         AS          competicion_nombre,
 
                 t.JUEGO_CODIGO              AS          juego_codigo,
                 t.EQUIPO_LOCAL_NOMBRE       AS          juego_equipo_local,
@@ -3092,8 +3092,8 @@
                 r.DOMFICNOC                 AS          tipo_diagnostico_tiempo_nombre_castellano,
                 r.DOMFICNOP                 AS          tipo_diagnostico_tiempo_nombre_portugues,
 
-                s.competitionFifaId         AS          competencia_codigo,
-                s.internationalName         AS          competencia_nombre,
+                s.competitionFifaId         AS          competicion_codigo,
+                s.internationalName         AS          competicion_nombre,
 
                 t.JUEGO_CODIGO              AS          juego_codigo,
                 t.EQUIPO_LOCAL_NOMBRE       AS          juego_equipo_local,
@@ -3289,8 +3289,8 @@
                         'tipo_diagnostico_tiempo_nombre_castellano'                 => trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_castellano']),
                         'tipo_diagnostico_tiempo_nombre_portugues'                  => trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_portugues']),
 
-                        'competencia_codigo'                                        => ($rowMSSQL['competencia_codigo']),
-                        'competencia_nombre'                                        => trim($rowMSSQL['competencia_nombre']),
+                        'competicion_codigo'                                        => ($rowMSSQL['competicion_codigo']),
+                        'competicion_nombre'                                        => trim($rowMSSQL['competicion_nombre']),
 
                         'juego_codigo'                                              => ($rowMSSQL['juego_codigo']),
                         'juego_nombre'                                              => trim($rowMSSQL['juego_equipo_local']).' vs '.trim($rowMSSQL['juego_equpo_visitante']),
@@ -3446,8 +3446,8 @@
                         'tipo_diagnostico_tiempo_nombre_castellano'                 => '',
                         'tipo_diagnostico_tiempo_nombre_portugues'                  => '',
 
-                        'competencia_codigo'                                        => '',
-                        'competencia_nombre'                                        => '',
+                        'competicion_codigo'                                        => '',
+                        'competicion_nombre'                                        => '',
 
                         'juego_codigo'                                              => '',
                         'juego_nombre'                                              => '',
