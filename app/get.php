@@ -3156,14 +3156,22 @@
                 }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $lesion_cirugia_nombre = 'NO';
+
+                    if (trim($rowMSSQL['lesion_cirugia']) == '2'){
+                        $lesion_cirugia_nombre = 'SI';
+                    }
+
                     $detalle    = array(
                         'lesion_codigo'                                             => ($rowMSSQL['lesion_codigo']),
                         'competicion_codigo'                                        => ($rowMSSQL['competicion_codigo']),
                         'lesion_fecha_alta'                                         => date_format(date_create($rowMSSQL['lesion_fecha_alta']), 'd/m/Y H:i:s'),
                         'lesion_fecha_retorno'                                      => date_format(date_create($rowMSSQL['lesion_fecha_retorno']), 'd/m/Y'),
-                        'lesion_cirugia'                                            => trim($rowMSSQL['lesion_cirugia']),
                         'temperatura_numero'                                        => trim($rowMSSQL['temperatura_numero']),
                         'lesion_observacion'                                        => trim($rowMSSQL['lesion_observacion']),
+
+                        'lesion_cirugia_codigo'                                     => trim($rowMSSQL['lesion_cirugia']),
+                        'lesion_cirugia_nombre'                                     => $lesion_cirugia_nombre,
 
                         'tipo_estado_codigo'                                        => ($rowMSSQL['tipo_estado_codigo']),
                         'tipo_estado_nombre_ingles'                                 => trim($rowMSSQL['tipo_estado_nombre_ingles']),
@@ -3318,9 +3326,11 @@
                         'competicion_codigo'                                        => '',
                         'lesion_fecha_alta'                                         => '',
                         'lesion_fecha_retorno'                                      => '',
-                        'lesion_cirugia'                                            => '',
                         'temperatura_numero'                                        => '',
                         'lesion_observacion'                                        => '',
+
+                        'lesion_cirugia_codigo'                                     => '',
+                        'lesion_cirugia_nombre'                                     => '',
 
                         'tipo_estado_codigo'                                        => '',
                         'tipo_estado_nombre_ingles'                                 => '',
@@ -3871,14 +3881,22 @@
                 }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $lesion_cirugia_nombre = 'NO';
+
+                    if (trim($rowMSSQL['lesion_cirugia']) == '2'){
+                        $lesion_cirugia_nombre = 'SI';
+                    }
+
                     $detalle    = array(
                         'lesion_codigo'                                             => ($rowMSSQL['lesion_codigo']),
                         'competicion_codigo'                                        => ($rowMSSQL['competicion_codigo']),
                         'lesion_fecha_alta'                                         => date_format(date_create($rowMSSQL['lesion_fecha_alta']), 'd/m/Y H:i:s'),
                         'lesion_fecha_retorno'                                      => date_format(date_create($rowMSSQL['lesion_fecha_retorno']), 'd/m/Y'),
-                        'lesion_cirugia'                                            => trim($rowMSSQL['lesion_cirugia']),
                         'temperatura_numero'                                        => trim($rowMSSQL['temperatura_numero']),
                         'lesion_observacion'                                        => trim($rowMSSQL['lesion_observacion']),
+
+                        'lesion_cirugia_codigo'                                     => trim($rowMSSQL['lesion_cirugia']),
+                        'lesion_cirugia_nombre'                                     => $lesion_cirugia_nombre,
 
                         'tipo_estado_codigo'                                        => ($rowMSSQL['tipo_estado_codigo']),
                         'tipo_estado_nombre_ingles'                                 => trim($rowMSSQL['tipo_estado_nombre_ingles']),
@@ -4033,9 +4051,11 @@
                         'competicion_codigo'                                        => '',
                         'lesion_fecha_alta'                                         => '',
                         'lesion_fecha_retorno'                                      => '',
-                        'lesion_cirugia'                                            => '',
                         'temperatura_numero'                                        => '',
                         'lesion_observacion'                                        => '',
+
+                        'lesion_cirugia_codigo'                                     => '',
+                        'lesion_cirugia_nombre'                                     => '',
 
                         'tipo_estado_codigo'                                        => '',
                         'tipo_estado_nombre_ingles'                                 => '',
