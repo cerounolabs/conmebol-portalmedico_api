@@ -3213,7 +3213,7 @@
                 LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX5 = w5.DOMFICCOD
                 LEFT OUTER JOIN [adm].[DOMFIC] x ON a.LESFICRET = x.DOMFICCOD
 
-                ORDER BY a.LESFICFEC DESC";
+                ORDER BY a.LESFICCOD DESC";
             } else {
                 $sql00  = "SELECT
                 a.LESFICCOD                 AS          lesion_codigo,
@@ -3396,7 +3396,7 @@
 
                 WHERE a.LESFICEQC = ?
                 
-                ORDER BY a.LESFICFEC DESC";
+                ORDER BY a.LESFICCOD DESC";
             }
 
             try {
@@ -3938,7 +3938,7 @@
 
                 WHERE a.LESFICCOC = ?
                 
-                ORDER BY a.LESFICFEC DESC";
+                ORDER BY a.LESFICCOD DESC";
             } else {
                 $sql00  = "SELECT
                 a.LESFICCOD                 AS          lesion_codigo,
@@ -4121,7 +4121,7 @@
 
                 WHERE a.LESFICEQC = ? AND a.LESFICCOC = ?
                 
-                ORDER BY a.LESFICFEC DESC";
+                ORDER BY a.LESFICCOD DESC";
             }
 
             try {
