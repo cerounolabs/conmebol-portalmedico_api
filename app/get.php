@@ -2593,6 +2593,250 @@
         return $json;
     });
 
+    $app->get('/v1/401/medico/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+		$val01      = $request->getAttribute('codigo');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT 
+            a.PERCOMOBS                         AS          competicion_persona_observacion,
+            a.PERCOMAUS                         AS          auditoria_usuario,
+            a.PERCOMAFH                         AS          auditoria_fecha_hora,
+            a.PERCOMAIP                         AS          auditoria_ip,
+
+            b.PERFICCOD                         AS          persona_codigo,
+            b.PERFICNOM                         AS          persona_nombre,
+            b.PERFICUSE                         AS          persona_user,
+            b.PERFICPAT                         AS          persona_path,
+            b.PERFICMAI                         AS          persona_email,
+            b.PERFICTEF                         AS          persona_telefono,
+
+            c.DOMFICCOD                         AS          tipo_estado_codigo,
+            c.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+            c.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+            c.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+
+            d.DOMFICCOD                         AS          tipo_acceso_codigo,
+            d.DOMFICNOI                         AS          tipo_acceso_nombre_ingles,
+            d.DOMFICNOC                         AS          tipo_acceso_nombre_castellano,
+            d.DOMFICNOP                         AS          tipo_acceso_nombre_portugues,
+
+            e.DOMFICCOD                         AS          tipo_perfil_codigo,
+            e.DOMFICNOI                         AS          tipo_perfil_nombre_ingles,
+            e.DOMFICNOC                         AS          tipo_perfil_nombre_castellano,
+            e.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
+
+            f.teamFifaId                        AS          equipo_codigo,
+            f.internationalShortName            AS          equipo_nombre,
+
+            g.DOMFICCOD                         AS          tipo_categoria_codigo,
+            g.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
+            g.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
+            g.DOMFICNOP                         AS          tipo_categoria_nombre_portugues,
+
+            h.competitionFifaId                 AS          competicion_codigo,
+            h.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+            h.status                            AS          competicion_estado,
+            h.internationalName                 AS          competicion_nombre,
+            h.internationalShortName            AS          competicion_nombre_corto,
+            h.season                            AS          competicion_anho,
+            h.ageCategory                       AS          competicion_categoria_codigo,
+            h.ageCategoryName                   AS          competicion_categoria_nombre,
+            h.dateFrom                          AS          competicion_desde,
+            h.dateTo                            AS          competicion_hasta,
+            h.discipline                        AS          competicion_disciplina,
+            h.gender                            AS          competicion_genero,
+            h.imageId                           AS          competicion_imagen_codigo,
+            h.multiplier                        AS          competicion_multiplicador,
+            h.nature                            AS          competicion_naturaleza,
+            h.numberOfParticipants              AS          competicion_numero_participante,
+            h.orderNumber                       AS          competicion_numero_orden,
+            h.teamCharacter                     AS          competicion_equipo_tipo,
+            h.flyingSubstitutions               AS          competicion_sustitucion,
+            h.penaltyShootout                   AS          competicion_penal,
+            h.matchType                         AS          competicion_tipo,
+            h.pictureContentType                AS          competicion_imagen_tipo,
+            h.pictureLink                       AS          competicion_image_link,
+            h.pictureValue                      AS          competicion_imagen_valor,
+            h.lastUpdate                        AS          competicion_ultima_actualizacion
+            
+            FROM [adm].[PERCOM] a
+            INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
+            INNER JOIN [adm].[DOMFIC] c ON b.PERFICEST = c.DOMFICCOD
+            INNER JOIN [adm].[DOMFIC] d ON b.PERFICTIP = d.DOMFICCOD
+            INNER JOIN [adm].[DOMFIC] e ON b.PERFICROL = e.DOMFICCOD
+            INNER JOIN [comet].[teams] f ON b.PERFICEQU = f.teamFifaId
+            INNER JOIN [adm].[DOMFIC] g ON b.PERFICCAT = g.DOMFICCOD
+            INNER JOIN [comet].[competitions] h ON a.PERCOMCOC = h.competitionFifaId
+
+            WHERE a.PERCOMPEC = ?
+            
+            ORDER BY a.PERCOMCOC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQL();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]);
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {    
+                    $auditoria_fecha_hora = date_format(date_create($rowMSSQL['auditoria_fecha_hora']), 'd/m/Y H:i:s');
+                    
+                    if (isset($rowMSSQL['persona_path'])){
+                        $persona_path = $rowMSSQL['persona_path'];
+                    } else {
+                        $persona_path = 'assets/images/users/defaul.png';
+                    }
+
+                    $detalle    = array(
+                        'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
+                        'auditoria_usuario'                     => trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
+                        'auditoria_ip'                          => trim($rowMSSQL['auditoria_ip']),
+
+                        'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                        'persona_nombre'                        => trim($rowMSSQL['persona_nombre']),
+                        'persona_user'                          => trim($rowMSSQL['persona_user']),
+                        'persona_path'                          => $persona_path,
+                        'persona_email'                         => trim($rowMSSQL['persona_email']),
+                        'persona_telefono'                      => trim($rowMSSQL['persona_telefono']),
+
+                        'tipo_estado_codigo'                    => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_nombre_ingles'             => trim($rowMSSQL['tipo_estado_nombre_ingles']),
+                        'tipo_estado_nombre_castellano'         => trim($rowMSSQL['tipo_estado_nombre_castellano']),
+                        'tipo_estado_nombre_portugues'          => trim($rowMSSQL['tipo_estado_nombre_portugues']),
+
+                        'tipo_acceso_codigo'                    => $rowMSSQL['tipo_acceso_codigo'],
+                        'tipo_acceso_nombre_ingles'             => trim($rowMSSQL['tipo_acceso_nombre_ingles']),
+                        'tipo_acceso_nombre_castellano'         => trim($rowMSSQL['tipo_acceso_nombre_castellano']),
+                        'tipo_acceso_nombre_portugues'          => trim($rowMSSQL['tipo_acceso_nombre_portugues']),
+
+                        'tipo_perfil_codigo'                    => $rowMSSQL['tipo_perfil_codigo'],
+                        'tipo_perfil_nombre_ingles'             => trim($rowMSSQL['tipo_perfil_nombre_ingles']),
+                        'tipo_perfil_nombre_castellano'         => trim($rowMSSQL['tipo_perfil_nombre_castellano']),
+                        'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
+
+                        'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
+                        'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
+
+                        'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
+                        'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
+                        'tipo_categoria_nombre_castellano'      => trim($rowMSSQL['tipo_categoria_nombre_castellano']),
+                        'tipo_categoria_nombre_portugues'       => trim($rowMSSQL['tipo_categoria_nombre_portugues']),
+
+                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                    => trim($rowMSSQL['competicion_estado']),
+                        'competicion_nombre'                    => $competicion_nombre,
+                        'competicion_nombre_corto'              => $competicion_nombre_corto,
+                        'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+                        'competicion_categoria_codigo'          => trim($rowMSSQL['competicion_categoria_codigo']),
+                        'competicion_categoria_nombre'          => trim($rowMSSQL['competicion_categoria_nombre']),
+                        'competicion_desde'                     => $rowMSSQL['competicion_desde'],
+                        'competicion_hasta'                     => $rowMSSQL['competicion_hasta'],
+                        'competicion_disciplina'                => trim($rowMSSQL['competicion_disciplina']),
+                        'competicion_genero'                    => trim($rowMSSQL['competicion_genero']),
+                        'competicion_imagen_codigo'             => $rowMSSQL['competicion_imagen_codigo'],
+                        'competicion_multiplicador'             => $rowMSSQL['competicion_multiplicador'],
+                        'competicion_naturaleza'                => trim($rowMSSQL['competicion_naturaleza']),
+                        'competicion_numero_participante'       => $rowMSSQL['competicion_numero_participante'],
+                        'competicion_numero_orden'              => $rowMSSQL['competicion_numero_orden'],
+                        'competicion_equipo_tipo'               => trim($rowMSSQL['competicion_equipo_tipo']),
+                        'competicion_sustitucion'               => $rowMSSQL['competicion_sustitucion'],
+                        'competicion_penal'                     => $rowMSSQL['competicion_penal'],
+                        'competicion_tipo'                      => trim($rowMSSQL['competicion_tipo']),
+                        'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
+                        'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle    = array(
+                        'competicion_persona_observacion'       => '',
+                        'auditoria_usuario'                     => '',
+                        'auditoria_fecha_hora'                  => '',
+                        'auditoria_ip'                          => '',
+
+                        'persona_codigo'                        => '',
+                        'persona_nombre'                        => '',
+                        'persona_user'                          => '',
+                        'persona_path'                          => '',
+                        'persona_email'                         => '',
+                        'persona_telefono'                      => '',
+
+                        'tipo_estado_codigo'                    => '',
+                        'tipo_estado_nombre_ingles'             => '',
+                        'tipo_estado_nombre_castellano'         => '',
+                        'tipo_estado_nombre_portugues'          => '',
+
+                        'tipo_acceso_codigo'                    => '',
+                        'tipo_acceso_nombre_ingles'             => '',
+                        'tipo_acceso_nombre_castellano'         => '',
+                        'tipo_acceso_nombre_portugues'          => '',
+
+                        'tipo_perfil_codigo'                    => '',
+                        'tipo_perfil_nombre_ingles'             => '',
+                        'tipo_perfil_nombre_castellano'         => '',
+                        'tipo_perfil_nombre_portugues'          => '',
+
+                        'equipo_codigo'                         => '',
+                        'equipo_nombre'                         => '',
+
+                        'tipo_categoria_codigo'                 => '',
+                        'tipo_categoria_nombre_ingles'          => '',
+                        'tipo_categoria_nombre_castellano'      => '',
+                        'tipo_categoria_nombre_portugues'       => '',
+
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo_padre'              => '',
+                        'competicion_estado'                    => '',
+                        'competicion_nombre'                    => '',
+                        'competicion_nombre_corto'              => '',
+                        'competicion_anho'                      => '',
+                        'competicion_categoria_codigo'          => '',
+                        'competicion_categoria_nombre'          => '',
+                        'competicion_desde'                     => '',
+                        'competicion_hasta'                     => '',
+                        'competicion_disciplina'                => '',
+                        'competicion_genero'                    => '',
+                        'competicion_imagen_codigo'             => '',
+                        'competicion_multiplicador'             => '',
+                        'competicion_naturaleza'                => '',
+                        'competicion_numero_participante'       => '',
+                        'competicion_numero_orden'              => '',
+                        'competicion_equipo_tipo'               => '',
+                        'competicion_sustitucion'               => '',
+                        'competicion_penal'                     => '',
+                        'competicion_tipo'                      => '',
+                        'competicion_imagen_tipo'               => '',
+                        'competicion_ultima_actualizacion'      => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->get('/v1/500', function($request) {
         require __DIR__.'/../src/connect.php';
         
