@@ -2593,7 +2593,7 @@
         return $json;
     });
 
-    $app->get('/v1/401/medico/{codigo}', function($request) {
+    $app->get('/v1/401/competicion/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
 		$val01      = $request->getAttribute('codigo');
