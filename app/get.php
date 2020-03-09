@@ -2683,6 +2683,24 @@
                     $persona_path = 'assets/images/users/defaul.png';
                 }
 
+                switch ($rowMSSQL['competicion_imagen_tipo']) {
+                    case 'image/jpeg':
+                        $ext = 'jpeg';
+                        break;
+                    
+                    case 'image/jpg':
+                        $ext = 'jpg';
+                        break;
+
+                    case 'image/png':
+                        $ext = 'png';
+                        break;
+
+                    case 'image/gif':
+                        $ext = 'gif';
+                        break;
+                }
+
                 $detalle    = array(
                     'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
                     'auditoria_usuario'                     => trim($rowMSSQL['auditoria_usuario']),
@@ -2741,6 +2759,7 @@
                     'competicion_penal'                     => $rowMSSQL['competicion_penal'],
                     'competicion_tipo'                      => trim($rowMSSQL['competicion_tipo']),
                     'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
+                    'competicion_imagen_path'               => 'imagen/competencia/img_'.$rowMSSQL['competicion_codigo'].'.'.$ext,
                     'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion']
                 );
 
