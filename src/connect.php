@@ -6,6 +6,12 @@
         $serverUser = "user_lesiones";
         $serverPass = "C0nm3b0l..!LESIONES";
 
+        $serverName = "172.16.50.19";
+        $serverPort = "1433";
+        $serverDb   = "CSF_LESIONES";
+        $serverUser = "user_sfholox";
+        $serverPass = "D1pl0d0cus2020";
+
         try {
             $conn = new PDO("sqlsrv:Server=$serverName,$serverPort;Database=$serverDb;ConnectionPooling=0", $serverUser, $serverPass,
                 array(
