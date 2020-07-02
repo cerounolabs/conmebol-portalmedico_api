@@ -2599,7 +2599,7 @@
         $sql00  = "SELECT 
         a.PERCOMOBS                         AS          competicion_persona_observacion,
         a.PERCOMAUS                         AS          auditoria_usuario,
-        a.PERCOMAFH                         AS          auditoria_fecha_hora,
+        a.PERCOMAFE                         AS          auditoria_fecha_hora,
         a.PERCOMAIP                         AS          auditoria_ip,
 
         b.PERFICCOD                         AS          persona_codigo,
@@ -2656,7 +2656,12 @@
         h.pictureContentType                AS          competicion_imagen_tipo,
         h.pictureLink                       AS          competicion_image_link,
         h.pictureValue                      AS          competicion_imagen_valor,
-        h.lastUpdate                        AS          competicion_ultima_actualizacion
+        h.lastUpdate                        AS          competicion_ultima_actualizacion,
+
+        i.DOMFICCOD                         AS          tipo_modulo_codigo,
+        i.DOMFICNOI                         AS          tipo_modulo_nombre_ingles,
+        i.DOMFICNOC                         AS          tipo_modulo_nombre_castellano,
+        i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues
         
         FROM [adm].[PERCOM] a
         INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
@@ -2666,8 +2671,9 @@
         INNER JOIN [comet].[teams] f ON b.PERFICEQU = f.teamFifaId
         INNER JOIN [adm].[DOMFIC] g ON b.PERFICCAT = g.DOMFICCOD
         INNER JOIN [comet].[competitions] h ON a.PERCOMCOC = h.competitionFifaId
+        INNER JOIN [adm].[DOMFIC] i ON a.PERCOMTMC = i.DOMFICCOD
         
-        ORDER BY a.PERCOMCOC";
+        ORDER BY a.PERCOMTMC, a.PERCOMCOC, a.PERCOMPEC";
 
         try {
             $connMSSQL  = getConnectionMSSQL();
@@ -2760,7 +2766,12 @@
                     'competicion_tipo'                      => trim($rowMSSQL['competicion_tipo']),
                     'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
                     'competicion_imagen_path'               => 'imagen/competencia/img_'.$rowMSSQL['competicion_codigo'].'.'.$ext,
-                    'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion']
+                    'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
+
+                    'tipo_modulo_codigo'                    => $rowMSSQL['tipo_modulo_codigo'],
+                    'tipo_modulo_nombre_ingles'             => trim($rowMSSQL['tipo_modulo_nombre_ingles']),
+                    'tipo_modulo_nombre_castellano'         => trim($rowMSSQL['tipo_modulo_nombre_castellano']),
+                    'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues'])
                 );
 
                 $result[]   = $detalle;
@@ -2828,7 +2839,12 @@
                     'competicion_penal'                     => '',
                     'competicion_tipo'                      => '',
                     'competicion_imagen_tipo'               => '',
-                    'competicion_ultima_actualizacion'      => ''
+                    'competicion_ultima_actualizacion'      => '',
+
+                    'tipo_modulo_codigo'                    => '',
+                    'tipo_modulo_nombre_ingles'             => '',
+                    'tipo_modulo_nombre_castellano'         => '',
+                    'tipo_modulo_nombre_portugues'          => ''
                 );
 
                 header("Content-Type: application/json; charset=utf-8");
