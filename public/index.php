@@ -1,7 +1,6 @@
 <?php
 	session_start();
 
-//	header("Access-Control-Allow-Origin: http://portalmedico.conmebol.com");
 	header("Access-Control-Allow-Origin: *");
 	header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Cache-Control, Pragma, Authorization, Accept-Encoding");
 	header("Access-Control-Allow-Credentials: true");
