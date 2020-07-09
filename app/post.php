@@ -498,7 +498,7 @@
         return $json;
     });
 
-    $app->post('/v1/800', function($request) {
+    $app->post('/v1/800/covid', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getParsedBody()['tipo_estado_codigo'];
@@ -552,7 +552,7 @@
         return $json;
     }); 
 
-    $app->post('/v1/800/prueba', function($request) {
+    $app->post('/v1/800/coviddetalle', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getParsedBody()['covid19_codigo'];

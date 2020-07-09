@@ -5675,8 +5675,8 @@
         
         return $json;
     });
-/*
-    $app->get('/v1/800/{equipo}', function($request) {
+
+    $app->get('/v1/800/covid/{equipo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('equipo');
@@ -5687,6 +5687,7 @@
             if ($val01 == 39393) {
                 $sql00  = "SELECT
                     a.COVFICCOD                         AS          covid19_codigo,
+                    a.COVFICPER                         AS          covid19_anho,
                     a.COVFICFEC                         AS          covid19_fecha,
                     a.COVFICACA                         AS          covid19_adulto_cantidad,
                     a.COVFICMCA                         AS          covid19_menores_cantidad,
@@ -5697,7 +5698,9 @@
                     a.COVFICAIP                         AS          auditoria_ip,
 
                     b.DOMFICCOD                         AS          tipo_estado_codigo,
-                    b.DOMFICNOM                         AS          tipo_estado_nombre,
+                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
 
                     a.COVFICDIC                         AS          disciplina_codigo,
 
@@ -5717,384 +5720,65 @@
 
                     f.personFifaId                      AS          jugador_codigo,
                     f.internationalFirstName            AS          jugador_nombre,
-                    f.internationalLastName             AS          jugador_apellido,
-
-                    ,
-
-                    ,
-
-                    ,
-
-                    COVFICPER
+                    f.internationalLastName             AS          jugador_apellido
 
                     FROM [covid19].[COVFIC] a
                     LEFT OUTER JOIN [adm].[DOMFIC] b ON a.COVFICEST = b.DOMFICCOD
                     LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
-                    LEFT OUTER JOIN [view].[juego] t ON a.COVFICENC = t.JUEGO_CODIGO
-                    LEFT OUTER JOIN [comet].[teams] u ON a.COVFICEQC = u.teamFifaId
-                    LEFT OUTER JOIN [comet].[persons] v ON a.COVFICJUC = v.personFifaId
-                ";
+                    LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
+                    LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
+                    LEFT OUTER JOIN [comet].[persons] f ON a.COVFICJUC = f.personFifaId
+                    ORDER BY a.COVFICCOD DESC";
+            
 
-                $sql00  = "SELECT
-                a.LESFICCOD                 AS          lesion_codigo,
-                a.LESFICFEC                 AS          lesion_fecha_alta,
-                a.LESFICFER                 AS          lesion_fecha_retorno,
-                a.LESFICCIR                 As          lesion_cirugia,
-                a.LESFICTEM                 AS          temperatura_numero,
-                a.LESFICOBS                 As          lesion_observacion,
-
-                b.DOMFICCOD                 AS          tipo_estado_codigo,
-                b.DOMFICNOI                 AS          tipo_estado_nombre_ingles,
-                b.DOMFICNOC                 AS          tipo_estado_nombre_castellano,
-                b.DOMFICNOP                 AS          tipo_estado_nombre_portugues,
-
-                c.DOMFICCOD                 AS          tipo_clima_codigo,
-                c.DOMFICNOI                 AS          tipo_clima_nombre_ingles,
-                c.DOMFICNOC                 AS          tipo_clima_nombre_castellano,
-                c.DOMFICNOP                 AS          tipo_clima_nombre_portugues,
-
-                d.DOMFICCOD                 AS          tipo_distancia_codigo,
-                d.DOMFICNOI                 AS          tipo_distancia_nombre_ingles,
-                d.DOMFICNOC                 AS          tipo_distancia_nombre_castellano,
-                d.DOMFICNOP                 AS          tipo_distancia_nombre_portugues,
-
-                e.DOMFICCOD                 AS          tipo_traslado_codigo,
-                e.DOMFICNOI                 AS          tipo_traslado_nombre_ingles,
-                e.DOMFICNOC                 AS          tipo_traslado_nombre_castellano,
-                e.DOMFICNOP                 AS          tipo_traslado_nombre_portugues,
-
-                f.DOMFICCOD                 AS          tipo_posicion_codigo,
-                f.DOMFICNOI                 AS          tipo_posicion_nombre_ingles,
-                f.DOMFICNOC                 AS          tipo_posicion_nombre_castellano,
-                f.DOMFICNOP                 AS          tipo_posicion_nombre_portugues,
-
-                g.DOMFICCOD                 AS          tipo_minuto_codigo,
-                g.DOMFICNOI                 AS          tipo_minuto_nombre_ingles,
-                g.DOMFICNOC                 AS          tipo_minuto_nombre_castellano,
-                g.DOMFICNOP                 AS          tipo_minuto_nombre_portugues,
-
-                h.DOMFICCOD                 AS          tipo_campo_codigo,
-                h.DOMFICNOI                 AS          tipo_campo_nombre_ingles,
-                h.DOMFICNOC                 AS          tipo_campo_nombre_castellano,
-                h.DOMFICNOP                 AS          tipo_campo_nombre_portugues,
-
-                i.DOMSUBCOD                 AS          tipo_cuerpo_zona_codigo,
-                i.DOMSUBNOI                 AS          tipo_cuerpo_zona_nombre_ingles,
-                i.DOMSUBNOC                 AS          tipo_cuerpo_zona_nombre_castellano,
-                i.DOMSUBNOP                 AS          tipo_cuerpo_zona_nombre_portugues,
-
-                j.DOMFICCOD                 AS          tipo_cuerpo_lugar_codigo,
-                j.DOMFICNOI                 AS          tipo_cuerpo_lugar_nombre_ingles,
-                j.DOMFICNOC                 AS          tipo_cuerpo_lugar_nombre_castellano,
-                j.DOMFICNOP                 AS          tipo_cuerpo_lugar_nombre_portugues,
-
-                k.DOMFICCOD                 AS          tipo_lesion_codigo,
-                k.DOMFICNOI                 AS          tipo_lesion_nombre_ingles,
-                k.DOMFICNOC                 AS          tipo_lesion_nombre_castellano,
-                k.DOMFICNOP                 AS          tipo_lesion_nombre_portugues,
-
-                l.DOMFICCOD                 AS          tipo_lesion_origen_codigo,
-                l.DOMFICNOI                 AS          tipo_lesion_origen_nombre_ingles,
-                l.DOMFICNOC                 AS          tipo_lesion_origen_nombre_castellano,
-                l.DOMFICNOP                 AS          tipo_lesion_origen_nombre_portugues,
-
-                m.DOMFICCOD                 AS          tipo_lesion_reincidencia_codigo,
-                m.DOMFICNOI                 AS          tipo_lesion_reincidencia_nombre_ingles,
-                m.DOMFICNOC                 AS          tipo_lesion_reincidencia_nombre_castellano,
-                m.DOMFICNOP                 AS          tipo_lesion_reincidencia_nombre_portugues,
-
-                x.DOMFICCOD                 AS          tipo_lesion_retiro_codigo,
-                x.DOMFICNOI                 AS          tipo_lesion_retiro_nombre_ingles,
-                x.DOMFICNOC                 AS          tipo_lesion_retiro_nombre_castellano,
-                x.DOMFICNOP                 AS          tipo_lesion_retiro_nombre_portugues,
-
-                n.DOMFICCOD                 AS          tipo_lesion_causa_codigo,
-                n.DOMFICNOI                 AS          tipo_lesion_causa_nombre_ingles,
-                n.DOMFICNOC                 AS          tipo_lesion_causa_nombre_castellano,
-                n.DOMFICNOP                 AS          tipo_lesion_causa_nombre_portugues,
-
-                w1.DOMFICCOD                AS          tipo_lesion_examen1_codigo,
-                w1.DOMFICNOI                AS          tipo_lesion_examen1_nombre_ingles,
-                w1.DOMFICNOC                AS          tipo_lesion_examen1_nombre_castellano,
-                w1.DOMFICNOP                AS          tipo_lesion_examen1_nombre_portugues,
-
-                w2.DOMFICCOD                AS          tipo_lesion_examen2_codigo,
-                w2.DOMFICNOI                AS          tipo_lesion_examen2_nombre_ingles,
-                w2.DOMFICNOC                AS          tipo_lesion_examen2_nombre_castellano,
-                w2.DOMFICNOP                AS          tipo_lesion_examen2_nombre_portugues,
-
-                w3.DOMFICCOD                AS          tipo_lesion_examen3_codigo,
-                w3.DOMFICNOI                AS          tipo_lesion_examen3_nombre_ingles,
-                w3.DOMFICNOC                AS          tipo_lesion_examen3_nombre_castellano,
-                w3.DOMFICNOP                AS          tipo_lesion_examen3_nombre_portugues,
-
-                w4.DOMFICCOD                AS          tipo_lesion_examen4_codigo,
-                w4.DOMFICNOI                AS          tipo_lesion_examen4_nombre_ingles,
-                w4.DOMFICNOC                AS          tipo_lesion_examen4_nombre_castellano,
-                w4.DOMFICNOP                AS          tipo_lesion_examen4_nombre_portugues,
-
-                w5.DOMFICCOD                AS          tipo_lesion_examen5_codigo,
-                w5.DOMFICNOI                AS          tipo_lesion_examen5_nombre_ingles,
-                w5.DOMFICNOC                AS          tipo_lesion_examen5_nombre_castellano,
-                w5.DOMFICNOP                AS          tipo_lesion_examen5_nombre_portugues,
-
-                o.DOMFICCOD                 AS          tipo_lesion_falta_codigo,
-                o.DOMFICNOI                 AS          tipo_lesion_falta_nombre_ingles,
-                o.DOMFICNOC                 AS          tipo_lesion_falta_nombre_castellano,
-                o.DOMFICNOP                 AS          tipo_lesion_falta_nombre_portugues,
-
-                p.DOMSUBCOD                 AS          tipo_diagnostico_codigo,
-                p.DOMSUBNOI                 AS          tipo_diagnostico_nombre_ingles,
-                p.DOMSUBNOC                 AS          tipo_diagnostico_nombre_castellano,
-                p.DOMSUBNOP                 AS          tipo_diagnostico_nombre_portugues,
-                a.LESFICOBD                 AS          tipo_diagnostico_observacion,
-
-                p1.DOMSUBCOD                AS          tipo_diagnostico_retorno_codigo,
-                p1.DOMSUBNOI                AS          tipo_diagnostico_retorno_nombre_ingles,
-                p1.DOMSUBNOC                AS          tipo_diagnostico_retorno_nombre_castellano,
-                p1.DOMSUBNOP                AS          tipo_diagnostico_retorno_nombre_portugues,
-                a.LESFICOBR                 AS          tipo_diagnostico_retorno_observacion,
-                a.LESFICTRR                 AS          tipo_diagnostico_retorno_tratamiento,
-
-                q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
-                q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
-                q.DOMFICNOC                 AS          tipo_diagnostico_recuperacion_nombre_castellano,
-                q.DOMFICNOP                 AS          tipo_diagnostico_recuperacion_nombre_portugues,
-
-                r.DOMFICCOD                 AS          tipo_diagnostico_tiempo_codigo,
-                r.DOMFICNOI                 AS          tipo_diagnostico_tiempo_nombre_ingles,
-                r.DOMFICNOC                 AS          tipo_diagnostico_tiempo_nombre_castellano,
-                r.DOMFICNOP                 AS          tipo_diagnostico_tiempo_nombre_portugues,
-
-                s.competitionFifaId         AS          competicion_codigo,
-                s.internationalName         AS          competicion_nombre,
-
-                t.JUEGO_CODIGO              AS          juego_codigo,
-                t.EQUIPO_LOCAL_NOMBRE       AS          juego_equipo_local,
-                t.EQUIPO_VISITANTE_NOMBRE   AS          juego_equpo_visitante,
-
-                u.teamFifaId                AS          equipo_codigo,
-                u.internationalName         AS          equipo_nombre,
-
-                v.personFifaId              AS          jugador_codigo,
-                v.internationalFirstName    AS          jugador_nombre,
-                v.internationalLastName     AS          jugador_apellido,
-
-                a.LESFICAUS                 AS          auditoria_usuario,
-                a.LESFICAFH                 AS          auditoria_fecha_hora,
-                a.LESFICAIP                 AS          auditoria_ip
-
-                FROM [lesion].[LESFIC] a
-                LEFT OUTER JOIN [adm].[DOMFIC] b ON a.LESFICESC = b.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] c ON a.LESFICCLI = c.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] d ON a.LESFICDIS = d.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] e ON a.LESFICTRA = e.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] f ON a.LESFICPOS = f.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] g ON a.LESFICMIN = g.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] h ON a.LESFICCAM = h.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMSUB] i ON a.LESFICCUZ = i.DOMSUBCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] j ON a.LESFICCUL = j.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] k ON a.LESFICLES = k.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] l ON a.LESFICORI = l.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] m ON a.LESFICREI = m.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
-                LEFT OUTER JOIN [adm].[DOMSUB] p1 ON a.LESFICDIR = p1.DOMSUBCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
-                
-                LEFT OUTER JOIN [adm].[DOMFIC] w1 ON a.LESFICEX1 = w1.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w2 ON a.LESFICEX2 = w2.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX5 = w5.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] x ON a.LESFICRET = x.DOMFICCOD
-
-                ORDER BY a.LESFICCOD DESC";
             } else {
                 $sql00  = "SELECT
-                a.LESFICCOD                 AS          lesion_codigo,
-                a.LESFICFEC                 AS          lesion_fecha_alta,
-                a.LESFICFER                 AS          lesion_fecha_retorno,
-                a.LESFICCIR                 As          lesion_cirugia,
-                a.LESFICTEM                 AS          temperatura_numero,
-                a.LESFICOBS                 As          lesion_observacion,
+                    a.COVFICCOD                         AS          covid19_codigo,
+                    a.COVFICPER                         AS          covid19_anho,
+                    a.COVFICFEC                         AS          covid19_fecha,
+                    a.COVFICACA                         AS          covid19_adulto_cantidad,
+                    a.COVFICMCA                         AS          covid19_menores_cantidad,
+                    a.COVFICOBS                         AS          covid19_observacion,
+                    
+                    a.COVFICAUS                         AS          auditoria_usuario,
+                    a.COVFICAFH                         AS          auditoria_fecha_hora,
+                    a.COVFICAIP                         AS          auditoria_ip,
 
-                b.DOMFICCOD                 AS          tipo_estado_codigo,
-                b.DOMFICNOI                 AS          tipo_estado_nombre_ingles,
-                b.DOMFICNOC                 AS          tipo_estado_nombre_castellano,
-                b.DOMFICNOP                 AS          tipo_estado_nombre_portugues,
+                    b.DOMFICCOD                         AS          tipo_estado_codigo,
+                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
 
-                c.DOMFICCOD                 AS          tipo_clima_codigo,
-                c.DOMFICNOI                 AS          tipo_clima_nombre_ingles,
-                c.DOMFICNOC                 AS          tipo_clima_nombre_castellano,
-                c.DOMFICNOP                 AS          tipo_clima_nombre_portugues,
+                    a.COVFICDIC                         AS          disciplina_codigo,
 
-                d.DOMFICCOD                 AS          tipo_distancia_codigo,
-                d.DOMFICNOI                 AS          tipo_distancia_nombre_ingles,
-                d.DOMFICNOC                 AS          tipo_distancia_nombre_castellano,
-                d.DOMFICNOP                 AS          tipo_distancia_nombre_portugues,
+                    c.competitionFifaId                 AS          competicion_codigo,
+                    c.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                    c.status                            AS          competicion_estado,
+                    c.internationalName                 AS          competicion_nombre,
+                    c.internationalShortName            AS          competicion_nombre_corto,
+                    c.season                            AS          competicion_anho,
 
-                e.DOMFICCOD                 AS          tipo_traslado_codigo,
-                e.DOMFICNOI                 AS          tipo_traslado_nombre_ingles,
-                e.DOMFICNOC                 AS          tipo_traslado_nombre_castellano,
-                e.DOMFICNOP                 AS          tipo_traslado_nombre_portugues,
+                    d.JUEGO_CODIGO                      AS          juego_codigo,
+                    d.EQUIPO_LOCAL_NOMBRE               AS          juego_equipo_local,
+                    d.EQUIPO_VISITANTE_NOMBRE           AS          juego_equpo_visitante,
 
-                f.DOMFICCOD                 AS          tipo_posicion_codigo,
-                f.DOMFICNOI                 AS          tipo_posicion_nombre_ingles,
-                f.DOMFICNOC                 AS          tipo_posicion_nombre_castellano,
-                f.DOMFICNOP                 AS          tipo_posicion_nombre_portugues,
+                    e.teamFifaId                        AS          equipo_codigo,
+                    e.internationalName                 AS          equipo_nombre,
 
-                g.DOMFICCOD                 AS          tipo_minuto_codigo,
-                g.DOMFICNOI                 AS          tipo_minuto_nombre_ingles,
-                g.DOMFICNOC                 AS          tipo_minuto_nombre_castellano,
-                g.DOMFICNOP                 AS          tipo_minuto_nombre_portugues,
+                    f.personFifaId                      AS          jugador_codigo,
+                    f.internationalFirstName            AS          jugador_nombre,
+                    f.internationalLastName             AS          jugador_apellido
 
-                h.DOMFICCOD                 AS          tipo_campo_codigo,
-                h.DOMFICNOI                 AS          tipo_campo_nombre_ingles,
-                h.DOMFICNOC                 AS          tipo_campo_nombre_castellano,
-                h.DOMFICNOP                 AS          tipo_campo_nombre_portugues,
+                    FROM [covid19].[COVFIC] a
+                    LEFT OUTER JOIN [adm].[DOMFIC] b ON a.COVFICEST = b.DOMFICCOD
+                    LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
+                    LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
+                    LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
+                    LEFT OUTER JOIN [comet].[persons] f ON a.COVFICJUC = f.personFifaId
 
-                i.DOMSUBCOD                 AS          tipo_cuerpo_zona_codigo,
-                i.DOMSUBNOI                 AS          tipo_cuerpo_zona_nombre_ingles,
-                i.DOMSUBNOC                 AS          tipo_cuerpo_zona_nombre_castellano,
-                i.DOMSUBNOP                 AS          tipo_cuerpo_zona_nombre_portugues,
+                    WHERE a.COVFICEQC = ?
 
-                j.DOMFICCOD                 AS          tipo_cuerpo_lugar_codigo,
-                j.DOMFICNOI                 AS          tipo_cuerpo_lugar_nombre_ingles,
-                j.DOMFICNOC                 AS          tipo_cuerpo_lugar_nombre_castellano,
-                j.DOMFICNOP                 AS          tipo_cuerpo_lugar_nombre_portugues,
-
-                k.DOMFICCOD                 AS          tipo_lesion_codigo,
-                k.DOMFICNOI                 AS          tipo_lesion_nombre_ingles,
-                k.DOMFICNOC                 AS          tipo_lesion_nombre_castellano,
-                k.DOMFICNOP                 AS          tipo_lesion_nombre_portugues,
-
-                l.DOMFICCOD                 AS          tipo_lesion_origen_codigo,
-                l.DOMFICNOI                 AS          tipo_lesion_origen_nombre_ingles,
-                l.DOMFICNOC                 AS          tipo_lesion_origen_nombre_castellano,
-                l.DOMFICNOP                 AS          tipo_lesion_origen_nombre_portugues,
-
-                m.DOMFICCOD                 AS          tipo_lesion_reincidencia_codigo,
-                m.DOMFICNOI                 AS          tipo_lesion_reincidencia_nombre_ingles,
-                m.DOMFICNOC                 AS          tipo_lesion_reincidencia_nombre_castellano,
-                m.DOMFICNOP                 AS          tipo_lesion_reincidencia_nombre_portugues,
-
-                x.DOMFICCOD                 AS          tipo_lesion_retiro_codigo,
-                x.DOMFICNOI                 AS          tipo_lesion_retiro_nombre_ingles,
-                x.DOMFICNOC                 AS          tipo_lesion_retiro_nombre_castellano,
-                x.DOMFICNOP                 AS          tipo_lesion_retiro_nombre_portugues,
-
-                n.DOMFICCOD                 AS          tipo_lesion_causa_codigo,
-                n.DOMFICNOI                 AS          tipo_lesion_causa_nombre_ingles,
-                n.DOMFICNOC                 AS          tipo_lesion_causa_nombre_castellano,
-                n.DOMFICNOP                 AS          tipo_lesion_causa_nombre_portugues,
-
-                w1.DOMFICCOD                AS          tipo_lesion_examen1_codigo,
-                w1.DOMFICNOI                AS          tipo_lesion_examen1_nombre_ingles,
-                w1.DOMFICNOC                AS          tipo_lesion_examen1_nombre_castellano,
-                w1.DOMFICNOP                AS          tipo_lesion_examen1_nombre_portugues,
-
-                w2.DOMFICCOD                AS          tipo_lesion_examen2_codigo,
-                w2.DOMFICNOI                AS          tipo_lesion_examen2_nombre_ingles,
-                w2.DOMFICNOC                AS          tipo_lesion_examen2_nombre_castellano,
-                w2.DOMFICNOP                AS          tipo_lesion_examen2_nombre_portugues,
-
-                w3.DOMFICCOD                AS          tipo_lesion_examen3_codigo,
-                w3.DOMFICNOI                AS          tipo_lesion_examen3_nombre_ingles,
-                w3.DOMFICNOC                AS          tipo_lesion_examen3_nombre_castellano,
-                w3.DOMFICNOP                AS          tipo_lesion_examen3_nombre_portugues,
-
-                w4.DOMFICCOD                AS          tipo_lesion_examen4_codigo,
-                w4.DOMFICNOI                AS          tipo_lesion_examen4_nombre_ingles,
-                w4.DOMFICNOC                AS          tipo_lesion_examen4_nombre_castellano,
-                w4.DOMFICNOP                AS          tipo_lesion_examen4_nombre_portugues,
-
-                w5.DOMFICCOD                AS          tipo_lesion_examen5_codigo,
-                w5.DOMFICNOI                AS          tipo_lesion_examen5_nombre_ingles,
-                w5.DOMFICNOC                AS          tipo_lesion_examen5_nombre_castellano,
-                w5.DOMFICNOP                AS          tipo_lesion_examen5_nombre_portugues,
-
-                o.DOMFICCOD                 AS          tipo_lesion_falta_codigo,
-                o.DOMFICNOI                 AS          tipo_lesion_falta_nombre_ingles,
-                o.DOMFICNOC                 AS          tipo_lesion_falta_nombre_castellano,
-                o.DOMFICNOP                 AS          tipo_lesion_falta_nombre_portugues,
-
-                p.DOMSUBCOD                 AS          tipo_diagnostico_codigo,
-                p.DOMSUBNOI                 AS          tipo_diagnostico_nombre_ingles,
-                p.DOMSUBNOC                 AS          tipo_diagnostico_nombre_castellano,
-                p.DOMSUBNOP                 AS          tipo_diagnostico_nombre_portugues,
-                a.LESFICOBD                 AS          tipo_diagnostico_observacion,
-
-                p1.DOMSUBCOD                AS          tipo_diagnostico_retorno_codigo,
-                p1.DOMSUBNOI                AS          tipo_diagnostico_retorno_nombre_ingles,
-                p1.DOMSUBNOC                AS          tipo_diagnostico_retorno_nombre_castellano,
-                p1.DOMSUBNOP                AS          tipo_diagnostico_retorno_nombre_portugues,
-                a.LESFICOBR                 AS          tipo_diagnostico_retorno_observacion,
-                a.LESFICTRR                 AS          tipo_diagnostico_retorno_tratamiento,
-
-                q.DOMFICCOD                 AS          tipo_diagnostico_recuperacion_codigo,
-                q.DOMFICNOI                 AS          tipo_diagnostico_recuperacion_nombre_ingles,
-                q.DOMFICNOC                 AS          tipo_diagnostico_recuperacion_nombre_castellano,
-                q.DOMFICNOP                 AS          tipo_diagnostico_recuperacion_nombre_portugues,
-
-                r.DOMFICCOD                 AS          tipo_diagnostico_tiempo_codigo,
-                r.DOMFICNOI                 AS          tipo_diagnostico_tiempo_nombre_ingles,
-                r.DOMFICNOC                 AS          tipo_diagnostico_tiempo_nombre_castellano,
-                r.DOMFICNOP                 AS          tipo_diagnostico_tiempo_nombre_portugues,
-
-                s.competitionFifaId         AS          competicion_codigo,
-                s.internationalName         AS          competicion_nombre,
-
-                t.JUEGO_CODIGO              AS          juego_codigo,
-                t.EQUIPO_LOCAL_NOMBRE       AS          juego_equipo_local,
-                t.EQUIPO_VISITANTE_NOMBRE   AS          juego_equpo_visitante,
-
-                u.teamFifaId                AS          equipo_codigo,
-                u.internationalName         AS          equipo_nombre,
-
-                v.personFifaId              AS          jugador_codigo,
-                v.internationalFirstName    AS          jugador_nombre,
-                v.internationalLastName     AS          jugador_apellido,
-
-                a.LESFICAUS                 AS          auditoria_usuario,
-                a.LESFICAFH                 AS          auditoria_fecha_hora,
-                a.LESFICAIP                 AS          auditoria_ip
-
-                FROM [lesion].[LESFIC] a
-                LEFT OUTER JOIN [adm].[DOMFIC] b ON a.LESFICESC = b.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] c ON a.LESFICCLI = c.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] d ON a.LESFICDIS = d.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] e ON a.LESFICTRA = e.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] f ON a.LESFICPOS = f.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] g ON a.LESFICMIN = g.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] h ON a.LESFICCAM = h.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMSUB] i ON a.LESFICCUZ = i.DOMSUBCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] j ON a.LESFICCUL = j.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] k ON a.LESFICLES = k.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] l ON a.LESFICORI = l.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] m ON a.LESFICREI = m.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] n ON a.LESFICCAU = n.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] o ON a.LESFICFAL = o.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMSUB] p ON a.LESFICDIA = p.DOMSUBCOD
-                LEFT OUTER JOIN [adm].[DOMSUB] p1 ON a.LESFICDIR = p1.DOMSUBCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] q ON a.LESFICREC = q.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] r ON a.LESFICTIE = r.DOMFICCOD
-                LEFT OUTER JOIN [comet].[competitions] s ON a.LESFICCOC = s.competitionFifaId
-                LEFT OUTER JOIN [view].[juego] t ON a.LESFICJUC = t.JUEGO_CODIGO
-                LEFT OUTER JOIN [comet].[teams] u ON a.LESFICEQC = u.teamFifaId
-                LEFT OUTER JOIN [comet].[persons] v ON a.LESFICPEC = v.personFifaId
-                LEFT OUTER JOIN [adm].[DOMFIC] w1 ON a.LESFICEX1 = w1.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w2 ON a.LESFICEX2 = w2.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w3 ON a.LESFICEX3 = w3.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w4 ON a.LESFICEX4 = w4.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] w5 ON a.LESFICEX5 = w5.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] x ON a.LESFICRET = x.DOMFICCOD
-
-                WHERE a.LESFICEQC = ?
-                
-                ORDER BY a.LESFICCOD DESC";
+                    ORDER BY a.COVFICCOD DESC";
             }
 
             try {
@@ -6102,155 +5786,48 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {
-                    $stmtMSSQL->execute([]);
+                    $stmtMSSQL->execute();
                 } else {
                     $stmtMSSQL->execute([$val01]);
                 }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    $lesion_cirugia_nombre = 'NO';
+                    switch ($rowMSSQL['disciplina_codigo']) {
+                        case 'value':
+                            $disciplina_nombre = 'Fútbol de Campo';
+                            break;
+                        
+                        case 'value':
+                            $disciplina_nombre = 'Fútbol de Salón';
+                            break;
 
-                    if (trim($rowMSSQL['lesion_cirugia']) == '2'){
-                        $lesion_cirugia_nombre = 'SI';
+                        case 'value':
+                            $disciplina_nombre = 'Fútbol de Playa';
+                            break;
                     }
 
                     $detalle    = array(
-                        'lesion_codigo'                                             => ($rowMSSQL['lesion_codigo']),
-                        'competicion_codigo'                                        => ($rowMSSQL['competicion_codigo']),
-                        'lesion_fecha_alta'                                         => date_format(date_create($rowMSSQL['lesion_fecha_alta']), 'd/m/Y H:i:s'),
-                        'lesion_fecha_retorno'                                      => date_format(date_create($rowMSSQL['lesion_fecha_retorno']), 'd/m/Y'),
-                        'temperatura_numero'                                        => trim($rowMSSQL['temperatura_numero']),
-                        'lesion_observacion'                                        => trim($rowMSSQL['lesion_observacion']),
+                        'covid19_codigo'                                            => $rowMSSQL['covid19_codigo'],
+                        'covid19_anho'                                              => $rowMSSQL['covid19_anho'],
+                        'covid19_fecha'                                             => date_format(date_create($rowMSSQL['covid19_fecha']), 'd/m/Y H:i:s'),
+                        'covid19_adulto_cantidad'                                   => $rowMSSQL['covid19_adulto_cantidad'],
+                        'covid19_menores_cantidad'                                  => trim($rowMSSQL['covid19_menores_cantidad']),
+                        'covid19_observacion'                                       => trim($rowMSSQL['covid19_observacion']),
 
-                        'lesion_cirugia_codigo'                                     => trim($rowMSSQL['lesion_cirugia']),
-                        'lesion_cirugia_nombre'                                     => $lesion_cirugia_nombre,
-
-                        'tipo_estado_codigo'                                        => ($rowMSSQL['tipo_estado_codigo']),
+                        'tipo_estado_codigo'                                        => $rowMSSQL['tipo_estado_codigo'],
                         'tipo_estado_nombre_ingles'                                 => trim($rowMSSQL['tipo_estado_nombre_ingles']),
                         'tipo_estado_nombre_castellano'                             => trim($rowMSSQL['tipo_estado_nombre_castellano']),
                         'tipo_estado_nombre_portugues'                              => trim($rowMSSQL['tipo_estado_nombre_portugues']),
 
-                        'tipo_clima_codigo'                                         => ($rowMSSQL['tipo_clima_codigo']),
-                        'tipo_clima_nombre_ingles'                                  => trim($rowMSSQL['tipo_clima_nombre_ingles']),
-                        'tipo_clima_nombre_castellano'                              => trim($rowMSSQL['tipo_clima_nombre_castellano']),
-                        'tipo_clima_nombre_portugues'                               => trim($rowMSSQL['tipo_clima_nombre_portugues']),
-
-                        'tipo_distancia_codigo'                                     => ($rowMSSQL['tipo_distancia_codigo']),
-                        'tipo_distancia_nombre_ingles'                              => trim($rowMSSQL['tipo_distancia_nombre_ingles']),
-                        'tipo_distancia_nombre_castellano'                          => trim($rowMSSQL['tipo_distancia_nombre_castellano']),
-                        'tipo_distancia_nombre_portugues'                           => trim($rowMSSQL['tipo_distancia_nombre_portugues']),
-
-                        'tipo_traslado_codigo'                                      => ($rowMSSQL['tipo_traslado_codigo']),
-                        'tipo_traslado_nombre_ingles'                               => trim($rowMSSQL['tipo_traslado_nombre_ingles']),
-                        'tipo_traslado_nombre_castellano'                           => trim($rowMSSQL['tipo_traslado_nombre_castellano']),
-                        'tipo_traslado_nombre_portugues'                            => trim($rowMSSQL['tipo_traslado_nombre_portugues']),
-
-                        'tipo_posicion_codigo'                                      => ($rowMSSQL['tipo_posicion_codigo']),
-                        'tipo_posicion_nombre_ingles'                               => trim($rowMSSQL['tipo_posicion_nombre_ingles']),
-                        'tipo_posicion_nombre_castellano'                           => trim($rowMSSQL['tipo_posicion_nombre_castellano']),
-                        'tipo_posicion_nombre_portugues'                            => trim($rowMSSQL['tipo_posicion_nombre_portugues']),
-
-                        'tipo_minuto_codigo'                                        => ($rowMSSQL['tipo_minuto_codigo']),
-                        'tipo_minuto_nombre_ingles'                                 => trim($rowMSSQL['tipo_minuto_nombre_ingles']),
-                        'tipo_minuto_nombre_castellano'                             => trim($rowMSSQL['tipo_minuto_nombre_castellano']),
-                        'tipo_minuto_nombre_portugues'                              => trim($rowMSSQL['tipo_minuto_nombre_portugues']),
-
-                        'tipo_campo_codigo'                                         => ($rowMSSQL['tipo_campo_codigo']),
-                        'tipo_campo_nombre_ingles'                                  => trim($rowMSSQL['tipo_campo_nombre_ingles']),
-                        'tipo_campo_nombre_castellano'                              => trim($rowMSSQL['tipo_campo_nombre_castellano']),
-                        'tipo_campo_nombre_portugues'                               => trim($rowMSSQL['tipo_campo_nombre_portugues']),
-
-                        'tipo_cuerpo_zona_codigo'                                   => ($rowMSSQL['tipo_cuerpo_zona_codigo']),
-                        'tipo_cuerpo_zona_nombre_ingles'                            => trim($rowMSSQL['tipo_cuerpo_zona_nombre_ingles']),
-                        'tipo_cuerpo_zona_nombre_castellano'                        => trim($rowMSSQL['tipo_cuerpo_zona_nombre_castellano']),
-                        'tipo_cuerpo_zona_nombre_portugues'                         => trim($rowMSSQL['tipo_cuerpo_zona_nombre_portugues']),
-
-                        'tipo_cuerpo_lugar_codigo'                                  => ($rowMSSQL['tipo_cuerpo_lugar_codigo']),
-                        'tipo_cuerpo_lugar_nombre_ingles'                           => trim($rowMSSQL['tipo_cuerpo_lugar_nombre_ingles']),
-                        'tipo_cuerpo_lugar_nombre_castellano'                       => trim($rowMSSQL['tipo_cuerpo_lugar_nombre_castellano']),
-                        'tipo_cuerpo_lugar_nombre_portugues'                        => trim($rowMSSQL['tipo_cuerpo_lugar_nombre_portugues']),
-
-                        'tipo_lesion_codigo'                                        => ($rowMSSQL['tipo_lesion_codigo']),
-                        'tipo_lesion_nombre_ingles'                                 => trim($rowMSSQL['tipo_lesion_nombre_ingles']),
-                        'tipo_lesion_nombre_castellano'                             => trim($rowMSSQL['tipo_lesion_nombre_castellano']),
-                        'tipo_lesion_nombre_portugues'                              => trim($rowMSSQL['tipo_lesion_nombre_portugues']),
-
-                        'tipo_lesion_origen_codigo'                                 => ($rowMSSQL['tipo_lesion_origen_codigo']),
-                        'tipo_lesion_origen_nombre_ingles'                          => trim($rowMSSQL['tipo_lesion_origen_nombre_ingles']),
-                        'tipo_lesion_origen_nombre_castellano'                      => trim($rowMSSQL['tipo_lesion_origen_nombre_castellano']),
-                        'tipo_lesion_origen_nombre_portugues'                       => trim($rowMSSQL['tipo_lesion_origen_nombre_portugues']),
-
-                        'tipo_lesion_reincidencia_codigo'                           => ($rowMSSQL['tipo_lesion_reincidencia_codigo']),
-                        'tipo_lesion_reincidencia_nombre_ingles'                    => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_ingles']),
-                        'tipo_lesion_reincidencia_nombre_castellano'                => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_castellano']),
-                        'tipo_lesion_reincidencia_nombre_portugues'                 => trim($rowMSSQL['tipo_lesion_reincidencia_nombre_portugues']),
-
-                        'tipo_lesion_retiro_codigo'                                 => ($rowMSSQL['tipo_lesion_retiro_codigo']),
-                        'tipo_lesion_retiro_nombre_ingles'                          => trim($rowMSSQL['tipo_lesion_retiro_nombre_ingles']),
-                        'tipo_lesion_retiro_nombre_castellano'                      => trim($rowMSSQL['tipo_lesion_retiro_nombre_castellano']),
-                        'tipo_lesion_retiro_nombre_portugues'                       => trim($rowMSSQL['tipo_lesion_retiro_nombre_portugues']),
-
-                        'tipo_lesion_examen1_codigo'                                => ($rowMSSQL['tipo_lesion_examen1_codigo']),
-                        'tipo_lesion_examen1_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen1_nombre_ingles']),
-                        'tipo_lesion_examen1_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen1_nombre_castellano']),
-                        'tipo_lesion_examen1_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen1_nombre_portugues']),
-
-                        'tipo_lesion_examen2_codigo'                                => ($rowMSSQL['tipo_lesion_examen2_codigo']),
-                        'tipo_lesion_examen2_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen2_nombre_ingles']),
-                        'tipo_lesion_examen2_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen2_nombre_castellano']),
-                        'tipo_lesion_examen2_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen2_nombre_portugues']),
-
-                        'tipo_lesion_examen3_codigo'                                => ($rowMSSQL['tipo_lesion_examen3_codigo']),
-                        'tipo_lesion_examen3_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen3_nombre_ingles']),
-                        'tipo_lesion_examen3_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen3_nombre_castellano']),
-                        'tipo_lesion_examen3_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen3_nombre_portugues']),
-
-                        'tipo_lesion_examen4_codigo'                                => ($rowMSSQL['tipo_lesion_examen4_codigo']),
-                        'tipo_lesion_examen4_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen4_nombre_ingles']),
-                        'tipo_lesion_examen4_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen4_nombre_castellano']),
-                        'tipo_lesion_examen4_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen4_nombre_portugues']),
-
-                        'tipo_lesion_examen5_codigo'                                => ($rowMSSQL['tipo_lesion_examen5_codigo']),
-                        'tipo_lesion_examen5_nombre_ingles'                         => trim($rowMSSQL['tipo_lesion_examen5_nombre_ingles']),
-                        'tipo_lesion_examen5_nombre_castellano'                     => trim($rowMSSQL['tipo_lesion_examen5_nombre_castellano']),
-                        'tipo_lesion_examen5_nombre_portugues'                      => trim($rowMSSQL['tipo_lesion_examen5_nombre_portugues']),
-
-                        'tipo_lesion_causa_codigo'                                  => ($rowMSSQL['tipo_lesion_causa_codigo']),
-                        'tipo_lesion_causa_nombre_ingles'                           => trim($rowMSSQL['tipo_lesion_causa_nombre_ingles']),
-                        'tipo_lesion_causa_nombre_castellano'                       => trim($rowMSSQL['tipo_lesion_causa_nombre_castellano']),
-                        'tipo_lesion_causa_nombre_portugues'                        => trim($rowMSSQL['tipo_lesion_causa_nombre_portugues']),
-
-                        'tipo_lesion_falta_codigo'                                  => ($rowMSSQL['tipo_lesion_falta_codigo']),
-                        'tipo_lesion_falta_nombre_ingles'                           => trim($rowMSSQL['tipo_lesion_falta_nombre_ingles']),
-                        'tipo_lesion_falta_nombre_castellano'                       => trim($rowMSSQL['tipo_lesion_falta_nombre_castellano']),
-                        'tipo_lesion_falta_nombre_portugues'                        => trim($rowMSSQL['tipo_lesion_falta_nombre_portugues']),
-
-                        'tipo_diagnostico_codigo'                                   => ($rowMSSQL['tipo_diagnostico_codigo']),
-                        'tipo_diagnostico_nombre_ingles'                            => trim($rowMSSQL['tipo_diagnostico_nombre_ingles']),
-                        'tipo_diagnostico_nombre_castellano'                        => trim($rowMSSQL['tipo_diagnostico_nombre_castellano']),
-                        'tipo_diagnostico_nombre_portugues'                         => trim($rowMSSQL['tipo_diagnostico_nombre_portugues']),
-                        'tipo_diagnostico_observacion'                              => trim($rowMSSQL['tipo_diagnostico_observacion']),
-
-                        'tipo_diagnostico_retorno_codigo'                           => ($rowMSSQL['tipo_diagnostico_retorno_codigo']),
-                        'tipo_diagnostico_retorno_nombre_ingles'                    => trim($rowMSSQL['tipo_diagnostico_retorno_nombre_ingles']),
-                        'tipo_diagnostico_retorno_nombre_castellano'                => trim($rowMSSQL['tipo_diagnostico_retorno_nombre_castellano']),
-                        'tipo_diagnostico_retorno_nombre_portugues'                 => trim($rowMSSQL['tipo_diagnostico_retorno_nombre_portugues']),
-                        'tipo_diagnostico_retorno_observacion'                      => trim($rowMSSQL['tipo_diagnostico_retorno_observacion']),
-                        'tipo_diagnostico_retorno_tratamiento'                      => trim($rowMSSQL['tipo_diagnostico_retorno_tratamiento']),
-
-                        'tipo_diagnostico_recuperacion_codigo'                      => ($rowMSSQL['tipo_diagnostico_recuperacion_codigo']),
-                        'tipo_diagnostico_recuperacion_nombre_ingles'               => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_ingles']),
-                        'tipo_diagnostico_recuperacion_nombre_castellano'           => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_castellano']),
-                        'tipo_diagnostico_recuperacion_nombre_portugues'            => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_portugues']),
-                        'tipo_diagnostico_recuperacion'                             => trim($rowMSSQL['tipo_diagnostico_recuperacion_nombre_castellano']).' '.trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_castellano']),
-
-                        'tipo_diagnostico_tiempo_codigo'                            => ($rowMSSQL['tipo_diagnostico_tiempo_codigo']),
-                        'tipo_diagnostico_tiempo_nombre_ingles'                     => trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_ingles']),
-                        'tipo_diagnostico_tiempo_nombre_castellano'                 => trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_castellano']),
-                        'tipo_diagnostico_tiempo_nombre_portugues'                  => trim($rowMSSQL['tipo_diagnostico_tiempo_nombre_portugues']),
-
-                        'competicion_codigo'                                        => ($rowMSSQL['competicion_codigo']),
+                        'disciplina_codigo'                                         => trim($rowMSSQL['disciplina_codigo']),
+                        'disciplina_nombre'                                         => trim($disciplina_nombre),
+                        
+                        'competicion_codigo'                                        => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'                                  => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                                        => trim($rowMSSQL['competicion_estado']),
                         'competicion_nombre'                                        => trim($rowMSSQL['competicion_nombre']),
+                        'competicion_nombre_corto'                                  => trim($rowMSSQL['competicion_nombre_corto']),
+                        'competicion_anho'                                          => $rowMSSQL['competicion_anho'],
 
                         'juego_codigo'                                              => ($rowMSSQL['juego_codigo']),
                         'juego_nombre'                                              => trim($rowMSSQL['juego_equipo_local']).' vs '.trim($rowMSSQL['juego_equpo_visitante']),
@@ -6274,142 +5851,27 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'lesion_codigo'                                             => '',
-                        'competicion_codigo'                                        => '',
-                        'lesion_fecha_alta'                                         => '',
-                        'lesion_fecha_retorno'                                      => '',
-                        'temperatura_numero'                                        => '',
-                        'lesion_observacion'                                        => '',
-
-                        'lesion_cirugia_codigo'                                     => '',
-                        'lesion_cirugia_nombre'                                     => '',
+                        'covid19_codigo'                                            => '',
+                        'covid19_anho'                                              => '',
+                        'covid19_fecha'                                             => '',
+                        'covid19_adulto_cantidad'                                   => '',
+                        'covid19_menores_cantidad'                                  => '',
+                        'covid19_observacion'                                       => '',
 
                         'tipo_estado_codigo'                                        => '',
                         'tipo_estado_nombre_ingles'                                 => '',
                         'tipo_estado_nombre_castellano'                             => '',
                         'tipo_estado_nombre_portugues'                              => '',
 
-                        'tipo_clima_codigo'                                         => '',
-                        'tipo_clima_nombre_ingles'                                  => '',
-                        'tipo_clima_nombre_castellano'                              => '',
-                        'tipo_clima_nombre_portugues'                               => '',
-
-                        'tipo_distancia_codigo'                                     => '',
-                        'tipo_distancia_nombre_ingles'                              => '',
-                        'tipo_distancia_nombre_castellano'                          => '',
-                        'tipo_distancia_nombre_portugues'                           => '',
-
-                        'tipo_traslado_codigo'                                      => '',
-                        'tipo_traslado_nombre_ingles'                               => '',
-                        'tipo_traslado_nombre_castellano'                           => '',
-                        'tipo_traslado_nombre_portugues'                            => '',
-
-                        'tipo_posicion_codigo'                                      => '',
-                        'tipo_posicion_nombre_ingles'                               => '',
-                        'tipo_posicion_nombre_castellano'                           => '',
-                        'tipo_posicion_nombre_portugues'                            => '',
-
-                        'tipo_minuto_codigo'                                        => '',
-                        'tipo_minuto_nombre_ingles'                                 => '',
-                        'tipo_minuto_nombre_castellano'                             => '',
-                        'tipo_minuto_nombre_portugues'                              => '',
-
-                        'tipo_campo_codigo'                                         => '',
-                        'tipo_campo_nombre_ingles'                                  => '',
-                        'tipo_campo_nombre_castellano'                              => '',
-                        'tipo_campo_nombre_portugues'                               => '',
-
-                        'tipo_cuerpo_zona_codigo'                                   => '',
-                        'tipo_cuerpo_zona_nombre_ingles'                            => '',
-                        'tipo_cuerpo_zona_nombre_castellano'                        => '',
-                        'tipo_cuerpo_zona_nombre_portugues'                         => '',
-
-                        'tipo_cuerpo_lugar_codigo'                                  => '',
-                        'tipo_cuerpo_lugar_nombre_ingles'                           => '',
-                        'tipo_cuerpo_lugar_nombre_castellano'                       => '',
-                        'tipo_cuerpo_lugar_nombre_portugues'                        => '',
-
-                        'tipo_lesion_codigo'                                        => '',
-                        'tipo_lesion_nombre_ingles'                                 => '',
-                        'tipo_lesion_nombre_castellano'                             => '',
-                        'tipo_lesion_nombre_portugues'                              => '',
-
-                        'tipo_lesion_origen_codigo'                                 => '',
-                        'tipo_lesion_origen_nombre_ingles'                          => '',
-                        'tipo_lesion_origen_nombre_castellano'                      => '',
-                        'tipo_lesion_origen_nombre_portugues'                       => '',
-
-                        'tipo_lesion_reincidencia_codigo'                           => '',
-                        'tipo_lesion_reincidencia_nombre_ingles'                    => '',
-                        'tipo_lesion_reincidencia_nombre_castellano'                => '',
-                        'tipo_lesion_reincidencia_nombre_portugues'                 => '',
-
-                        'tipo_lesion_retiro_codigo'                                 => '',
-                        'tipo_lesion_retiro_nombre_ingles'                          => '',
-                        'tipo_lesion_retiro_nombre_castellano'                      => '',
-                        'tipo_lesion_retiro_nombre_portugues'                       => '',
-
-                        'tipo_lesion_examen1_codigo'                                => '',
-                        'tipo_lesion_examen1_nombre_ingles'                         => '',
-                        'tipo_lesion_examen1_nombre_castellano'                     => '',
-                        'tipo_lesion_examen1_nombre_portugues'                      => '',
-
-                        'tipo_lesion_examen2_codigo'                                => '',
-                        'tipo_lesion_examen2_nombre_ingles'                         => '',
-                        'tipo_lesion_examen2_nombre_castellano'                     => '',
-                        'tipo_lesion_examen2_nombre_portugues'                      => '',
-
-                        'tipo_lesion_examen3_codigo'                                => '',
-                        'tipo_lesion_examen3_nombre_ingles'                         => '',
-                        'tipo_lesion_examen3_nombre_castellano'                     => '',
-                        'tipo_lesion_examen3_nombre_portugues'                      => '',
-
-                        'tipo_lesion_examen4_codigo'                                => '',
-                        'tipo_lesion_examen4_nombre_ingles'                         => '',
-                        'tipo_lesion_examen4_nombre_castellano'                     => '',
-                        'tipo_lesion_examen4_nombre_portugues'                      => '',
-
-                        'tipo_lesion_examen5_codigo'                                => '',
-                        'tipo_lesion_examen5_nombre_ingles'                         => '',
-                        'tipo_lesion_examen5_nombre_castellano'                     => '',
-                        'tipo_lesion_examen5_nombre_portugues'                      => '',
-
-                        'tipo_lesion_causa_codigo'                                  => '',
-                        'tipo_lesion_causa_nombre_ingles'                           => '',
-                        'tipo_lesion_causa_nombre_castellano'                       => '',
-                        'tipo_lesion_causa_nombre_portugues'                        => '',
-
-                        'tipo_lesion_falta_codigo'                                  => '',
-                        'tipo_lesion_falta_nombre_ingles'                           => '',
-                        'tipo_lesion_falta_nombre_castellano'                       => '',
-                        'tipo_lesion_falta_nombre_portugues'                        => '',
-
-                        'tipo_diagnostico_codigo'                                   => '',
-                        'tipo_diagnostico_nombre_ingles'                            => '',
-                        'tipo_diagnostico_nombre_castellano'                        => '',
-                        'tipo_diagnostico_nombre_portugues'                         => '',
-                        'tipo_diagnostico_observacion'                              => '',
-
-                        'tipo_diagnostico_retorno_codigo'                           => '',
-                        'tipo_diagnostico_retorno_nombre_ingles'                    => '',
-                        'tipo_diagnostico_retorno_nombre_castellano'                => '',
-                        'tipo_diagnostico_retorno_nombre_portugues'                 => '',
-                        'tipo_diagnostico_retorno_observacion'                      => '',
-                        'tipo_diagnostico_retorno_tratamiento'                      => '',
-
-                        'tipo_diagnostico_recuperacion_codigo'                      => '',
-                        'tipo_diagnostico_recuperacion_nombre_ingles'               => '',
-                        'tipo_diagnostico_recuperacion_nombre_castellano'           => '',
-                        'tipo_diagnostico_recuperacion_nombre_portugues'            => '',
-                        'tipo_diagnostico_recuperacion'                             => '',
-
-                        'tipo_diagnostico_tiempo_codigo'                            => '',
-                        'tipo_diagnostico_tiempo_nombre_ingles'                     => '',
-                        'tipo_diagnostico_tiempo_nombre_castellano'                 => '',
-                        'tipo_diagnostico_tiempo_nombre_portugues'                  => '',
-
+                        'disciplina_codigo'                                         => '',
+                        'disciplina_nombre'                                         => '',
+                        
                         'competicion_codigo'                                        => '',
+                        'competicion_codigo_padre'                                  => '',
+                        'competicion_estado'                                        => '',
                         'competicion_nombre'                                        => '',
+                        'competicion_nombre_corto'                                  => '',
+                        'competicion_anho'                                          => '',
 
                         'juego_codigo'                                              => '',
                         'juego_nombre'                                              => '',
@@ -6422,7 +5884,7 @@
 
                         'auditoria_usuario'                                         => '',
                         'auditoria_fecha_hora'                                      => '',
-                        'auditoria_ip'                                              => ''
+                        'auditoria_ip'                                              => '' 
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
@@ -6444,4 +5906,3 @@
         
         return $json;
     });
-*/
