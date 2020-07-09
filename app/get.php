@@ -5809,7 +5809,7 @@
                     $detalle    = array(
                         'covid19_codigo'                                            => $rowMSSQL['covid19_codigo'],
                         'covid19_anho'                                              => $rowMSSQL['covid19_anho'],
-                        'covid19_fecha'                                             => date_format(date_create($rowMSSQL['covid19_fecha']), 'd/m/Y H:i:s'),
+                        'covid19_fecha'                                             => date_format(date_create($rowMSSQL['covid19_fecha']), 'd/m/Y'),
                         'covid19_adulto_cantidad'                                   => $rowMSSQL['covid19_adulto_cantidad'],
                         'covid19_menores_cantidad'                                  => trim($rowMSSQL['covid19_menores_cantidad']),
                         'covid19_observacion'                                       => trim($rowMSSQL['covid19_observacion']),
@@ -5837,7 +5837,7 @@
                         'jugador_nombre'                                            => trim($rowMSSQL['jugador_apellido']).', '.trim($rowMSSQL['jugador_nombre']),
 
                         'auditoria_usuario'                                         => trim($rowMSSQL['auditoria_usuario']),
-                        'auditoria_fecha_hora'                                      => trim($rowMSSQL['auditoria_fecha_hora']),
+                        'auditoria_fecha_hora'                                      => date_format(date_create($rowMSSQL['auditoria_fecha_hora']), 'd/m/Y'),
                         'auditoria_ip'                                              => trim($rowMSSQL['auditoria_ip'])   
                     );
 
