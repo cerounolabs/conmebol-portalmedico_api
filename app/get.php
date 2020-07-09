@@ -5697,10 +5697,7 @@
                     a.COVFICAFH                         AS          auditoria_fecha_hora,
                     a.COVFICAIP                         AS          auditoria_ip,
 
-                    b.DOMFICCOD                         AS          tipo_estado_codigo,
-                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
-                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
-                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+                    a.COVFICEST                         AS          tipo_estado_codigo,
 
                     a.COVFICDIC                         AS          disciplina_codigo,
 
@@ -5723,7 +5720,6 @@
                     f.internationalLastName             AS          jugador_apellido
 
                     FROM [covid19].[COVFIC] a
-                    LEFT OUTER JOIN [adm].[DOMFIC] b ON a.COVFICEST = b.DOMFICCOD
                     LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
                     LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
@@ -5744,10 +5740,7 @@
                     a.COVFICAFH                         AS          auditoria_fecha_hora,
                     a.COVFICAIP                         AS          auditoria_ip,
 
-                    b.DOMFICCOD                         AS          tipo_estado_codigo,
-                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
-                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
-                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+                    a.COVFICEST                         AS          tipo_estado_codigo,
 
                     a.COVFICDIC                         AS          disciplina_codigo,
 
@@ -5770,7 +5763,6 @@
                     f.internationalLastName             AS          jugador_apellido
 
                     FROM [covid19].[COVFIC] a
-                    LEFT OUTER JOIN [adm].[DOMFIC] b ON a.COVFICEST = b.DOMFICCOD
                     LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
                     LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
@@ -5793,17 +5785,25 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     switch ($rowMSSQL['disciplina_codigo']) {
-                        case 'value':
+                        case 'FOOTBALL':
                             $disciplina_nombre = 'Fútbol de Campo';
                             break;
                         
-                        case 'value':
+                        case 'FUTSAL':
                             $disciplina_nombre = 'Fútbol de Salón';
                             break;
 
-                        case 'value':
+                        case 'BEACH_SOCCER':
                             $disciplina_nombre = 'Fútbol de Playa';
                             break;
+                    }
+
+                    if ($rowMSSQL['tipo_estado_codigo'] === 'A') {
+                        $tipo_estado_nombre = 'ACTIVO';
+                    } 
+                    
+                    if ($rowMSSQL['tipo_estado_codigo'] === 'I') {
+                        $tipo_estado_nombre = 'INACTIVO';
                     }
 
                     $detalle    = array(
@@ -5814,10 +5814,8 @@
                         'covid19_menores_cantidad'                                  => trim($rowMSSQL['covid19_menores_cantidad']),
                         'covid19_observacion'                                       => trim($rowMSSQL['covid19_observacion']),
 
-                        'tipo_estado_codigo'                                        => $rowMSSQL['tipo_estado_codigo'],
-                        'tipo_estado_nombre_ingles'                                 => trim($rowMSSQL['tipo_estado_nombre_ingles']),
-                        'tipo_estado_nombre_castellano'                             => trim($rowMSSQL['tipo_estado_nombre_castellano']),
-                        'tipo_estado_nombre_portugues'                              => trim($rowMSSQL['tipo_estado_nombre_portugues']),
+                        'tipo_estado_codigo'                                        => trim($rowMSSQL['tipo_estado_codigo']),
+                        'tipo_estado_nombre'                                        => trim($tipo_estado_nombre),
 
                         'disciplina_codigo'                                         => trim($rowMSSQL['disciplina_codigo']),
                         'disciplina_nombre'                                         => trim($disciplina_nombre),
@@ -5859,9 +5857,7 @@
                         'covid19_observacion'                                       => '',
 
                         'tipo_estado_codigo'                                        => '',
-                        'tipo_estado_nombre_ingles'                                 => '',
-                        'tipo_estado_nombre_castellano'                             => '',
-                        'tipo_estado_nombre_portugues'                              => '',
+                        'tipo_estado_nombre'                                        => '',
 
                         'disciplina_codigo'                                         => '',
                         'disciplina_nombre'                                         => '',
