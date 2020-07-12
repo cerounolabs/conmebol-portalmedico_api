@@ -5727,7 +5727,7 @@
                     g.DOMFICNOC                         AS          tipo_covid19_nombre_castellano,
                     g.DOMFICNOP                         AS          tipo_covid19_nombre_portugues
 
-                    FROM [covid19].[COVFIC] a
+                    FROM [exa].[COVFIC] a
                     LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
                     LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
@@ -5778,7 +5778,7 @@
                     g.DOMFICNOC                         AS          tipo_covid19_nombre_castellano,
                     g.DOMFICNOP                         AS          tipo_covid19_nombre_portugues
 
-                    FROM [covid19].[COVFIC] a
+                    FROM [exa].[COVFIC] a
                     LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
                     LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
