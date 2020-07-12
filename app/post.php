@@ -511,22 +511,23 @@
         $val08      = $request->getParsedBody()['covid19_periodo'];
         $val09      = $request->getParsedBody()['covid19_fecha_1'];
         $val10      = $request->getParsedBody()['covid19_fecha_2'];
-        $val11      = $request->getParsedBody()['covid19_persona_adulta'];
-        $val12      = $request->getParsedBody()['covid19_persona_menor'];
-        $val13      = $request->getParsedBody()['covid19_ciudad'];
-        $val14      = $request->getParsedBody()['covid19_observacion'];
+        $val11      = $request->getParsedBody()['covid19_fecha_3'];
+        $val12      = $request->getParsedBody()['covid19_persona_adulta'];
+        $val13      = $request->getParsedBody()['covid19_persona_menor'];
+        $val14      = $request->getParsedBody()['covid19_ciudad'];
+        $val15      = $request->getParsedBody()['covid19_observacion'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
-            $sql00  = "INSERT INTO [covid19].[COVFIC] (COVFICEST, COVFICTCC, COVFICDIC, COVFICCOC, COVFICENC, COVFICEQC, COVFICJUC, COVFICPER, COVFICFE1, COVFICFE2, COVFICACA, COVFICMCA, COVFICCIU, COVFICOBS, COVFICAUS, COVFICAFH, COVFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql00  = "INSERT INTO [covid19].[COVFIC] (COVFICEST, COVFICTCC, COVFICDIC, COVFICCOC, COVFICENC, COVFICEQC, COVFICJUC, COVFICPER, COVFICFE1, COVFICFE2, COVFICFE3, COVFICACA, COVFICMCA, COVFICCIU, COVFICOBS, COVFICAUS, COVFICAFH, COVFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql01  = "SELECT MAX(COVFICCOD) AS covid19_codigo FROM [covid19].[COVFIC]";
             try {
                 $connMSSQL  = getConnectionMSSQL();
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
-                $stmtMSSQL00->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $aud01, $aud03]); 
+                $stmtMSSQL00->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $aud01, $aud03]); 
                 
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
                 $stmtMSSQL01->execute();
