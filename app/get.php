@@ -5676,7 +5676,7 @@
         return $json;
     });
 
-    $app->get('/v1/800/covid1901/prueba/{equipo}', function($request) {
+    $app->get('/v1/800/covid19/prueba/{equipo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('equipo');
@@ -5688,9 +5688,11 @@
                 $sql00  = "SELECT
                     a.COVFICCOD                         AS          covid19_codigo,
                     a.COVFICPER                         AS          covid19_anho,
-                    a.COVFICFEC                         AS          covid19_fecha,
+                    a.COVFICFE1                         AS          covid19_fecha_1,
+                    a.COVFICFE2                         AS          covid19_fecha_2,
                     a.COVFICACA                         AS          covid19_adulto_cantidad,
                     a.COVFICMCA                         AS          covid19_menores_cantidad,
+                    a.COVFICCIU                         AS          covid19_ciudad,
                     a.COVFICOBS                         AS          covid19_observacion,
                     
                     a.COVFICAUS                         AS          auditoria_usuario,
@@ -5717,23 +5719,30 @@
 
                     f.personFifaId                      AS          jugador_codigo,
                     f.internationalFirstName            AS          jugador_nombre,
-                    f.internationalLastName             AS          jugador_apellido
+                    f.internationalLastName             AS          jugador_apellido,
+
+                    g.DOMFICCOD                         AS          tipo_covid19_codigo,
+                    g.DOMFICNOI                         AS          tipo_covid19_nombre_ingles,
+                    g.DOMFICNOC                         AS          tipo_covid19_nombre_castellano,
+                    g.DOMFICNOP                         AS          tipo_covid19_nombre_portugues
 
                     FROM [covid19].[COVFIC] a
                     LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
                     LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
                     LEFT OUTER JOIN [comet].[persons] f ON a.COVFICJUC = f.personFifaId
-                    ORDER BY a.COVFICCOD DESC";
-            
+                    LEFT OUTER JOIN [adm].[DOMFIC] g ON a.COVFICTCC = g.DOMFICCOD
 
+                    ORDER BY a.COVFICCOD DESC";
             } else {
                 $sql00  = "SELECT
                     a.COVFICCOD                         AS          covid19_codigo,
                     a.COVFICPER                         AS          covid19_anho,
-                    a.COVFICFEC                         AS          covid19_fecha,
+                    a.COVFICFE1                         AS          covid19_fecha_1,
+                    a.COVFICFE2                         AS          covid19_fecha_2,
                     a.COVFICACA                         AS          covid19_adulto_cantidad,
                     a.COVFICMCA                         AS          covid19_menores_cantidad,
+                    a.COVFICCIU                         AS          covid19_ciudad,
                     a.COVFICOBS                         AS          covid19_observacion,
                     
                     a.COVFICAUS                         AS          auditoria_usuario,
@@ -5760,13 +5769,19 @@
 
                     f.personFifaId                      AS          jugador_codigo,
                     f.internationalFirstName            AS          jugador_nombre,
-                    f.internationalLastName             AS          jugador_apellido
+                    f.internationalLastName             AS          jugador_apellido,
+
+                    g.DOMFICCOD                         AS          tipo_covid19_codigo,
+                    g.DOMFICNOI                         AS          tipo_covid19_nombre_ingles,
+                    g.DOMFICNOC                         AS          tipo_covid19_nombre_castellano,
+                    g.DOMFICNOP                         AS          tipo_covid19_nombre_portugues
 
                     FROM [covid19].[COVFIC] a
                     LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
                     LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
                     LEFT OUTER JOIN [comet].[persons] f ON a.COVFICJUC = f.personFifaId
+                    LEFT OUTER JOIN [adm].[DOMFIC] g ON a.COVFICTCC = g.DOMFICCOD
 
                     WHERE a.COVFICEQC = ?
 
@@ -5809,9 +5824,11 @@
                     $detalle    = array(
                         'covid19_codigo'                                            => $rowMSSQL['covid19_codigo'],
                         'covid19_anho'                                              => $rowMSSQL['covid19_anho'],
-                        'covid19_fecha'                                             => date_format(date_create($rowMSSQL['covid19_fecha']), 'd/m/Y'),
+                        'covid19_fecha_1'                                           => date_format(date_create($rowMSSQL['covid19_fecha_1']), 'd/m/Y'),
+                        'covid19_fecha_2'                                           => date_format(date_create($rowMSSQL['covid19_fecha_2']), 'd/m/Y'),
                         'covid19_adulto_cantidad'                                   => $rowMSSQL['covid19_adulto_cantidad'],
                         'covid19_menores_cantidad'                                  => trim($rowMSSQL['covid19_menores_cantidad']),
+                        'covid19_ciudad'                                            => trim($rowMSSQL['covid19_ciudad']),
                         'covid19_observacion'                                       => trim($rowMSSQL['covid19_observacion']),
 
                         'tipo_estado_codigo'                                        => trim($rowMSSQL['tipo_estado_codigo']),
@@ -5836,6 +5853,11 @@
                         'jugador_codigo'                                            => ($rowMSSQL['jugador_codigo']),
                         'jugador_nombre'                                            => trim($rowMSSQL['jugador_apellido']).', '.trim($rowMSSQL['jugador_nombre']),
 
+                        'tipo_covid19_codigo'                                       => $rowMSSQL['tipo_covid19_codigo'],
+                        'tipo_covid19_nombre_ingles'                                => trim($rowMSSQL['tipo_covid19_nombre_ingles']),
+                        'tipo_covid19_nombre_castellano'                            => trim($rowMSSQL['tipo_covid19_nombre_castellano']),
+                        'tipo_covid19_nombre_portugues'                             => trim($rowMSSQL['tipo_covid19_nombre_portugues']),
+
                         'auditoria_usuario'                                         => trim($rowMSSQL['auditoria_usuario']),
                         'auditoria_fecha_hora'                                      => date_format(date_create($rowMSSQL['auditoria_fecha_hora']), 'd/m/Y'),
                         'auditoria_ip'                                              => trim($rowMSSQL['auditoria_ip'])   
@@ -5851,9 +5873,11 @@
                     $detalle = array(
                         'covid19_codigo'                                            => '',
                         'covid19_anho'                                              => '',
-                        'covid19_fecha'                                             => '',
+                        'covid19_fecha_1'                                           => '',
+                        'covid19_fecha_2'                                           => '',
                         'covid19_adulto_cantidad'                                   => '',
                         'covid19_menores_cantidad'                                  => '',
+                        'covid19_ciudad'                                            => '',
                         'covid19_observacion'                                       => '',
 
                         'tipo_estado_codigo'                                        => '',
@@ -5877,6 +5901,11 @@
 
                         'jugador_codigo'                                            => '',
                         'jugador_nombre'                                            => '',
+
+                        'tipo_covid19_codigo'                                       => '',
+                        'tipo_covid19_nombre_ingles'                                => '',
+                        'tipo_covid19_nombre_castellano'                            => '',
+                        'tipo_covid19_nombre_portugues'                             => '',
 
                         'auditoria_usuario'                                         => '',
                         'auditoria_fecha_hora'                                      => '',
