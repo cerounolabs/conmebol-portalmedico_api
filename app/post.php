@@ -559,8 +559,8 @@
     $app->post('/v1/800/covid19/examen', function($request) {
         require __DIR__.'/../src/connect.php';
 
-        $val01      = $request->getParsedBody()['covid19_codigo'];
-        $val02      = $request->getParsedBody()['tipo_prueba_codigo'];
+        $val01      = $request->getParsedBody()['tipo_prueba_codigo'];
+        $val02      = $request->getParsedBody()['covid19_codigo'];
         $val03      = $request->getParsedBody()['covid19_prueba_valor'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
