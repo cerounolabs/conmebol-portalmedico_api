@@ -5676,7 +5676,7 @@
         return $json;
     });
 
-    $app->get('/v1/800/covid/{equipo}', function($request) {
+    $app->get('/v1/800/covid1901/prueba/{equipo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('equipo');
