@@ -2757,8 +2757,9 @@
 
         $sql00  = "SELECT 
         a.PERCOMOBS                         AS          competicion_persona_observacion,
+        
         a.PERCOMAUS                         AS          auditoria_usuario,
-        a.PERCOMAFE                         AS          auditoria_fecha_hora,
+        a.PERCOMAFH                         AS          auditoria_fecha_hora,
         a.PERCOMAIP                         AS          auditoria_ip,
 
         b.PERFICCOD                         AS          persona_codigo,
