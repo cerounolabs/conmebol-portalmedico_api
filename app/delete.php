@@ -19,7 +19,7 @@
             $sql00  = "DELETE FROM [adm].[DOMFIC] WHERE DOMFICCOD = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val00]); 
                 
@@ -63,7 +63,7 @@
             $sql00  = "DELETE FROM [adm].[DOMSUB] WHERE DOMFICCOD = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val00]); 
                 
@@ -110,7 +110,7 @@
             $sql00  = "DELETE FROM [adm].[PERFIC] WHERE PERFICCOD = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val00]); 
                 
