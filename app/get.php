@@ -21,7 +21,7 @@
         ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOC";
 
         try {
-            $connMSSQL  = getConnectionMSSQL();
+            $connMSSQL  = getConnectionMSSQLv1();
             $stmtMSSQL  = $connMSSQL->prepare($sql00);
             $stmtMSSQL->execute(); 
 
@@ -116,7 +116,7 @@
             ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOC";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]); 
 
@@ -215,7 +215,7 @@
             ORDER BY a.DOMFICVAL, a.DOMFICORD, a.DOMFICNOC";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]); 
 
@@ -316,7 +316,7 @@
             ORDER BY a.DOMFICAIDD DESC";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val01]); 
 
@@ -420,7 +420,7 @@
         ORDER BY a.DOMSUBVAL, a.DOMSUBORD, b.DOMFICNOC, a.DOMSUBNOC";
 
         try {
-            $connMSSQL  = getConnectionMSSQL();
+            $connMSSQL  = getConnectionMSSQLv1();
             $stmtMSSQL  = $connMSSQL->prepare($sql00);
             $stmtMSSQL->execute(); 
 
@@ -529,7 +529,7 @@
             ORDER BY a.DOMSUBVAL, a.DOMSUBORD, b.DOMFICNOC, a.DOMSUBNOC";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]); 
 
@@ -642,7 +642,7 @@
             ORDER BY a.DOMSUBVAL, a.DOMSUBORD, b.DOMFICNOC, a.DOMSUBNOC";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]); 
 
@@ -756,7 +756,7 @@
             ORDER BY a.DOMSUBAIDD DESC";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val01]); 
 
@@ -926,7 +926,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {
@@ -1139,7 +1139,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val02 == 39393) {
@@ -1300,7 +1300,7 @@
             ORDER BY a.season DESC, a.competitionFifaId DESC";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]); 
 
@@ -1470,7 +1470,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val02 == 39393) {
@@ -1613,7 +1613,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val02 == 39393) {
@@ -1755,7 +1755,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val02 == 39393) {
@@ -1867,7 +1867,7 @@
         ORDER BY a.internationalName";
 
         try {
-            $connMSSQL  = getConnectionMSSQL();
+            $connMSSQL  = getConnectionMSSQLv1();
             $stmtMSSQL  = $connMSSQL->prepare($sql00);
             $stmtMSSQL->execute(); 
 
@@ -1988,7 +1988,7 @@
             ORDER BY a.internationalName";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]); 
 
@@ -2113,7 +2113,7 @@
             ORDER BY a.internationalName";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]); 
 
@@ -2254,7 +2254,7 @@
             ORDER BY a.PERFICNOM";
 
         try {
-            $connMSSQL  = getConnectionMSSQL();
+            $connMSSQL  = getConnectionMSSQLv1();
             $stmtMSSQL  = $connMSSQL->prepare($sql00);
             $stmtMSSQL->execute();
 
@@ -2418,7 +2418,7 @@
             ORDER BY a.PERFICNOM";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]);
 
@@ -2633,7 +2633,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {
@@ -2836,7 +2836,7 @@
         ORDER BY a.PERCOMTMC, a.PERCOMCOC, a.PERCOMPEC";
 
         try {
-            $connMSSQL  = getConnectionMSSQL();
+            $connMSSQL  = getConnectionMSSQLv1();
             $stmtMSSQL  = $connMSSQL->prepare($sql00);
             $stmtMSSQL->execute([$val01]);
 
@@ -3041,7 +3041,7 @@
         ORDER BY a.organisationShortName";
 
         try {
-            $connMSSQL  = getConnectionMSSQL();
+            $connMSSQL  = getConnectionMSSQLv1();
             $stmtMSSQL  = $connMSSQL->prepare($sql00);
             $stmtMSSQL->execute(); 
 
@@ -3149,7 +3149,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val02 == 39393) {
@@ -3576,7 +3576,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {
@@ -4301,7 +4301,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {
@@ -4720,7 +4720,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if($val01 == 39393 && $val03 == 0) {
@@ -4852,7 +4852,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if($val01 == 39393 && $val03 == 0) {
@@ -4984,7 +4984,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if($val01 == 39393 && $val03 == 0) {
@@ -5116,7 +5116,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if($val01 == 39393 && $val03 == 0) {
@@ -5248,7 +5248,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if($val01 == 39393 && $val03 == 0) {
@@ -5380,7 +5380,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if($val01 == 39393 && $val03 == 0) {
@@ -5512,7 +5512,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if($val01 == 39393 && $val03 == 0) {
@@ -5644,7 +5644,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if($val01 == 39393 && $val03 == 0) {
@@ -5776,7 +5776,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if($val01 == 39393 && $val03 == 0) {
@@ -5951,7 +5951,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {
@@ -6211,7 +6211,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {

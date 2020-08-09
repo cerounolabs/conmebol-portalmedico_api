@@ -19,7 +19,7 @@
             $sql00  = "UPDATE [adm].[DOMFIC] SET DOMFICEST = ?, DOMFICORD = ?, DOMFICNOI = ?, DOMFICNOC = ?, DOMFICNOP = ?, DOMFICPAT = ?, DOMFICOBS = ?, DOMFICAUS = ?, DOMFICAFH = GETDATE(), DOMFICAIP = ? WHERE DOMFICCOD = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val08,  $val09,  $val11, $val00]); 
                 
@@ -63,7 +63,7 @@
             $sql00  = "UPDATE [adm].[DOMSUB] SET DOMSUBEST = ?, DOMSUBTIC = ?, DOMSUBORD = ?, DOMSUBNOI = ?, DOMSUBNOC = ?, DOMSUBNOP = ?, DOMSUBPAT = ?, DOMSUBOBS = ?, DOMSUBAUS = ?, DOMSUBAFH = GETDATE(), DOMSUBAIP = ? WHERE DOMSUBCOD = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val09, $val10, $val12, $val00]); 
                 
@@ -110,7 +110,7 @@
             $sql00  = "UPDATE [adm].[PERFIC] SET PERFICEST = ?, PERFICTIP = ?, PERFICROL = ?, PERFICEQU = ?,  PERFICCAT = ?, PERFICNOM = ?, PERFICPAT = ?, PERFICTEF = ?, PERFICOBS = ?, PERFICAUS = ?, PERFICAFH = GETDATE(), PERFICAIP = ? WHERE PERFICCOD = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val09, $val11, $val12, $val13, $val15, $val00]); 
                 
@@ -148,7 +148,7 @@
             $sql00  = "UPDATE [adm].[PERFIC] SET PERFICCON = ?, PERFICAUS = ?, PERFICAFH = GETDATE(), PERFICAIP = ? WHERE PERFICCOD = ? AND PERFICUSE = ? AND PERFICMAI = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL00->execute([$val02, $aud01, $aud03, $val00, $val01, $val03]);
 
@@ -196,7 +196,7 @@
             $sql00  = "UPDATE [lesion].[LESFIC] SET LESFICESC = ?, LESFICEX1 = ?, LESFICEX2 = ?, LESFICEX3 = ?,  LESFICEX4 = ?, LESFICEX5 = ?, LESFICFER = ?, LESFICCIR = ?, LESFICDIR = ?, LESFICOBR = ?, LESFICTRR = ?, LESFICAUS = ?, LESFICAFH = GETDATE(), LESFICAIP = ? WHERE LESFICCOD = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val11, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03, $val00]); 
                 
@@ -235,7 +235,7 @@
             $sql00  = "UPDATE [lesion].[LESFIC] SET LESFICESC = ?, LESFICOBS = ?, LESFICAUS = ?, LESFICAFH = GETDATE(), LESFICAIP = ? WHERE LESFICCOD = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val02, $val03, $aud01, $aud03, $val00]); 
                 

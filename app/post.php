@@ -58,7 +58,7 @@
             ORDER BY a.PERFICNOM";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01]);
                 
@@ -243,7 +243,7 @@
             $sql00  = "INSERT INTO [adm].[DOMFIC] (DOMFICEST, DOMFICORD, DOMFICNOI, DOMFICNOC, DOMFICNOP, DOMFICPAT, DOMFICVAL, DOMFICOBS, DOMFICAUS, DOMFICAFH, DOMFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val11]); 
                 
@@ -286,7 +286,7 @@
             $sql00  = "INSERT INTO [adm].[DOMSUB] (DOMSUBEST, DOMSUBTIC, DOMSUBORD, DOMSUBNOI, DOMSUBNOC, DOMSUBNOP, DOMSUBPAT, DOMSUBVAL, DOMSUBOBS, DOMSUBAUS, DOMSUBAFH, DOMSUBAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12]); 
                 
@@ -332,7 +332,7 @@
             $sql00  = "INSERT INTO [adm].[PERFIC] (PERFICEST, PERFICTIP, PERFICROL, PERFICEQU, PERFICCAT, PERFICNOM, PERFICUSE, PERFICCON, PERFICPAT, PERFICMAI, PERFICTEF, PERFICOBS, PERFICAUS, PERFICAFH, PERFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val15]); 
                 
@@ -371,7 +371,7 @@
             $sql00  = "INSERT INTO [adm].[PERCOM] (PERCOMCOC, PERCOMPEC, PERCOMTMC, PERCOMOBS, PERCOMAUS, PERCOMAFH, PERCOMAIP) VALUES (?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $aud01, $aud03]); 
                 
@@ -435,7 +435,7 @@
             $sql00  = "INSERT INTO [lesion].[LESFIC](LESFICESC, LESFICCOC, LESFICJUC, LESFICEQC, LESFICPEC, LESFICFEC, LESFICCLI, LESFICTEM, LESFICDIS, LESFICTRA, LESFICPOS, LESFICMIN, LESFICCAM, LESFICCUZ, LESFICCUL, LESFICLES, LESFICORI, LESFICREI, LESFICRET, LESFICCAU, LESFICFAL, LESFICDIA, LESFICREC, LESFICTIE, LESFICOBD, LESFICAUS, LESFICAFH, LESFICAIP) VALUES (?, ?, ?, ?, ?, GETDATE(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $val16, $val17, $val18, $val25, $val19, $val20, $val21, $val22, $val23, $val24, $aud01, $aud03]); 
                 
@@ -475,7 +475,7 @@
             $sql00  = "INSERT INTO [lesion].[LESCON](LESCONTIC, LESCONPRC, LESCONLEC, LESCONRES, LESCONOBS, LESCONAUS, LESCONAFH, LESCONAIP) VALUES (?, ?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $aud01, $aud03]); 
                 
@@ -525,7 +525,7 @@
             $sql00  = "INSERT INTO [exa].[COVFIC] (COVFICEST, COVFICTCC, COVFICDIC, COVFICCOC, COVFICENC, COVFICEQC, COVFICJUC, COVFICPER, COVFICFE1, COVFICFE2, COVFICFE3, COVFICACA, COVFICMCA, COVFICCIU, COVFICOBS, COVFICAUS, COVFICAFH, COVFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql01  = "SELECT MAX(COVFICCOD) AS covid19_codigo FROM [exa].[COVFIC]";
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL00->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $aud01, $aud03]); 
                 
@@ -571,7 +571,7 @@
             $sql00  = "INSERT INTO [exa].[COVPRU] (COVPRUTPC, COVPRUCOC, COVPRUVAL, COVPRUAUS, COVPRUAFH, COVPRUAIP) VALUES (?, ?, ?, ?, GETDATE(), ?)";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $aud01, $aud03]); 
                 
@@ -621,7 +621,7 @@
             $sql00  = "INSERT INTO [exa].[COVFICC] (COVFICEST, COVFICTCC, COVFICDIC, COVFICCOC, COVFICENC, COVFICEQC, COVFICJUC, COVFICPER, COVFICFE1, COVFICFE2, COVFICFE3, COVFICACA, COVFICMCA, COVFICCIU, COVFICOBS, COVFICAUS, COVFICAFH, COVFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql01  = "SELECT MAX(COVFICCOD) AS covid19_codigo FROM [exa].[COVFICC]";
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL00->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $aud01, $aud03]); 
                 
@@ -667,7 +667,7 @@
             $sql00  = "INSERT INTO [exa].[COVPRUC] (COVPRUTPC, COVPRUCOC, COVPRUVAL, COVPRUAUS, COVPRUAFH, COVPRUAIP) VALUES (?, ?, ?, ?, GETDATE(), ?)";
 
             try {
-                $connMSSQL  = getConnectionMSSQL();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $aud01, $aud03]); 
                 
