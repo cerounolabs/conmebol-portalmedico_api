@@ -6793,7 +6793,7 @@
                         'jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
                         'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
                         'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
-                        'jugador_imagen_valor'          => trim($rowMSSQL['jugador_imagen_valor']),
+                        'jugador_imagen_valor'          => '',//trim($rowMSSQL['jugador_imagen_valor']),
                         'jugador_numero'                => $rowMSSQL['jugador_numero']
                     );
 
