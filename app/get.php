@@ -6935,70 +6935,70 @@
                     }
 
                     $detalle    = array(
-                        'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
-                        'auditoria_usuario'                     => trim($rowMSSQL['auditoria_usuario']),
+                        'competicion_persona_observacion'       => trim(strtoupper(strtolower($rowMSSQL['competicion_persona_observacion']))),
+                        'auditoria_usuario'                     => trim(strtoupper(strtolower($rowMSSQL['auditoria_usuario']))),
                         'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
-                        'auditoria_ip'                          => trim($rowMSSQL['auditoria_ip']),
+                        'auditoria_ip'                          => trim(strtoupper(strtolower($rowMSSQL['auditoria_ip']))),
 
                         'persona_codigo'                        => $rowMSSQL['persona_codigo'],
-                        'persona_nombre'                        => trim($rowMSSQL['persona_nombre']),
-                        'persona_user'                          => trim($rowMSSQL['persona_user']),
-                        'persona_path'                          => $persona_path,
-                        'persona_email'                         => trim($rowMSSQL['persona_email']),
-                        'persona_telefono'                      => trim($rowMSSQL['persona_telefono']),
+                        'persona_nombre'                        => trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
+                        'persona_user'                          => trim(strtoupper(strtolower($rowMSSQL['persona_user']))),
+                        'persona_path'                          => trim(strtoupper(strtolower($persona_path))),
+                        'persona_email'                         => trim(strtoupper(strtolower($rowMSSQL['persona_email']))),
+                        'persona_telefono'                      => trim(strtoupper(strtolower($rowMSSQL['persona_telefono']))),
 
                         'tipo_estado_codigo'                    => $rowMSSQL['tipo_estado_codigo'],
-                        'tipo_estado_nombre_ingles'             => trim($rowMSSQL['tipo_estado_nombre_ingles']),
-                        'tipo_estado_nombre_castellano'         => trim($rowMSSQL['tipo_estado_nombre_castellano']),
-                        'tipo_estado_nombre_portugues'          => trim($rowMSSQL['tipo_estado_nombre_portugues']),
+                        'tipo_estado_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
 
                         'tipo_acceso_codigo'                    => $rowMSSQL['tipo_acceso_codigo'],
-                        'tipo_acceso_nombre_ingles'             => trim($rowMSSQL['tipo_acceso_nombre_ingles']),
-                        'tipo_acceso_nombre_castellano'         => trim($rowMSSQL['tipo_acceso_nombre_castellano']),
-                        'tipo_acceso_nombre_portugues'          => trim($rowMSSQL['tipo_acceso_nombre_portugues']),
+                        'tipo_acceso_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_ingles']))),
+                        'tipo_acceso_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_castellano']))),
+                        'tipo_acceso_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_portugues']))),
 
                         'tipo_perfil_codigo'                    => $rowMSSQL['tipo_perfil_codigo'],
-                        'tipo_perfil_nombre_ingles'             => trim($rowMSSQL['tipo_perfil_nombre_ingles']),
-                        'tipo_perfil_nombre_castellano'         => trim($rowMSSQL['tipo_perfil_nombre_castellano']),
-                        'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
+                        'tipo_perfil_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_nombre_ingles']))),
+                        'tipo_perfil_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_nombre_castellano']))),
+                        'tipo_perfil_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_nombre_portugues']))),
 
                         'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
-                        'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
+                        'equipo_nombre'                         => trim(strtoupper(strtolower($rowMSSQL['equipo_nombre']))),
 
                         'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
-                        'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
-                        'tipo_categoria_nombre_castellano'      => trim($rowMSSQL['tipo_categoria_nombre_castellano']),
-                        'tipo_categoria_nombre_portugues'       => trim($rowMSSQL['tipo_categoria_nombre_portugues']),
+                        'tipo_categoria_nombre_ingles'          => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_nombre_ingles']))),
+                        'tipo_categoria_nombre_castellano'      => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_nombre_castellano']))),
+                        'tipo_categoria_nombre_portugues'       => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_nombre_portugues']))),
 
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
-                        'competicion_estado'                    => trim($rowMSSQL['competicion_estado']),
-                        'competicion_nombre'                    => trim($rowMSSQL['competicion_nombre']),
-                        'competicion_nombre_corto'              => trim($rowMSSQL['competicion_nombre_corto']),
+                        'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
+                        'competicion_nombre'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre']))),
+                        'competicion_nombre_corto'              => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre_corto']))),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
-                        'competicion_categoria_codigo'          => trim($rowMSSQL['competicion_categoria_codigo']),
-                        'competicion_categoria_nombre'          => trim($rowMSSQL['competicion_categoria_nombre']),
+                        'competicion_categoria_codigo'          => trim(strtoupper(strtolower($rowMSSQL['competicion_categoria_codigo']))),
+                        'competicion_categoria_nombre'          => trim(strtoupper(strtolower($rowMSSQL['competicion_categoria_nombre']))),
                         'competicion_desde'                     => $rowMSSQL['competicion_desde'],
                         'competicion_hasta'                     => $rowMSSQL['competicion_hasta'],
-                        'competicion_disciplina'                => trim($rowMSSQL['competicion_disciplina']),
-                        'competicion_genero'                    => trim($rowMSSQL['competicion_genero']),
+                        'competicion_disciplina'                => trim(strtoupper(strtolower($rowMSSQL['competicion_disciplina']))),
+                        'competicion_genero'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_genero']))),
                         'competicion_imagen_codigo'             => $rowMSSQL['competicion_imagen_codigo'],
                         'competicion_multiplicador'             => $rowMSSQL['competicion_multiplicador'],
-                        'competicion_naturaleza'                => trim($rowMSSQL['competicion_naturaleza']),
+                        'competicion_naturaleza'                => trim(strtoupper(strtolower($rowMSSQL['competicion_naturaleza']))),
                         'competicion_numero_participante'       => $rowMSSQL['competicion_numero_participante'],
                         'competicion_numero_orden'              => $rowMSSQL['competicion_numero_orden'],
-                        'competicion_equipo_tipo'               => trim($rowMSSQL['competicion_equipo_tipo']),
+                        'competicion_equipo_tipo'               => trim(strtoupper(strtolower($rowMSSQL['competicion_equipo_tipo']))),
                         'competicion_sustitucion'               => $rowMSSQL['competicion_sustitucion'],
                         'competicion_penal'                     => $rowMSSQL['competicion_penal'],
-                        'competicion_tipo'                      => trim($rowMSSQL['competicion_tipo']),
-                        'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
-                        'competicion_imagen_path'               => 'imagen/competencia/img_'.$rowMSSQL['competicion_codigo'].'.'.$ext,
+                        'competicion_tipo'                      => trim(strtoupper(strtolower($rowMSSQL['competicion_tipo']))),
+                        'competicion_imagen_tipo'               => trim(strtoupper(strtolower($rowMSSQL['competicion_imagen_tipo']))),
+                        'competicion_imagen_path'               => 'imagen/competicion/img_'.$rowMSSQL['competicion_codigo'].'.'.$ext,
                         'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
                         'tipo_modulo_codigo'                    => $rowMSSQL['tipo_modulo_codigo'],
-                        'tipo_modulo_nombre_ingles'             => trim($rowMSSQL['tipo_modulo_nombre_ingles']),
-                        'tipo_modulo_nombre_castellano'         => trim($rowMSSQL['tipo_modulo_nombre_castellano']),
-                        'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues'])
+                        'tipo_modulo_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_ingles']))),
+                        'tipo_modulo_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_castellano']))),
+                        'tipo_modulo_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_portugues'])))
                     );
 
                     $result[]   = $detalle;
@@ -7072,6 +7072,155 @@
                         'tipo_modulo_nombre_ingles'             => '',
                         'tipo_modulo_nombre_castellano'         => '',
                         'tipo_modulo_nombre_portugues'          => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/200/competicion/encuentro/{equipo}/{competicion}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('equipo');
+        $val02      = $request->getAttribute('competicion');
+
+        if (isset($val01) && isset($val02)) {
+            if ($val01 == 39393) {
+                $sql00  = "SELECT
+                    a.COMPETICION_ID                                AS          competicion_codigo,
+                    a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
+                    a.COMPETICION_ESTADO                            AS          competicion_estado,
+                    a.COMPETICION_ANHO                              AS          competicion_anho,
+                    a.JUEGO_CODIGO                                  AS          juego_codigo,
+                    a.JUEGO_NOMBRE                                  AS          juego_fase,
+                    a.JUEGO_ESTADO                                  AS          juego_estado,
+                    a.JUEGO_HORARIO                                 AS          juego_horario,
+                    a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
+                    a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
+                    a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
+                    a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
+                    a.EQUIPO_VISITANTE_CODIGO                       AS          equipo_visitante_codigo,
+                    a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
+                    a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
+                    a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
+                    
+                    FROM [view].[juego] a
+                    
+                    WHERE a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?
+        
+                    ORDER BY a.COMPETICION_PADRE_ID DESC";
+
+            } else {
+                $sql00  = "SELECT
+                    a.COMPETICION_ID                                AS          competicion_codigo,
+                    a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
+                    a.COMPETICION_ESTADO                            AS          competicion_estado,
+                    a.COMPETICION_ANHO                              AS          competicion_anho,
+                    a.JUEGO_CODIGO                                  AS          juego_codigo,
+                    a.JUEGO_NOMBRE                                  AS          juego_fase,
+                    a.JUEGO_ESTADO                                  AS          juego_estado,
+                    a.JUEGO_HORARIO                                 AS          juego_horario,
+                    a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
+                    a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
+                    a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
+                    a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
+                    a.EQUIPO_VISITANTE_CODIGO                       AS          equipo_visitante_codigo,
+                    a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
+                    a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
+                    a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
+                    
+                    FROM [view].[juego] a
+                    
+                    WHERE (a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?) AND (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?)
+        
+                    ORDER BY a.COMPETICION_PADRE_ID DESC, a.JUEGO_HORARIO DESC, a.JUEGO_CODIGO DESC";
+            }
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                if ($val02 == 39393) {
+                    $stmtMSSQL->execute([$val02, $val02]); 
+                } else {
+                    $stmtMSSQL->execute([$val01, $val01, $val02, $val02]); 
+                }
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
+                    $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
+
+                    $detalle    = array(
+                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
+                        'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+
+                        'juego_codigo'                          => $rowMSSQL['juego_codigo'],
+                        'juego_fase'                            => trim(strtoupper(strtolower($rowMSSQL['juego_fase']))),
+                        'juego_estado'                          => trim(strtoupper(strtolower($rowMSSQL['juego_estado']))),
+                        'juego_horario'                         => $juego_horario,
+                        'juego_cierra'                          => $juego_cierra,
+
+                        'equipo_local_codigo'                   => $rowMSSQL['equipo_local_codigo'],
+                        'equipo_local_nombre'                   => trim(strtoupper(strtolower($rowMSSQL['equipo_local_nombre']))),
+                        'equipo_local_resultado_primer'         => $rowMSSQL['equipo_local_resultado_primer'],
+                        'equipo_local_resultado_segundo'        => $rowMSSQL['equipo_local_resultado_segundo'],
+                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_segundo'],
+
+                        'equipo_visitante_codigo'               => $rowMSSQL['equipo_visitante_codigo'],
+                        'equipo_visitante_nombre'               => trim(strtoupper(strtolower($rowMSSQL['equipo_visitante_nombre']))),
+                        'equipo_visitante_resultado_primer'     => $rowMSSQL['equipo_visitante_resultado_primer'],
+                        'equipo_visitante_resultado_segundo'    => $rowMSSQL['equipo_visitante_resultado_segundo'],
+                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_segundo']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo_padre'              => '',
+                        'competicion_estado'                    => '',
+                        'competicion_anho'                      => '',
+
+                        'juego_fase'                            => '',
+                        'juego_estado'                          => '',
+                        'juego_horario'                         => '',
+                        'juego_cierra'                          => '',
+
+                        'equipo_local_codigo'                   => '',
+                        'equipo_local_nombre'                   => '',
+                        'equipo_local_resultado_primer'         => '',
+                        'equipo_local_resultado_segundo'        => '',
+                        'equipo_local_resultado_final'          => '',
+                        
+                        'equipo_visitante_codigo'               => '',
+                        'equipo_visitante_nombre'               => '',
+                        'equipo_visitante_resultado_primer'     => '',
+                        'equipo_visitante_resultado_segundo'    => '',
+                        'equipo_visitante_resultado_final'      => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
