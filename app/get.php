@@ -6723,3 +6723,116 @@
         
         return $json;
     });
+
+
+    /*APARTIR DE AQUI*/
+    $app->get('/v1/200/competicion/equipo/{competicion}/{equipo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('competicion');
+        $val02      = $request->getAttribute('equipo');
+        
+        if (isset($val01) && isset($val02)) {
+            if ($val02 == 39393) {
+                $sql00  = "SELECT
+                    a.competitionFifaId                 AS          competicion_codigo,
+                    
+                    b.personFifaId                      AS          jugador_codigo,
+                    b.internationalLastName             AS          jugador_apellido,
+                    b.internationalFirstName            AS          jugador_nombre,
+                    b.playerPosition                    AS          jugador_posicion,
+                    b.pictureContentType                AS          jugador_imagen_tipo,
+                    b.pictureLink                       AS          jugador_imagen_link,
+                    b.pictureValue                      AS          jugador_imagen_valor,
+                    a.shirtNumber                       AS          jugador_numero
+                    
+                    FROM [comet].[competitions_teams_players] a
+                    INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
+                    
+                    WHERE a.competitionFifaId = ?
+
+                    ORDER BY b.playerPosition, a.shirtNumber";
+            } else {
+                $sql00  = "SELECT
+                    a.competitionFifaId                 AS          competicion_codigo,
+                    
+                    b.personFifaId                      AS          jugador_codigo,
+                    b.internationalLastName             AS          jugador_apellido,
+                    b.internationalFirstName            AS          jugador_nombre,
+                    b.playerPosition                    AS          jugador_posicion,
+                    b.pictureContentType                AS          jugador_imagen_tipo,
+                    b.pictureLink                       AS          jugador_imagen_link,
+                    b.pictureValue                      AS          jugador_imagen_valor,
+                    a.shirtNumber                       AS          jugador_numero
+                    
+                    FROM [comet].[competitions_teams_players] a
+                    INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
+                    
+                    WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
+
+                    ORDER BY b.playerPosition, a.shirtNumber";
+            }
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                if ($val02 == 39393) {
+                    $stmtMSSQL->execute([$val01]);
+                } else {
+                    $stmtMSSQL->execute([$val01, $val02]);
+                }
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $detalle    = array(
+                        'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
+                        'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
+                        'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                        'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                        'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                        'jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
+                        'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
+                        'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
+                        'jugador_imagen_valor'          => trim($rowMSSQL['jugador_imagen_valor']),
+                        'jugador_numero'                => $rowMSSQL['jugador_numero']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'            => '',
+                        'jugador_codigo'                => '',
+                        'jugador_apellido'              => '',
+                        'jugador_nombre'                => '',
+                        'jugador_completo'              => '',
+                        'jugador_posicion'              => '',
+                        'jugador_imagen_tipo'           => '',
+                        'jugador_imagen_link'           => '',
+                        'jugador_imagen_valor'          => '',
+                        'jugador_numero'                => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
