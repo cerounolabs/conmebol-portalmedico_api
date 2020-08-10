@@ -7372,6 +7372,7 @@
                     a.JUEGO_ESTADO                                  AS          juego_estado,
                     a.JUEGO_HORARIO                                 AS          juego_horario,
                     a.JUEGO_ESTADIO                                 AS          juego_estadio,
+                    a.JUEGO_CIUDAD                                 AS           juego_ciudad,
                     a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
                     a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
                     a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
@@ -7398,6 +7399,7 @@
                     a.JUEGO_ESTADO                                  AS          juego_estado,
                     a.JUEGO_HORARIO                                 AS          juego_horario,
                     a.JUEGO_ESTADIO                                 AS          juego_estadio,
+                    a.JUEGO_CIUDAD                                 AS           juego_ciudad,
                     a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
                     a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
                     a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
@@ -7440,6 +7442,7 @@
                         'juego_horario'                         => $juego_horario,
                         'juego_cierra'                          => $juego_cierra,
                         'juego_estadio'                         => trim(strtoupper(strtolower($rowMSSQL['juego_estadio']))),
+                        'juego_ciudad'                          => trim(strtoupper(strtolower($rowMSSQL['juego_ciudad']))),
 
                         'equipo_local_codigo'                   => $rowMSSQL['equipo_local_codigo'],
                         'equipo_local_nombre'                   => trim(strtoupper(strtolower($rowMSSQL['equipo_local_nombre']))),
@@ -7473,6 +7476,7 @@
                         'juego_horario'                         => '',
                         'juego_cierra'                          => '',
                         'juego_estadio'                         => '',
+                        'juego_ciudad'                          => '',
 
                         'equipo_local_codigo'                   => '',
                         'equipo_local_nombre'                   => '',
