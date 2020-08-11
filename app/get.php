@@ -6464,267 +6464,6 @@
         return $json;
     });
 
-    $app->get('/v1/801/covid19/prueba/{equipo}', function($request) {
-        require __DIR__.'/../src/connect.php';
-
-        $val01      = $request->getAttribute('equipo');
-        
-        if (isset($val01)) {
-            $sql00  = "";
-
-            if ($val01 == 39393) {
-                $sql00  = "SELECT
-                    a.COVFICCOD                         AS          covid19_codigo,
-                    a.COVFICPER                         AS          covid19_anho,
-                    a.COVFICFE1                         AS          covid19_fecha_1,
-                    a.COVFICFE2                         AS          covid19_fecha_2,
-                    a.COVFICFE3                         AS          covid19_fecha_3,
-                    a.COVFICACA                         AS          covid19_adulto_cantidad,
-                    a.COVFICMCA                         AS          covid19_menores_cantidad,
-                    a.COVFICCIU                         AS          covid19_ciudad,
-                    a.COVFICOBS                         AS          covid19_observacion,
-                    
-                    a.COVFICAUS                         AS          auditoria_usuario,
-                    a.COVFICAFH                         AS          auditoria_fecha_hora,
-                    a.COVFICAIP                         AS          auditoria_ip,
-
-                    a.COVFICEST                         AS          tipo_estado_codigo,
-
-                    a.COVFICDIC                         AS          disciplina_codigo,
-
-                    c.competitionFifaId                 AS          competicion_codigo,
-                    c.superiorCompetitionFifaId         AS          competicion_codigo_padre,
-                    c.status                            AS          competicion_estado,
-                    c.internationalName                 AS          competicion_nombre,
-                    c.internationalShortName            AS          competicion_nombre_corto,
-                    c.season                            AS          competicion_anho,
-
-                    d.JUEGO_CODIGO                      AS          juego_codigo,
-                    d.EQUIPO_LOCAL_NOMBRE               AS          juego_equipo_local,
-                    d.EQUIPO_VISITANTE_NOMBRE           AS          juego_equpo_visitante,
-
-                    e.teamFifaId                        AS          equipo_codigo,
-                    e.internationalName                 AS          equipo_nombre,
-
-                    f.personFifaId                      AS          jugador_codigo,
-                    f.internationalFirstName            AS          jugador_nombre,
-                    f.internationalLastName             AS          jugador_apellido,
-
-                    g.DOMFICCOD                         AS          tipo_covid19_codigo,
-                    g.DOMFICNOI                         AS          tipo_covid19_nombre_ingles,
-                    g.DOMFICNOC                         AS          tipo_covid19_nombre_castellano,
-                    g.DOMFICNOP                         AS          tipo_covid19_nombre_portugues
-
-                    FROM [exa].[COVFICC] a
-                    LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
-                    LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
-                    LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
-                    LEFT OUTER JOIN [comet].[persons] f ON a.COVFICJUC = f.personFifaId
-                    LEFT OUTER JOIN [adm].[DOMFIC] g ON a.COVFICTCC = g.DOMFICCOD
-
-                    ORDER BY a.COVFICCOD DESC";
-            } else {
-                $sql00  = "SELECT
-                    a.COVFICCOD                         AS          covid19_codigo,
-                    a.COVFICPER                         AS          covid19_anho,
-                    a.COVFICFE1                         AS          covid19_fecha_1,
-                    a.COVFICFE2                         AS          covid19_fecha_2,
-                    a.COVFICFE3                         AS          covid19_fecha_3,
-                    a.COVFICACA                         AS          covid19_adulto_cantidad,
-                    a.COVFICMCA                         AS          covid19_menores_cantidad,
-                    a.COVFICCIU                         AS          covid19_ciudad,
-                    a.COVFICOBS                         AS          covid19_observacion,
-                    
-                    a.COVFICAUS                         AS          auditoria_usuario,
-                    a.COVFICAFH                         AS          auditoria_fecha_hora,
-                    a.COVFICAIP                         AS          auditoria_ip,
-
-                    a.COVFICEST                         AS          tipo_estado_codigo,
-
-                    a.COVFICDIC                         AS          disciplina_codigo,
-
-                    c.competitionFifaId                 AS          competicion_codigo,
-                    c.superiorCompetitionFifaId         AS          competicion_codigo_padre,
-                    c.status                            AS          competicion_estado,
-                    c.internationalName                 AS          competicion_nombre,
-                    c.internationalShortName            AS          competicion_nombre_corto,
-                    c.season                            AS          competicion_anho,
-
-                    d.JUEGO_CODIGO                      AS          juego_codigo,
-                    d.EQUIPO_LOCAL_NOMBRE               AS          juego_equipo_local,
-                    d.EQUIPO_VISITANTE_NOMBRE           AS          juego_equpo_visitante,
-
-                    e.teamFifaId                        AS          equipo_codigo,
-                    e.internationalName                 AS          equipo_nombre,
-
-                    f.personFifaId                      AS          jugador_codigo,
-                    f.internationalFirstName            AS          jugador_nombre,
-                    f.internationalLastName             AS          jugador_apellido,
-
-                    g.DOMFICCOD                         AS          tipo_covid19_codigo,
-                    g.DOMFICNOI                         AS          tipo_covid19_nombre_ingles,
-                    g.DOMFICNOC                         AS          tipo_covid19_nombre_castellano,
-                    g.DOMFICNOP                         AS          tipo_covid19_nombre_portugues
-
-                    FROM [exa].[COVFICC] a
-                    LEFT OUTER JOIN [comet].[competitions] c ON a.COVFICCOC = c.competitionFifaId
-                    LEFT OUTER JOIN [view].[juego] d ON a.COVFICENC = d.JUEGO_CODIGO
-                    LEFT OUTER JOIN [comet].[teams] e ON a.COVFICEQC = e.teamFifaId
-                    LEFT OUTER JOIN [comet].[persons] f ON a.COVFICJUC = f.personFifaId
-                    LEFT OUTER JOIN [adm].[DOMFIC] g ON a.COVFICTCC = g.DOMFICCOD
-
-                    WHERE a.COVFICEQC = ?
-
-                    ORDER BY a.COVFICCOD DESC";
-            }
-
-            try {
-                $connMSSQL  = getConnectionMSSQLv1();
-                $stmtMSSQL  = $connMSSQL->prepare($sql00);
-
-                if ($val01 == 39393) {
-                    $stmtMSSQL->execute();
-                } else {
-                    $stmtMSSQL->execute([$val01]);
-                }
-
-                while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    switch ($rowMSSQL['disciplina_codigo']) {
-                        case 'FOOTBALL':
-                            $disciplina_nombre = 'Fútbol de Campo';
-                            break;
-                        
-                        case 'FUTSAL':
-                            $disciplina_nombre = 'Fútbol de Salón';
-                            break;
-
-                        case 'BEACH_SOCCER':
-                            $disciplina_nombre = 'Fútbol de Playa';
-                            break;
-                    }
-
-                    if ($rowMSSQL['tipo_estado_codigo'] === 'A') {
-                        $tipo_estado_nombre = 'ACTIVO';
-                    } 
-                    
-                    if ($rowMSSQL['tipo_estado_codigo'] === 'I') {
-                        $tipo_estado_nombre = 'INACTIVO';
-                    }
-
-                    $detalle    = array(
-                        'covid19_codigo'                                            => $rowMSSQL['covid19_codigo'],
-                        'covid19_anho'                                              => $rowMSSQL['covid19_anho'],
-                        'covid19_fecha_1'                                           => date_format(date_create($rowMSSQL['covid19_fecha_1']), 'd/m/Y'),
-                        'covid19_fecha_2'                                           => date_format(date_create($rowMSSQL['covid19_fecha_2']), 'd/m/Y'),
-                        'covid19_fecha_3'                                           => date_format(date_create($rowMSSQL['covid19_fecha_3']), 'd/m/Y'),
-                        'covid19_adulto_cantidad'                                   => $rowMSSQL['covid19_adulto_cantidad'],
-                        'covid19_menores_cantidad'                                  => trim($rowMSSQL['covid19_menores_cantidad']),
-                        'covid19_ciudad'                                            => trim($rowMSSQL['covid19_ciudad']),
-                        'covid19_observacion'                                       => trim($rowMSSQL['covid19_observacion']),
-
-                        'tipo_estado_codigo'                                        => trim($rowMSSQL['tipo_estado_codigo']),
-                        'tipo_estado_nombre'                                        => trim($tipo_estado_nombre),
-
-                        'disciplina_codigo'                                         => trim($rowMSSQL['disciplina_codigo']),
-                        'disciplina_nombre'                                         => trim($disciplina_nombre),
-                        
-                        'competicion_codigo'                                        => $rowMSSQL['competicion_codigo'],
-                        'competicion_codigo_padre'                                  => $rowMSSQL['competicion_codigo_padre'],
-                        'competicion_estado'                                        => trim($rowMSSQL['competicion_estado']),
-                        'competicion_nombre'                                        => trim($rowMSSQL['competicion_nombre']),
-                        'competicion_nombre_corto'                                  => trim($rowMSSQL['competicion_nombre_corto']),
-                        'competicion_anho'                                          => $rowMSSQL['competicion_anho'],
-
-                        'juego_codigo'                                              => ($rowMSSQL['juego_codigo']),
-                        'juego_nombre'                                              => trim($rowMSSQL['juego_equipo_local']).' vs '.trim($rowMSSQL['juego_equpo_visitante']),
-
-                        'equipo_codigo'                                             => ($rowMSSQL['equipo_codigo']),
-                        'equipo_nombre'                                             => trim($rowMSSQL['equipo_nombre']),
-
-                        'jugador_codigo'                                            => ($rowMSSQL['jugador_codigo']),
-                        'jugador_nombre'                                            => trim($rowMSSQL['jugador_apellido']).', '.trim($rowMSSQL['jugador_nombre']),
-
-                        'tipo_covid19_codigo'                                       => $rowMSSQL['tipo_covid19_codigo'],
-                        'tipo_covid19_nombre_ingles'                                => trim($rowMSSQL['tipo_covid19_nombre_ingles']),
-                        'tipo_covid19_nombre_castellano'                            => trim($rowMSSQL['tipo_covid19_nombre_castellano']),
-                        'tipo_covid19_nombre_portugues'                             => trim($rowMSSQL['tipo_covid19_nombre_portugues']),
-
-                        'auditoria_usuario'                                         => trim($rowMSSQL['auditoria_usuario']),
-                        'auditoria_fecha_hora'                                      => date_format(date_create($rowMSSQL['auditoria_fecha_hora']), 'd/m/Y'),
-                        'auditoria_ip'                                              => trim($rowMSSQL['auditoria_ip'])   
-                    );
-
-                    $result[]   = $detalle;
-                }
-
-                if (isset($result)){
-                    header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-                } else {
-                    $detalle = array(
-                        'covid19_codigo'                                            => '',
-                        'covid19_anho'                                              => '',
-                        'covid19_fecha_1'                                           => '',
-                        'covid19_fecha_2'                                           => '',
-                        'covid19_fecha_3'                                           => '',
-                        'covid19_adulto_cantidad'                                   => '',
-                        'covid19_menores_cantidad'                                  => '',
-                        'covid19_ciudad'                                            => '',
-                        'covid19_observacion'                                       => '',
-
-                        'tipo_estado_codigo'                                        => '',
-                        'tipo_estado_nombre'                                        => '',
-
-                        'disciplina_codigo'                                         => '',
-                        'disciplina_nombre'                                         => '',
-                        
-                        'competicion_codigo'                                        => '',
-                        'competicion_codigo_padre'                                  => '',
-                        'competicion_estado'                                        => '',
-                        'competicion_nombre'                                        => '',
-                        'competicion_nombre_corto'                                  => '',
-                        'competicion_anho'                                          => '',
-
-                        'juego_codigo'                                              => '',
-                        'juego_nombre'                                              => '',
-
-                        'equipo_codigo'                                             => '',
-                        'equipo_nombre'                                             => '',
-
-                        'jugador_codigo'                                            => '',
-                        'jugador_nombre'                                            => '',
-
-                        'tipo_covid19_codigo'                                       => '',
-                        'tipo_covid19_nombre_ingles'                                => '',
-                        'tipo_covid19_nombre_castellano'                            => '',
-                        'tipo_covid19_nombre_portugues'                             => '',
-
-                        'auditoria_usuario'                                         => '',
-                        'auditoria_fecha_hora'                                      => '',
-                        'auditoria_ip'                                              => '' 
-                    );
-
-                    header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-                }
-
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
-            } catch (PDOException $e) {
-                header("Content-Type: application/json; charset=utf-8");
-                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-            }
-        } else {
-            header("Content-Type: application/json; charset=utf-8");
-            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-        }
-
-        $connMSSQL  = null;
-        
-        return $json;
-    });
-
-
     /*APARTIR DE AQUI*/
     $app->get('/v1/200/competicion/medico/{equipo}/{persona}', function($request) {
         require __DIR__.'/../src/connect.php';
@@ -7489,6 +7228,287 @@
                         'equipo_visitante_resultado_primer'     => '',
                         'equipo_visitante_resultado_segundo'    => '',
                         'equipo_visitante_resultado_final'      => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/801/examen/prueba/{equipo}/{encuentro}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('equipo');
+        $val02      = $request->getAttribute('encuentro');
+
+        if (isset($val01)) {
+            if ($val01 == 39393) {
+                $sql00  = "SELECT
+                    a.EXAFICCOD                         AS          examen_codigo,
+                    a.EXAFICFE1                         AS          examen_fecha_1,
+                    a.EXAFICFE2                         AS          examen_fecha_2,
+                    a.EXAFICFE3                         AS          examen_fecha_3,
+                    a.EXAFICACA                         AS          examen_cantidad_adulto,
+                    a.EXAFICMCA                         AS          examen_cantidad_menor,
+                    a.EXAFICADJ                         AS          examen_adjunto,
+                    a.EXAFICOBS                         AS          examen_observacion,
+                    
+                    a.EXAFICAUS                         AS          auditoria_usuario,
+                    a.EXAFICAFH                         AS          auditoria_fecha_hora,
+                    a.EXAFICAIP                         AS          auditoria_ip,
+
+                    b.DOMFICCOD                         AS          tipo_estado_codigo,
+                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+
+                    c.DOMFICCOD                         AS          tipo_examen_codigo,
+                    c.DOMFICNOI                         AS          tipo_examen_nombre_ingles,
+                    c.DOMFICNOC                         AS          tipo_examen_nombre_castellano,
+                    c.DOMFICNOP                         AS          tipo_examen_nombre_portugues,
+
+                    d.competitionFifaId                 AS          competicion_codigo,
+                    d.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                    d.status                            AS          competicion_estado,
+                    d.internationalName                 AS          competicion_nombre,
+                    d.internationalShortName            AS          competicion_nombre_corto,
+                    d.season                            AS          competicion_anho,
+
+                    e.JUEGO_CODIGO                      AS          encuentro_codigo,
+                    e.EQUIPO_LOCAL_CODIGO               AS          encuentro_local_codigo,
+                    e.EQUIPO_LOCAL_NOMBRE               AS          encuentro_local_equipo,
+                    e.EQUIPO_VISITANTE_CODIGO           AS          encuentro_visitante_codigo,
+                    e.EQUIPO_VISITANTE_NOMBRE           AS          encuentro_visitante_equipo,
+
+                    f.teamFifaId                        AS          equipo_codigo,
+                    f.internationalName                 AS          equipo_nombre,
+
+                    g.personFifaId                      AS          jugador_codigo,
+                    g.internationalFirstName            AS          jugador_nombre,
+                    g.internationalLastName             AS          jugador_apellido,
+
+
+
+                    i.EXAFICCOD                         AS          examen_anterior_codigo,
+                    i.EXAFICFE1                         AS          examen_anterior_fecha_1,
+                    i.EXAFICACA                         AS          examen_anterior_cantidad_adulto,
+                    i.EXAFICMCA                         AS          examen_anterior_cantidad_menor,
+                    i.EXAFICADJ                         AS          examen_anterior_adjunto,
+                    i.EXAFICOBS                         AS          examen_anterior_observacion
+
+                    FROM [exa].[EXAFIC] a
+                    LEFT OUTER JOIN [adm].[DOMFIC] b ON a.EXAFICEST = b.DOMFICCOD
+                    LEFT OUTER JOIN [adm].[DOMFIC] c ON a.EXAFICTEC = c.DOMFICCOD
+                    LEFT OUTER JOIN [comet].[competitions] d ON a.EXAFICCOC = d.competitionFifaId
+                    LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
+                    LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
+                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICJUC = g.personFifaId
+
+                    LEFT OUTER JOIN [exa].[EXAFIC] i ON a.EXAFICAEC = i.EXAFICCOD
+
+                    WHERE a.EXAFICENC = ?
+
+                    ORDER BY a.EXAFICENC DESC";
+            } else {
+                $sql00  = "SELECT
+                    a.EXAFICCOD                         AS          examen_codigo,
+                    a.EXAFICFE1                         AS          examen_fecha_1,
+                    a.EXAFICFE2                         AS          examen_fecha_2,
+                    a.EXAFICFE3                         AS          examen_fecha_3,
+                    a.EXAFICACA                         AS          examen_cantidad_adulto,
+                    a.EXAFICMCA                         AS          examen_cantidad_menor,
+                    a.EXAFICADJ                         AS          examen_adjunto,
+                    a.EXAFICOBS                         AS          examen_observacion,
+                    
+                    a.EXAFICAUS                         AS          auditoria_usuario,
+                    a.EXAFICAFH                         AS          auditoria_fecha_hora,
+                    a.EXAFICAIP                         AS          auditoria_ip,
+
+                    b.DOMFICCOD                         AS          tipo_estado_codigo,
+                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+
+                    c.DOMFICCOD                         AS          tipo_examen_codigo,
+                    c.DOMFICNOI                         AS          tipo_examen_nombre_ingles,
+                    c.DOMFICNOC                         AS          tipo_examen_nombre_castellano,
+                    c.DOMFICNOP                         AS          tipo_examen_nombre_portugues,
+
+                    d.competitionFifaId                 AS          competicion_codigo,
+                    d.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                    d.status                            AS          competicion_estado,
+                    d.internationalName                 AS          competicion_nombre,
+                    d.internationalShortName            AS          competicion_nombre_corto,
+                    d.season                            AS          competicion_anho,
+
+                    e.JUEGO_CODIGO                      AS          encuentro_codigo,
+                    e.EQUIPO_LOCAL_CODIGO               AS          encuentro_local_codigo,
+                    e.EQUIPO_LOCAL_NOMBRE               AS          encuentro_local_equipo,
+                    e.EQUIPO_VISITANTE_CODIGO           AS          encuentro_visitante_codigo,
+                    e.EQUIPO_VISITANTE_NOMBRE           AS          encuentro_visitante_equipo,
+
+                    f.teamFifaId                        AS          equipo_codigo,
+                    f.internationalName                 AS          equipo_nombre,
+
+                    g.personFifaId                      AS          jugador_codigo,
+                    g.internationalFirstName            AS          jugador_nombre,
+                    g.internationalLastName             AS          jugador_apellido,
+
+
+
+                    i.EXAFICCOD                         AS          examen_anterior_codigo,
+                    i.EXAFICFE1                         AS          examen_anterior_fecha_1,
+                    i.EXAFICACA                         AS          examen_anterior_cantidad_adulto,
+                    i.EXAFICMCA                         AS          examen_anterior_cantidad_menor,
+                    i.EXAFICADJ                         AS          examen_anterior_adjunto,
+                    i.EXAFICOBS                         AS          examen_anterior_observacion
+
+                    FROM [exa].[EXAFIC] a
+                    LEFT OUTER JOIN [adm].[DOMFIC] b ON a.EXAFICEST = b.DOMFICCOD
+                    LEFT OUTER JOIN [adm].[DOMFIC] c ON a.EXAFICTEC = c.DOMFICCOD
+                    LEFT OUTER JOIN [comet].[competitions] d ON a.EXAFICCOC = d.competitionFifaId
+                    LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
+                    LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
+                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICJUC = g.personFifaId
+
+                    LEFT OUTER JOIN [exa].[EXAFIC] i ON a.EXAFICCOD = i.EXAFICCOD
+
+                    WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ?
+
+                    ORDER BY a.EXAFICENC DESC";
+            }
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                if ($val01 == 39393) {
+                    $stmtMSSQL->execute([$val02]);
+                } else {
+                    $stmtMSSQL->execute([$val01, $val02]);
+                }
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $detalle    = array(
+                        'examen_codigo'                         => $rowMSSQL['examen_codigo'],
+                        'examen_fecha_1'                        => date_format(date_create($rowMSSQL['examen_fecha_1']), 'd/m/Y'),
+                        'examen_fecha_2'                        => date_format(date_create($rowMSSQL['examen_fecha_2']), 'd/m/Y'),
+                        'examen_fecha_3'                        => date_format(date_create($rowMSSQL['examen_fecha_3']), 'd/m/Y'),
+                        'examen_cantidad_adulto'                => $rowMSSQL['examen_cantidad_adulto'],
+                        'examen_cantidad_menor'                 => $rowMSSQL['examen_cantidad_menor'],
+                        'examen_adjunto'                        => trim(strtolower($rowMSSQL['examen_adjunto'])),
+                        'examen_observacion'                    => trim(strtoupper(strtolower($rowMSSQL['examen_observacion']))),
+
+                        'tipo_estado_codigo'                    => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+
+                        'tipo_examen_codigo'                    => $rowMSSQL['tipo_examen_codigo'],
+                        'tipo_examen_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_examen_nombre_ingles']))),
+                        'tipo_examen_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_examen_nombre_castellano']))),
+                        'tipo_examen_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_examen_nombre_portugues']))),
+
+                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
+                        'competicion_nombre'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre']))),
+                        'competicion_nombre_corto'              => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre_corto']))),
+                        'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+
+                        'encuentro_codigo'                      => $rowMSSQL['encuentro_codigo'],
+                        'encuentro_local_codigo'                => $rowMSSQL['encuentro_local_codigo'],
+                        'encuentro_visitante_codigo'            => $rowMSSQL['encuentro_visitante_codigo'],
+                        'encuentro_nombre'                      => trim(strtoupper(strtolower($rowMSSQL['encuentro_local_equipo']))).' vs '.trim(strtoupper(strtolower($rowMSSQL['encuentro_visitante_equipo']))),
+
+                        'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
+                        'equipo_nombre'                         => trim(strtoupper(strtolower($rowMSSQL['equipo_nombre']))),
+
+                        'jugador_codigo'                        => $rowMSSQL['jugador_codigo'],
+                        'jugador_nombre'                        => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+
+                        'examen_anterior_codigo'                => $rowMSSQL['examen_anterior_codigo'],
+                        'examen_anterior_fecha_1'               => date_format(date_create($rowMSSQL['examen_anterior_fecha_1']), 'd/m/Y'),
+                        'examen_anterior_cantidad_adulto'       => $rowMSSQL['examen_anterior_cantidad_adulto'],
+                        'examen_anterior_cantidad_menor'        => $rowMSSQL['examen_anterior_cantidad_menor'],
+                        'examen_anterior_adjunto'               => trim(strtolower($rowMSSQL['examen_anterior_adjunto'])),
+                        'examen_anterior_observacion'           => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_observacion']))),
+
+                        'auditoria_usuario'                     => trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                  => date_format(date_create($rowMSSQL['auditoria_fecha_hora']), 'd/m/Y'),
+                        'auditoria_ip'                          => trim($rowMSSQL['auditoria_ip'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'examen_codigo'                         => '',
+                        'examen_fecha_1'                        => '',
+                        'examen_fecha_2'                        => '',
+                        'examen_fecha_3'                        => '',
+                        'examen_cantidad_adulto'                => '',
+                        'examen_cantidad_menor'                 => '',
+                        'examen_adjunto'                        => '',
+                        'examen_observacion'                    => '',
+
+                        'tipo_estado_codigo'                    => '',
+                        'tipo_estado_nombre_ingles'             => '',
+                        'tipo_estado_nombre_castellano'         => '',
+                        'tipo_estado_nombre_portugues'          => '',
+
+                        'tipo_examen_codigo'                    => '',
+                        'tipo_examen_nombre_ingles'             => '',
+                        'tipo_examen_nombre_castellano'         => '',
+                        'tipo_examen_nombre_portugues'          => '',
+
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo_padre'              => '',
+                        'competicion_estado'                    => '',
+                        'competicion_nombre'                    => '',
+                        'competicion_nombre_corto'              => '',
+                        'competicion_anho'                      => '',
+
+                        'encuentro_codigo'                      => '',
+                        'encuentro_local_codigo'                => '',
+                        'encuentro_visitante_codigo'            => '',
+                        'encuentro_nombre'                      => '',
+
+                        'equipo_codigo'                         => '',
+                        'equipo_nombre'                         => '',
+
+                        'jugador_codigo'                        => '',
+                        'jugador_nombre'                        => '',
+
+                        'examen_anterior_codigo'                => '',
+                        'examen_anterior_fecha_1'               => '',
+                        'examen_anterior_cantidad_adulto'       => '',
+                        'examen_anterior_cantidad_menor'        => '',
+                        'examen_anterior_adjunto'               => '',
+                        'examen_anterior_observacion'           => '',
+
+                        'auditoria_usuario'                     => '',
+                        'auditoria_fecha_hora'                  => '',
+                        'auditoria_ip'                          => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
