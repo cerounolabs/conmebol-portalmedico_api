@@ -594,32 +594,33 @@
         return $json;
     });
 
-    $app->post('/v1/801/covid19/prueba', function($request) {
+    $app->post('/v1/801/examen/prueba', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getParsedBody()['tipo_estado_codigo'];
-        $val02      = $request->getParsedBody()['tipo_covid19_codigo'];
-        $val03      = $request->getParsedBody()['disciplina_codigo'];
-        $val04      = $request->getParsedBody()['competicion_codigo'];
-        $val05      = $request->getParsedBody()['encuentro_codigo'];
-        $val06      = $request->getParsedBody()['equipo_codigo'];
-        $val07      = $request->getParsedBody()['jugador_codigo'];
-        $val08      = $request->getParsedBody()['covid19_periodo'];
-        $val09      = $request->getParsedBody()['covid19_fecha_1'];
-        $val10      = $request->getParsedBody()['covid19_fecha_2'];
-        $val11      = $request->getParsedBody()['covid19_fecha_3'];
-        $val12      = $request->getParsedBody()['covid19_persona_adulta'];
-        $val13      = $request->getParsedBody()['covid19_persona_menor'];
-        $val14      = $request->getParsedBody()['covid19_ciudad'];
-        $val15      = $request->getParsedBody()['covid19_observacion'];
+        $val02      = $request->getParsedBody()['tipo_examen_codigo'];
+        $val03      = $request->getParsedBody()['competicion_codigo'];
+        $val04      = $request->getParsedBody()['encuentro_codigo'];
+        $val05      = $request->getParsedBody()['equipo_codigo'];
+        $val06      = $request->getParsedBody()['jugador_codigo'];
+        $val07      = $request->getParsedBody()['laboratorio_codigo'];
+        $val08      = $request->getParsedBody()['examen_anterior_codigo'];
+        $val09      = $request->getParsedBody()['examen_fecha_1'];
+        $val10      = $request->getParsedBody()['examen_fecha_2'];
+        $val11      = $request->getParsedBody()['examen_fecha_3'];
+        $val12      = $request->getParsedBody()['examen_persona_adulta'];
+        $val13      = $request->getParsedBody()['examen_persona_menor'];
+        $val14      = $request->getParsedBody()['examen_adjunto'];
+        $val15      = $request->getParsedBody()['examen_observacion'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
-            $sql00  = "INSERT INTO [exa].[COVFICC] (COVFICEST, COVFICTCC, COVFICDIC, COVFICCOC, COVFICENC, COVFICEQC, COVFICJUC, COVFICPER, COVFICFE1, COVFICFE2, COVFICFE3, COVFICACA, COVFICMCA, COVFICCIU, COVFICOBS, COVFICAUS, COVFICAFH, COVFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
-            $sql01  = "SELECT MAX(COVFICCOD) AS covid19_codigo FROM [exa].[COVFICC]";
+            $sql00  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICJUC, EXAFICLAC, EXAFICAEC, EXAFICFE1, EXAFICFE2, EXAFICFE3, EXAFICACA, EXAFICMCA, EXAFICADJ, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql01  = "SELECT MAX(EXAFICCOD) AS examen_codigo FROM [exa].[EXAFIC]";
+
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
@@ -628,7 +629,7 @@
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
                 $stmtMSSQL01->execute();
                 $row_mssql01= $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
-                $codigo     = $row_mssql01['covid19_codigo']; 
+                $codigo     = $row_mssql01['examen_codigo']; 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
@@ -652,19 +653,19 @@
         return $json;
     }); 
 
-    $app->post('/v1/801/covid19/examen', function($request) {
+    $app->post('/v1/801/examen/test', function($request) {
         require __DIR__.'/../src/connect.php';
 
-        $val01      = $request->getParsedBody()['tipo_prueba_codigo'];
-        $val02      = $request->getParsedBody()['covid19_codigo'];
-        $val03      = $request->getParsedBody()['covid19_prueba_valor'];
+        $val01      = $request->getParsedBody()['tipo_test_codigo'];
+        $val02      = $request->getParsedBody()['examen_codigo'];
+        $val03      = $request->getParsedBody()['examen_test_valor'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03)) {
-            $sql00  = "INSERT INTO [exa].[COVPRUC] (COVPRUTPC, COVPRUCOC, COVPRUVAL, COVPRUAUS, COVPRUAFH, COVPRUAIP) VALUES (?, ?, ?, ?, GETDATE(), ?)";
+            $sql00  = "INSERT INTO [exa].[EXATES] (EXATESTTC, EXATESEXC, EXATESVAL, EXATESAUS, EXATESAFH, EXATESAIP) VALUES (?, ?, ?, ?, GETDATE(), ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
