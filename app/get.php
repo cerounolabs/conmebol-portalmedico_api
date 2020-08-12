@@ -7093,11 +7093,12 @@
         return $json;
     });
 
-    $app->get('/v1/200/competicion/equipoalta/{equipo}/{competicion}', function($request) {
+    $app->get('/v1/200/competicion/equipo/alta/{equipo}/{competicion}/{tipo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('equipo');
         $val02      = $request->getAttribute('competicion');
+        $val03      = $request->getAttribute('tipo');
         
         if (isset($val01) && isset($val02)) {
             if ($val01 == 39393) {
@@ -7116,7 +7117,7 @@
                     FROM [comet].[competitions_teams_players] a
                     INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
                     
-                    WHERE a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICJUC = a.playerFifaId)
+                    WHERE a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICJUC = a.playerFifaId AND c.EXAFICTEC = ?)
 
                     ORDER BY b.playerPosition, a.shirtNumber";
             } else {
@@ -7135,7 +7136,7 @@
                     FROM [comet].[competitions_teams_players] a
                     INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
                     
-                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICJUC = a.playerFifaId)
+                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICJUC = a.playerFifaId AND c.EXAFICTEC = ?)
 
                     ORDER BY b.playerPosition, a.shirtNumber";
             }
@@ -7145,9 +7146,9 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {
-                    $stmtMSSQL->execute([$val02]);
+                    $stmtMSSQL->execute([$val02, $val03]);
                 } else {
-                    $stmtMSSQL->execute([$val01, $val02]);
+                    $stmtMSSQL->execute([$val01, $val02, $val03]);
                 }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
