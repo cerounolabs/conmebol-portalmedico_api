@@ -3,6 +3,7 @@ CREATE TABLE [exa].[EXATES](
 	[EXATESTTC] [int] NOT NULL,
     [EXATESEXC] [int] NOT NULL,
     [EXATESVAL] [varchar](100) NULL,
+	[EXATESOBS] [varchar](MAX) NULL,
     [EXATESAUS] [char](50) NOT NULL,
 	[EXATESAFH] [datetime] NOT NULL,
 	[EXATESAIP] [char](20) NOT NULL,

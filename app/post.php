@@ -603,28 +603,29 @@
         $val04      = $request->getParsedBody()['encuentro_codigo'];
         $val05      = $request->getParsedBody()['equipo_codigo'];
         $val06      = $request->getParsedBody()['jugador_codigo'];
-        $val07      = $request->getParsedBody()['laboratorio_codigo'];
-        $val08      = $request->getParsedBody()['examen_anterior_codigo'];
-        $val09      = $request->getParsedBody()['examen_fecha_1'];
-        $val10      = $request->getParsedBody()['examen_fecha_2'];
-        $val11      = $request->getParsedBody()['examen_fecha_3'];
-        $val12      = $request->getParsedBody()['examen_persona_adulta'];
-        $val13      = $request->getParsedBody()['examen_persona_menor'];
-        $val14      = $request->getParsedBody()['examen_adjunto'];
-        $val15      = $request->getParsedBody()['examen_observacion'];
+        $val07      = $request->getParsedBody()['examen_anterior_codigo'];
+        $val08      = $request->getParsedBody()['examen_fecha_1'];
+        $val09      = $request->getParsedBody()['examen_persona_adulta'];
+        $val10      = $request->getParsedBody()['examen_persona_menor'];
+        $val11      = $request->getParsedBody()['jugador_convocado'];
+        $val12      = $request->getParsedBody()['jugador_posicion'];
+        $val13      = $request->getParsedBody()['jugador_camiseta'];
+        $val14      = $request->getParsedBody()['laboratorio_nombre'];
+        $val15      = $request->getParsedBody()['laboratorio_fecha_envio'];
+        $val16      = $request->getParsedBody()['examen_observacion'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
-            $sql00  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICJUC, EXAFICLAC, EXAFICAEC, EXAFICFE1, EXAFICFE2, EXAFICFE3, EXAFICACA, EXAFICMCA, EXAFICADJ, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql00  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICJUC, EXAFICAEC, EXAFICFE1, EXAFICACA, EXAFICMCA, EXAFICJCO, EXAFICJPO, EXAFICJCA, EXAFICLNO, EXAFICLFE, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql01  = "SELECT MAX(EXAFICCOD) AS examen_codigo FROM [exa].[EXAFIC]";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
-                $stmtMSSQL00->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $aud01, $aud03]); 
+                $stmtMSSQL00->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $val16, $aud01, $aud03]); 
                 
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
                 $stmtMSSQL01->execute();
@@ -659,18 +660,19 @@
         $val01      = $request->getParsedBody()['tipo_test_codigo'];
         $val02      = $request->getParsedBody()['examen_codigo'];
         $val03      = $request->getParsedBody()['examen_test_valor'];
+        $val04      = $request->getParsedBody()['examen_test_observacion'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03)) {
-            $sql00  = "INSERT INTO [exa].[EXATES] (EXATESTTC, EXATESEXC, EXATESVAL, EXATESAUS, EXATESAFH, EXATESAIP) VALUES (?, ?, ?, ?, GETDATE(), ?)";
+            $sql00  = "INSERT INTO [exa].[EXATES] (EXATESTTC, EXATESEXC, EXATESVAL, EXATESOBS, EXATESAUS, EXATESAFH, EXATESAIP) VALUES (?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $aud01, $aud03]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $aud01, $aud03]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => 0), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
