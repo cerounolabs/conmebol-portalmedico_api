@@ -7451,7 +7451,7 @@
                     LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
                     LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICJUC = g.personFifaId
-                    LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = i.EXAFICCOD
+                    LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
 
                     WHERE a.EXAFICENC = ?
 
@@ -7537,7 +7537,7 @@
                     LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
                     LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICJUC = g.personFifaId
-                    LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = i.EXAFICCOD
+                    LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
 
                     WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ?
 
