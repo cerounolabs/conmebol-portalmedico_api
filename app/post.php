@@ -605,11 +605,11 @@
         $val06      = $request->getParsedBody()['persona_codigo'];
         $val07      = $request->getParsedBody()['examen_anterior_codigo'];
         $val08      = $request->getParsedBody()['examen_fecha_1'];
-        $val09      = $request->getParsedBody()['examen_persona_adulta'];
-        $val10      = $request->getParsedBody()['examen_persona_menor'];
+        $val09      = $request->getParsedBody()['examen_cantidad_adulto'];
+        $val10      = $request->getParsedBody()['examen_cantidad_menor'];
         $val11      = $request->getParsedBody()['examen_persona_convocado'];
-        $val12      = $request->getParsedBody()['examen_jugador_posicion'];
-        $val13      = $request->getParsedBody()['examen_jugador_camiseta'];
+        $val12      = $request->getParsedBody()['examen_persona_posicion'];
+        $val13      = $request->getParsedBody()['examen_persona_camiseta'];
         $val14      = $request->getParsedBody()['examen_laboratorio_nombre'];
         $val15      = $request->getParsedBody()['examen_laboratorio_fecha_envio'];
         $val16      = $request->getParsedBody()['examen_observacion'];
@@ -619,7 +619,7 @@
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
-            $sql00  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICJUC, EXAFICAEC, EXAFICFE1, EXAFICACA, EXAFICMCA, EXAFICJCO, EXAFICJPO, EXAFICJCA, EXAFICLNO, EXAFICLFE, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql00  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICPEC, EXAFICAEC, EXAFICFE1, EXAFICACA, EXAFICMCA, EXAFICJCO, EXAFICJPO, EXAFICJCA, EXAFICLNO, EXAFICLFE, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql01  = "SELECT MAX(EXAFICCOD) AS examen_codigo FROM [exa].[EXAFIC]";
 
             try {
