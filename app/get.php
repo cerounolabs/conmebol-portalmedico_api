@@ -7118,7 +7118,7 @@
                     FROM [comet].[competitions_teams_players] a
                     INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
                     
-                    WHERE a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICJUC = a.playerFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ?)
+                    WHERE a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = a.playerFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ?)
 
                     ORDER BY b.playerPosition, a.shirtNumber";
             } else {
@@ -7137,7 +7137,7 @@
                     FROM [comet].[competitions_teams_players] a
                     INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
                     
-                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICJUC = a.playerFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ?)
+                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = a.playerFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ?)
 
                     ORDER BY b.playerPosition, a.shirtNumber";
             }
@@ -7378,12 +7378,13 @@
                     a.EXAFICFE3                         AS          examen_fecha_3,
                     a.EXAFICACA                         AS          examen_cantidad_adulto,
                     a.EXAFICMCA                         AS          examen_cantidad_menor,
-                    a.EXAFICJCO                         AS          examen_jugador_convocado,
-                    a.EXAFICJPO                         AS          examen_jugador_posicion,
-                    a.EXAFICJCA                         AS          examen_jugador_camiseta,
+                    a.EXAFICJCO                         AS          examen_persona_convocado,
+                    a.EXAFICJPO                         AS          examen_persona_posicion,
+                    a.EXAFICJCA                         AS          examen_persona_camiseta,
                     a.EXAFICLNO                         AS          examen_laboratorio_nombre,
                     a.EXAFICLFE                         AS          examen_laboratorio_fecha_envio,
                     a.EXAFICLFR                         AS          examen_laboratorio_fecha_recepcion,
+                    a.EXAFICLFA                         AS          examen_laboratorio_fecha_aislamiento,
                     a.EXAFICLRE                         AS          examen_laboratorio_resultado,
                     a.EXAFICLIC                         AS          examen_laboratorio_cuarentena,
                     a.EXAFICLNT                         AS          examen_laboratorio_test,
@@ -7421,9 +7422,9 @@
                     f.teamFifaId                        AS          equipo_codigo,
                     f.internationalName                 AS          equipo_nombre,
 
-                    g.personFifaId                      AS          jugador_codigo,
-                    g.internationalFirstName            AS          jugador_nombre,
-                    g.internationalLastName             AS          jugador_apellido,
+                    g.personFifaId                      AS          persona_codigo,
+                    g.internationalFirstName            AS          persona_nombre,
+                    g.internationalLastName             AS          persona_apellido,
 
                     h.EXAFICCOD                         AS          examen_anterior_codigo,
                     h.EXAFICFE1                         AS          examen_anterior_fecha_1,
@@ -7431,12 +7432,13 @@
                     h.EXAFICFE3                         AS          examen_anterior_fecha_3,
                     h.EXAFICACA                         AS          examen_anterior_cantidad_adulto,
                     h.EXAFICMCA                         AS          examen_anterior_cantidad_menor,
-                    h.EXAFICJCO                         AS          examen_anterior_jugador_convocado,
-                    h.EXAFICJPO                         AS          examen_anterior_jugador_posicion,
-                    h.EXAFICJCA                         AS          examen_anterior_jugador_camiseta,
+                    h.EXAFICJCO                         AS          examen_anterior_persona_convocado,
+                    h.EXAFICJPO                         AS          examen_anterior_persona_posicion,
+                    h.EXAFICJCA                         AS          examen_anterior_persona_camiseta,
                     h.EXAFICLNO                         AS          examen_anterior_laboratorio_nombre,
                     h.EXAFICLFE                         AS          examen_anterior_laboratorio_fecha_envio,
                     h.EXAFICLFR                         AS          examen_anterior_laboratorio_fecha_recepcion,
+                    h.EXAFICLFA                         AS          examen_anterior_laboratorio_fecha_aislamiento,
                     h.EXAFICLRE                         AS          examen_anterior_laboratorio_resultado,
                     h.EXAFICLIC                         AS          examen_anterior_laboratorio_cuarentena,
                     h.EXAFICLNT                         AS          examen_anterior_laboratorio_test,
@@ -7450,12 +7452,12 @@
                     LEFT OUTER JOIN [comet].[competitions] d ON a.EXAFICCOC = d.competitionFifaId
                     LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
-                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICJUC = g.personFifaId
+                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
                     LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
 
                     WHERE a.EXAFICENC = ?
 
-                    ORDER BY a.EXAFICENC ASC, a.EXAFICJUC ASC";
+                    ORDER BY a.EXAFICENC ASC, a.EXAFICPEC ASC";
             } else {
                 $sql00  = "SELECT
                     a.EXAFICCOD                         AS          examen_codigo,
@@ -7464,12 +7466,13 @@
                     a.EXAFICFE3                         AS          examen_fecha_3,
                     a.EXAFICACA                         AS          examen_cantidad_adulto,
                     a.EXAFICMCA                         AS          examen_cantidad_menor,
-                    a.EXAFICJCO                         AS          examen_jugador_convocado,
-                    a.EXAFICJPO                         AS          examen_jugador_posicion,
-                    a.EXAFICJCA                         AS          examen_jugador_camiseta,
+                    a.EXAFICJCO                         AS          examen_persona_convocado,
+                    a.EXAFICJPO                         AS          examen_persona_posicion,
+                    a.EXAFICJCA                         AS          examen_persona_camiseta,
                     a.EXAFICLNO                         AS          examen_laboratorio_nombre,
                     a.EXAFICLFE                         AS          examen_laboratorio_fecha_envio,
                     a.EXAFICLFR                         AS          examen_laboratorio_fecha_recepcion,
+                    a.EXAFICLFA                         AS          examen_laboratorio_fecha_aislamiento,
                     a.EXAFICLRE                         AS          examen_laboratorio_resultado,
                     a.EXAFICLIC                         AS          examen_laboratorio_cuarentena,
                     a.EXAFICLNT                         AS          examen_laboratorio_test,
@@ -7507,9 +7510,9 @@
                     f.teamFifaId                        AS          equipo_codigo,
                     f.internationalName                 AS          equipo_nombre,
 
-                    g.personFifaId                      AS          jugador_codigo,
-                    g.internationalFirstName            AS          jugador_nombre,
-                    g.internationalLastName             AS          jugador_apellido,
+                    g.personFifaId                      AS          persona_codigo,
+                    g.internationalFirstName            AS          persona_nombre,
+                    g.internationalLastName             AS          persona_apellido,
 
                     h.EXAFICCOD                         AS          examen_anterior_codigo,
                     h.EXAFICFE1                         AS          examen_anterior_fecha_1,
@@ -7517,12 +7520,13 @@
                     h.EXAFICFE3                         AS          examen_anterior_fecha_3,
                     h.EXAFICACA                         AS          examen_anterior_cantidad_adulto,
                     h.EXAFICMCA                         AS          examen_anterior_cantidad_menor,
-                    h.EXAFICJCO                         AS          examen_anterior_jugador_convocado,
-                    h.EXAFICJPO                         AS          examen_anterior_jugador_posicion,
-                    h.EXAFICJCA                         AS          examen_anterior_jugador_camiseta,
+                    h.EXAFICJCO                         AS          examen_anterior_persona_convocado,
+                    h.EXAFICJPO                         AS          examen_anterior_persona_posicion,
+                    h.EXAFICJCA                         AS          examen_anterior_persona_camiseta,
                     h.EXAFICLNO                         AS          examen_anterior_laboratorio_nombre,
                     h.EXAFICLFE                         AS          examen_anterior_laboratorio_fecha_envio,
                     h.EXAFICLFR                         AS          examen_anterior_laboratorio_fecha_recepcion,
+                    a.EXAFICLFA                         AS          examen_anterior_laboratorio_fecha_aislamiento,
                     h.EXAFICLRE                         AS          examen_anterior_laboratorio_resultado,
                     h.EXAFICLIC                         AS          examen_anterior_laboratorio_cuarentena,
                     h.EXAFICLNT                         AS          examen_anterior_laboratorio_test,
@@ -7536,12 +7540,12 @@
                     LEFT OUTER JOIN [comet].[competitions] d ON a.EXAFICCOC = d.competitionFifaId
                     LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
                     LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
-                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICJUC = g.personFifaId
+                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
                     LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
 
                     WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ?
 
-                    ORDER BY a.EXAFICENC ASC, a.EXAFICJUC ASC";
+                    ORDER BY a.EXAFICENC ASC, a.EXAFICPEC ASC";
             }
 
             try {
@@ -7585,6 +7589,12 @@
                         $examen_laboratorio_fecha_recepcion = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_recepcion']));
                     }
 
+                    if ($rowMSSQL['examen_laboratorio_fecha_aislamiento'] == NULL) {
+                        $examen_laboratorio_fecha_aislamiento = '';
+                    } else {
+                        $examen_laboratorio_fecha_aislamiento = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_aislamiento']));
+                    }
+
                     if ($rowMSSQL['examen_anterior_fecha_1'] == NULL) {
                         $examen_anterior_fecha_1 = '';
                     } else {
@@ -7615,6 +7625,12 @@
                         $examen_anterior_laboratorio_fecha_recepcion = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_recepcion']));
                     }
 
+                    if ($rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento'] == NULL) {
+                        $examen_anterior_laboratorio_fecha_aislamiento = '';
+                    } else {
+                        $examen_anterior_laboratorio_fecha_aislamiento = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento']));
+                    }
+
                     $detalle    = array(
                         'examen_codigo'                                 => $rowMSSQL['examen_codigo'],
                         'examen_fecha_1'                                => $examen_fecha_1,
@@ -7622,12 +7638,13 @@
                         'examen_fecha_3'                                => $examen_fecha_3,
                         'examen_cantidad_adulto'                        => $rowMSSQL['examen_cantidad_adulto'],
                         'examen_cantidad_menor'                         => $rowMSSQL['examen_cantidad_menor'],
-                        'examen_jugador_convocado'                      => trim(strtoupper(strtolower($rowMSSQL['examen_jugador_convocado']))),
-                        'examen_jugador_posicion'                       => trim(strtoupper(strtolower($rowMSSQL['examen_jugador_posicion']))),
-                        'examen_jugador_camiseta'                       => trim(strtoupper(strtolower($rowMSSQL['examen_jugador_camiseta']))),
+                        'examen_persona_convocado'                      => trim(strtoupper(strtolower($rowMSSQL['examen_persona_convocado']))),
+                        'examen_persona_posicion'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_posicion']))),
+                        'examen_persona_camiseta'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_camiseta']))),
                         'examen_laboratorio_nombre'                     => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_nombre']))),
                         'examen_laboratorio_fecha_envio'                => $examen_laboratorio_fecha_envio,
                         'examen_laboratorio_fecha_recepcion'            => $examen_laboratorio_fecha_recepcion,
+                        'examen_laboratorio_fecha_aislamiento'          => $examen_laboratorio_fecha_aislamiento,
                         'examen_laboratorio_resultado'                  => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_resultado']))),
                         'examen_laboratorio_cuarentena'                 => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_cuarentena']))),
                         'examen_laboratorio_test'                       => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_test']))),
@@ -7660,8 +7677,8 @@
                         'equipo_codigo'                                 => $rowMSSQL['equipo_codigo'],
                         'equipo_nombre'                                 => trim(strtoupper(strtolower($rowMSSQL['equipo_nombre']))),
 
-                        'jugador_codigo'                                => $rowMSSQL['jugador_codigo'],
-                        'jugador_nombre'                                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                        'persona_codigo'                                => $rowMSSQL['jugador_codigo'],
+                        'persona_nombre'                                => trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))),
 
                         'examen_anterior_codigo'                        => $rowMSSQL['examen_anterior_codigo'],
                         'examen_anterior_fecha_1'                       => $examen_anterior_fecha_1,
@@ -7669,12 +7686,13 @@
                         'examen_anterior_fecha_3'                       => $examen_anterior_fecha_3,
                         'examen_anterior_cantidad_adulto'               => $rowMSSQL['examen_anterior_cantidad_adulto'],
                         'examen_anterior_cantidad_menor'                => $rowMSSQL['examen_anterior_cantidad_menor'],
-                        'examen_anterior_jugador_convocado'             => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_jugador_convocado']))),
-                        'examen_anterior_jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_jugador_posicion']))),
-                        'examen_anterior_jugador_camiseta'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_jugador_camiseta']))),
+                        'examen_anterior_persona_convocado'             => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_convocado']))),
+                        'examen_anterior_persona_posicion'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_posicion']))),
+                        'examen_anterior_persona_camiseta'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_camiseta']))),
                         'examen_anterior_laboratorio_nombre'            => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_nombre']))),
                         'examen_anterior_laboratorio_fecha_envio'       => $examen_anterior_laboratorio_fecha_envio,
                         'examen_anterior_laboratorio_fecha_recepcion'   => $examen_anterior_laboratorio_fecha_recepcion,
+                        'examen_anterior_laboratorio_fecha_aislamiento' => $examen_anterior_laboratorio_fecha_aislamiento,
                         'examen_anterior_laboratorio_resultado'         => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_resultado']))),
                         'examen_anterior_laboratorio_cuarentena'        => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_cuarentena']))),
                         'examen_anterior_laboratorio_test'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_test']))),
@@ -7701,12 +7719,13 @@
                         'examen_fecha_3'                                => '',
                         'examen_cantidad_adulto'                        => '',
                         'examen_cantidad_menor'                         => '',
-                        'examen_jugador_convocado'                      => '',
-                        'examen_jugador_posicion'                       => '',
-                        'examen_jugador_camiseta'                       => '',
+                        'examen_persona_convocado'                      => '',
+                        'examen_persona_posicion'                       => '',
+                        'examen_persona_camiseta'                       => '',
                         'examen_laboratorio_nombre'                     => '',
                         'examen_laboratorio_fecha_envio'                => '',
                         'examen_laboratorio_fecha_recepcion'            => '',
+                        'examen_laboratorio_fecha_aislamiento'          => '',
                         'examen_laboratorio_resultado'                  => '',
                         'examen_laboratorio_cuarentena'                 => '',
                         'examen_laboratorio_test'                       => '',
@@ -7739,8 +7758,8 @@
                         'equipo_codigo'                                 => '',
                         'equipo_nombre'                                 => '',
 
-                        'jugador_codigo'                                => '',
-                        'jugador_nombre'                                => '',
+                        'persona_codigo'                                => '',
+                        'persona_nombre'                                => '',
 
                         'examen_anterior_codigo'                        => '',
                         'examen_anterior_fecha_1'                       => '',
@@ -7748,12 +7767,13 @@
                         'examen_anterior_fecha_3'                       => '',
                         'examen_anterior_cantidad_adulto'               => '',
                         'examen_anterior_cantidad_menor'                => '',
-                        'examen_anterior_jugador_convocado'             => '',
-                        'examen_anterior_jugador_posicion'              => '',
-                        'examen_anterior_jugador_camiseta'              => '',
+                        'examen_anterior_persona_convocado'             => '',
+                        'examen_anterior_persona_posicion'              => '',
+                        'examen_anterior_persona_camiseta'              => '',
                         'examen_anterior_laboratorio_nombre'            => '',
                         'examen_anterior_laboratorio_fecha_envio'       => '',
                         'examen_anterior_laboratorio_fecha_recepcion'   => '',
+                        'examen_anterior_laboratorio_fecha_aislamiento' => '',
                         'examen_anterior_laboratorio_resultado'         => '',
                         'examen_anterior_laboratorio_cuarentena'        => '',
                         'examen_anterior_laboratorio_test'              => '',
