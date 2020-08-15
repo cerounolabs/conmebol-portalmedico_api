@@ -602,16 +602,16 @@
         $val03      = $request->getParsedBody()['competicion_codigo'];
         $val04      = $request->getParsedBody()['encuentro_codigo'];
         $val05      = $request->getParsedBody()['equipo_codigo'];
-        $val06      = $request->getParsedBody()['jugador_codigo'];
+        $val06      = $request->getParsedBody()['persona_codigo'];
         $val07      = $request->getParsedBody()['examen_anterior_codigo'];
         $val08      = $request->getParsedBody()['examen_fecha_1'];
         $val09      = $request->getParsedBody()['examen_persona_adulta'];
         $val10      = $request->getParsedBody()['examen_persona_menor'];
-        $val11      = $request->getParsedBody()['jugador_convocado'];
-        $val12      = $request->getParsedBody()['jugador_posicion'];
-        $val13      = $request->getParsedBody()['jugador_camiseta'];
-        $val14      = $request->getParsedBody()['laboratorio_nombre'];
-        $val15      = $request->getParsedBody()['laboratorio_fecha_envio'];
+        $val11      = $request->getParsedBody()['examen_persona_convocado'];
+        $val12      = $request->getParsedBody()['examen_jugador_posicion'];
+        $val13      = $request->getParsedBody()['examen_jugador_camiseta'];
+        $val14      = $request->getParsedBody()['examen_laboratorio_nombre'];
+        $val15      = $request->getParsedBody()['examen_laboratorio_fecha_envio'];
         $val16      = $request->getParsedBody()['examen_observacion'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
