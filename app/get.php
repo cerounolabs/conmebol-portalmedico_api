@@ -7555,19 +7555,79 @@
                 }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['examen_fecha_1'] == NULL) {
+                        $examen_fecha_1 = '';
+                    } else {
+                        $examen_fecha_1 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
+                    }
+
+                    if ($rowMSSQL['examen_fecha_2'] == NULL) {
+                        $examen_fecha_2 = '';
+                    } else {
+                        $examen_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_2']));
+                    }
+
+                    if ($rowMSSQL['examen_fecha_3'] == NULL) {
+                        $examen_fecha_3 = '';
+                    } else {
+                        $examen_fecha_3 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_3']));
+                    }
+
+                    if ($rowMSSQL['examen_laboratorio_fecha_envio'] == NULL) {
+                        $examen_laboratorio_fecha_envio = '';
+                    } else {
+                        $examen_laboratorio_fecha_envio = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_envio']));
+                    }
+
+                    if ($rowMSSQL['examen_laboratorio_fecha_recepcion'] == NULL) {
+                        $examen_laboratorio_fecha_recepcion = '';
+                    } else {
+                        $examen_laboratorio_fecha_recepcion = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_recepcion']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_fecha_1'] == NULL) {
+                        $examen_anterior_fecha_1 = '';
+                    } else {
+                        $examen_anterior_fecha_1 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_1']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_fecha_2'] == NULL) {
+                        $examen_anterior_fecha_2 = '';
+                    } else {
+                        $examen_anterior_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_2']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_fecha_3'] == NULL) {
+                        $examen_anterior_fecha_3 = '';
+                    } else {
+                        $examen_anterior_fecha_3 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_3']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_laboratorio_fecha_envio'] == NULL) {
+                        $examen_anterior_laboratorio_fecha_envio = '';
+                    } else {
+                        $examen_anterior_laboratorio_fecha_envio = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_envio']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_laboratorio_fecha_recepcion'] == NULL) {
+                        $examen_anterior_laboratorio_fecha_recepcion = '';
+                    } else {
+                        $examen_anterior_laboratorio_fecha_recepcion = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_recepcion']));
+                    }
+
                     $detalle    = array(
                         'examen_codigo'                                 => $rowMSSQL['examen_codigo'],
-                        'examen_fecha_1'                                => date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1'])),
-                        'examen_fecha_2'                                => date('d/m/Y', strtotime($rowMSSQL['examen_fecha_2'])),
-                        'examen_fecha_3'                                => date('d/m/Y', strtotime($rowMSSQL['examen_fecha_3'])),
+                        'examen_fecha_1'                                => $examen_fecha_1,
+                        'examen_fecha_2'                                => $examen_fecha_2,
+                        'examen_fecha_3'                                => $examen_fecha_3,
                         'examen_cantidad_adulto'                        => $rowMSSQL['examen_cantidad_adulto'],
                         'examen_cantidad_menor'                         => $rowMSSQL['examen_cantidad_menor'],
                         'examen_jugador_convocado'                      => trim(strtoupper(strtolower($rowMSSQL['examen_jugador_convocado']))),
                         'examen_jugador_posicion'                       => trim(strtoupper(strtolower($rowMSSQL['examen_jugador_posicion']))),
                         'examen_jugador_camiseta'                       => trim(strtoupper(strtolower($rowMSSQL['examen_jugador_camiseta']))),
                         'examen_laboratorio_nombre'                     => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_nombre']))),
-                        'examen_laboratorio_fecha_envio'                => date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_envio'])),
-                        'examen_laboratorio_fecha_recepcion'            => date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_recepcion'])),
+                        'examen_laboratorio_fecha_envio'                => $examen_laboratorio_fecha_envio,
+                        'examen_laboratorio_fecha_recepcion'            => $examen_laboratorio_fecha_recepcion,
                         'examen_laboratorio_resultado'                  => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_resultado']))),
                         'examen_laboratorio_cuarentena'                 => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_cuarentena']))),
                         'examen_laboratorio_test'                       => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_test']))),
@@ -7604,17 +7664,17 @@
                         'jugador_nombre'                                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
 
                         'examen_anterior_codigo'                        => $rowMSSQL['examen_anterior_codigo'],
-                        'examen_anterior_fecha_1'                       => date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_1'])),
-                        'examen_anterior_fecha_2'                       => date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_2'])),
-                        'examen_anterior_fecha_3'                       => date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_3'])),
+                        'examen_anterior_fecha_1'                       => $examen_anterior_fecha_1,
+                        'examen_anterior_fecha_2'                       => $examen_anterior_fecha_2,
+                        'examen_anterior_fecha_3'                       => $examen_anterior_fecha_3,
                         'examen_anterior_cantidad_adulto'               => $rowMSSQL['examen_anterior_cantidad_adulto'],
                         'examen_anterior_cantidad_menor'                => $rowMSSQL['examen_anterior_cantidad_menor'],
                         'examen_anterior_jugador_convocado'             => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_jugador_convocado']))),
                         'examen_anterior_jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_jugador_posicion']))),
                         'examen_anterior_jugador_camiseta'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_jugador_camiseta']))),
                         'examen_anterior_laboratorio_nombre'            => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_nombre']))),
-                        'examen_anterior_laboratorio_fecha_envio'       => date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_envio'])),
-                        'examen_anterior_laboratorio_fecha_recepcion'   => date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_recepcion'])),
+                        'examen_anterior_laboratorio_fecha_envio'       => $examen_anterior_laboratorio_fecha_envio,
+                        'examen_anterior_laboratorio_fecha_recepcion'   => $examen_anterior_laboratorio_fecha_recepcion,
                         'examen_anterior_laboratorio_resultado'         => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_resultado']))),
                         'examen_anterior_laboratorio_cuarentena'        => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_cuarentena']))),
                         'examen_anterior_laboratorio_test'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_test']))),
