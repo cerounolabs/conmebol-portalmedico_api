@@ -6995,21 +6995,19 @@
                 $sql00  = "SELECT
                     a.competitionFifaId                 AS          competicion_codigo,
                     
-                    b.personFifaId                      AS          jugador_codigo,
-                    b.internationalLastName             AS          jugador_apellido,
-                    b.internationalFirstName            AS          jugador_nombre,
-                    b.playerPosition                    AS          jugador_posicion,
-                    b.pictureContentType                AS          jugador_imagen_tipo,
-                    b.pictureLink                       AS          jugador_imagen_link,
-                    b.pictureValue                      AS          jugador_imagen_valor,
-                    a.shirtNumber                       AS          jugador_numero
+                    c.personFifaId                      AS          jugador_codigo,
+                    c.internationalLastName             AS          jugador_apellido,
+                    c.internationalFirstName            AS          jugador_nombre,
+                    b.roleDescription                   AS          jugador_posicion,
+                    c.pictureContentType                AS          jugador_imagen_tipo,
+                    c.pictureLink                       AS          jugador_imagen_link,
+                    c.pictureValue                      AS          jugador_imagen_valor
                     
-                    FROM [comet].[competitions_teams_players] a
-                    INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
+                    FROM [comet].[matches] a
+                    LEFT OUTER JOIN [comet].[matches_officials] b ON a.matchFifaId = b.matchFifaId
+                    LEFT OUTER JOIN [comet].[persons] c ON b.personFifaId = c.personFifaId
                     
-                    WHERE a.competitionFifaId = ?
-
-                    ORDER BY b.playerPosition, a.shirtNumber";
+                    ORDER BY c.personFifaId";
             } else {
                 $sql00  = "SELECT
                     a.competitionFifaId                 AS          competicion_codigo,
@@ -7036,26 +7034,49 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {
-                    $stmtMSSQL->execute([$val02]);
+                    $stmtMSSQL->execute();
+
+                    while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                        $jugador_posicion = str_ireplace('LABEL', '', trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))));
+                        $jugador_posicion = str_ireplace('.', ' ', trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))));
+                        $jugador_posicion = str_ireplace('REFEREEOBSERVER', 'REFEREE OBSERVER', trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))));
+                        $jugador_posicion = str_ireplace('FIELDDOCTOR', 'FIELD DOCTOR', trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))));
+                        $jugador_posicion = str_ireplace('MATCHCOORDINATOR', 'MATCH COORDINATOR', trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))));
+
+                        $detalle    = array(
+                            'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
+                            'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
+                            'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                            'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                            'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                            'jugador_posicion'              => $jugador_posicion,
+                            'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
+                            'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
+                            'jugador_imagen_valor'          => '',
+                            'jugador_numero'                => ''
+                        );
+    
+                        $result[]   = $detalle;
+                    }
                 } else {
                     $stmtMSSQL->execute([$val01, $val02]);
-                }
 
-                while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    $detalle    = array(
-                        'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
-                        'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
-                        'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
-                        'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
-                        'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
-                        'jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
-                        'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
-                        'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
-                        'jugador_imagen_valor'          => '',//trim($rowMSSQL['jugador_imagen_valor']),
-                        'jugador_numero'                => $rowMSSQL['jugador_numero']
-                    );
-
-                    $result[]   = $detalle;
+                    while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                        $detalle    = array(
+                            'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
+                            'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
+                            'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                            'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                            'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                            'jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
+                            'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
+                            'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
+                            'jugador_imagen_valor'          => '',//trim($rowMSSQL['jugador_imagen_valor']),
+                            'jugador_numero'                => $rowMSSQL['jugador_numero']
+                        );
+    
+                        $result[]   = $detalle;
+                    }
                 }
 
                 if (isset($result)){
