@@ -6550,6 +6550,8 @@
                     INNER JOIN [adm].[DOMFIC] g ON b.PERFICCAT = g.DOMFICCOD
                     INNER JOIN [comet].[competitions] h ON a.PERCOMCOC = h.competitionFifaId
                     INNER JOIN [adm].[DOMFIC] i ON a.PERCOMTMC = i.DOMFICCOD
+
+                    WHERE b.PERFICCOD = ?
                     
                     ORDER BY a.PERCOMTMC, a.PERCOMCOC, a.PERCOMPEC";
             } else {
@@ -6641,7 +6643,7 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 
                 if ($val01 == 39393) {
-                    $stmtMSSQL->execute();
+                    $stmtMSSQL->execute([$val02]);
                 } else {
                     $stmtMSSQL->execute([$val01, $val02]);
                 }
