@@ -6897,7 +6897,7 @@
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
-                if ($val02 == 39393) {
+                if ($val01 == 39393) {
                     $stmtMSSQL->execute([$val02, $val02]); 
                 } else {
                     $stmtMSSQL->execute([$val01, $val01, $val02, $val02]); 
