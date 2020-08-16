@@ -276,13 +276,22 @@
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val00)) {
-            $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLIC = ?, EXAFICLNT = ?, EXAFICLFA = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
+            if ($val03 == 'SI'){
+                $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLIC = ?, EXAFICLNT = ?, EXAFICLFA = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
+            } else {
+                $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
+            }
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $aud01, $aud03, $val00]); 
-                
+
+                if ($val03 == 'SI'){
+                    $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $aud01, $aud03, $val00]);
+                } else {
+                    $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val08, $aud01, $aud03, $val00]);
+                }
+
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
 
