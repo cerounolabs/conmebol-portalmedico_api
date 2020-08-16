@@ -7037,11 +7037,12 @@
                     $stmtMSSQL->execute();
 
                     while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                        $jugador_posicion = str_replace("LABEL", '', $rowMSSQL['jugador_posicion']);
-                        $jugador_posicion = str_replace(".", ' ', $rowMSSQL['jugador_posicion']);
-                        $jugador_posicion = str_replace("REFEREEOBSERVER", 'REFEREE OBSERVER', $rowMSSQL['jugador_posicion']);
-                        $jugador_posicion = str_replace("FIELDDOCTOR", 'FIELD DOCTOR', $rowMSSQL['jugador_posicion']);
-                        $jugador_posicion = str_replace("MATCHCOORDINATOR", 'MATCH COORDINATOR', $rowMSSQL['jugador_posicion']);
+                        $jugador_posicion = trim(strtoupper(strtolower($rowMSSQL['jugador_posicion'])));
+                        $jugador_posicion = str_replace('LABEL', '', $jugador_posicion);
+                        $jugador_posicion = str_replace('.', ' ', $jugador_posicion);
+                        $jugador_posicion = str_replace('REFEREEOBSERVER', 'REFEREE OBSERVER', $jugador_posicion);
+                        $jugador_posicion = str_replace('FIELDDOCTOR', 'FIELD DOCTOR', $jugador_posicion);
+                        $jugador_posicion = str_replace('MATCHCOORDINATOR', 'MATCH COORDINATOR', $jugador_posicion);
 
                         $detalle    = array(
                             'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
@@ -7173,11 +7174,12 @@
                     $stmtMSSQL->execute([$val04, $val03, $val04]);
 
                     while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                        $jugador_posicion = str_replace("LABEL", '', $rowMSSQL['jugador_posicion']);
-                        $jugador_posicion = str_replace(".", ' ', $rowMSSQL['jugador_posicion']);
-                        $jugador_posicion = str_replace("REFEREEOBSERVER", 'REFEREE OBSERVER', $rowMSSQL['jugador_posicion']);
-                        $jugador_posicion = str_replace("FIELDDOCTOR", 'FIELD DOCTOR', $rowMSSQL['jugador_posicion']);
-                        $jugador_posicion = str_replace("MATCHCOORDINATOR", 'MATCH COORDINATOR', $rowMSSQL['jugador_posicion']);
+                        $jugador_posicion = trim(strtoupper(strtolower($rowMSSQL['jugador_posicion'])));
+                        $jugador_posicion = str_replace('LABEL', '', $jugador_posicion);
+                        $jugador_posicion = str_replace('.', ' ', $jugador_posicion);
+                        $jugador_posicion = str_replace('REFEREEOBSERVER', 'REFEREE OBSERVER', $jugador_posicion);
+                        $jugador_posicion = str_replace('FIELDDOCTOR', 'FIELD DOCTOR', $jugador_posicion);
+                        $jugador_posicion = str_replace('MATCHCOORDINATOR', 'MATCH COORDINATOR', $jugador_posicion);
 
                         $detalle    = array(
                             'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
