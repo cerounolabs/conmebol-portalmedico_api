@@ -7016,9 +7016,13 @@
                     b.internationalLastName             AS          jugador_apellido,
                     b.internationalFirstName            AS          jugador_nombre,
                     b.playerPosition                    AS          jugador_posicion,
+                    b.role                              AS          jugador_rol_1,
+                    b.cometRoleName                     AS          jugador_rol_2,
+                    b.cometRoleNameKey                  AS          jugador_rol_3,
                     b.pictureContentType                AS          jugador_imagen_tipo,
                     b.pictureLink                       AS          jugador_imagen_link,
                     b.pictureValue                      AS          jugador_imagen_valor,
+                    a.playerType                        AS          jugador_tipo,
                     a.shirtNumber                       AS          jugador_numero
                     
                     FROM [comet].[competitions_teams_players] a
@@ -7053,7 +7057,11 @@
                             'jugador_posicion'              => $jugador_posicion,
                             'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
                             'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
+                            'jugador_rol_1'                 => '',
+                            'jugador_rol_2'                 => '',
+                            'jugador_rol_3'                 => '',
                             'jugador_imagen_valor'          => '',
+                            'jugador_tipo'                  => '',
                             'jugador_numero'                => ''
                         );
     
@@ -7070,9 +7078,13 @@
                             'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
                             'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
                             'jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
+                            'jugador_rol_1'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_1']))),
+                            'jugador_rol_2'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_2']))),
+                            'jugador_rol_3'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_3']))),
                             'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
                             'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
-                            'jugador_imagen_valor'          => '',//trim($rowMSSQL['jugador_imagen_valor']),
+                            'jugador_imagen_valor'          => '',
+                            'jugador_tipo'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_tipo']))),
                             'jugador_numero'                => $rowMSSQL['jugador_numero']
                         );
     
@@ -7091,9 +7103,13 @@
                         'jugador_nombre'                => '',
                         'jugador_completo'              => '',
                         'jugador_posicion'              => '',
+                        'jugador_rol_1'                 => '',
+                        'jugador_rol_2'                 => '',
+                        'jugador_rol_3'                 => '',
                         'jugador_imagen_tipo'           => '',
                         'jugador_imagen_link'           => '',
                         'jugador_imagen_valor'          => '',
+                        'jugador_tipo'                  => '',
                         'jugador_numero'                => ''
                     );
 
@@ -7153,9 +7169,13 @@
                     b.internationalLastName             AS          jugador_apellido,
                     b.internationalFirstName            AS          jugador_nombre,
                     b.playerPosition                    AS          jugador_posicion,
+                    b.role                              AS          jugador_rol_1,
+                    b.cometRoleName                     AS          jugador_rol_2,
+                    b.cometRoleNameKey                  AS          jugador_rol_3,
                     b.pictureContentType                AS          jugador_imagen_tipo,
                     b.pictureLink                       AS          jugador_imagen_link,
                     b.pictureValue                      AS          jugador_imagen_valor,
+                    a.playerType                        AS          jugador_tipo,
                     a.shirtNumber                       AS          jugador_numero
                     
                     FROM [comet].[competitions_teams_players] a
@@ -7190,7 +7210,11 @@
                             'jugador_posicion'              => $jugador_posicion,
                             'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
                             'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
+                            'jugador_rol_1'                 => '',
+                            'jugador_rol_2'                 => '',
+                            'jugador_rol_3'                 => '',
                             'jugador_imagen_valor'          => '',
+                            'jugador_tipo'                  => '',
                             'jugador_numero'                => ''
                         );
     
@@ -7207,9 +7231,13 @@
                             'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
                             'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
                             'jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
+                            'jugador_rol_1'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_1']))),
+                            'jugador_rol_2'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_2']))),
+                            'jugador_rol_3'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_3']))),
                             'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
                             'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
                             'jugador_imagen_valor'          => '',
+                            'jugador_tipo'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_tipo']))),
                             'jugador_numero'                => $rowMSSQL['jugador_numero']
                         );
     
@@ -7228,9 +7256,13 @@
                         'jugador_nombre'                => '',
                         'jugador_completo'              => '',
                         'jugador_posicion'              => '',
+                        'jugador_rol_1'                 => '',
+                        'jugador_rol_2'                 => '',
+                        'jugador_rol_3'                 => '',
                         'jugador_imagen_tipo'           => '',
                         'jugador_imagen_link'           => '',
                         'jugador_imagen_valor'          => '',
+                        'jugador_tipo'                  => '',
                         'jugador_numero'                => ''
                     );
 
