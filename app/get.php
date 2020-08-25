@@ -6915,7 +6915,7 @@
                         'organizacion_nombre_corto'             => trim($rowMSSQL['organizacion_nombre_corto']),
                         'organizacion_imagen_tipo'              => trim($rowMSSQL['organizacion_imagen_tipo']),
                         'organizacion_image_link'               => trim($rowMSSQL['organizacion_image_link']),
-                        'organizacion_imagen_valor'             => $rowMSSQL['organizacion_imagen_valor'],
+                        'organizacion_imagen_valor'             => '',//$rowMSSQL['organizacion_imagen_valor'],
                         'organizacion_imagen_path'              => 'imagen/organizacion/img_'.$rowMSSQL['organizacion_codigo'].'.'.$ext
                     );
 
