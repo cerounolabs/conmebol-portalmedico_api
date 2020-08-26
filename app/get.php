@@ -7970,6 +7970,12 @@
                         $examen_anterior_laboratorio_fecha_aislamiento = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento']));
                     }
 
+                    if ($rowMSSQL['encuentro_codigo'] != NULL){
+                        $encuentro_codigo = $rowMSSQL['encuentro_codigo'];
+                    } else {
+                        $encuentro_codigo = 0;
+                    }
+
                     $detalle    = array(
                         'examen_codigo'                                 => $rowMSSQL['examen_codigo'],
                         'examen_fecha_1'                                => $examen_fecha_1,
@@ -8008,7 +8014,7 @@
                         'competicion_nombre_corto'                      => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre_corto']))),
                         'competicion_anho'                              => $rowMSSQL['competicion_anho'],
 
-                        'encuentro_codigo'                              => $rowMSSQL['encuentro_codigo'],
+                        'encuentro_codigo'                              => $encuentro_codigo,
                         'encuentro_local_codigo'                        => $rowMSSQL['encuentro_local_codigo'],
                         'encuentro_visitante_codigo'                    => $rowMSSQL['encuentro_visitante_codigo'],
                         'encuentro_nombre'                              => trim(strtoupper(strtolower($rowMSSQL['encuentro_local_equipo']))).' vs '.trim(strtoupper(strtolower($rowMSSQL['encuentro_visitante_equipo']))),
