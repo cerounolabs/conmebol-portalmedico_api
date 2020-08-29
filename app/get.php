@@ -7402,24 +7402,46 @@
         
         if (isset($val01) && isset($val02)) {
             if ($val01 == 39393) {
-                $sql00  = "SELECT
-                    a.competitionFifaId                 AS          competicion_codigo,
-                    
-                    c.personFifaId                      AS          jugador_codigo,
-                    c.internationalLastName             AS          jugador_apellido,
-                    c.internationalFirstName            AS          jugador_nombre,
-                    b.roleDescription                   AS          jugador_posicion,
-                    c.pictureContentType                AS          jugador_imagen_tipo,
-                    c.pictureLink                       AS          jugador_imagen_link,
-                    c.pictureValue                      AS          jugador_imagen_valor
-                    
-                    FROM [comet].[matches] a
-                    LEFT OUTER JOIN [comet].[matches_officials] b ON a.matchFifaId = b.matchFifaId
-                    LEFT OUTER JOIN [comet].[persons] c ON b.personFifaId = c.personFifaId
-                    
-                    WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ?)
+                if ($val04 == 0) {
+                    $sql00  = "SELECT
+                        a.competitionFifaId                 AS          competicion_codigo,
+                        d.personFifaId                      AS          jugador_codigo,
+                        d.internationalLastName             AS          jugador_apellido,
+                        d.internationalFirstName            AS          jugador_nombre,
+                        c.roleDescription                   AS          jugador_posicion,
+                        d.pictureContentType                AS          jugador_imagen_tipo,
+                        d.pictureLink                       AS          jugador_imagen_link,
+                        d.pictureValue                      AS          jugador_imagen_valor
 
-                    ORDER BY c.personFifaId";
+                        FROM [comet].[competitions] a
+                        LEFT OUTER JOIN [comet].[matches] b ON a.competitionFifaId = b.competitionFifaId
+                        LEFT OUTER JOIN [comet].[matches_officials] c ON b.matchFifaId = c.matchFifaId
+                        LEFT OUTER JOIN [comet].[persons] d ON c.personFifaId = d.personFifaId
+
+                        WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL AND NOT EXISTS (SELECT * FROM exa.EXAFIC a1 WHERE a1.EXAFICPEC = c.personFifaId AND a1.EXAFICTEC = ? AND a1.EXAFICENC = ?)
+
+                        ORDER BY d.personFifaId";
+                } else {
+                    $val02  = $val04;
+                    $sql00  = "SELECT
+                        a.competitionFifaId                 AS          competicion_codigo,
+                        
+                        c.personFifaId                      AS          jugador_codigo,
+                        c.internationalLastName             AS          jugador_apellido,
+                        c.internationalFirstName            AS          jugador_nombre,
+                        b.roleDescription                   AS          jugador_posicion,
+                        c.pictureContentType                AS          jugador_imagen_tipo,
+                        c.pictureLink                       AS          jugador_imagen_link,
+                        c.pictureValue                      AS          jugador_imagen_valor
+                        
+                        FROM [comet].[matches] a
+                        LEFT OUTER JOIN [comet].[matches_officials] b ON a.matchFifaId = b.matchFifaId
+                        LEFT OUTER JOIN [comet].[persons] c ON b.personFifaId = c.personFifaId
+                        
+                        WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ?)
+
+                        ORDER BY c.personFifaId";
+                }
             } else {
                 $sql00  = "SELECT
                     a.competitionFifaId                 AS          competicion_codigo,
@@ -7450,34 +7472,39 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val01 == 39393) {
-                    $stmtMSSQL->execute([$val04, $val03, $val04]);
+                    $stmtMSSQL->execute([$val02, $val03, $val04]);
+                    $jugador_codigo = 0;
 
                     while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                        $jugador_posicion = trim(strtoupper(strtolower($rowMSSQL['jugador_posicion'])));
-                        $jugador_posicion = str_replace('LABEL', '', $jugador_posicion);
-                        $jugador_posicion = str_replace('.', ' ', $jugador_posicion);
-                        $jugador_posicion = str_replace('REFEREEOBSERVER', 'REFEREE OBSERVER', $jugador_posicion);
-                        $jugador_posicion = str_replace('FIELDDOCTOR', 'FIELD DOCTOR', $jugador_posicion);
-                        $jugador_posicion = str_replace('MATCHCOORDINATOR', 'MATCH COORDINATOR', $jugador_posicion);
+                        if ($jugador_codigo != $rowMSSQL['jugador_codigo']) {
+                            $jugador_posicion   = trim(strtoupper(strtolower($rowMSSQL['jugador_posicion'])));
+                            $jugador_posicion   = str_replace('LABEL', '', $jugador_posicion);
+                            $jugador_posicion   = str_replace('.', ' ', $jugador_posicion);
+                            $jugador_posicion   = str_replace('REFEREEOBSERVER', 'REFEREE OBSERVER', $jugador_posicion);
+                            $jugador_posicion   = str_replace('FIELDDOCTOR', 'FIELD DOCTOR', $jugador_posicion);
+                            $jugador_posicion   = str_replace('MATCHCOORDINATOR', 'MATCH COORDINATOR', $jugador_posicion);
 
-                        $detalle    = array(
-                            'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
-                            'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
-                            'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
-                            'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
-                            'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
-                            'jugador_posicion'              => $jugador_posicion,
-                            'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
-                            'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
-                            'jugador_rol_1'                 => '',
-                            'jugador_rol_2'                 => '',
-                            'jugador_rol_3'                 => '',
-                            'jugador_imagen_valor'          => '',
-                            'jugador_tipo'                  => '',
-                            'jugador_numero'                => ''
-                        );
-    
-                        $result[]   = $detalle;
+                            $detalle    = array(
+                                'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
+
+                                'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
+                                'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                                'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                                'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                                'jugador_posicion'              => $jugador_posicion,
+                                'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
+                                'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
+                                'jugador_rol_1'                 => '',
+                                'jugador_rol_2'                 => '',
+                                'jugador_rol_3'                 => '',
+                                'jugador_imagen_valor'          => '',
+                                'jugador_tipo'                  => '',
+                                'jugador_numero'                => ''
+                            );
+        
+                            $result[]       = $detalle;
+                            $jugador_codigo = $rowMSSQL['jugador_codigo'];
+                        }
                     }
                 } else {
                     $stmtMSSQL->execute([$val01, $val02, $val03, $val04]);
@@ -7485,6 +7512,7 @@
                     while ($rowMSSQL = $stmtMSSQL->fetch()) {
                         $detalle    = array(
                             'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
+
                             'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
                             'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
                             'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
@@ -7510,6 +7538,7 @@
                 } else {
                     $detalle = array(
                         'competicion_codigo'            => '',
+
                         'jugador_codigo'                => '',
                         'jugador_apellido'              => '',
                         'jugador_nombre'                => '',
