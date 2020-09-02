@@ -31,7 +31,7 @@
     function getConnectionMSSQLv2(){
         $serverName = "172.16.50.19";
         $serverPort = "1433";
-        $serverDb   = "CSF_LESIONESv2";
+        $serverDb   = "CSF_LESIONES_V2";
         $serverUser = "user_sfholox";
         $serverPass = "D1pl0d0cus2020";
 
