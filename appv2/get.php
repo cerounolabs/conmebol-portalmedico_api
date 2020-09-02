@@ -7752,6 +7752,7 @@
                 a.EXAFICLFE                         AS          examen_laboratorio_fecha_envio,
                 a.EXAFICLFR                         AS          examen_laboratorio_fecha_recepcion,
                 a.EXAFICLFA                         AS          examen_laboratorio_fecha_aislamiento,
+                a.EXAFICLFF                         AS          examen_laboratorio_fecha_finaliza,
                 a.EXAFICLRE                         AS          examen_laboratorio_resultado,
                 a.EXAFICLIC                         AS          examen_laboratorio_cuarentena,
                 a.EXAFICLNT                         AS          examen_laboratorio_test,
@@ -7868,6 +7869,12 @@
                         $examen_laboratorio_fecha_aislamiento = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_aislamiento']));
                     }
 
+                    if ($rowMSSQL['examen_laboratorio_fecha_finaliza'] == NULL) {
+                        $examen_laboratorio_fecha_finaliza = '';
+                    } else {
+                        $examen_laboratorio_fecha_finaliza = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_finaliza']));
+                    }
+
                     if ($rowMSSQL['examen_anterior_fecha_1'] == NULL) {
                         $examen_anterior_fecha_1 = '';
                     } else {
@@ -7924,6 +7931,7 @@
                         'examen_laboratorio_fecha_envio'                => $examen_laboratorio_fecha_envio,
                         'examen_laboratorio_fecha_recepcion'            => $examen_laboratorio_fecha_recepcion,
                         'examen_laboratorio_fecha_aislamiento'          => $examen_laboratorio_fecha_aislamiento,
+                        'examen_laboratorio_fecha_finaliza'             => $examen_laboratorio_fecha_finaliza,
                         'examen_laboratorio_resultado'                  => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_resultado']))),
                         'examen_laboratorio_cuarentena'                 => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_cuarentena']))),
                         'examen_laboratorio_test'                       => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_test']))),
@@ -8007,6 +8015,7 @@
                         'examen_laboratorio_fecha_aislamiento'          => '',
                         'examen_laboratorio_resultado'                  => '',
                         'examen_laboratorio_cuarentena'                 => '',
+                        'examen_laboratorio_fecha_finaliza'             => '',
                         'examen_laboratorio_test'                       => '',
                         'examen_laboratorio_adjunto'                    => '',
                         'examen_laboratorio_observacion'                => '',
