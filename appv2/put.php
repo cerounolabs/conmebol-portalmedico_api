@@ -269,7 +269,8 @@
         $val05      = $request->getParsedBody()['examen_laboratorio_cuarentena'];
         $val06      = $request->getParsedBody()['examen_laboratorio_test'];
         $val07      = $request->getParsedBody()['examen_laboratorio_fecha_aislamiento'];
-        $val08      = $request->getParsedBody()['examen_laboratorio_observacion'];
+        $val08      = $request->getParsedBody()['examen_laboratorio_fecha_finaliza'];
+        $val09      = $request->getParsedBody()['examen_laboratorio_observacion'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -277,7 +278,7 @@
 
         if (isset($val00)) {
             if ($val03 == 'SI'){
-                $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLIC = ?, EXAFICLNT = ?, EXAFICLFA = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
+                $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLIC = ?, EXAFICLNT = ?, EXAFICLFA = ?, EXAFICLFF = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
             } else {
                 $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
             }
@@ -287,9 +288,9 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 if ($val03 == 'SI'){
-                    $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $aud01, $aud03, $val00]);
+                    $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $aud01, $aud03, $val00]);
                 } else {
-                    $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val08, $aud01, $aud03, $val00]);
+                    $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val09, $aud01, $aud03, $val00]);
                 }
 
                 header("Content-Type: application/json; charset=utf-8");
