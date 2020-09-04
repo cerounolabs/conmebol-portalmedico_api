@@ -735,6 +735,7 @@
 
                 $stmtMSSQL01->execute([$val00, $val05, $val06, $val05, $val06, $val07, $val04, $val08]);
                 $stmtMSSQL02->execute([$val01, $val02, $val00, 0, $val03]);
+                $codigo = $val00;
 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
