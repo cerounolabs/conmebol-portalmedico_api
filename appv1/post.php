@@ -652,7 +652,7 @@
         $connMSSQL  = null;
         
         return $json;
-    }); 
+    });
 
     $app->post('/v1/801/examen/test', function($request) {
         require __DIR__.'/../src/connect.php';
@@ -679,6 +679,73 @@
 
                 $stmtMSSQL->closeCursor();
                 $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->post('/v1/200/competicion/persona', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val00      = rand(2, 10000);
+        $val01      = $request->getParsedBody()['competicion_codigo'];
+        $val02      = $request->getParsedBody()['equipo_codigo'];
+        $val03      = $request->getParsedBody()['tipo_persona_codigo'];
+        $val04      = $request->getParsedBody()['tipo_genero_codigo'];
+        $val05      = strtoupper(strtolower(trim($request->getParsedBody()['persona_nombre'])));
+        $val06      = strtoupper(strtolower(trim($request->getParsedBody()['persona_apellido'])));
+        $val07      = $request->getParsedBody()['persona_fecha_nacimiento'];
+        $val08      = strtoupper(strtolower(trim($request->getParsedBody()['persona_posicion'])));
+
+        $aud01      = $request->getParsedBody()['auditoria_usuario'];
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = $request->getParsedBody()['auditoria_ip'];
+
+        if (isset($val00) && isset($val01) && isset($val02)) {
+            $sql00  = "SELECT personFifaId AS codigo FROM [comet].[persons] WHERE personFifaId = ?";
+            $sql01  = "INSERT INTO [comet].[persons] (personFifaId, internationalFirstName, internationalLastName, firstName, lastName, dateOfBirth, gender, playerPosition, lastUpdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE())";
+            $sql02  = "INSERT INTO [comet].[competitions_teams_players] (competitionFifaId, teamFifaId, playerFifaId, shirtNumber, playerType, lastUpdate) VALUES (?, ?, ?, ?, ?, GETDATE())";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+                $stmtMSSQL02= $connMSSQL->prepare($sql02);
+
+                $stmtMSSQL00->execute([$val00]); 
+                $row_mssql00= $stmtMSSQL00->fetch(PDO::FETCH_ASSOC);
+                $codigo     = $row_mssql00['codigo'];
+
+                while ($codigo != NULL){
+                    $val00      = rand(2, 100000);
+                    $stmtMSSQL00->execute([$val00]); 
+                    $row_mssql00= $stmtMSSQL00->fetch(PDO::FETCH_ASSOC);
+                    $codigo     = $row_mssql00['codigo'];
+                }
+
+                $stmtMSSQL01->execute([$val00, $val05, $val06, $val05, $val06, $val07, $val04, $val08]);
+                $stmtMSSQL02->execute([$val01, $val02, $val00, 0, $val03]);
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+                $stmtMSSQL02->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+                $stmtMSSQL02 = null;
             } catch (PDOException $e) {
                 header("Content-Type: application/json; charset=utf-8");
                 $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
