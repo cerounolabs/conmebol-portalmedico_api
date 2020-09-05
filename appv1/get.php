@@ -6592,7 +6592,7 @@
         return $json;
     });
 
-    $app->get('/v1/200/competicion/listado', function($request) {
+    $app->get('/v1/200/competicion/listado/cabecera', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $sql00  = "SELECT
@@ -6635,7 +6635,7 @@
         try {
             $connMSSQL  = getConnectionMSSQLv1();
             $stmtMSSQL  = $connMSSQL->prepare($sql00);
-            $stmtMSSQL->execute([]);
+            $stmtMSSQL->execute();
 
             while ($rowMSSQL = $stmtMSSQL->fetch()) {
                 switch ($rowMSSQL['competicion_imagen_tipo']) {
