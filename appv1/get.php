@@ -6591,7 +6591,7 @@
         
         return $json;
     });
-
+/*
     $app->get('/v1/200/competicion/listado', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -6749,7 +6749,7 @@
         
         return $json;
     });
-
+*/
     $app->get('/v1/200/competicion/medico/{equipo}/{persona}', function($request) {
         require __DIR__.'/../src/connect.php';
 
