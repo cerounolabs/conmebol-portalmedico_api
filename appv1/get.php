@@ -6634,11 +6634,11 @@
 
         try {
             $connMSSQL  = getConnectionMSSQLv1();
-            $stmtMSSQL00= $connMSSQL->prepare($sql00);
-            $stmtMSSQL00->execute();
+            $stmtMSSQL  = $connMSSQL->prepare($sql00);
+            $stmtMSSQL->execute([]);
 
-            while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
-                switch ($rowMSSQL00['competicion_imagen_tipo']) {
+            while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                switch ($rowMSSQL['competicion_imagen_tipo']) {
                     case 'image/jpeg':
                         $ext = 'jpeg';
                         break;
@@ -6656,44 +6656,44 @@
                         break;
                 }
 
-                $competicion_nombre         = trim($rowMSSQL00['competicion_nombre']);
+                $competicion_nombre         = trim($rowMSSQL['competicion_nombre']);
                 $competicion_nombre         = str_replace('\u00da', 'Ú', $competicion_nombre);
                 $competicion_nombre         = str_replace('\u00d3', 'Ó', $competicion_nombre);
                 $competicion_nombre         = str_replace('\u00c9', 'É', $competicion_nombre);
                 $competicion_nombre         = str_replace('"', '', $competicion_nombre);
 
-                $competicion_nombre_corto   = trim($rowMSSQL00['competicion_nombre_corto']);
+                $competicion_nombre_corto   = trim($rowMSSQL['competicion_nombre_corto']);
                 $competicion_nombre_corto   = str_replace('\u00da', 'Ú', $competicion_nombre_corto);
                 $competicion_nombre_corto   = str_replace('\u00d3', 'Ó', $competicion_nombre_corto);
                 $competicion_nombre_corto   = str_replace('\u00c9', 'É', $competicion_nombre_corto);
                 $competicion_nombre_corto   = str_replace('"', '', $competicion_nombre_corto);
 
                 $detalle    = array(
-                    'competicion_codigo'                    => $rowMSSQL00['competicion_codigo'],
-                    'competicion_codigo_padre'              => $rowMSSQL00['competicion_codigo_padre'],
-                    'competicion_estado'                    => trim($rowMSSQL00['competicion_estado']),
+                    'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                    'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                    'competicion_estado'                    => trim($rowMSSQL['competicion_estado']),
                     'competicion_nombre'                    => $competicion_nombre,
                     'competicion_nombre_corto'              => $competicion_nombre_corto,
-                    'competicion_anho'                      => $rowMSSQL00['competicion_anho'],
-                    'competicion_categoria_codigo'          => trim($rowMSSQL00['competicion_categoria_codigo']),
-                    'competicion_categoria_nombre'          => trim($rowMSSQL00['competicion_categoria_nombre']),
-                    'competicion_desde'                     => $rowMSSQL00['competicion_desde'],
-                    'competicion_hasta'                     => $rowMSSQL00['competicion_hasta'],
-                    'competicion_disciplina'                => trim($rowMSSQL00['competicion_disciplina']),
-                    'competicion_genero'                    => trim($rowMSSQL00['competicion_genero']),
-                    'competicion_imagen_codigo'             => $rowMSSQL00['competicion_imagen_codigo'],
-                    'competicion_multiplicador'             => $rowMSSQL00['competicion_multiplicador'],
-                    'competicion_naturaleza'                => trim($rowMSSQL00['competicion_naturaleza']),
-                    'competicion_numero_participante'       => $rowMSSQL00['competicion_numero_participante'],
-                    'competicion_numero_orden'              => $rowMSSQL00['competicion_numero_orden'],
-                    'competicion_equipo_tipo'               => trim($rowMSSQL00['competicion_equipo_tipo']),
-                    'competicion_sustitucion'               => $rowMSSQL00['competicion_sustitucion'],
-                    'competicion_penal'                     => $rowMSSQL00['competicion_penal'],
-                    'competicion_tipo'                      => trim($rowMSSQL00['competicion_tipo']),
-                    'competicion_imagen_tipo'               => trim($rowMSSQL00['competicion_imagen_tipo']),
-                    'competicion_ultima_actualizacion'      => $rowMSSQL00['competicion_ultima_actualizacion'],
-                    'organizacion_codigo'                   => $rowMSSQL00['organizacion_codigo'],
-                    'organizacion_nombre'                   => trim($rowMSSQL00['organizacion_nombre'])
+                    'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+                    'competicion_categoria_codigo'          => trim($rowMSSQL['competicion_categoria_codigo']),
+                    'competicion_categoria_nombre'          => trim($rowMSSQL['competicion_categoria_nombre']),
+                    'competicion_desde'                     => $rowMSSQL['competicion_desde'],
+                    'competicion_hasta'                     => $rowMSSQL['competicion_hasta'],
+                    'competicion_disciplina'                => trim($rowMSSQL['competicion_disciplina']),
+                    'competicion_genero'                    => trim($rowMSSQL['competicion_genero']),
+                    'competicion_imagen_codigo'             => $rowMSSQL['competicion_imagen_codigo'],
+                    'competicion_multiplicador'             => $rowMSSQL['competicion_multiplicador'],
+                    'competicion_naturaleza'                => trim($rowMSSQL['competicion_naturaleza']),
+                    'competicion_numero_participante'       => $rowMSSQL['competicion_numero_participante'],
+                    'competicion_numero_orden'              => $rowMSSQL['competicion_numero_orden'],
+                    'competicion_equipo_tipo'               => trim($rowMSSQL['competicion_equipo_tipo']),
+                    'competicion_sustitucion'               => $rowMSSQL['competicion_sustitucion'],
+                    'competicion_penal'                     => $rowMSSQL['competicion_penal'],
+                    'competicion_tipo'                      => trim($rowMSSQL['competicion_tipo']),
+                    'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
+                    'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
+                    'organizacion_codigo'                   => $rowMSSQL['organizacion_codigo'],
+                    'organizacion_nombre'                   => trim($rowMSSQL['organizacion_nombre'])
                 );
 
                 $result[]   = $detalle;
@@ -6738,8 +6738,8 @@
                 $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
             }
 
-            $stmtMSSQL00->closeCursor();
-            $stmtMSSQL00 = null;
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL = null;
         } catch (PDOException $e) {
             header("Content-Type: application/json; charset=utf-8");
             $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
