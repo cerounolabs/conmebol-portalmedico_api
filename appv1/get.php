@@ -7579,6 +7579,25 @@
                         WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL AND NOT EXISTS (SELECT * FROM exa.EXAFIC a1 WHERE a1.EXAFICPEC = c.personFifaId AND a1.EXAFICTEC = ? AND a1.EXAFICENC = ?)
 
                         ORDER BY d.personFifaId";
+
+                    $sql00  = "SELECT
+                        a.competitionFifaId                 AS          competicion_codigo,
+                        d.personFifaId                      AS          jugador_codigo,
+                        d.internationalLastName             AS          jugador_apellido,
+                        d.internationalFirstName            AS          jugador_nombre,
+                        c.roleDescription                   AS          jugador_posicion,
+                        d.pictureContentType                AS          jugador_imagen_tipo,
+                        d.pictureLink                       AS          jugador_imagen_link,
+                        d.pictureValue                      AS          jugador_imagen_valor
+
+                        FROM [comet].[competitions] a
+                        LEFT OUTER JOIN [comet].[matches] b ON a.competitionFifaId = b.competitionFifaId
+                        LEFT OUTER JOIN [comet].[matches_officials] c ON b.matchFifaId = c.matchFifaId
+                        LEFT OUTER JOIN [comet].[persons] d ON c.personFifaId = d.personFifaId
+
+                        WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL
+
+                        ORDER BY d.personFifaId";
                         
                 } else {
                     $val02  = $val04;
