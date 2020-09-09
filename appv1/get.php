@@ -7616,7 +7616,7 @@
                         LEFT OUTER JOIN [comet].[matches_officials] b ON a.matchFifaId = b.matchFifaId
                         LEFT OUTER JOIN [comet].[persons] c ON b.personFifaId = c.personFifaId
                         
-                        WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ?)
+                        WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
 
                         ORDER BY c.personFifaId";
                 }
@@ -7640,7 +7640,7 @@
                     FROM [comet].[competitions_teams_players] a
                     INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
                     
-                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = a.playerFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ?)
+                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = a.playerFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
 
                     ORDER BY b.playerPosition, a.shirtNumber";
             }
