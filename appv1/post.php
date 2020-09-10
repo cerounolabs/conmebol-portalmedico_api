@@ -706,7 +706,7 @@
         $val07      = $request->getParsedBody()['persona_fecha_nacimiento'];
         $val08      = strtoupper(strtolower(trim($request->getParsedBody()['persona_posicion'])));
         $val09      = $request->getParsedBody()['tipo_documento_codigo'];
-        $val10      = strtoupper(strtolower(trim($request->getParsedBody()['tipo_documento_numero'])));
+        $val10      = strtoupper(strtolower(trim($request->getParsedBody()['persona_documento'])));
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
