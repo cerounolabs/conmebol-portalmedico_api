@@ -7418,11 +7418,18 @@
                     b.roleDescription                   AS          jugador_posicion,
                     c.pictureContentType                AS          jugador_imagen_tipo,
                     c.pictureLink                       AS          jugador_imagen_link,
-                    c.pictureValue                      AS          jugador_imagen_valor
+                    c.pictureValue                      AS          jugador_imagen_valor,
+
+                    d.DOMFICCOD                         AS          tipo_documento_codigo,
+                    d.DOMFICNOI                         AS          tipo_documento_nombre_ingles,
+                    d.DOMFICNOC                         AS          tipo_documento_nombre_castellano,
+                    d.DOMFICNOP                         AS          tipo_documento_nombre_portugues,
+                    c.documentNumber                    AS          tipo_documento_numero
                     
                     FROM [comet].[matches] a
                     LEFT OUTER JOIN [comet].[matches_officials] b ON a.matchFifaId = b.matchFifaId
                     LEFT OUTER JOIN [comet].[persons] c ON b.personFifaId = c.personFifaId
+                    LEFT OUTER JOIN [adm].[DOMFIC] d ON c.documentType = d.DOMFICCOD
                     
                     ORDER BY c.personFifaId";
             } else {
@@ -7440,10 +7447,17 @@
                     b.pictureLink                       AS          jugador_imagen_link,
                     b.pictureValue                      AS          jugador_imagen_valor,
                     a.playerType                        AS          jugador_tipo,
-                    a.shirtNumber                       AS          jugador_numero
+                    a.shirtNumber                       AS          jugador_numero,
+
+                    c.DOMFICCOD                         AS          tipo_documento_codigo,
+                    c.DOMFICNOI                         AS          tipo_documento_nombre_ingles,
+                    c.DOMFICNOC                         AS          tipo_documento_nombre_castellano,
+                    c.DOMFICNOP                         AS          tipo_documento_nombre_portugues,
+                    b.documentNumber                    AS          tipo_documento_numero
                     
                     FROM [comet].[competitions_teams_players] a
                     INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
+                    LEFT OUTER JOIN [adm].[DOMFIC] c ON b.documentType = c.DOMFICCOD
                     
                     WHERE a.teamFifaId = ? AND a.competitionFifaId = ?
 
@@ -7466,20 +7480,26 @@
                         $jugador_posicion = str_replace('MATCHCOORDINATOR', 'MATCH COORDINATOR', $jugador_posicion);
 
                         $detalle    = array(
-                            'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
-                            'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
-                            'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
-                            'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
-                            'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
-                            'jugador_posicion'              => $jugador_posicion,
-                            'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
-                            'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
-                            'jugador_rol_1'                 => '',
-                            'jugador_rol_2'                 => '',
-                            'jugador_rol_3'                 => '',
-                            'jugador_imagen_valor'          => '',
-                            'jugador_tipo'                  => '',
-                            'jugador_numero'                => ''
+                            'competicion_codigo'                => $rowMSSQL['competicion_codigo'],
+                            'jugador_codigo'                    => $rowMSSQL['jugador_codigo'],
+                            'jugador_apellido'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                            'jugador_nombre'                    => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                            'jugador_completo'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                            'jugador_posicion'                  => $jugador_posicion,
+                            'jugador_imagen_tipo'               => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
+                            'jugador_imagen_link'               => trim($rowMSSQL['jugador_imagen_link']),
+                            'jugador_rol_1'                     => '',
+                            'jugador_rol_2'                     => '',
+                            'jugador_rol_3'                     => '',
+                            'jugador_imagen_valor'              => '',
+                            'jugador_tipo'                      => '',
+                            'jugador_numero'                    => '',
+
+                            'tipo_documento_codigo'             => $rowMSSQL['tipo_documento_codigo'],
+                            'tipo_documento_nombre_ingles'      => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_ingles']))),
+                            'tipo_documento_nombre_castellano'  => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_castellano']))),
+                            'tipo_documento_nombre_portugues'   => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_portugues']))),
+                            'tipo_documento_numero'             => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_numero'])))
                         );
     
                         $result[]   = $detalle;
@@ -7489,20 +7509,26 @@
 
                     while ($rowMSSQL = $stmtMSSQL->fetch()) {
                         $detalle    = array(
-                            'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
-                            'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
-                            'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
-                            'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
-                            'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
-                            'jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
-                            'jugador_rol_1'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_1']))),
-                            'jugador_rol_2'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_2']))),
-                            'jugador_rol_3'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_3']))),
-                            'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
-                            'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
-                            'jugador_imagen_valor'          => '',
-                            'jugador_tipo'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_tipo']))),
-                            'jugador_numero'                => $rowMSSQL['jugador_numero']
+                            'competicion_codigo'                => $rowMSSQL['competicion_codigo'],
+                            'jugador_codigo'                    => $rowMSSQL['jugador_codigo'],
+                            'jugador_apellido'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                            'jugador_nombre'                    => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                            'jugador_completo'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                            'jugador_posicion'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
+                            'jugador_rol_1'                     => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_1']))),
+                            'jugador_rol_2'                     => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_2']))),
+                            'jugador_rol_3'                     => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_3']))),
+                            'jugador_imagen_tipo'               => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
+                            'jugador_imagen_link'               => trim($rowMSSQL['jugador_imagen_link']),
+                            'jugador_imagen_valor'              => '',
+                            'jugador_tipo'                      => trim(strtoupper(strtolower($rowMSSQL['jugador_tipo']))),
+                            'jugador_numero'                    => $rowMSSQL['jugador_numero'],
+
+                            'tipo_documento_codigo'             => $rowMSSQL['tipo_documento_codigo'],
+                            'tipo_documento_nombre_ingles'      => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_ingles']))),
+                            'tipo_documento_nombre_castellano'  => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_castellano']))),
+                            'tipo_documento_nombre_portugues'   => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_portugues']))),
+                            'tipo_documento_numero'             => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_numero'])))
                         );
     
                         $result[]   = $detalle;
@@ -7514,20 +7540,25 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'competicion_codigo'            => '',
-                        'jugador_codigo'                => '',
-                        'jugador_apellido'              => '',
-                        'jugador_nombre'                => '',
-                        'jugador_completo'              => '',
-                        'jugador_posicion'              => '',
-                        'jugador_rol_1'                 => '',
-                        'jugador_rol_2'                 => '',
-                        'jugador_rol_3'                 => '',
-                        'jugador_imagen_tipo'           => '',
-                        'jugador_imagen_link'           => '',
-                        'jugador_imagen_valor'          => '',
-                        'jugador_tipo'                  => '',
-                        'jugador_numero'                => ''
+                        'competicion_codigo'                => '',
+                        'jugador_codigo'                    => '',
+                        'jugador_apellido'                  => '',
+                        'jugador_nombre'                    => '',
+                        'jugador_completo'                  => '',
+                        'jugador_posicion'                  => '',
+                        'jugador_rol_1'                     => '',
+                        'jugador_rol_2'                     => '',
+                        'jugador_rol_3'                     => '',
+                        'jugador_imagen_tipo'               => '',
+                        'jugador_imagen_link'               => '',
+                        'jugador_imagen_valor'              => '',
+                        'jugador_tipo'                      => '',
+                        'jugador_numero'                    => '',
+                        'tipo_documento_codigo'             => '',
+                        'tipo_documento_nombre_ingles'      => '',
+                        'tipo_documento_nombre_castellano'  => '',
+                        'tipo_documento_nombre_portugues'   => '',
+                        'tipo_documento_numero'             => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
@@ -7569,12 +7600,19 @@
                         c.roleDescription                   AS          jugador_posicion,
                         d.pictureContentType                AS          jugador_imagen_tipo,
                         d.pictureLink                       AS          jugador_imagen_link,
-                        d.pictureValue                      AS          jugador_imagen_valor
+                        d.pictureValue                      AS          jugador_imagen_valor,
+
+                        e.DOMFICCOD                         AS          tipo_documento_codigo,
+                        e.DOMFICNOI                         AS          tipo_documento_nombre_ingles,
+                        e.DOMFICNOC                         AS          tipo_documento_nombre_castellano,
+                        e.DOMFICNOP                         AS          tipo_documento_nombre_portugues,
+                        d.documentNumber                    AS          tipo_documento_numero
 
                         FROM [comet].[competitions] a
                         LEFT OUTER JOIN [comet].[matches] b ON a.competitionFifaId = b.competitionFifaId
                         LEFT OUTER JOIN [comet].[matches_officials] c ON b.matchFifaId = c.matchFifaId
                         LEFT OUTER JOIN [comet].[persons] d ON c.personFifaId = d.personFifaId
+                        LEFT OUTER JOIN [adm].[DOMFIC] e ON d.documentType = e.DOMFICCOD
 
                         WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL AND NOT EXISTS (SELECT * FROM exa.EXAFIC a1 WHERE a1.EXAFICPEC = c.personFifaId AND a1.EXAFICTEC = ? AND a1.EXAFICENC = ?)
 
@@ -7588,12 +7626,19 @@
                         c.roleDescription                   AS          jugador_posicion,
                         d.pictureContentType                AS          jugador_imagen_tipo,
                         d.pictureLink                       AS          jugador_imagen_link,
-                        d.pictureValue                      AS          jugador_imagen_valor
+                        d.pictureValue                      AS          jugador_imagen_valor,
+
+                        e.DOMFICCOD                         AS          tipo_documento_codigo,
+                        e.DOMFICNOI                         AS          tipo_documento_nombre_ingles,
+                        e.DOMFICNOC                         AS          tipo_documento_nombre_castellano,
+                        e.DOMFICNOP                         AS          tipo_documento_nombre_portugues,
+                        d.documentNumber                    AS          tipo_documento_numero
 
                         FROM [comet].[competitions] a
                         LEFT OUTER JOIN [comet].[matches] b ON a.competitionFifaId = b.competitionFifaId
                         LEFT OUTER JOIN [comet].[matches_officials] c ON b.matchFifaId = c.matchFifaId
                         LEFT OUTER JOIN [comet].[persons] d ON c.personFifaId = d.personFifaId
+                        LEFT OUTER JOIN [adm].[DOMFIC] e ON d.documentType = e.DOMFICCOD
 
                         WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL
 
@@ -7610,11 +7655,18 @@
                         b.roleDescription                   AS          jugador_posicion,
                         c.pictureContentType                AS          jugador_imagen_tipo,
                         c.pictureLink                       AS          jugador_imagen_link,
-                        c.pictureValue                      AS          jugador_imagen_valor
+                        c.pictureValue                      AS          jugador_imagen_valor,
+
+                        d.DOMFICCOD                         AS          tipo_documento_codigo,
+                        d.DOMFICNOI                         AS          tipo_documento_nombre_ingles,
+                        d.DOMFICNOC                         AS          tipo_documento_nombre_castellano,
+                        d.DOMFICNOP                         AS          tipo_documento_nombre_portugues,
+                        c.documentNumber                    AS          tipo_documento_numero
                         
                         FROM [comet].[matches] a
                         LEFT OUTER JOIN [comet].[matches_officials] b ON a.matchFifaId = b.matchFifaId
                         LEFT OUTER JOIN [comet].[persons] c ON b.personFifaId = c.personFifaId
+                        LEFT OUTER JOIN [adm].[DOMFIC] d ON c.documentType = d.DOMFICCOD
                         
                         WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
 
@@ -7635,10 +7687,17 @@
                     b.pictureLink                       AS          jugador_imagen_link,
                     b.pictureValue                      AS          jugador_imagen_valor,
                     a.playerType                        AS          jugador_tipo,
-                    a.shirtNumber                       AS          jugador_numero
+                    a.shirtNumber                       AS          jugador_numero,
+
+                    c.DOMFICCOD                         AS          tipo_documento_codigo,
+                    c.DOMFICNOI                         AS          tipo_documento_nombre_ingles,
+                    c.DOMFICNOC                         AS          tipo_documento_nombre_castellano,
+                    c.DOMFICNOP                         AS          tipo_documento_nombre_portugues,
+                    b.documentNumber                    AS          tipo_documento_numero
                     
                     FROM [comet].[competitions_teams_players] a
                     INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
+                    LEFT OUTER JOIN [adm].[DOMFIC] c ON b.documentType = c.DOMFICCOD
                     
                     WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = a.playerFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
 
@@ -7663,21 +7722,27 @@
                             $jugador_posicion   = str_replace('MATCHCOORDINATOR', 'MATCH COORDINATOR', $jugador_posicion);
 
                             $detalle    = array(
-                                'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
+                                'competicion_codigo'                => $rowMSSQL['competicion_codigo'],
 
-                                'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
-                                'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
-                                'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
-                                'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
-                                'jugador_posicion'              => $jugador_posicion,
-                                'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
-                                'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
-                                'jugador_rol_1'                 => '',
-                                'jugador_rol_2'                 => '',
-                                'jugador_rol_3'                 => '',
-                                'jugador_imagen_valor'          => '',
-                                'jugador_tipo'                  => '',
-                                'jugador_numero'                => ''
+                                'jugador_codigo'                    => $rowMSSQL['jugador_codigo'],
+                                'jugador_apellido'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                                'jugador_nombre'                    => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                                'jugador_completo'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                                'jugador_posicion'                  => $jugador_posicion,
+                                'jugador_imagen_tipo'               => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
+                                'jugador_imagen_link'               => trim($rowMSSQL['jugador_imagen_link']),
+                                'jugador_rol_1'                     => '',
+                                'jugador_rol_2'                     => '',
+                                'jugador_rol_3'                     => '',
+                                'jugador_imagen_valor'              => '',
+                                'jugador_tipo'                      => '',
+                                'jugador_numero'                    => '',
+
+                                'tipo_documento_codigo'             => $rowMSSQL['tipo_documento_codigo'],
+                                'tipo_documento_nombre_ingles'      => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_ingles']))),
+                                'tipo_documento_nombre_castellano'  => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_castellano']))),
+                                'tipo_documento_nombre_portugues'   => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_portugues']))),
+                                'tipo_documento_numero'             => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_numero'])))
                             );
         
                             $result[]       = $detalle;
@@ -7689,21 +7754,27 @@
 
                     while ($rowMSSQL = $stmtMSSQL->fetch()) {
                         $detalle    = array(
-                            'competicion_codigo'            => $rowMSSQL['competicion_codigo'],
+                            'competicion_codigo'                => $rowMSSQL['competicion_codigo'],
 
-                            'jugador_codigo'                => $rowMSSQL['jugador_codigo'],
-                            'jugador_apellido'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
-                            'jugador_nombre'                => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
-                            'jugador_completo'              => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
-                            'jugador_posicion'              => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
-                            'jugador_rol_1'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_1']))),
-                            'jugador_rol_2'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_2']))),
-                            'jugador_rol_3'                 => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_3']))),
-                            'jugador_imagen_tipo'           => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
-                            'jugador_imagen_link'           => trim($rowMSSQL['jugador_imagen_link']),
-                            'jugador_imagen_valor'          => '',
-                            'jugador_tipo'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_tipo']))),
-                            'jugador_numero'                => $rowMSSQL['jugador_numero']
+                            'jugador_codigo'                    => $rowMSSQL['jugador_codigo'],
+                            'jugador_apellido'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))),
+                            'jugador_nombre'                    => trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                            'jugador_completo'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['jugador_nombre']))),
+                            'jugador_posicion'                  => trim(strtoupper(strtolower($rowMSSQL['jugador_posicion']))),
+                            'jugador_rol_1'                     => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_1']))),
+                            'jugador_rol_2'                     => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_2']))),
+                            'jugador_rol_3'                     => trim(strtoupper(strtolower($rowMSSQL['jugador_rol_3']))),
+                            'jugador_imagen_tipo'               => trim(strtolower($rowMSSQL['jugador_imagen_tipo'])),
+                            'jugador_imagen_link'               => trim($rowMSSQL['jugador_imagen_link']),
+                            'jugador_imagen_valor'              => '',
+                            'jugador_tipo'                      => trim(strtoupper(strtolower($rowMSSQL['jugador_tipo']))),
+                            'jugador_numero'                    => $rowMSSQL['jugador_numero'],
+
+                            'tipo_documento_codigo'             => $rowMSSQL['tipo_documento_codigo'],
+                            'tipo_documento_nombre_ingles'      => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_ingles']))),
+                            'tipo_documento_nombre_castellano'  => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_castellano']))),
+                            'tipo_documento_nombre_portugues'   => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_nombre_portugues']))),
+                            'tipo_documento_numero'             => trim(strtoupper(strtolower($rowMSSQL['tipo_documento_numero'])))
                         );
     
                         $result[]   = $detalle;
@@ -7717,19 +7788,24 @@
                     $detalle = array(
                         'competicion_codigo'            => '',
 
-                        'jugador_codigo'                => '',
-                        'jugador_apellido'              => '',
-                        'jugador_nombre'                => '',
-                        'jugador_completo'              => '',
-                        'jugador_posicion'              => '',
-                        'jugador_rol_1'                 => '',
-                        'jugador_rol_2'                 => '',
-                        'jugador_rol_3'                 => '',
-                        'jugador_imagen_tipo'           => '',
-                        'jugador_imagen_link'           => '',
-                        'jugador_imagen_valor'          => '',
-                        'jugador_tipo'                  => '',
-                        'jugador_numero'                => ''
+                        'jugador_codigo'                    => '',
+                        'jugador_apellido'                  => '',
+                        'jugador_nombre'                    => '',
+                        'jugador_completo'                  => '',
+                        'jugador_posicion'                  => '',
+                        'jugador_rol_1'                     => '',
+                        'jugador_rol_2'                     => '',
+                        'jugador_rol_3'                     => '',
+                        'jugador_imagen_tipo'               => '',
+                        'jugador_imagen_link'               => '',
+                        'jugador_imagen_valor'              => '',
+                        'jugador_tipo'                      => '',
+                        'jugador_numero'                    => '',
+                        'tipo_documento_codigo'             => '',
+                        'tipo_documento_nombre_ingles'      => '',
+                        'tipo_documento_nombre_castellano'  => '',
+                        'tipo_documento_nombre_portugues'   => '',
+                        'tipo_documento_numero'             => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");

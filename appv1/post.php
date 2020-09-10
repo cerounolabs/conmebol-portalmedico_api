@@ -705,6 +705,8 @@
         $val06      = strtoupper(strtolower(trim($request->getParsedBody()['persona_apellido'])));
         $val07      = $request->getParsedBody()['persona_fecha_nacimiento'];
         $val08      = strtoupper(strtolower(trim($request->getParsedBody()['persona_posicion'])));
+        $val09      = $request->getParsedBody()['tipo_documento_codigo'];
+        $val10      = strtoupper(strtolower(trim($request->getParsedBody()['tipo_documento_numero'])));
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -712,7 +714,7 @@
 
         if (isset($val00) && isset($val01) && isset($val02)) {
             $sql00  = "SELECT personFifaId AS codigo FROM [comet].[persons] WHERE personFifaId = ?";
-            $sql01  = "INSERT INTO [comet].[persons] (personFifaId, internationalFirstName, internationalLastName, firstName, lastName, dateOfBirth, gender, playerPosition, lastUpdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE())";
+            $sql01  = "INSERT INTO [comet].[persons] (personFifaId, internationalFirstName, internationalLastName, firstName, lastName, dateOfBirth, gender, playerPosition, documentType, documentNumber, lastUpdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE())";
             $sql02  = "INSERT INTO [comet].[competitions_teams_players] (competitionFifaId, teamFifaId, playerFifaId, shirtNumber, playerType, lastUpdate) VALUES (?, ?, ?, ?, ?, GETDATE())";
 
             try {
@@ -733,7 +735,7 @@
                     $codigo     = $row_mssql00['codigo'];
                 }
 
-                $stmtMSSQL01->execute([$val00, $val05, $val06, $val05, $val06, $val07, $val04, $val08]);
+                $stmtMSSQL01->execute([$val00, $val05, $val06, $val05, $val06, $val07, $val04, $val08, $val09, $val10]);
                 $stmtMSSQL02->execute([$val01, $val02, $val00, 0, $val03]);
                 $codigo = $val00;
 
