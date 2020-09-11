@@ -8422,94 +8422,186 @@
         $val02      = $request->getAttribute('encuentro');
 
         if (isset($val01)) {
-            $sql00  = "SELECT
-                a.EXAFICCOD                         AS          examen_codigo,
-                a.EXAFICFE1                         AS          examen_fecha_1,
-                a.EXAFICFE2                         AS          examen_fecha_2,
-                a.EXAFICFE3                         AS          examen_fecha_3,
-                a.EXAFICACA                         AS          examen_cantidad_adulto,
-                a.EXAFICMCA                         AS          examen_cantidad_menor,
-                a.EXAFICJCO                         AS          examen_persona_convocado,
-                a.EXAFICJPO                         AS          examen_persona_posicion,
-                a.EXAFICJCA                         AS          examen_persona_camiseta,
-                a.EXAFICLNO                         AS          examen_laboratorio_nombre,
-                a.EXAFICLFE                         AS          examen_laboratorio_fecha_envio,
-                a.EXAFICLFR                         AS          examen_laboratorio_fecha_recepcion,
-                a.EXAFICLFA                         AS          examen_laboratorio_fecha_aislamiento,
-                a.EXAFICLFF                         AS          examen_laboratorio_fecha_finaliza,
-                a.EXAFICLRE                         AS          examen_laboratorio_resultado,
-                a.EXAFICLIC                         AS          examen_laboratorio_cuarentena,
-                a.EXAFICLNT                         AS          examen_laboratorio_test,
-                a.EXAFICLAD                         AS          examen_laboratorio_adjunto,
-                a.EXAFICLOB                         AS          examen_laboratorio_observacion,
-                a.EXAFICOBS                         AS          examen_observacion,
-                
-                a.EXAFICAUS                         AS          auditoria_usuario,
-                a.EXAFICAFH                         AS          auditoria_fecha_hora,
-                a.EXAFICAIP                         AS          auditoria_ip,
+            if ($val01 == 39393) {
+                $val02  = $val01;
+                $sql00  = "SELECT
+                    a.EXAFICCOD                         AS          examen_codigo,
+                    a.EXAFICFE1                         AS          examen_fecha_1,
+                    a.EXAFICFE2                         AS          examen_fecha_2,
+                    a.EXAFICFE3                         AS          examen_fecha_3,
+                    a.EXAFICACA                         AS          examen_cantidad_adulto,
+                    a.EXAFICMCA                         AS          examen_cantidad_menor,
+                    a.EXAFICJCO                         AS          examen_persona_convocado,
+                    a.EXAFICJPO                         AS          examen_persona_posicion,
+                    a.EXAFICJCA                         AS          examen_persona_camiseta,
+                    a.EXAFICLNO                         AS          examen_laboratorio_nombre,
+                    a.EXAFICLFE                         AS          examen_laboratorio_fecha_envio,
+                    a.EXAFICLFR                         AS          examen_laboratorio_fecha_recepcion,
+                    a.EXAFICLFA                         AS          examen_laboratorio_fecha_aislamiento,
+                    a.EXAFICLFF                         AS          examen_laboratorio_fecha_finaliza,
+                    a.EXAFICLRE                         AS          examen_laboratorio_resultado,
+                    a.EXAFICLIC                         AS          examen_laboratorio_cuarentena,
+                    a.EXAFICLNT                         AS          examen_laboratorio_test,
+                    a.EXAFICLAD                         AS          examen_laboratorio_adjunto,
+                    a.EXAFICLOB                         AS          examen_laboratorio_observacion,
+                    a.EXAFICOBS                         AS          examen_observacion,
+                    
+                    a.EXAFICAUS                         AS          auditoria_usuario,
+                    a.EXAFICAFH                         AS          auditoria_fecha_hora,
+                    a.EXAFICAIP                         AS          auditoria_ip,
 
-                b.DOMFICCOD                         AS          tipo_estado_codigo,
-                b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
-                b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
-                b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+                    b.DOMFICCOD                         AS          tipo_estado_codigo,
+                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
 
-                c.DOMFICCOD                         AS          tipo_examen_codigo,
-                c.DOMFICNOI                         AS          tipo_examen_nombre_ingles,
-                c.DOMFICNOC                         AS          tipo_examen_nombre_castellano,
-                c.DOMFICNOP                         AS          tipo_examen_nombre_portugues,
+                    c.DOMFICCOD                         AS          tipo_examen_codigo,
+                    c.DOMFICNOI                         AS          tipo_examen_nombre_ingles,
+                    c.DOMFICNOC                         AS          tipo_examen_nombre_castellano,
+                    c.DOMFICNOP                         AS          tipo_examen_nombre_portugues,
 
-                d.competitionFifaId                 AS          competicion_codigo,
-                d.superiorCompetitionFifaId         AS          competicion_codigo_padre,
-                d.status                            AS          competicion_estado,
-                d.internationalName                 AS          competicion_nombre,
-                d.internationalShortName            AS          competicion_nombre_corto,
-                d.season                            AS          competicion_anho,
+                    d.competitionFifaId                 AS          competicion_codigo,
+                    d.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                    d.status                            AS          competicion_estado,
+                    d.internationalName                 AS          competicion_nombre,
+                    d.internationalShortName            AS          competicion_nombre_corto,
+                    d.season                            AS          competicion_anho,
 
-                e.JUEGO_CODIGO                      AS          encuentro_codigo,
-                e.EQUIPO_LOCAL_CODIGO               AS          encuentro_local_codigo,
-                e.EQUIPO_LOCAL_NOMBRE               AS          encuentro_local_equipo,
-                e.EQUIPO_VISITANTE_CODIGO           AS          encuentro_visitante_codigo,
-                e.EQUIPO_VISITANTE_NOMBRE           AS          encuentro_visitante_equipo,
+                    e.JUEGO_CODIGO                      AS          encuentro_codigo,
+                    e.EQUIPO_LOCAL_CODIGO               AS          encuentro_local_codigo,
+                    e.EQUIPO_LOCAL_NOMBRE               AS          encuentro_local_equipo,
+                    e.EQUIPO_VISITANTE_CODIGO           AS          encuentro_visitante_codigo,
+                    e.EQUIPO_VISITANTE_NOMBRE           AS          encuentro_visitante_equipo,
 
-                f.teamFifaId                        AS          equipo_codigo,
-                f.internationalName                 AS          equipo_nombre,
+                    f.teamFifaId                        AS          equipo_codigo,
+                    f.internationalName                 AS          equipo_nombre,
 
-                g.personFifaId                      AS          persona_codigo,
-                g.internationalFirstName            AS          persona_nombre,
-                g.internationalLastName             AS          persona_apellido,
+                    g.personFifaId                      AS          persona_codigo,
+                    g.internationalFirstName            AS          persona_nombre,
+                    g.internationalLastName             AS          persona_apellido,
 
-                h.EXAFICCOD                         AS          examen_anterior_codigo,
-                h.EXAFICFE1                         AS          examen_anterior_fecha_1,
-                h.EXAFICFE2                         AS          examen_anterior_fecha_2,
-                h.EXAFICFE3                         AS          examen_anterior_fecha_3,
-                h.EXAFICACA                         AS          examen_anterior_cantidad_adulto,
-                h.EXAFICMCA                         AS          examen_anterior_cantidad_menor,
-                h.EXAFICJCO                         AS          examen_anterior_persona_convocado,
-                h.EXAFICJPO                         AS          examen_anterior_persona_posicion,
-                h.EXAFICJCA                         AS          examen_anterior_persona_camiseta,
-                h.EXAFICLNO                         AS          examen_anterior_laboratorio_nombre,
-                h.EXAFICLFE                         AS          examen_anterior_laboratorio_fecha_envio,
-                h.EXAFICLFR                         AS          examen_anterior_laboratorio_fecha_recepcion,
-                h.EXAFICLFA                         AS          examen_anterior_laboratorio_fecha_aislamiento,
-                h.EXAFICLRE                         AS          examen_anterior_laboratorio_resultado,
-                h.EXAFICLIC                         AS          examen_anterior_laboratorio_cuarentena,
-                h.EXAFICLNT                         AS          examen_anterior_laboratorio_test,
-                h.EXAFICLAD                         AS          examen_anterior_laboratorio_adjunto,
-                h.EXAFICLOB                         AS          examen_anterior_laboratorio_observacion,
-                h.EXAFICOBS                         AS          examen_anterior_observacion
+                    h.EXAFICCOD                         AS          examen_anterior_codigo,
+                    h.EXAFICFE1                         AS          examen_anterior_fecha_1,
+                    h.EXAFICFE2                         AS          examen_anterior_fecha_2,
+                    h.EXAFICFE3                         AS          examen_anterior_fecha_3,
+                    h.EXAFICACA                         AS          examen_anterior_cantidad_adulto,
+                    h.EXAFICMCA                         AS          examen_anterior_cantidad_menor,
+                    h.EXAFICJCO                         AS          examen_anterior_persona_convocado,
+                    h.EXAFICJPO                         AS          examen_anterior_persona_posicion,
+                    h.EXAFICJCA                         AS          examen_anterior_persona_camiseta,
+                    h.EXAFICLNO                         AS          examen_anterior_laboratorio_nombre,
+                    h.EXAFICLFE                         AS          examen_anterior_laboratorio_fecha_envio,
+                    h.EXAFICLFR                         AS          examen_anterior_laboratorio_fecha_recepcion,
+                    h.EXAFICLFA                         AS          examen_anterior_laboratorio_fecha_aislamiento,
+                    h.EXAFICLRE                         AS          examen_anterior_laboratorio_resultado,
+                    h.EXAFICLIC                         AS          examen_anterior_laboratorio_cuarentena,
+                    h.EXAFICLNT                         AS          examen_anterior_laboratorio_test,
+                    h.EXAFICLAD                         AS          examen_anterior_laboratorio_adjunto,
+                    h.EXAFICLOB                         AS          examen_anterior_laboratorio_observacion,
+                    h.EXAFICOBS                         AS          examen_anterior_observacion
 
-                FROM [exa].[EXAFIC] a
-                LEFT OUTER JOIN [adm].[DOMFIC] b ON a.EXAFICEST = b.DOMFICCOD
-                LEFT OUTER JOIN [adm].[DOMFIC] c ON a.EXAFICTEC = c.DOMFICCOD
-                LEFT OUTER JOIN [comet].[competitions] d ON a.EXAFICCOC = d.competitionFifaId
-                LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
-                LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
-                LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
-                LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
+                    FROM [exa].[EXAFIC] a
+                    LEFT OUTER JOIN [adm].[DOMFIC] b ON a.EXAFICEST = b.DOMFICCOD
+                    LEFT OUTER JOIN [adm].[DOMFIC] c ON a.EXAFICTEC = c.DOMFICCOD
+                    LEFT OUTER JOIN [comet].[competitions] d ON a.EXAFICCOC = d.competitionFifaId
+                    LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
+                    LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
+                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
+                    LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
 
-                WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ?
+                    WHERE a.EXAFICENC = ? AND a.EXAFICENC = ?
 
-                ORDER BY a.EXAFICENC ASC, a.EXAFICPEC ASC";
+                    ORDER BY a.EXAFICENC ASC, a.EXAFICPEC ASC";
+            } else {
+                $sql00  = "SELECT
+                    a.EXAFICCOD                         AS          examen_codigo,
+                    a.EXAFICFE1                         AS          examen_fecha_1,
+                    a.EXAFICFE2                         AS          examen_fecha_2,
+                    a.EXAFICFE3                         AS          examen_fecha_3,
+                    a.EXAFICACA                         AS          examen_cantidad_adulto,
+                    a.EXAFICMCA                         AS          examen_cantidad_menor,
+                    a.EXAFICJCO                         AS          examen_persona_convocado,
+                    a.EXAFICJPO                         AS          examen_persona_posicion,
+                    a.EXAFICJCA                         AS          examen_persona_camiseta,
+                    a.EXAFICLNO                         AS          examen_laboratorio_nombre,
+                    a.EXAFICLFE                         AS          examen_laboratorio_fecha_envio,
+                    a.EXAFICLFR                         AS          examen_laboratorio_fecha_recepcion,
+                    a.EXAFICLFA                         AS          examen_laboratorio_fecha_aislamiento,
+                    a.EXAFICLFF                         AS          examen_laboratorio_fecha_finaliza,
+                    a.EXAFICLRE                         AS          examen_laboratorio_resultado,
+                    a.EXAFICLIC                         AS          examen_laboratorio_cuarentena,
+                    a.EXAFICLNT                         AS          examen_laboratorio_test,
+                    a.EXAFICLAD                         AS          examen_laboratorio_adjunto,
+                    a.EXAFICLOB                         AS          examen_laboratorio_observacion,
+                    a.EXAFICOBS                         AS          examen_observacion,
+                    
+                    a.EXAFICAUS                         AS          auditoria_usuario,
+                    a.EXAFICAFH                         AS          auditoria_fecha_hora,
+                    a.EXAFICAIP                         AS          auditoria_ip,
+
+                    b.DOMFICCOD                         AS          tipo_estado_codigo,
+                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+
+                    c.DOMFICCOD                         AS          tipo_examen_codigo,
+                    c.DOMFICNOI                         AS          tipo_examen_nombre_ingles,
+                    c.DOMFICNOC                         AS          tipo_examen_nombre_castellano,
+                    c.DOMFICNOP                         AS          tipo_examen_nombre_portugues,
+
+                    d.competitionFifaId                 AS          competicion_codigo,
+                    d.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                    d.status                            AS          competicion_estado,
+                    d.internationalName                 AS          competicion_nombre,
+                    d.internationalShortName            AS          competicion_nombre_corto,
+                    d.season                            AS          competicion_anho,
+
+                    e.JUEGO_CODIGO                      AS          encuentro_codigo,
+                    e.EQUIPO_LOCAL_CODIGO               AS          encuentro_local_codigo,
+                    e.EQUIPO_LOCAL_NOMBRE               AS          encuentro_local_equipo,
+                    e.EQUIPO_VISITANTE_CODIGO           AS          encuentro_visitante_codigo,
+                    e.EQUIPO_VISITANTE_NOMBRE           AS          encuentro_visitante_equipo,
+
+                    f.teamFifaId                        AS          equipo_codigo,
+                    f.internationalName                 AS          equipo_nombre,
+
+                    g.personFifaId                      AS          persona_codigo,
+                    g.internationalFirstName            AS          persona_nombre,
+                    g.internationalLastName             AS          persona_apellido,
+
+                    h.EXAFICCOD                         AS          examen_anterior_codigo,
+                    h.EXAFICFE1                         AS          examen_anterior_fecha_1,
+                    h.EXAFICFE2                         AS          examen_anterior_fecha_2,
+                    h.EXAFICFE3                         AS          examen_anterior_fecha_3,
+                    h.EXAFICACA                         AS          examen_anterior_cantidad_adulto,
+                    h.EXAFICMCA                         AS          examen_anterior_cantidad_menor,
+                    h.EXAFICJCO                         AS          examen_anterior_persona_convocado,
+                    h.EXAFICJPO                         AS          examen_anterior_persona_posicion,
+                    h.EXAFICJCA                         AS          examen_anterior_persona_camiseta,
+                    h.EXAFICLNO                         AS          examen_anterior_laboratorio_nombre,
+                    h.EXAFICLFE                         AS          examen_anterior_laboratorio_fecha_envio,
+                    h.EXAFICLFR                         AS          examen_anterior_laboratorio_fecha_recepcion,
+                    h.EXAFICLFA                         AS          examen_anterior_laboratorio_fecha_aislamiento,
+                    h.EXAFICLRE                         AS          examen_anterior_laboratorio_resultado,
+                    h.EXAFICLIC                         AS          examen_anterior_laboratorio_cuarentena,
+                    h.EXAFICLNT                         AS          examen_anterior_laboratorio_test,
+                    h.EXAFICLAD                         AS          examen_anterior_laboratorio_adjunto,
+                    h.EXAFICLOB                         AS          examen_anterior_laboratorio_observacion,
+                    h.EXAFICOBS                         AS          examen_anterior_observacion
+
+                    FROM [exa].[EXAFIC] a
+                    LEFT OUTER JOIN [adm].[DOMFIC] b ON a.EXAFICEST = b.DOMFICCOD
+                    LEFT OUTER JOIN [adm].[DOMFIC] c ON a.EXAFICTEC = c.DOMFICCOD
+                    LEFT OUTER JOIN [comet].[competitions] d ON a.EXAFICCOC = d.competitionFifaId
+                    LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
+                    LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
+                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
+                    LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
+
+                    WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ?
+
+                    ORDER BY a.EXAFICENC ASC, a.EXAFICPEC ASC";
+            }
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
