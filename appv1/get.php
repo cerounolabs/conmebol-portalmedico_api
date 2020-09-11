@@ -7282,7 +7282,7 @@
                     
                     WHERE a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?
         
-                    ORDER BY a.COMPETICION_PADRE_ID DESC";
+                    ORDER BY a.COMPETICION_PADRE_ID ASC, a.JUEGO_CODIGO ASC";
 
             } else {
                 $sql00  = "SELECT
@@ -7307,7 +7307,7 @@
                     
                     WHERE (a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?) AND (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?)
         
-                    ORDER BY a.COMPETICION_PADRE_ID DESC, a.JUEGO_HORARIO DESC, a.JUEGO_CODIGO DESC";
+                    ORDER BY a.COMPETICION_PADRE_ID ASC, a.JUEGO_HORARIO ASC, a.JUEGO_CODIGO ASC";
             }
 
             try {
