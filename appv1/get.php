@@ -8423,7 +8423,7 @@
 
         if (isset($val01)) {
             if ($val01 == 39393) {
-                $val02  = $val01;
+                $val01  = $val02;
                 $sql00  = "SELECT
                     a.EXAFICCOD                         AS          examen_codigo,
                     a.EXAFICFE1                         AS          examen_fecha_1,
