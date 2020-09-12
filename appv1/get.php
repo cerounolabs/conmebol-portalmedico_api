@@ -7282,7 +7282,7 @@
                     
                     WHERE a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?
         
-                    ORDER BY a.COMPETICION_PADRE_ID ASC, a.JUEGO_CODIGO ASC";
+                    ORDER BY a.COMPETICION_PADRE_ID ASC, a.JUEGO_HORARIO ASC, a.JUEGO_CODIGO ASC";
 
             } else {
                 $sql00  = "SELECT
@@ -7321,6 +7321,7 @@
                 }
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $juego_horario  = '';
                     $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
                     $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
 
