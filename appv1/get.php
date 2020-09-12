@@ -7322,8 +7322,14 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $juego_horario  = '';
-                    $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
-                    $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
+
+                    if($rowMSSQL['juego_horario'] == NULL || $rowMSSQL['juego_horario'] == ''){
+                        $juego_horario  = '';
+                        $juego_cierra   = '';
+                    } else {
+                        $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
+                        $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
+                    }
 
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
