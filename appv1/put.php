@@ -324,7 +324,7 @@
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val00)) {
-            $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICOBS = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
+            $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICFE3 = GETDATE(), EXAFICOBS = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
