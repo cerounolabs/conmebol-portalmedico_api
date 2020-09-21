@@ -631,7 +631,7 @@
                 $row_mssql00= $stmtMSSQL00->fetch(PDO::FETCH_ASSOC);
                 $codAux     = $row_mssql00['examen_codigo'];
 
-                if (empty($codAux)){
+//                if (empty($codAux)){
                     $stmtMSSQL01= $connMSSQL->prepare($sql01);
                     $stmtMSSQL01->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $val16, $aud01, $aud03]); 
                     
@@ -650,14 +650,14 @@
                     $stmtMSSQL00 = null;
                     $stmtMSSQL01 = null;
                     $stmtMSSQL02 = null;
-                } else {
-                    header("Content-Type: application/json; charset=utf-8");
-                    $json       = json_encode(array('code' => 201, 'status' => 'error', 'message' => 'ERROR Ya existe el registro, favor verificar', 'codigo' => $val06), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-    
-                    $stmtMSSQL00->closeCursor();
-    
-                    $stmtMSSQL00 = null;
-                }
+//                } else {
+//                    header("Content-Type: application/json; charset=utf-8");
+//                    $json       = json_encode(array('code' => 201, 'status' => 'error', 'message' => 'ERROR Ya existe el registro, favor verificar', 'codigo' => $val06), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+//    
+//                    $stmtMSSQL00->closeCursor();
+//    
+//                    $stmtMSSQL00 = null;
+//                }
             } catch (PDOException $e) {
                 header("Content-Type: application/json; charset=utf-8");
                 $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
