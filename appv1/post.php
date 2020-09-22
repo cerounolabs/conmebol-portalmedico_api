@@ -652,7 +652,7 @@
                     $stmtMSSQL02 = null;
                 } else {
                     header("Content-Type: application/json; charset=utf-8");
-                    $json       = json_encode(array('code' => 201, 'status' => 'error', 'message' => 'ERROR Ya existe el registro, favor verificar', 'codigo' => $val06), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                    $json       = json_encode(array('code' => 204, 'status' => 'error', 'message' => 'ERROR Ya existe el registro, favor verificar', 'codigo' => $val06), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
     
                     $stmtMSSQL00->closeCursor();
     
