@@ -8747,7 +8747,7 @@
                         'equipo_codigo'                                 => $rowMSSQL['equipo_codigo'],
                         'equipo_nombre'                                 => trim(strtoupper(strtolower($rowMSSQL['equipo_nombre']))),
 
-                        'persona_codigo'                                => $rowMSSQL['jugador_codigo'],
+                        'persona_codigo'                                => $rowMSSQL['persona_codigo'],
                         'persona_nombre'                                => trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))),
 
                         'examen_anterior_codigo'                        => $rowMSSQL['examen_anterior_codigo'],
