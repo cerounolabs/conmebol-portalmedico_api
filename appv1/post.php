@@ -622,6 +622,7 @@
             $sql00  = "SELECT EXAFICCOD AS examen_codigo FROM exa.EXAFIC a WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICPEC = ? AND a.EXAFICEST <>  211 AND a.EXAFICTEC = ? AND EXAFICAEC = ?";
             $sql01  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICPEC, EXAFICAEC, EXAFICFE1, EXAFICACA, EXAFICMCA, EXAFICJCO, EXAFICJPO, EXAFICJCA, EXAFICLNO, EXAFICLFE, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql02  = "SELECT MAX(EXAFICCOD) AS examen_codigo FROM [exa].[EXAFIC]";
+            $sql03  = "UPDATE [exa].[EXAFIC] SET EXAFICBAN = 'S' WHERE EXAFICCOD = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
@@ -640,6 +641,11 @@
                     $row_mssql02= $stmtMSSQL02->fetch(PDO::FETCH_ASSOC);
                     $codigo     = $row_mssql02['examen_codigo'];
 
+                    if ($val07 != 0){
+                        $stmtMSSQL03= $connMSSQL->prepare($sql03);
+                        $stmtMSSQL03->execute([$val07]);
+                    }
+
                     header("Content-Type: application/json; charset=utf-8");
                     $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
     
@@ -650,6 +656,11 @@
                     $stmtMSSQL00 = null;
                     $stmtMSSQL01 = null;
                     $stmtMSSQL02 = null;
+
+                    if ($val07 != 0){
+                        $stmtMSSQL02->closeCursor();
+                        $stmtMSSQL02 = null;
+                    }
                 } else {
                     header("Content-Type: application/json; charset=utf-8");
                     $json       = json_encode(array('code' => 204, 'status' => 'error', 'message' => 'ERROR Ya existe el registro, favor verificar', 'codigo' => $val06), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
