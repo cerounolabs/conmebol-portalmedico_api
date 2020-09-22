@@ -8451,6 +8451,7 @@
                     a.EXAFICLNT                         AS          examen_laboratorio_test,
                     a.EXAFICLAD                         AS          examen_laboratorio_adjunto,
                     a.EXAFICLOB                         AS          examen_laboratorio_observacion,
+                    a.EXAFICBAN                         AS          examen_bandera,
                     a.EXAFICOBS                         AS          examen_observacion,
                     
                     a.EXAFICAUS                         AS          auditoria_usuario,
@@ -8540,6 +8541,7 @@
                     a.EXAFICLNT                         AS          examen_laboratorio_test,
                     a.EXAFICLAD                         AS          examen_laboratorio_adjunto,
                     a.EXAFICLOB                         AS          examen_laboratorio_observacion,
+                    a.EXAFICBAN                         AS          examen_bandera,
                     a.EXAFICOBS                         AS          examen_observacion,
                     
                     a.EXAFICAUS                         AS          auditoria_usuario,
@@ -8720,6 +8722,7 @@
                         'examen_laboratorio_test'                       => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_test']))),
                         'examen_laboratorio_adjunto'                    => trim(strtolower($rowMSSQL['examen_laboratorio_adjunto'])),
                         'examen_laboratorio_observacion'                => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_observacion']))),
+                        'examen_bandera'                                => trim(strtoupper(strtolower($rowMSSQL['examen_bandera']))),
                         'examen_observacion'                            => trim(strtoupper(strtolower($rowMSSQL['examen_observacion']))),
 
                         'tipo_estado_codigo'                            => $rowMSSQL['tipo_estado_codigo'],
@@ -8802,6 +8805,7 @@
                         'examen_laboratorio_test'                       => '',
                         'examen_laboratorio_adjunto'                    => '',
                         'examen_laboratorio_observacion'                => '',
+                        'examen_bandera'                                => '',
                         'examen_observacion'                            => '',
 
                         'tipo_estado_codigo'                            => '',
