@@ -619,7 +619,7 @@
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
-            $sql00  = "SELECT EXAFICCOD AS examen_codigo FROM exa.EXAFIC a WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICPEC = ? AND a.EXAFICEST <>  211 AND a.EXAFICTEC = ?";
+            $sql00  = "SELECT EXAFICCOD AS examen_codigo FROM exa.EXAFIC a WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICPEC = ? AND a.EXAFICEST <>  211 AND a.EXAFICTEC = ? AND EXAFICAEC = ?";
             $sql01  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICPEC, EXAFICAEC, EXAFICFE1, EXAFICACA, EXAFICMCA, EXAFICJCO, EXAFICJPO, EXAFICJCA, EXAFICLNO, EXAFICLFE, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql02  = "SELECT MAX(EXAFICCOD) AS examen_codigo FROM [exa].[EXAFIC]";
 
@@ -627,7 +627,7 @@
                 $connMSSQL  = getConnectionMSSQLv1();
 
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
-                $stmtMSSQL00->execute([$val03, $val04, $val05, $val06, $val02]);
+                $stmtMSSQL00->execute([$val03, $val04, $val05, $val06, $val02, $val07]);
                 $row_mssql00= $stmtMSSQL00->fetch(PDO::FETCH_ASSOC);
                 $codAux     = $row_mssql00['examen_codigo'];
 
