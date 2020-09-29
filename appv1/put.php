@@ -276,35 +276,45 @@
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
-        if (isset($val00)) {
-            if ($val03 == 'SI'){
-                $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLIC = ?, EXAFICLNT = ?, EXAFICLFA = ?, EXAFICLFF = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
-            } else {
-                $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
-            }
+        $pos01      = strpos($val04, '_');
+        $res01      = substr($val04, ($pos01+1));
+        $pos02      = strpos($res01, '.');
+        $res02      = substr($res01, 0, ($pos02));
 
-            try {
-                $connMSSQL  = getConnectionMSSQLv1();
-                $stmtMSSQL  = $connMSSQL->prepare($sql00);
-
+        if ($val00 == $res02) {
+            if (isset($val00)) {
                 if ($val03 == 'SI'){
-                    $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $aud01, $aud03, $val00]);
+                    $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLIC = ?, EXAFICLNT = ?, EXAFICLFA = ?, EXAFICLFF = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
                 } else {
-                    $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val09, $aud01, $aud03, $val00]);
+                    $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
                 }
 
-                header("Content-Type: application/json; charset=utf-8");
-                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                try {
+                    $connMSSQL  = getConnectionMSSQLv1();
+                    $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
-            } catch (PDOException $e) {
+                    if ($val03 == 'SI'){
+                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $aud01, $aud03, $val00]);
+                    } else {
+                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val09, $aud01, $aud03, $val00]);
+                    }
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                    $stmtMSSQL->closeCursor();
+                    $stmtMSSQL = null;
+                } catch (PDOException $e) {
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+            } else {
                 header("Content-Type: application/json; charset=utf-8");
-                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
             }
         } else {
             header("Content-Type: application/json; charset=utf-8");
-            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, el archivo adjunto tuvo inconveniente.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
         }
 
         $connMSSQL  = null;
