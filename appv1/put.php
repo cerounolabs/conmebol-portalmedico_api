@@ -281,7 +281,7 @@
         $pos02      = strpos($res01, '.');
         $res02      = substr($res01, 0, ($pos02));
 
-        if ($val00 == $res02) {
+//        if ($val00 == $res02) {
             if (isset($val00)) {
                 if ($val03 == 'SI'){
                     $sql00  = "UPDATE [exa].[EXAFIC] SET EXAFICEST = ?, EXAFICLFR = ?, EXAFICLRE = ?, EXAFICLAD = ?, EXAFICLIC = ?, EXAFICLNT = ?, EXAFICLFA = ?, EXAFICLFF = ?, EXAFICLOB = ?, EXAFICAUS = ?, EXAFICAFH = GETDATE(), EXAFICAIP = ? WHERE EXAFICCOD = ?";
@@ -312,10 +312,10 @@
                 header("Content-Type: application/json; charset=utf-8");
                 $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
             }
-        } else {
-            header("Content-Type: application/json; charset=utf-8");
-            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, el archivo adjunto tuvo inconveniente.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-        }
+//        } else {
+//            header("Content-Type: application/json; charset=utf-8");
+//            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, el archivo adjunto tuvo inconveniente.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+//        }
 
         $connMSSQL  = null;
         
