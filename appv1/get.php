@@ -7675,7 +7675,7 @@
                         LEFT OUTER JOIN [comet].[persons] c ON b.personFifaId = c.personFifaId
                         LEFT OUTER JOIN [adm].[DOMFIC] d ON c.documentType = d.DOMFICCOD
                         
-                        WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
+                        WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICEQC = a.teamFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
 
                         ORDER BY c.personFifaId";
                 }
@@ -7706,7 +7706,7 @@
                     INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
                     LEFT OUTER JOIN [adm].[DOMFIC] c ON b.documentType = c.DOMFICCOD
                     
-                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = a.playerFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
+                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = a.playerFifaId AND c.EXAFICEQC = a.teamFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
 
                     ORDER BY b.playerPosition, a.shirtNumber";
             }
