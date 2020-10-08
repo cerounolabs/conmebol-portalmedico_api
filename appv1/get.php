@@ -7675,7 +7675,7 @@
                         LEFT OUTER JOIN [comet].[persons] c ON b.personFifaId = c.personFifaId
                         LEFT OUTER JOIN [adm].[DOMFIC] d ON c.documentType = d.DOMFICCOD
                         
-                        WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICEQC = a.teamFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
+                        WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
 
                         ORDER BY c.personFifaId";
                 }
