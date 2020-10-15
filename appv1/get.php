@@ -8036,7 +8036,7 @@
 
                 CASE 
                     WHEN a.EXAFICLRE IS NULL THEN ''
-                    ELSE 'http://portalmedico.conmebol.com/imagen/examencovid19/' + a.EXAFICLAD
+                    ELSE 'http://portalmedico.conmebol.com/' + a.EXAFICLAD
                 END AS LABORATORIO_ADJUNTO
 
                 FROM exa.EXAFIC a 
