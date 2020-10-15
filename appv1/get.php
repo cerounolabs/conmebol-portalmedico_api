@@ -7992,6 +7992,165 @@
         return $json;
     });
 
+    $app->get('/v1/200/competicion/examen/{competicion}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('competicion');
+
+        if (isset($val01)) {
+            $sql00  = "SELECT
+                a.EXAFICCOD                 AS TEST_CODIGO,
+                a.EXAFICEST                 AS ESTADO_CODIGO,
+                b.DOMFICNOC                 AS ESTADO_NOMBRE,
+                a.EXAFICEQC                 AS EQUIPO_CODIGO,
+
+                CASE 
+                    WHEN a.EXAFICEQC = 39393 THEN 'CONMEBOL'
+                    WHEN a.EXAFICEQC <> 39393 THEN e.internationalName
+                END AS EQUIPO_NOMBRE,
+
+                c.EQUIPO_LOCAL_CODIGO,
+                c.EQUIPO_LOCAL_NOMBRE,
+                c.EQUIPO_VISITANTE_CODIGO,
+                c.EQUIPO_VISITANTE_NOMBRE,
+
+                d.personFifaId              AS PERSONA_CODIGO,
+                d.internationalFirstName    AS PERSONA_NOMBRE,
+                d.internationalLastName     AS PERSONA_APELLIDO,
+
+                a.EXAFICFE1                 AS TEST_FECHA,
+                a.EXAFICJCO                 AS PERSONA_CONVOCADO,
+                a.EXAFICJPO                 AS PERSONA_POSICION_CARGO,
+                a.EXAFICJCA                 AS PERSONA_CAMISETA_DOCUMENTO,
+                a.EXAFICLNO                 AS LABORATORIO_NOMBRE,
+                a.EXAFICLFE                 AS LABORATORIO_FECHA_ENVIO,
+                a.EXAFICLFR                 AS LABORATORIO_FECHA_RECIBIDO,
+
+                CASE 
+                    WHEN a.EXAFICLRE IS NULL THEN 'PENDIENTE'
+                    WHEN a.EXAFICLRE = 'NO' THEN 'NEGATIVO'
+                    WHEN a.EXAFICLRE = 'SI' THEN 'POSITIVO'
+                END AS LABORATORIO_RESULTADO,
+
+                a.EXAFICLIC                 AS LABORATORIO_CUARENTENA,
+
+                CASE 
+                    WHEN a.EXAFICLRE IS NULL THEN ''
+                    ELSE 'http://portalmedico.conmebol.com/imagen/examencovid19/' + a.EXAFICLAD
+                END AS LABORATORIO_RESULTADO
+
+                FROM exa.EXAFIC a 
+                
+                LEFT OUTER JOIN adm.DOMFIC b ON a.EXAFICEST = b.DOMFICCOD
+                LEFT OUTER JOIN [view].juego c ON (a.EXAFICCOC = c.COMPETICION_ID OR a.EXAFICCOC = c.COMPETICION_PADRE_ID) AND a.EXAFICENC = c.JUEGO_CODIGO
+                LEFT OUTER JOIN comet.persons d ON a.EXAFICPEC = d.personFifaId
+                LEFT OUTER JOIN comet.teams e ON a.EXAFICEQC = e.teamfifaid
+
+                WHERE a.EXAFICCOC = ?
+
+                ORDER BY a.EXAFICCOD ASC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]);
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['TEST_FECHA'] == NULL) {
+                        $TEST_FECHA = '';
+                    } else {
+                        $TEST_FECHA = date('d/m/Y', strtotime($rowMSSQL['TEST_FECHA']));
+                    }
+
+                    if ($rowMSSQL['LABORATORIO_FECHA_ENVIO'] == NULL) {
+                        $LABORATORIO_FECHA_ENVIO = '';
+                    } else {
+                        $LABORATORIO_FECHA_ENVIO = date('d/m/Y', strtotime($rowMSSQL['LABORATORIO_FECHA_ENVIO']));
+                    }
+
+                    if ($rowMSSQL['LABORATORIO_FECHA_RECIBIDO'] == NULL) {
+                        $LABORATORIO_FECHA_RECIBIDO = '';
+                    } else {
+                        $LABORATORIO_FECHA_RECIBIDO = date('d/m/Y', strtotime($rowMSSQL['LABORATORIO_FECHA_RECIBIDO']));
+                    }
+
+                    $detalle    = array(
+                        'TEST_CODIGO'                                   => $rowMSSQL['TEST_CODIGO'],
+                        'ESTADO_CODIGO'                                 => $rowMSSQL['ESTADO_CODIGO'],
+                        'ESTADO_NOMBRE'                                 => trim(strtoupper(strtolower($rowMSSQL['ESTADO_NOMBRE']))),
+                        'EQUIPO_CODIGO'                                 => $rowMSSQL['EQUIPO_CODIGO'],
+                        'EQUIPO_NOMBRE'                                 => trim(strtoupper(strtolower($rowMSSQL['EQUIPO_NOMBRE']))),
+                        'EQUIPO_LOCAL_CODIGO'                           => $rowMSSQL['EQUIPO_LOCAL_CODIGO'],
+                        'EQUIPO_LOCAL_NOMBRE'                           => trim(strtoupper(strtolower($rowMSSQL['EQUIPO_LOCAL_NOMBRE']))),
+                        'EQUIPO_VISITANTE_CODIGO'                       => $rowMSSQL['EQUIPO_VISITANTE_CODIGO'],
+                        'EQUIPO_VISITANTE_NOMBRE'                       => trim(strtoupper(strtolower($rowMSSQL['EQUIPO_VISITANTE_NOMBRE']))),
+                        'PERSONA_CODIGO'                                => $rowMSSQL['PERSONA_CODIGO'],
+                        'PERSONA_NOMBRE'                                => trim(strtoupper(strtolower($rowMSSQL['PERSONA_NOMBRE']))),
+                        'PERSONA_APELLIDO'                              => trim(strtoupper(strtolower($rowMSSQL['PERSONA_APELLIDO']))),
+                        'TEST_FECHA'                                    => $TEST_FECHA,
+                        'PERSONA_CONVOCADO'                             => trim(strtoupper(strtolower($rowMSSQL['PERSONA_CONVOCADO']))),
+                        'PERSONA_POSICION_CARGO'                        => trim(strtoupper(strtolower($rowMSSQL['PERSONA_POSICION_CARGO']))),
+                        'PERSONA_CAMISETA_DOCUMENTO'                    => trim(strtoupper(strtolower($rowMSSQL['PERSONA_CAMISETA_DOCUMENTO']))),
+                        'LABORATORIO_NOMBRE'                            => trim(strtoupper(strtolower($rowMSSQL['LABORATORIO_NOMBRE']))),
+                        'LABORATORIO_FECHA_ENVIO'                       => $LABORATORIO_FECHA_ENVIO,
+                        'LABORATORIO_FECHA_RECIBIDO'                    => $LABORATORIO_FECHA_RECIBIDO,
+                        'LABORATORIO_RESULTADO'                         => trim(strtoupper(strtolower($rowMSSQL['LABORATORIO_RESULTADO']))),
+                        'LABORATORIO_CUARENTENA'                        => trim(strtoupper(strtolower($rowMSSQL['LABORATORIO_CUARENTENA']))),
+                        'LABORATORIO_RESULTADO'                         => trim((strtolower($rowMSSQL['LABORATORIO_RESULTADO'])))
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'TEST_CODIGO'                                   => '',
+                        'ESTADO_CODIGO'                                 => '',
+                        'ESTADO_NOMBRE'                                 => '',
+                        'EQUIPO_CODIGO'                                 => '',
+                        'EQUIPO_NOMBRE'                                 => '',
+                        'EQUIPO_LOCAL_CODIGO'                           => '',
+                        'EQUIPO_LOCAL_NOMBRE'                           => '',
+                        'EQUIPO_VISITANTE_CODIGO'                       => '',
+                        'EQUIPO_VISITANTE_NOMBRE'                       => '',
+                        'PERSONA_CODIGO'                                => '',
+                        'PERSONA_NOMBRE'                                => '',
+                        'PERSONA_APELLIDO'                              => '',
+                        'TEST_FECHA'                                    => '',
+                        'PERSONA_CONVOCADO'                             => '',
+                        'PERSONA_POSICION_CARGO'                        => '',
+                        'PERSONA_CAMISETA_DOCUMENTO'                    => '',
+                        'LABORATORIO_NOMBRE'                            => '',
+                        'LABORATORIO_FECHA_ENVIO'                       => '',
+                        'LABORATORIO_FECHA_RECIBIDO'                    => '',
+                        'LABORATORIO_RESULTADO'                         => '',
+                        'LABORATORIO_CUARENTENA'                        => '',
+                        'LABORATORIO_RESULTADO'                         => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->get('/v1/400/medico/usuario', function($request) {
         require __DIR__.'/../src/connect.php';
 
