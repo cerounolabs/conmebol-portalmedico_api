@@ -8051,7 +8051,7 @@
                 LEFT OUTER JOIN comet.teams e ON a.EXAFICEQC = e.teamfifaid
                 LEFT OUTER JOIN adm.DOMFIC f ON a.EXAFICTEC = f.DOMFICCOD
 
-                WHERE (c.COMPETICION_ID = ? OR c.COMPETICION_PADRE_ID = ?) AND a.EXAFICTEC ?
+                WHERE (c.COMPETICION_ID = ? OR c.COMPETICION_PADRE_ID = ?) AND a.EXAFICTEC = ?
 
                 ORDER BY a.EXAFICCOD ASC";
 
