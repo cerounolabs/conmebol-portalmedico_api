@@ -8037,7 +8037,7 @@
                 CASE 
                     WHEN a.EXAFICLRE IS NULL THEN ''
                     ELSE 'http://portalmedico.conmebol.com/imagen/examencovid19/' + a.EXAFICLAD
-                END AS LABORATORIO_RESULTADO
+                END AS LABORATORIO_ADJUNTO
 
                 FROM exa.EXAFIC a 
                 
@@ -8096,7 +8096,7 @@
                         'LABORATORIO_FECHA_RECIBIDO'                    => $LABORATORIO_FECHA_RECIBIDO,
                         'LABORATORIO_RESULTADO'                         => trim(strtoupper(strtolower($rowMSSQL['LABORATORIO_RESULTADO']))),
                         'LABORATORIO_CUARENTENA'                        => trim(strtoupper(strtolower($rowMSSQL['LABORATORIO_CUARENTENA']))),
-                        'LABORATORIO_RESULTADO'                         => trim((strtolower($rowMSSQL['LABORATORIO_RESULTADO'])))
+                        'LABORATORIO_ADJUNTO'                           => trim((strtolower($rowMSSQL['LABORATORIO_ADJUNTO'])))
                     );
 
                     $result[]   = $detalle;
