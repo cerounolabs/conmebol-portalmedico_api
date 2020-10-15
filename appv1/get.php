@@ -7992,12 +7992,13 @@
         return $json;
     });
 
-    $app->get('/v1/200/competicion/examen/{competicion}', function($request) {
+    $app->get('/v1/200/competicion/examen/{competicion}/{examen}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('competicion');
+        $val02      = $request->getAttribute('examen');
 
-        if (isset($val01)) {
+        if (isset($val01) && isset($val02)) {
             $sql00  = "SELECT
                 a.EXAFICCOD                 AS TEST_CODIGO,
                 b.DOMFICCOD                 AS TIPO_ESTADO_CODIGO,
@@ -8050,14 +8051,14 @@
                 LEFT OUTER JOIN comet.teams e ON a.EXAFICEQC = e.teamfifaid
                 LEFT OUTER JOIN adm.DOMFIC f ON a.EXAFICTEC = f.DOMFICCOD
 
-                WHERE (c.COMPETICION_ID = ? OR c.COMPETICION_PADRE_ID = ?)
+                WHERE (c.COMPETICION_ID = ? OR c.COMPETICION_PADRE_ID = ?) AND a.EXAFICTEC ?
 
                 ORDER BY a.EXAFICCOD ASC";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val01]);
+                $stmtMSSQL->execute([$val01, $val01, $val02]);
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     if ($rowMSSQL['TEST_FECHA'] == NULL) {
