@@ -8004,6 +8004,7 @@
                 b.DOMFICNOC                 AS TIPO_ESTADO_NOMBRE,
                 f.DOMFICCOD                 AS TIPO_EXAMEN_CODIGO,
                 f.DOMFICNOC                 AS TIPO_EXAMEN_NOMBRE,
+                c.JUEGO_CODIGO,
                 a.EXAFICEQC                 AS EQUIPO_CODIGO,
 
                 CASE 
@@ -8084,18 +8085,22 @@
                         'TIPO_ESTADO_NOMBRE'                            => trim(strtoupper(strtolower($rowMSSQL['TIPO_ESTADO_NOMBRE']))),
                         'TIPO_EXAMEN_CODIGO'                            => $rowMSSQL['TIPO_EXAMEN_CODIGO'],
                         'TIPO_EXAMEN_NOMBRE'                            => trim(strtoupper(strtolower($rowMSSQL['TIPO_EXAMEN_NOMBRE']))),
+
+                        'JUEGO_CODIGO'                                  => $rowMSSQL['JUEGO_CODIGO'],
                         'EQUIPO_CODIGO'                                 => $rowMSSQL['EQUIPO_CODIGO'],
                         'EQUIPO_NOMBRE'                                 => trim(strtoupper(strtolower($rowMSSQL['EQUIPO_NOMBRE']))),
                         'EQUIPO_LOCAL_CODIGO'                           => $rowMSSQL['EQUIPO_LOCAL_CODIGO'],
                         'EQUIPO_LOCAL_NOMBRE'                           => trim(strtoupper(strtolower($rowMSSQL['EQUIPO_LOCAL_NOMBRE']))),
                         'EQUIPO_VISITANTE_CODIGO'                       => $rowMSSQL['EQUIPO_VISITANTE_CODIGO'],
                         'EQUIPO_VISITANTE_NOMBRE'                       => trim(strtoupper(strtolower($rowMSSQL['EQUIPO_VISITANTE_NOMBRE']))),
+
                         'PERSONA_CODIGO'                                => $rowMSSQL['PERSONA_CODIGO'],
                         'PERSONA_NOMBRE'                                => trim(strtoupper(strtolower($rowMSSQL['PERSONA_NOMBRE']))),
                         'PERSONA_APELLIDO'                              => trim(strtoupper(strtolower($rowMSSQL['PERSONA_APELLIDO']))),
                         'PERSONA_CONVOCADO'                             => trim(strtoupper(strtolower($rowMSSQL['PERSONA_CONVOCADO']))),
                         'PERSONA_POSICION_CARGO'                        => trim(strtoupper(strtolower($rowMSSQL['PERSONA_POSICION_CARGO']))),
                         'PERSONA_CAMISETA_DOCUMENTO'                    => trim(strtoupper(strtolower($rowMSSQL['PERSONA_CAMISETA_DOCUMENTO']))),
+
                         'LABORATORIO_NOMBRE'                            => trim(strtoupper(strtolower($rowMSSQL['LABORATORIO_NOMBRE']))),
                         'LABORATORIO_FECHA_ENVIO'                       => $LABORATORIO_FECHA_ENVIO,
                         'LABORATORIO_FECHA_RECIBIDO'                    => $LABORATORIO_FECHA_RECIBIDO,
@@ -8118,18 +8123,22 @@
                         'TIPO_ESTADO_NOMBRE'                            => '',
                         'TIPO_EXAMEN_CODIGO'                            => '',
                         'TIPO_EXAMEN_NOMBRE'                            => '',
+
+                        'JUEGO_CODIGO'                                  => '',
                         'EQUIPO_CODIGO'                                 => '',
                         'EQUIPO_NOMBRE'                                 => '',
                         'EQUIPO_LOCAL_CODIGO'                           => '',
                         'EQUIPO_LOCAL_NOMBRE'                           => '',
                         'EQUIPO_VISITANTE_CODIGO'                       => '',
                         'EQUIPO_VISITANTE_NOMBRE'                       => '',
+
                         'PERSONA_CODIGO'                                => '',
                         'PERSONA_NOMBRE'                                => '',
                         'PERSONA_APELLIDO'                              => '',
                         'PERSONA_CONVOCADO'                             => '',
                         'PERSONA_POSICION_CARGO'                        => '',
                         'PERSONA_CAMISETA_DOCUMENTO'                    => '',
+                        
                         'LABORATORIO_NOMBRE'                            => '',
                         'LABORATORIO_FECHA_ENVIO'                       => '',
                         'LABORATORIO_FECHA_RECIBIDO'                    => '',
