@@ -8050,12 +8050,14 @@
                 LEFT OUTER JOIN comet.teams e ON a.EXAFICEQC = e.teamfifaid
                 LEFT OUTER JOIN adm.DOMFIC f ON a.EXAFICTEC = f.DOMFICCOD
 
+                WHERE (c.COMPETICION_ID = ? OR c.COMPETICION_PADRE_ID = ?)
+
                 ORDER BY a.EXAFICCOD ASC";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute();
+                $stmtMSSQL->execute([$val01, $val01]);
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     if ($rowMSSQL['TEST_FECHA'] == NULL) {
