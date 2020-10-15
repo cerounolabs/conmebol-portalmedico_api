@@ -8000,8 +8000,10 @@
         if (isset($val01)) {
             $sql00  = "SELECT
                 a.EXAFICCOD                 AS TEST_CODIGO,
-                a.EXAFICEST                 AS ESTADO_CODIGO,
-                b.DOMFICNOC                 AS ESTADO_NOMBRE,
+                b.DOMFICCOD                 AS TIPO_ESTADO_CODIGO,
+                b.DOMFICNOC                 AS TIPO_ESTADO_NOMBRE,
+                f.DOMFICCOD                 AS TIPO_EXAMEN_CODIGO,
+                f.DOMFICNOC                 AS TIPO_EXAMEN_NOMBRE,
                 a.EXAFICEQC                 AS EQUIPO_CODIGO,
 
                 CASE 
@@ -8045,6 +8047,7 @@
                 LEFT OUTER JOIN [view].juego c ON (a.EXAFICCOC = c.COMPETICION_ID OR a.EXAFICCOC = c.COMPETICION_PADRE_ID) AND a.EXAFICENC = c.JUEGO_CODIGO
                 LEFT OUTER JOIN comet.persons d ON a.EXAFICPEC = d.personFifaId
                 LEFT OUTER JOIN comet.teams e ON a.EXAFICEQC = e.teamfifaid
+                LEFT OUTER JOIN adm.DOMFIC f ON a.EXAFICTEC = f.DOMFICCOD
 
                 WHERE a.EXAFICCOC = ?
 
@@ -8076,8 +8079,11 @@
 
                     $detalle    = array(
                         'TEST_CODIGO'                                   => $rowMSSQL['TEST_CODIGO'],
-                        'ESTADO_CODIGO'                                 => $rowMSSQL['ESTADO_CODIGO'],
-                        'ESTADO_NOMBRE'                                 => trim(strtoupper(strtolower($rowMSSQL['ESTADO_NOMBRE']))),
+                        'TEST_FECHA'                                    => $TEST_FECHA,
+                        'TIPO_ESTADO_CODIGO'                            => $rowMSSQL['TIPO_ESTADO_CODIGO'],
+                        'TIPO_ESTADO_NOMBRE'                            => trim(strtoupper(strtolower($rowMSSQL['TIPO_ESTADO_NOMBRE']))),
+                        'TIPO_EXAMEN_CODIGO'                            => $rowMSSQL['TIPO_EXAMEN_CODIGO'],
+                        'TIPO_EXAMEN_NOMBRE'                            => trim(strtoupper(strtolower($rowMSSQL['TIPO_EXAMEN_NOMBRE']))),
                         'EQUIPO_CODIGO'                                 => $rowMSSQL['EQUIPO_CODIGO'],
                         'EQUIPO_NOMBRE'                                 => trim(strtoupper(strtolower($rowMSSQL['EQUIPO_NOMBRE']))),
                         'EQUIPO_LOCAL_CODIGO'                           => $rowMSSQL['EQUIPO_LOCAL_CODIGO'],
@@ -8087,7 +8093,6 @@
                         'PERSONA_CODIGO'                                => $rowMSSQL['PERSONA_CODIGO'],
                         'PERSONA_NOMBRE'                                => trim(strtoupper(strtolower($rowMSSQL['PERSONA_NOMBRE']))),
                         'PERSONA_APELLIDO'                              => trim(strtoupper(strtolower($rowMSSQL['PERSONA_APELLIDO']))),
-                        'TEST_FECHA'                                    => $TEST_FECHA,
                         'PERSONA_CONVOCADO'                             => trim(strtoupper(strtolower($rowMSSQL['PERSONA_CONVOCADO']))),
                         'PERSONA_POSICION_CARGO'                        => trim(strtoupper(strtolower($rowMSSQL['PERSONA_POSICION_CARGO']))),
                         'PERSONA_CAMISETA_DOCUMENTO'                    => trim(strtoupper(strtolower($rowMSSQL['PERSONA_CAMISETA_DOCUMENTO']))),
@@ -8108,8 +8113,11 @@
                 } else {
                     $detalle = array(
                         'TEST_CODIGO'                                   => '',
-                        'ESTADO_CODIGO'                                 => '',
-                        'ESTADO_NOMBRE'                                 => '',
+                        'TEST_FECHA'                                    => '',
+                        'TIPO_ESTADO_CODIGO'                            => '',
+                        'TIPO_ESTADO_NOMBRE'                            => '',
+                        'TIPO_EXAMEN_CODIGO'                            => '',
+                        'TIPO_EXAMEN_NOMBRE'                            => '',
                         'EQUIPO_CODIGO'                                 => '',
                         'EQUIPO_NOMBRE'                                 => '',
                         'EQUIPO_LOCAL_CODIGO'                           => '',
@@ -8119,7 +8127,6 @@
                         'PERSONA_CODIGO'                                => '',
                         'PERSONA_NOMBRE'                                => '',
                         'PERSONA_APELLIDO'                              => '',
-                        'TEST_FECHA'                                    => '',
                         'PERSONA_CONVOCADO'                             => '',
                         'PERSONA_POSICION_CARGO'                        => '',
                         'PERSONA_CAMISETA_DOCUMENTO'                    => '',
