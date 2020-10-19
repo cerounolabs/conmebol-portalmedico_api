@@ -8022,7 +8022,7 @@
                 d.personFifaId              AS PERSONA_CODIGO,
                 d.internationalFirstName    AS PERSONA_NOMBRE,
                 d.internationalLastName     AS PERSONA_APELLIDO,
-                (SELECT g.playerType FROM comet.competitions_teams_players g where (g.competitionFifaId = c.COMPETICION_ID OR g.competitionFifaId = c.COMPETICION_PADRE_ID) and g.teamfifaid = a.EXAFICEQC and g.playerfifaid = a.EXAFICPEC) AS PERSONA_TIPO,
+                (SELECT g.playerType FROM comet.competitions_teams_players g where g.competitionFifaId = ? and g.teamfifaid = a.EXAFICEQC and g.playerfifaid = a.EXAFICPEC) AS PERSONA_TIPO,
 
                 a.EXAFICFE1                 AS TEST_FECHA,
                 a.EXAFICJCO                 AS PERSONA_CONVOCADO,
@@ -8060,7 +8060,7 @@
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val01, $val02, $val03]);
+                $stmtMSSQL->execute([$val01, $val01, $val01, $val02, $val03]);
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     if ($rowMSSQL['TEST_FECHA'] == NULL) {
