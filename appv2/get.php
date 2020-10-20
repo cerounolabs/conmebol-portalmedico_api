@@ -8701,3 +8701,185 @@
         
         return $json;
     });
+
+
+
+    $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('equipo');
+        $val02      = $request->getAttribute('competicion');
+        $val03      = $request->getAttribute('examen');
+        
+        if (isset($val01) && isset($val02) && isset($val03)) {
+            $sql00  = "";
+
+            if($val01 == 39393) {
+                $sql00  = "SELECT
+                    '1'                         AS     tipo_codigo,
+                    'TOTAL PERSONA'             AS     tipo_nombre,
+                    COUNT(*)                    AS     cantidad_persona
+                    
+                    FROM comet.competitions_teams_players a
+                    
+                    WHERE a.competitionFifaId = ?
+                    
+                    GROUP BY a.competitionFifaId";
+
+                $sql01  = "SELECT
+                    a.DOMFICCOD                  AS  tipo_codigo,
+                    a.DOMFICNOC                  AS  tipo_nombre,
+                    COUNT(*)                     AS  cantidad_persona
+                    
+                    FROM adm.DOMFIC a 
+                    LEFT OUTER JOIN exa.EXAFIC b ON a.DOMFICCOD = b.EXAFICEST 
+                    INNER JOIN comet.competitions c ON b.EXAFICCOC = c.competitionFifaId
+                    
+                    WHERE b.EXAFICTEC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO'
+                    AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)
+                    
+                    GROUP BY a.DOMFICCOD, a.DOMFICNOC";
+
+                $sql02 = "SELECT
+                    '2'                          AS     tipo_codigo,
+                    'PENDIENTE DE CARGA'         AS     tipo_nombre,
+                    COUNT(*)                     AS     cantidad_persona
+                    
+                    FROM comet.competitions_teams_players  a
+                    WHERE a.competitionFifaId = ? AND
+                    NOT EXISTS
+                        (SELECT * 
+                            FROM exa.EXAFIC b 
+                            INNER JOIN adm.DOMFIC c ON b.EXAFICEST = c.DOMFICCOD
+                            INNER JOIN comet.competitions d ON (b.EXAFICCOC = d.competitionFifaId OR b.EXAFICCOC = d.superiorCompetitionFifaId)
+                        
+                            WHERE c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICPEC = a.playerFifaId AND b.EXAFICTEC = ?
+                        )
+                    GROUP BY a.competitionFifaId";
+            } else {
+                $sql00  = "SELECT
+                    '1'                                          AS     tipo_codigo,
+                    'TOTAL PERSONA'                              AS     tipo_nombre,
+                    COUNT(*)                                     AS     cantidad_persona
+                    
+                    FROM comet.competitions_teams_players a
+                    
+                    WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
+                    GROUP BY a.competitionFifaId";
+
+                $sql01  = "SELECT
+                    a.DOMFICCOD                  AS  tipo_codigo,
+                    a.DOMFICNOC                  AS  tipo_nombre,
+                    COUNT(*)                     AS  cantidad_persona
+                    
+                    FROM adm.DOMFIC a 
+                    LEFT OUTER JOIN exa.EXAFIC b ON a.DOMFICCOD = b.EXAFICEST 
+                    INNER JOIN comet.competitions c ON b.EXAFICCOC = c.competitionFifaId
+                    
+                    WHERE b.EXAFICTEC = ? AND b.EXAFICEQC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO'
+                    AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)
+                    
+                    GROUP BY a.DOMFICCOD, a.DOMFICNOC";
+
+                $sql02 = "SELECT
+                    '2'                          AS     tipo_codigo,
+                    'PENDIENTE DE CARGA'         AS     tipo_nombre,
+                    COUNT(*)                     AS     cantidad_persona
+
+                    FROM comet.competitions_teams_players  a
+                    WHERE a.competitionFifaId = ?  AND a.teamFifaId = ? AND
+                    NOT EXISTS
+                        (SELECT * 
+                            FROM exa.EXAFIC b 
+                            INNER JOIN adm.DOMFIC c ON b.EXAFICEST = c.DOMFICCOD
+                            INNER JOIN comet.competitions d ON (b.EXAFICCOC = d.competitionFifaId OR b.EXAFICCOC = d.superiorCompetitionFifaId)
+                        
+                            WHERE c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICPEC = a.playerFifaId AND b.EXAFICTEC = ?
+                        )
+                    GROUP BY a.competitionFifaId";
+            }
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+                $stmtMSSQL02= $connMSSQL->prepare($sql02);
+
+                if ($val01 == 39393) {
+                    $stmtMSSQL00->execute([$val02]);
+                    $stmtMSSQL01->execute([$val03, $val02, $val02]);
+                    $stmtMSSQL02->execute([$val02, $val03]);
+                } else {
+                    $stmtMSSQL00->execute([$val02, $val01]);
+                    $stmtMSSQL01->execute([$val03, $val01, $val02, $val02]);
+                    $stmtMSSQL02->execute([$val02, $val01, $val03]);
+                }
+
+                while ($rowMSSQL = $stmtMSSQL00->fetch()) {
+                    $detalle    = array(
+                        'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
+                        'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
+                        'cantidad_persona'          => $rowMSSQL['cantidad_persona']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                while ($rowMSSQL = $stmtMSSQL01->fetch()) {
+                    $detalle    = array(
+                        'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
+                        'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
+                        'cantidad_persona'          => $rowMSSQL['cantidad_persona']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                while ($rowMSSQL = $stmtMSSQL02->fetch()) {
+                    $detalle    = array(
+                        'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
+                        'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
+                        'cantidad_persona'          => $rowMSSQL['cantidad_persona']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'tipo_codigo'               => '',
+                        'tipo_nombre'               => '',
+                        'cantidad_persona'          => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+                $stmtMSSQL02->closeCursor();
+                
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+                $stmtMSSQL02 = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+
+
+
