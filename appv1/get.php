@@ -6592,6 +6592,101 @@
         return $json;
     });
 
+    $app->get('/v1/200/persona', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $sql00  = "SELECT
+            a.personFifaId                  AS          persona_codigo,
+            c.playerType                    AS          persona_tipo,
+            a.internationalFirstName        AS          persona_nombre,
+            a.internationalLastName         AS          persona_apellido,
+            a.gender                        AS          persona_genero,
+            a.dateOfBirth                   AS          persona_fecha_nacimiento,
+            a.playerPosition                AS          persona_funcion,
+
+            b.DOMFICCOD                     AS          tipo_documento_codigo,
+            b.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+            b.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+            b.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+            a.documentNumber                AS          tipo_documento_numero
+            
+            FROM comet.persons a
+            INNER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
+            LEFT JOIN comet.competitions_teams_players c ON a.personFifaId = c.playerFifaId
+            
+            WHERE a.personFifaId < 100001
+            
+            ORDER BY a.documentNumber";
+
+        try {
+            $connMSSQL  = getConnectionMSSQLv1();
+            $stmtMSSQL  = $connMSSQL->prepare($sql00);
+            $stmtMSSQL->execute();
+
+            while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                if ($rowMSSQL['persona_fecha_nacimiento_1'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento_1'] == null){
+                    $persona_fecha_nacimiento_2 = '';
+                } else {
+                    $persona_fecha_nacimiento_2 = $rowMSSQL['persona_fecha_nacimiento_1'];
+                }
+
+                $detalle    = array(
+                    'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                    'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                    'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
+                    'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                    'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                    'persona_fecha_nacimiento_1'            => trim($rowMSSQL['persona_fecha_nacimiento_1']),
+                    'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
+                    'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+                    
+                    'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
+                    'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                    'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                    'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                    'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
+                );
+
+                $result[]   = $detalle;
+            }
+
+            if (isset($result)){
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } else {
+                $detalle = array(
+                    'persona_codigo'                        => '',
+                    'persona_tipo'                          => '',
+                    'persona_nombre'                        => '',
+                    'persona_apellido'                      => '',
+                    'persona_genero'                        => '',
+                    'persona_fecha_nacimiento_1'            => '',
+                    'persona_fecha_nacimiento_2'            => '',
+                    'persona_funcion'                       => '',
+                    
+                    'tipo_documento_codigo'                 => '',
+                    'tipo_documento_nombre_ingles'          => '',
+                    'tipo_documento_nombre_castellano'      => '',
+                    'tipo_documento_nombre_portugues'       => '',
+                    'tipo_documento_numero'                 => ''
+                );
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->get('/v1/200/competicion/listado/cabecera', function($request) {
         require __DIR__.'/../src/connect.php';
 
