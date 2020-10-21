@@ -6597,7 +6597,7 @@
 
         $sql00  = "SELECT
             a.personFifaId                  AS          persona_codigo,
-            c.playerType                    AS          persona_tipo,
+            a.personType                    AS          persona_tipo,
             a.internationalFirstName        AS          persona_nombre,
             a.internationalLastName         AS          persona_apellido,
             a.gender                        AS          persona_genero,
@@ -6612,7 +6612,6 @@
             
             FROM comet.persons a
             INNER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
-            LEFT JOIN comet.competitions_teams_players c ON a.personFifaId = c.playerFifaId
             
             WHERE a.personFifaId < 100001
             
