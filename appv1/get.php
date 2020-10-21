@@ -1766,7 +1766,7 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
-                    $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
+                    $juego_cierra   = date("d/m/Y", strtotime($rowMSSQL['juego_horario']));
 
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
@@ -6624,10 +6624,10 @@
             $stmtMSSQL->execute();
 
             while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                if ($rowMSSQL['persona_fecha_nacimiento_1'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento_1'] == null){
+                if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
                     $persona_fecha_nacimiento_2 = '';
                 } else {
-                    $persona_fecha_nacimiento_2 = $rowMSSQL['persona_fecha_nacimiento_1'];
+                    $persona_fecha_nacimiento_2 = $rowMSSQL['persona_fecha_nacimiento'];
                 }
 
                 $detalle    = array(
@@ -6636,7 +6636,7 @@
                     'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
                     'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
                     'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
-                    'persona_fecha_nacimiento_1'            => trim($rowMSSQL['persona_fecha_nacimiento_1']),
+                    'persona_fecha_nacimiento'            => trim($rowMSSQL['persona_fecha_nacimiento']),
                     'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
                     'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
                     
@@ -6660,7 +6660,7 @@
                     'persona_nombre'                        => '',
                     'persona_apellido'                      => '',
                     'persona_genero'                        => '',
-                    'persona_fecha_nacimiento_1'            => '',
+                    'persona_fecha_nacimiento'              => '',
                     'persona_fecha_nacimiento_2'            => '',
                     'persona_funcion'                       => '',
                     
