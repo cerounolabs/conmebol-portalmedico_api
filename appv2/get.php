@@ -6626,7 +6626,7 @@
                 if ($rowMSSQL['persona_fecha_nacimiento_1'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento_1'] == null){
                     $persona_fecha_nacimiento_2 = '';
                 } else {
-                    $persona_fecha_nacimiento_2 = $rowMSSQL['persona_fecha_nacimiento_1'];
+                    $persona_fecha_nacimiento_2 = $rowMSSQL['persona_fecha_nacimiento'];
                 }
 
                 $detalle    = array(
