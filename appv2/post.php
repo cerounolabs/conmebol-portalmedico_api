@@ -760,3 +760,66 @@
         
         return $json;
     });
+
+    $app->post('/v2/200/persona', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val00      = rand(2, 100000);
+        $val01      = $request->getParsedBody()['persona_tipo'];
+        $val02      = strtoupper(strtolower(trim($request->getParsedBody()['persona_nombre'])));
+        $val03      = strtoupper(strtolower(trim($request->getParsedBody()['persona_apellido'])));
+        $val04      = strtoupper(strtolower(trim($request->getParsedBody()['persona_genero'])));
+        $val05      = $request->getParsedBody()['persona_fecha_nacimiento'];
+        $val06      = strtoupper(strtolower(trim($request->getParsedBody()['persona_funcion'])));
+        $val07      = $request->getParsedBody()['tipo_documento_codigo'];
+        $val08      = strtoupper(strtolower(trim($request->getParsedBody()['tipo_documento_numero'])));
+
+        $aud01      = $request->getParsedBody()['auditoria_usuario'];
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = $request->getParsedBody()['auditoria_ip'];
+
+        if (isset($val00) && isset($val01) && isset($val02) && isset($val03) && isset($val07) && isset($val08)) {
+            $sql00  = "SELECT personFifaId AS codigo FROM [comet].[persons] WHERE personFifaId = ?";
+            $sql01  = "INSERT INTO [comet].[persons] (personFifaId, internationalFirstName, internationalLastName, firstName, lastName, dateOfBirth, gender, playerPosition, documentType, documentNumber, personType, lastUpdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE())";
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+            
+                $stmtMSSQL00->execute([$val00]); 
+                $row_mssql00= $stmtMSSQL00->fetch(PDO::FETCH_ASSOC);
+                $codigo     = $row_mssql00['codigo'];
+
+                while ($codigo != NULL){
+                    $val00      = rand(2, 100000);
+                    $stmtMSSQL00->execute([$val00]); 
+                    $row_mssql00= $stmtMSSQL00->fetch(PDO::FETCH_ASSOC);
+                    $codigo     = $row_mssql00['codigo'];
+                }
+
+                $stmtMSSQL01->execute([$val00, $val02, $val03, $val02, $val03, $val05, $val04, $val06, $val07, $val08, $val01]);
+                $codigo = $val00;
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
