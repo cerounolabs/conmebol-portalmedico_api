@@ -765,7 +765,7 @@
         require __DIR__.'/../src/connect.php';
 
         $val00      = rand(2, 100000);
-        $val01      = $request->getParsedBody()['persona_tipo'];
+        $val01      = strtoupper(strtolower(trim($request->getParsedBody()['persona_tipo'])));
         $val02      = strtoupper(strtolower(trim($request->getParsedBody()['persona_nombre'])));
         $val03      = strtoupper(strtolower(trim($request->getParsedBody()['persona_apellido'])));
         $val04      = strtoupper(strtolower(trim($request->getParsedBody()['persona_genero'])));
