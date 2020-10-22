@@ -154,7 +154,7 @@
             $sql00  = "DELETE FROM [comet].[persons] WHERE personFifaId = ?";
 
             try {
-                $connMSSQL  = getConnectionMSSQLv1();
+                $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val00]); 
                 
