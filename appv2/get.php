@@ -6627,8 +6627,8 @@
                     $persona_fecha_nacimiento_1 = '';
                     $persona_fecha_nacimiento_2 = '';
                 } else {
-                    $persona_fecha_nacimiento_1 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
-                    $persona_fecha_nacimiento_2 = $rowMSSQL['persona_fecha_nacimiento'];
+                    $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                    $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
                 }
 
                 $detalle    = array(
