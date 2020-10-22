@@ -6623,9 +6623,11 @@
             $stmtMSSQL->execute();
 
             while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                if ($rowMSSQL['persona_fecha_nacimiento_1'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento_1'] == null){
+                if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                    $persona_fecha_nacimiento_1 = '';
                     $persona_fecha_nacimiento_2 = '';
                 } else {
+                    $persona_fecha_nacimiento_1 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
                     $persona_fecha_nacimiento_2 = $rowMSSQL['persona_fecha_nacimiento'];
                 }
 
@@ -6635,7 +6637,7 @@
                     'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
                     'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
                     'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
-                    'persona_fecha_nacimiento_1'            => trim($rowMSSQL['persona_fecha_nacimiento_1']),
+                    'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
                     'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
                     'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
                     
@@ -8795,8 +8797,6 @@
         
         return $json;
     });
-
-
 
     $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}', function($request) {
         require __DIR__.'/../src/connect.php';
