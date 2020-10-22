@@ -6597,7 +6597,7 @@
 
         $sql00  = "SELECT
             a.personFifaId                  AS          persona_codigo,
-            c.playerType                    AS          persona_tipo,
+            a.personType                    AS          persona_tipo,
             a.internationalFirstName        AS          persona_nombre,
             a.internationalLastName         AS          persona_apellido,
             a.gender                        AS          persona_genero,
@@ -6612,7 +6612,6 @@
             
             FROM comet.persons a
             INNER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
-            LEFT JOIN comet.competitions_teams_players c ON a.personFifaId = c.playerFifaId
             
             WHERE a.personFifaId < 100001
             
@@ -6625,8 +6624,10 @@
 
             while ($rowMSSQL = $stmtMSSQL->fetch()) {
                 if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                    $persona_fecha_nacimiento_1 = '';
                     $persona_fecha_nacimiento_2 = '';
                 } else {
+                    $persona_fecha_nacimiento_1 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
                     $persona_fecha_nacimiento_2 = $rowMSSQL['persona_fecha_nacimiento'];
                 }
 
@@ -6636,7 +6637,7 @@
                     'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
                     'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
                     'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
-                    'persona_fecha_nacimiento'            => trim($rowMSSQL['persona_fecha_nacimiento']),
+                    'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
                     'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
                     'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
                     
@@ -6660,7 +6661,7 @@
                     'persona_nombre'                        => '',
                     'persona_apellido'                      => '',
                     'persona_genero'                        => '',
-                    'persona_fecha_nacimiento'              => '',
+                    'persona_fecha_nacimiento_1'            => '',
                     'persona_fecha_nacimiento_2'            => '',
                     'persona_funcion'                       => '',
                     
