@@ -6727,6 +6727,7 @@
                 $detalle    = array(
                     'competicion_codigo'                    => $val01,
                     'jugador_codigo'                        => $rowMSSQL['jugador_codigo'],
+                    'jugador_completo'                      => strtoupper(strtolower(trim($rowMSSQL['jugador_nombre']))).' '.strtoupper(strtolower(trim($rowMSSQL['jugador_apellido']))),
                     'jugador_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['jugador_apellido']))),
                     'jugador_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['jugador_nombre']))),
                     'jugador_posicion'                      => strtoupper(strtolower(trim($rowMSSQL['jugador_posicion']))),
@@ -6751,6 +6752,7 @@
                 $detalle = array(
                     'competicion_codigo'                    => '',
                     'jugador_codigo'                        => '',
+                    'jugador_completo'                      => '',
                     'jugador_apellido'                      => '',
                     'jugador_nombre'                        => '',
                     'jugador_posicion'                      => '',
