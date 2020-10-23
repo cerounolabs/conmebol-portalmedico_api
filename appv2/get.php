@@ -8997,16 +8997,17 @@
         return $json;
     });
 
-    $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
+    $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}/{dominio}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('equipo');
         $val02      = $request->getAttribute('competicion');
         $val03      = $request->getAttribute('examen');
         $val04      = $request->getAttribute('encuentro');
+        $val05      = trim(strtoupper(strtolower($request->getAttribute('dominio'))));
 
         
-        if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
+        if (isset($val01) && isset($val02) && isset($val03) && isset($val04) && isset( $val05)) {
             $sql00  = "";
 
             if($val01 == 39393) {
@@ -9030,7 +9031,7 @@
                     LEFT OUTER JOIN exa.EXAFIC b ON a.DOMFICCOD = b.EXAFICEST 
                     INNER JOIN comet.competitions c ON b.EXAFICCOC = c.competitionFifaId
                     
-                    WHERE b.EXAFICTEC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICENC = ?
+                    WHERE b.EXAFICTEC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = ? AND b.EXAFICENC = ?
                     AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)
                     
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
@@ -9048,7 +9049,7 @@
                             INNER JOIN adm.DOMFIC c ON b.EXAFICEST = c.DOMFICCOD
                             INNER JOIN comet.competitions d ON (b.EXAFICCOC = d.competitionFifaId OR b.EXAFICCOC = d.superiorCompetitionFifaId)
                         
-                            WHERE c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICPEC = a.playerFifaId AND b.EXAFICTEC = ? AND b.EXAFICENC = ?
+                            WHERE c.DOMFICVAL = ? AND b.EXAFICPEC = a.playerFifaId AND b.EXAFICTEC = ? AND b.EXAFICENC = ?
                         )
                     GROUP BY a.competitionFifaId";
             } else {
@@ -9071,7 +9072,7 @@
                     LEFT OUTER JOIN exa.EXAFIC b ON a.DOMFICCOD = b.EXAFICEST 
                     INNER JOIN comet.competitions c ON b.EXAFICCOC = c.competitionFifaId
                     
-                    WHERE b.EXAFICTEC = ? AND b.EXAFICEQC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICENC = ?
+                    WHERE b.EXAFICTEC = ? AND b.EXAFICEQC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = ? AND b.EXAFICENC = ?
                     AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)
                     AND NOT EXISTS (SELECT * FROM comet.competitions_teams_players e WHERE (e.competitionFifaId = c.competitionFifaId OR e.competitionFifaId = c.superiorCompetitionFifaId) AND e.playerType = 'Z' AND e.playerFifaId = b.EXAFICPEC)
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
@@ -9089,7 +9090,7 @@
                             INNER JOIN adm.DOMFIC c ON b.EXAFICEST = c.DOMFICCOD
                             INNER JOIN comet.competitions d ON (b.EXAFICCOC = d.competitionFifaId OR b.EXAFICCOC = d.superiorCompetitionFifaId)
                         
-                            WHERE c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICPEC = a.playerFifaId AND b.EXAFICTEC = ?  AND b.EXAFICENC = ?
+                            WHERE c.DOMFICVAL = ? AND b.EXAFICPEC = a.playerFifaId AND b.EXAFICTEC = ?  AND b.EXAFICENC = ?
                         )
                     GROUP BY a.competitionFifaId";
             }
@@ -9102,12 +9103,12 @@
 
                 if ($val01 == 39393) {
                     $stmtMSSQL00->execute([$val02]);
-                    $stmtMSSQL01->execute([$val03, $val02, $val02, $val04]);
-                    $stmtMSSQL02->execute([$val02, $val03, $val04]);
+                    $stmtMSSQL01->execute([$val03, $val02, $val02, $val05, $val04]);
+                    $stmtMSSQL02->execute([$val02, $val05, $val03, $val04]);
                 } else {
                     $stmtMSSQL00->execute([$val02, $val01]);
-                    $stmtMSSQL01->execute([$val03, $val01, $val02, $val02, $val04]);
-                    $stmtMSSQL02->execute([$val02, $val01, $val03, $val04]);
+                    $stmtMSSQL01->execute([$val03, $val01, $val02, $val02, $val05, $val04]);
+                    $stmtMSSQL02->execute([$val02, $val01, $val05, $val03, $val04]);
                 }
 
                 while ($rowMSSQL = $stmtMSSQL00->fetch()) {
