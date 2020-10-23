@@ -9071,7 +9071,7 @@
                     
                     WHERE b.EXAFICTEC = ? AND b.EXAFICEQC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO'
                     AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)
-                    
+                    AND NOT EXISTS (SELECT * FROM comet.competitions_teams_players e WHERE (e.competitionFifaId = c.competitionFifaId OR e.competitionFifaId = c.superiorCompetitionFifaId) AND e.playerType = 'Z' AND e.playerFifaId = b.EXAFICPEC)
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
                 $sql02 = "SELECT
