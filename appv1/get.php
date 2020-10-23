@@ -9380,7 +9380,7 @@
                     
                     FROM comet.competitions_teams_players a
                     
-                    WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
+                    WHERE a.competitionFifaId = ? AND a.teamFifaId = ? AND a.playerType <> 'Z'
                     GROUP BY a.competitionFifaId";
 
                 $sql01  = "SELECT
@@ -9403,7 +9403,7 @@
                     COUNT(*)                     AS     cantidad_persona
 
                     FROM comet.competitions_teams_players  a
-                    WHERE a.competitionFifaId = ?  AND a.teamFifaId = ? AND 
+                    WHERE a.competitionFifaId = ?  AND a.teamFifaId = ? AND a.playerType <> 'Z' AND
                     NOT EXISTS
                         (SELECT * 
                             FROM exa.EXAFIC b 
