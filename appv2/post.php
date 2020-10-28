@@ -824,13 +824,13 @@
         return $json;
     });
 
-    $app->post('/v2/200/persona/codigo/{competicion}/{equipo}/{persona}{tipo}', function($request) {//20201028
+    $app->post('/v2/200/persona/manual', function($request) {//20201028
         require __DIR__.'/../src/connect.php';
 
-        $val00      =  $request->getParsedBody()['competicion'];
-        $val01      =  $request->getParsedBody()['equipo'];
-        $val02      =  $request->getParsedBody()['persona'];
-        $val03      =  strtoupper(strtolower(trim($request->getParsedBody()['tipo'])));
+        $val00      =  $request->getParsedBody()['competicion_codigo'];
+        $val01      =  $request->getParsedBody()['equipo_codigo'];
+        $val02      =  $request->getParsedBody()['persona_codigo'];
+        $val03      =  strtoupper(strtolower(trim($request->getParsedBody()['persona_tipo'])));
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
