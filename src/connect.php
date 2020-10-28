@@ -74,26 +74,3 @@
         $result                     = json_decode($result, TRUE);
         return $result;
     }
-
-    $xJSON = get_curl('player/3879553');
-
-    $val04      = $xJSON['person']['internationalFirstName'];
-    $val05      = $xJSON['person']['internationalLastName'];
-    $val06      = $xJSON['person']['gender'];
-    $val07      = $xJSON['person']['nationality'];
-    $val08      = $xJSON['person']['nationalityFIFA'];
-    $val09      = $xJSON['person']['dateOfBirth'];
-    $val10      = $xJSON['person']['countryOfBirth'];
-    $val11      = $xJSON['person']['countryOfBirthFIFA'];
-    $val12      = $xJSON['person']['regionOfBirth'];
-    $val13      = $xJSON['person']['placeOfBirth'];
-    $val14      = $xJSON['person']['place'];
-    $val15      = $xJSON['person']['national_team'];
-    $val16      = $xJSON['person']['playerPosition'];
-    $val17      = $xJSON['person']['rowNumber'];
-    $val18      = $xJSON['person']['homegrown'];
-
-    echo '$val04 => '.$val04;
-    echo '$val05 => '.$val05;
-    echo '$val06 => '.$val06;
-    echo '$val07 => '.$val07;
