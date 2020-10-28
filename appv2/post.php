@@ -827,18 +827,36 @@
     $app->post('/v2/200/persona/manual', function($request) {//20201028
         require __DIR__.'/../src/connect.php';
 
-        $val00      =  $request->getParsedBody()['competicion_codigo'];
-        $val01      =  $request->getParsedBody()['equipo_codigo'];
-        $val02      =  $request->getParsedBody()['persona_codigo'];
-        $val03      =  strtoupper(strtolower(trim($request->getParsedBody()['persona_tipo'])));
+        $val00      = $request->getParsedBody()['competicion_codigo'];
+        $val01      = $request->getParsedBody()['equipo_codigo'];
+        $val02      = $request->getParsedBody()['persona_codigo'];
+        $val03      = strtoupper(strtolower(trim($request->getParsedBody()['persona_tipo'])));
+        $xJSON      = get_curl('player/'.$personfifaid);
+
+        $val04      = $xJSON['person'][0]['internationalFirstName'];
+        $val05      = $xJSON['person'][0]['internationalLastName'];
+        $val06      = $xJSON['person'][0]['gender'];
+        $val07      = $xJSON['person'][0]['nationality'];
+        $val08      = $xJSON['person'][0]['nationalityFIFA'];
+        $val09      = $xJSON['person'][0]['dateOfBirth'];
+        $val10      = $xJSON['person'][0]['countryOfBirth'];
+        $val11      = $xJSON['person'][0]['countryOfBirthFIFA'];
+        $val12      = $xJSON['person'][0]['regionOfBirth'];
+        $val13      = $xJSON['person'][0]['placeOfBirth'];
+        $val14      = $xJSON['person'][0]['place'];
+        $val15      = $xJSON['person'][0]['national_team'];
+        $val16      = $xJSON['person'][0]['playerPosition'];
+        $val17      = $xJSON['person'][0]['rowNumber'];
+        $val18      = $xJSON['person'][0]['homegrown'];
+
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val00) && isset($val01) && isset($val02) && isset($val03)) {
-            $sql00  = "INSERT INTO  [comet].[persons] (personFifaId, personType, lastUpdate) SELECT ?, ?, GETDATE() WHERE NOT EXISTS(SELECT * FROM [comet].[persons] WHERE personFifaId = ?)";
-            $sql01  = "INSERT INTO  [comet].competitions_teams_players (competitionFifaId, teamFifaId, playerFifaId ,lastUpdate, playerType) SELECT  ?, ?, ?, GETDATE(), ? WHERE EXISTS(SELECT *FROM [comet].[persons] WHERE personFifaId = ?) AND NOT EXISTS(SELECT *FROM [comet].[competitions_teams_players] WHERE competitionFifaId = ? AND teamFifaId = ? AND playerFifaId = ?)";
+            $sql00  = "INSERT INTO  [comet].[persons] (personFifaId, personType, internationalFirstName, firstName, internationalLastName, lastName, gender, nationality, nationalityFIFA, dateOfBirth, countryOfBirth, countryOfBirthFIFA, regionOfBirth, placeOfBirth, place, national_team, playerPosition, homegrown, lastUpdate) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE() WHERE NOT EXISTS(SELECT * FROM [comet].[persons] WHERE personFifaId = ?)";
+            $sql01  = "INSERT INTO  [comet].competitions_teams_players (competitionFifaId, teamFifaId, playerFifaId, lastUpdate, playerType, shirtNumber) SELECT  ?, ?, ?,  GETDATE(), ?, ? WHERE EXISTS(SELECT *FROM [comet].[persons] WHERE personFifaId = ?) AND NOT EXISTS(SELECT *FROM [comet].[competitions_teams_players] WHERE competitionFifaId = ? AND teamFifaId = ? AND playerFifaId = ?)";
             
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
@@ -846,8 +864,8 @@
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
             
-                $stmtMSSQL00->execute([ $val02, $val03, $val02]);
-                $stmtMSSQL01->execute([$val00, $val01, $val02, $val03, $val02, $val00, $val01, $val02]);
+                $stmtMSSQL00->execute([$val02, $val03, $val04, $val04, $val05, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $val16, $val18, $val02]);
+                $stmtMSSQL01->execute([$val00, $val01, $val02, $val03, $val17, $val02, $val00, $val01, $val02]);
 
                 $codigo     = $val02;
 
