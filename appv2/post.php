@@ -838,7 +838,7 @@
 
         if (isset($val00) && isset($val01) && isset($val02) && isset($val03)) {
             $sql00  = "INSERT INTO  [comet].[persons] (personFifaId, personType, lastUpdate) SELECT ?, ?, GETDATE() WHERE NOT EXISTS(SELECT * FROM [comet].[persons] WHERE personFifaId = ?)";
-            $sql01  = "INSERT INTO  [comet].competitions_teams_players (competitionFifaId, teamFifaId, playerFifaId ,lastUpdate, playerType) SELECT  ?, ?, ?,GETDATE(), ? WHERE EXISTS(SELECT *FROM [comet].[persons] WHERE personFifaId = ?)";
+            $sql01  = "INSERT INTO  [comet].competitions_teams_players (competitionFifaId, teamFifaId, playerFifaId ,lastUpdate, playerType) SELECT  ?, ?, ?, GETDATE(), ? WHERE EXISTS(SELECT *FROM [comet].[persons] WHERE personFifaId = ?)";
             
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
@@ -847,7 +847,7 @@
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
             
                 $stmtMSSQL00->execute([ $val02, $val03, $val02]);
-                $stmtMSSQL01->execute([$val00, $val01, $val02, $val03]);
+                $stmtMSSQL01->execute([$val00, $val01, $val02, $val03, $val02]);
 
                 $codigo     = $val02;
 
