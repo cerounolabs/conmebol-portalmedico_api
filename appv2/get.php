@@ -8737,12 +8737,12 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     if ($rowMSSQL['examen_fecha_1'] == NULL) {
-                        $examen_fecha_1 = '';
+                        $examen_fecha_1_2 = '';
                     } else {
-                        $examen_fecha_1 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
+                        $examen_fecha_1_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
                     }
 
-                    if ($rowMSSQL['examen_fecha_2'] == NULL) {
+                    if ($rowMSSQL['examen_fecha_2'] == NULL) { 
                         $examen_fecha_2 = '';
                     } else {
                         $examen_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_2']));
@@ -8822,7 +8822,8 @@
 
                     $detalle    = array(
                         'examen_codigo'                                 => $rowMSSQL['examen_codigo'],
-                        'examen_fecha_1'                                => $examen_fecha_1,
+                        'examen_fecha_1'                                => $rowPGSQL['$examen_fecha_1'],
+                        'examen_fecha_1_2'                              => $examen_fecha_1_2,
                         'examen_fecha_2'                                => $examen_fecha_2,
                         'examen_fecha_3'                                => $examen_fecha_3,
                         'examen_cantidad_adulto'                        => $rowMSSQL['examen_cantidad_adulto'],
@@ -9011,16 +9012,17 @@
             $sql00  = "";
 
             if($val01 == 39393) {
-                $sql00  = "SELECT
+                $sql00  = "SELECT 
                     '1'                         AS     tipo_codigo,
                     'TOTAL PERSONA'             AS     tipo_nombre,
-                    COUNT(*)                    AS     cantidad_persona
+                    ( 
+                    (SELECT COUNT(*)FROM comet.competitions_teams_players b WHERE (a.COMPETICION_PADRE_ID = b.competitionFifaid OR a.COMPETICION_ID = b.competitionFifaid)  AND a.equipo_local_codigo = b.teamfifaid ) + 
+                    (SELECT COUNT(*)FROM comet.competitions_teams_players b WHERE (a.COMPETICION_PADRE_ID = b.competitionFifaid OR a.COMPETICION_ID = b.competitionFifaid) AND a.equipo_visitante_codigo = b.teamfifaid)) AS cantidad_persona
                     
-                    FROM comet.competitions_teams_players a
-                    
-                    WHERE a.competitionFifaId = ?
-                    
-                    GROUP BY a.competitionFifaId";
+                    FROM [view].juego a 
+                   
+                    WHERE (a.COMPETICION_PADRE_ID = ? OR a.COMPETICION_ID = ?) AND a.juego_codigo = ?";
+                     
 
                 $sql01  = "SELECT
                     a.DOMFICCOD                  AS  tipo_codigo,
@@ -9028,7 +9030,7 @@
                     COUNT(*)                     AS  cantidad_persona
                     
                     FROM adm.DOMFIC a 
-                    LEFT OUTER JOIN exa.EXAFIC b ON a.DOMFICCOD = b.EXAFICEST 
+                    LEFT OUTER JOIN exa.EXAFIC b ON a.DOMFICCOD    = b.EXAFICEST 
                     INNER JOIN comet.competitions c ON b.EXAFICCOC = c.competitionFifaId
                     
                     WHERE b.EXAFICTEC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = ? AND b.EXAFICENC = ?
@@ -9059,7 +9061,7 @@
                     COUNT(*)                                     AS     cantidad_persona
                     
                     FROM comet.competitions_teams_players a
-                    
+                     
                     WHERE a.competitionFifaId = ? AND a.teamFifaId = ? AND a.playerType <> 'Z'
                     GROUP BY a.competitionFifaId";
 
@@ -9102,7 +9104,7 @@
                 $stmtMSSQL02= $connMSSQL->prepare($sql02);
 
                 if ($val01 == 39393) {
-                    $stmtMSSQL00->execute([$val02]);
+                    $stmtMSSQL00->execute([$val02, $val02, $val04]);
                     $stmtMSSQL01->execute([$val03, $val02, $val02, $val05, $val04]);
                     $stmtMSSQL02->execute([$val02, $val05, $val03, $val04]);
                 } else {
