@@ -1,4 +1,7 @@
 <?php
+    $api = 'https://api-latam.analyticom.de/api/export/comet';
+    $aut = 'ZGllZ29nb256YWxlejpkaWVnb2dvbnphbGV6Q09O';
+
     function getConnectionMSSQLv1(){
         $serverName = "10.10.10.17";
         $serverPort = "1433";
@@ -49,4 +52,25 @@
         }
 
         return $conn;
+    }
+
+    function get_curl($ext){
+        global $api;
+        global $aut;
+        $urlAPI                     = $api.'/'.$ext;
+        $ch                         = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $urlAPI);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json", "Authorization: Basic ".$aut, "Content-Type: application/json"));
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result                     = curl_exec($ch);
+        curl_close($ch);
+        $result                     = json_decode($result, TRUE);
+        return $result;
     }
