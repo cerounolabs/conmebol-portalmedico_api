@@ -72,6 +72,5 @@
         $result                     = curl_exec($ch);
         curl_close($ch);
         $result                     = json_decode($result, TRUE);
-        sleep(15);
         return $result;
     }

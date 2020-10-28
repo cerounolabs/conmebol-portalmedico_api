@@ -853,6 +853,8 @@
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
+        sleep(15);
+
         if (isset($val00) && isset($val01) && isset($val02) && isset($val03)) {
             $sql00  = "INSERT INTO  [comet].[persons] (personFifaId, personType, internationalFirstName, firstName, internationalLastName, lastName, gender, nationality, nationalityFIFA, dateOfBirth, countryOfBirth, countryOfBirthFIFA, regionOfBirth, placeOfBirth, place, national_team, playerPosition, homegrown, lastUpdate) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE() WHERE NOT EXISTS(SELECT * FROM [comet].[persons] WHERE personFifaId = ?)";
             $sql01  = "INSERT INTO  [comet].competitions_teams_players (competitionFifaId, teamFifaId, playerFifaId, lastUpdate, playerType, shirtNumber) SELECT  ?, ?, ?,  GETDATE(), ?, ? WHERE EXISTS(SELECT *FROM [comet].[persons] WHERE personFifaId = ?) AND NOT EXISTS(SELECT *FROM [comet].[competitions_teams_players] WHERE competitionFifaId = ? AND teamFifaId = ? AND playerFifaId = ?)";
