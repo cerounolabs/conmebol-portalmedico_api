@@ -835,21 +835,21 @@
 
         sleep(15);
 
-        $val04      = $xJSON['person'][0]['internationalFirstName'];
-        $val05      = $xJSON['person'][0]['internationalLastName'];
-        $val06      = $xJSON['person'][0]['gender'];
-        $val07      = $xJSON['person'][0]['nationality'];
-        $val08      = $xJSON['person'][0]['nationalityFIFA'];
-        $val09      = $xJSON['person'][0]['dateOfBirth'];
-        $val10      = $xJSON['person'][0]['countryOfBirth'];
-        $val11      = $xJSON['person'][0]['countryOfBirthFIFA'];
-        $val12      = $xJSON['person'][0]['regionOfBirth'];
-        $val13      = $xJSON['person'][0]['placeOfBirth'];
-        $val14      = $xJSON['person'][0]['place'];
-        $val15      = $xJSON['person'][0]['national_team'];
-        $val16      = $xJSON['person'][0]['playerPosition'];
-        $val17      = $xJSON['person'][0]['rowNumber'];
-        $val18      = $xJSON['person'][0]['homegrown'];
+        $val04      = $xJSON['person']['internationalFirstName'];
+        $val05      = $xJSON['person']['internationalLastName'];
+        $val06      = $xJSON['person']['gender'];
+        $val07      = $xJSON['person']['nationality'];
+        $val08      = $xJSON['person']['nationalityFIFA'];
+        $val09      = $xJSON['person']['dateOfBirth'];
+        $val10      = $xJSON['person']['countryOfBirth'];
+        $val11      = $xJSON['person']['countryOfBirthFIFA'];
+        $val12      = $xJSON['person']['regionOfBirth'];
+        $val13      = $xJSON['person']['placeOfBirth'];
+        $val14      = $xJSON['person']['place'];
+        $val15      = $xJSON['person']['national_team'];
+        $val16      = $xJSON['person']['playerPosition'];
+        $val17      = $xJSON['person']['rowNumber'];
+        $val18      = $xJSON['person']['homegrown'];
 
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
