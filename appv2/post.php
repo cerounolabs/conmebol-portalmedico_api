@@ -833,6 +833,8 @@
         $val03      = strtoupper(strtolower(trim($request->getParsedBody()['persona_tipo'])));
         $xJSON      = get_curl('player/'.$personfifaid);
 
+        sleep(15);
+
         $val04      = $xJSON['person'][0]['internationalFirstName'];
         $val05      = $xJSON['person'][0]['internationalLastName'];
         $val06      = $xJSON['person'][0]['gender'];
