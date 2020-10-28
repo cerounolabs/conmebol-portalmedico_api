@@ -823,3 +823,53 @@
         
         return $json;
     });
+
+    $app->post('/v2/200/persona/codigo/{competicion}/{equipo}/{persona}{tipo}', function($request) {//20201028
+        require __DIR__.'/../src/connect.php';
+
+        $val00      =  $request->getParsedBody()['competicion'];
+        $val01      =  $request->getParsedBody()['equipo'];
+        $val02      =  $request->getParsedBody()['persona'];
+        $val03      =  strtoupper(strtolower(trim($request->getParsedBody()['tipo'])));
+
+        $aud01      = $request->getParsedBody()['auditoria_usuario'];
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = $request->getParsedBody()['auditoria_ip'];
+
+        if (isset($val00) && isset($val01) && isset($val02) && isset($val03)) {
+            $sql00  = "INSERT INTO  [comet].[persons] (personFifaId, personType, lastUpdate) SELECT ?, ?, GETDATE() WHERE NOT EXISTS(SELECT * FROM [comet].[persons] WHERE personFifaId = ?)";
+            $sql01  = "INSERT INTO  [comet].competitions_teams_players (competitionFifaId, teamFifaId, playerFifaId ,lastUpdate, playerType) SELECT  ?, ?, ?,GETDATE(), ? WHERE EXISTS(SELECT *FROM [comet].[persons] WHERE personFifaId = ?)";
+            
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+            
+                $stmtMSSQL00->execute([ $val02, $val03, $val02]);
+                $stmtMSSQL01->execute([$val00, $val01, $val02, $val03]);
+
+                $codigo     = $val02;
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
