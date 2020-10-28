@@ -831,23 +831,22 @@
         $val01      = $request->getParsedBody()['equipo_codigo'];
         $val02      = $request->getParsedBody()['persona_codigo'];
         $val03      = strtoupper(strtolower(trim($request->getParsedBody()['persona_tipo'])));
-        $xJSON      = get_curl('player/'.intval($val02));
-
-        $val04      = $xJSON['person']['internationalFirstName'];
-        $val05      = $xJSON['person']['internationalLastName'];
-        $val06      = $xJSON['person']['gender'];
-        $val07      = $xJSON['person']['nationality'];
-        $val08      = $xJSON['person']['nationalityFIFA'];
-        $val09      = $xJSON['person']['dateOfBirth'];
-        $val10      = $xJSON['person']['countryOfBirth'];
-        $val11      = $xJSON['person']['countryOfBirthFIFA'];
-        $val12      = $xJSON['person']['regionOfBirth'];
-        $val13      = $xJSON['person']['placeOfBirth'];
-        $val14      = $xJSON['person']['place'];
-        $val15      = $xJSON['person']['national_team'];
-        $val16      = $xJSON['person']['playerPosition'];
-        $val17      = $xJSON['person']['rowNumber'];
-        $val18      = $xJSON['person']['homegrown'];
+        $val04      = '';
+        $val05      = '';
+        $val06      = '';
+        $val07      = '';
+        $val08      = '';
+        $val09      = '';
+        $val10      = '';
+        $val11      = '';
+        $val12      = '';
+        $val13      = '';
+        $val14      = '';
+        $val15      = '';
+        $val16      = '';
+        $val17      = '';
+        $val18      = '';
+        $xJSON      = '';
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -864,7 +863,29 @@
 
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
-            
+
+                $xJSON      = get_curl('player/'.intval($val02));
+                sleep(15);
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } finally {
+                $val04      = $xJSON['person']['internationalFirstName'];
+                $val05      = $xJSON['person']['internationalLastName'];
+                $val06      = $xJSON['person']['gender'];
+                $val07      = $xJSON['person']['nationality'];
+                $val08      = $xJSON['person']['nationalityFIFA'];
+                $val09      = $xJSON['person']['dateOfBirth'];
+                $val10      = $xJSON['person']['countryOfBirth'];
+                $val11      = $xJSON['person']['countryOfBirthFIFA'];
+                $val12      = $xJSON['person']['regionOfBirth'];
+                $val13      = $xJSON['person']['placeOfBirth'];
+                $val14      = $xJSON['person']['place'];
+                $val15      = $xJSON['person']['national_team'];
+                $val16      = $xJSON['person']['playerPosition'];
+                $val17      = $xJSON['person']['rowNumber'];
+                $val18      = $xJSON['person']['homegrown'];
+
                 $stmtMSSQL00->execute([$val02, $val03, $val04, $val04, $val05, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $val16, $val18, $val02]);
                 $stmtMSSQL01->execute([$val00, $val01, $val02, $val03, $val17, $val02, $val00, $val01, $val02]);
 
@@ -878,10 +899,6 @@
 
                 $stmtMSSQL00 = null;
                 $stmtMSSQL01 = null;
-
-            } catch (PDOException $e) {
-                header("Content-Type: application/json; charset=utf-8");
-                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
             }
         } else {
             header("Content-Type: application/json; charset=utf-8");
