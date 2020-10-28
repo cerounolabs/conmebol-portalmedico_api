@@ -831,9 +831,7 @@
         $val01      = $request->getParsedBody()['equipo_codigo'];
         $val02      = $request->getParsedBody()['persona_codigo'];
         $val03      = strtoupper(strtolower(trim($request->getParsedBody()['persona_tipo'])));
-        $xJSON      = get_curl('player/'.strval($val02));
-
-        sleep(20);
+        $xJSON      = get_curl('player/'.intval($val02));
 
         $val04      = $xJSON['person']['internationalFirstName'];
         $val05      = $xJSON['person']['internationalLastName'];
@@ -871,7 +869,7 @@
                 $codigo     = $val02;
 
                 header("Content-Type: application/json; charset=utf-8");
-                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => $xJSON, 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
 
                 $stmtMSSQL00->closeCursor();
                 $stmtMSSQL01->closeCursor();
