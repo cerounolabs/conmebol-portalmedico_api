@@ -862,7 +862,7 @@
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
 
-                $xJSON      = get_curl("player/3879553");
+                $xJSON      = get_curl('player/'.$val02);
                 sleep(15);
             } catch (PDOException $e) {
                 header("Content-Type: application/json; charset=utf-8");
