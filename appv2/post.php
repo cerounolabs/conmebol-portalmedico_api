@@ -831,7 +831,7 @@
         $val01      = $request->getParsedBody()['equipo_codigo'];
         $val02      = $request->getParsedBody()['persona_codigo'];
         $val03      = strtoupper(strtolower(trim($request->getParsedBody()['persona_tipo'])));
-        $xJSON      = get_curl('player/'.$personfifaid);
+        $xJSON      = get_curl('player/'.$val02);
 
         sleep(15);
 
