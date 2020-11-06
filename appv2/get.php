@@ -7898,7 +7898,7 @@
         return $json;
     });
 
-    $app->get('/v2/200/competicion/equipo/ultimoencuentro/{equipo}', function($request) {
+    $app->get('/v2/200/competicion/home/ultimoencuentro/{equipo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val00      = $request->getAttribute('equipo');
