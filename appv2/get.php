@@ -8025,6 +8025,8 @@
         if (isset($val00)) {
                 $sql00  = "SELECT 
                 a.EXAFICENC AS encuentro_codigo,
+                d.EQUIPO_LOCAL_CODIGO AS encuentro_equipo_local_codigo,
+                d.EQUIPO_VISITANTE_CODIGO AS encuentro_equipo_visitante_codigo,
                 d.EQUIPO_LOCAL_NOMBRE AS encuentro_equipo_local_nombre,
                 d.EQUIPO_VISITANTE_NOMBRE AS encuentro_equipo_visitante_nombre,
                 d.JUEGO_HORARIO AS encuentro_fecha,
@@ -8037,8 +8039,8 @@
                 INNER JOIN adm.DOMFIC c ON a.EXAFICEST = c.DOMFICCOD
                 INNER JOIN [view].juego d ON a.EXAFICENC = d.JUEGO_CODIGO AND (a.EXAFICEQC = d.EQUIPO_LOCAL_CODIGO OR a.EXAFICEQC = d.EQUIPO_VISITANTE_CODIGO) 
                 
-                WHERE a.EXAFICEQC = ? AND b.DOMFICVAL = 'EXAMENMEDICOTIPO' AND b.DOMFICPAR = 1 AND c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND c.DOMFICPAR = 1 and a.EXAFICLRE IS NOT NULL
-                GROUP BY a.EXAFICENC, d.EQUIPO_LOCAL_NOMBRE, d.EQUIPO_VISITANTE_NOMBRE, a.EXAFICEQC, b.DOMFICCOD, c.DOMFICCOD, d.JUEGO_HORARIO";
+                WHERE a.EXAFICEQC = 39877 AND b.DOMFICVAL = 'EXAMENMEDICOTIPO' AND b.DOMFICPAR = 1 AND c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND c.DOMFICPAR = 1 and a.EXAFICLRE IS NOT NULL
+                GROUP BY a.EXAFICENC, d.EQUIPO_LOCAL_CODIGO, d.EQUIPO_VISITANTE_CODIGO,d.EQUIPO_LOCAL_NOMBRE, d.EQUIPO_VISITANTE_NOMBRE, a.EXAFICEQC, b.DOMFICCOD, c.DOMFICCOD, d.JUEGO_HORARIO";
            
 
             try {
@@ -8057,8 +8059,14 @@
                         $encuentro_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['encuentro_fecha']));
                     }
 
-                    $equipolocal    = $rowMSSQL['encuentro_equipo_local_nombre'];
-                    $equipovis       = $rowMSSQL['encuentro_equipo_visitante_nombre'];
+                    $equipovisitante = $rowMSSQL['encuentro_equipo_visitante_nombre'];
+                    $aux = '.vs';
+                    if ($rowMSSQL['EQUIPO_LOCAL_CODIGO']<> $rowMSSQL['codigo']){
+                        $nomEquipo =  $aux.' '.$equipovisitante;
+                    } else {
+                        $nomEquipo = '';
+                    }
+
 
                    $nomEquipo = $equipolocal.' vs '.$equipovis;
 
