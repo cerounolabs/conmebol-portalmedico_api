@@ -8061,7 +8061,7 @@
 
                     $equipovisitante = $rowMSSQL['encuentro_equipo_visitante_nombre'];
                     $aux = '.vs';
-                    if ($rowMSSQL['EQUIPO_LOCAL_CODIGO']<> $rowMSSQL['codigo']){
+                    if ($rowMSSQL['EQUIPO_LOCAL_CODIGO']<> $rowMSSQL['equipo']){
                         $nomEquipo =  $aux.' '.$equipovisitante;
                     } else {
                         $nomEquipo = '';
