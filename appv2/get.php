@@ -8025,7 +8025,9 @@
         if (isset($val00)) {
                 $sql00  = "SELECT 
                 a.EXAFICENC AS encuentro_codigo,
-                RTRIM(d.EQUIPO_LOCAL_NOMBRE)+' vs '+RTRIM(d.EQUIPO_VISITANTE_NOMBRE) AS encuentro_equipo,
+                --RTRIM(d.EQUIPO_LOCAL_NOMBRE)+' vs '+RTRIM(d.EQUIPO_VISITANTE_NOMBRE) AS encuentro_equipo,
+                d.EQUIPO_LOCAL_NOMBRE AS encuentro_equipo_local_nombre,
+                d.EQUIPO_VISITANTE_NOMBRE AS encuentro_equipo_visitante_nombre,
                 d.JUEGO_HORARIO AS encuentro_fecha,
                 (SELECT COUNT(e1.EXAFICCOD)FROM exa.EXAFIC e1 WHERE e1.EXAFICENC = a.EXAFICENC AND e1.EXAFICEQC = a.EXAFICEQC AND e1.EXAFICTEC = b.DOMFICCOD AND e1.EXAFICEST = c.DOMFICCOD AND e1.EXAFICLRE = 'SI') AS encuentro_cantidad_positivo,
                 (SELECT COUNT(e1.EXAFICCOD)FROM exa.EXAFIC e1 WHERE e1.EXAFICENC = a.EXAFICENC AND e1.EXAFICEQC = a.EXAFICEQC AND e1.EXAFICTEC = b.DOMFICCOD AND e1.EXAFICEST = c.DOMFICCOD AND e1.EXAFICLRE = 'NO') AS encuentro_cantidad_negativo
@@ -8047,11 +8049,22 @@
                 $stmtMSSQL->execute([$val00]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                   
+
+                    if ($rowMSSQL['encuentro_fecha'] == '1900-01-01' || $rowMSSQL['encuentro_fecha'] == null){
+                        $encuentro_fecha_1 = '';
+                        $encuentro_fecha_2 = '';
+                    } else {
+                        $encuentro_fecha_1 = $rowMSSQL['encuentro_fecha'];
+                        $encuentro_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['encuentro_fecha']));
+                    }
+                   $nomEquipo = 'encuentro_equipo_local_nombre'.' vs '.'encuentro_equipo_visitante_nombre';
 
                     $detalle    = array(
                         'encuentro_codigo'                    => $rowMSSQL['encuentro_codigo'],
-                        'encuentro_equipo'                    => trim(strtoupper(strtolower($rowMSSQL['encuentro_equipo']))),
+                        'encuentro_equipo'                    =>trim(strtoupper(strtolower($nomEquipo))),
+
+                        'encuentro_fecha_1'                   => $encuentro_fecha_1,
+                        'encuentro_fecha_2'                   => $encuentro_fecha_2,
                         'encuentro_cantidad_positivo'         => $rowMSSQL['encuentro_cantidad_positivo'],
                         'encuentro_cantidad_negativo'         => $rowMSSQL['encuentro_cantidad_negativo']
                     );
