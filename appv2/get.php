@@ -8067,9 +8067,6 @@
                         $nomEquipo = '';
                     }
 
-
-                   $nomEquipo = $equipolocal.' vs '.$equipovis;
-
                     $detalle    = array(
                         'encuentro_codigo'                    => $rowMSSQL['encuentro_codigo'],
                         'encuentro_equipo'                    =>trim(strtoupper(strtolower($nomEquipo))),
