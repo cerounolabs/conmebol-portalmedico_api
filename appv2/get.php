@@ -8059,7 +8059,7 @@
                     }
 
                     $aux = 'vs';
-                    if ($rowMSSQL['EQUIPO_LOCAL_CODIGO'] != $val00){
+                    if ($rowMSSQL['encuentro_equipo_local_codigo'] != $val00){
                         $nomEquipo =  $aux.' '.$rowMSSQL['encuentro_equipo_local_nombre'];
                     } else {
                         $nomEquipo =  $aux.' '.$rowMSSQL['encuentro_equipo_visitante_nombre'];
