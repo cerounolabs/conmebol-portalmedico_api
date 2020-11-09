@@ -8145,7 +8145,7 @@
         return $json;
     });
 
-    $app->get('/v2/200/competicion/home/resultado/{equipo}', function($request) {//20201109
+    $app->get('/v1/200/competicion/home/resultado/{equipo}', function($request) {//20201109
         require __DIR__.'/../src/connect.php';
 
         $val00      = $request->getAttribute('equipo');
