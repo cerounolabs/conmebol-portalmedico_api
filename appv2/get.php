@@ -8050,7 +8050,6 @@
                 $stmtMSSQL->execute([$val00]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-
                     if ($rowMSSQL['encuentro_fecha'] == '1900-01-01' || $rowMSSQL['encuentro_fecha'] == null){
                         $encuentro_fecha_1 = '';
                         $encuentro_fecha_2 = '';
@@ -8059,12 +8058,11 @@
                         $encuentro_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['encuentro_fecha']));
                     }
 
-
                     $aux = 'vs';
                     if ($rowMSSQL['EQUIPO_LOCAL_CODIGO'] != $val00){
-                        $nomEquipo =  $aux.' '.$rowMSSQL['encuentro_equipo_visitante_nombre'];
-                    } else {
                         $nomEquipo =  $aux.' '.$rowMSSQL['encuentro_equipo_local_nombre'];
+                    } else {
+                        $nomEquipo =  $aux.' '.$rowMSSQL['encuentro_equipo_visitante_nombre'];
                     }
 
                     $detalle    = array(
