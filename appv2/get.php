@@ -7898,7 +7898,7 @@
         return $json;
     });
 
-    $app->get('/v2/200/competicion/home/ultimoencuentro/{equipo}', function($request) {
+    $app->get('/v2/200/competicion/home/ultimoencuentro/{equipo}', function($request) {//20201106
         require __DIR__.'/../src/connect.php';
 
         $val00      = $request->getAttribute('equipo');
@@ -8016,6 +8016,81 @@
         
         return $json;
     });
+
+    $app->get('/v2/200/competicion/home/resultado/{equipo}', function($request) {//20201109
+        require __DIR__.'/../src/connect.php';
+
+        $val00      = $request->getAttribute('equipo');
+
+        if (isset($val00)) {
+                $sql00  = "SELECT 
+                a.EXAFICENC AS encuentro_codigo,
+                RTRIM(d.EQUIPO_LOCAL_NOMBRE)+' vs '+RTRIM(d.EQUIPO_VISITANTE_NOMBRE) AS encuentro_equipo,
+                d.JUEGO_HORARIO AS encuentro_fecha,
+                (SELECT COUNT(e1.EXAFICCOD)FROM exa.EXAFIC e1 WHERE e1.EXAFICENC = a.EXAFICENC AND e1.EXAFICEQC = a.EXAFICEQC AND e1.EXAFICTEC = b.DOMFICCOD AND e1.EXAFICEST = c.DOMFICCOD AND e1.EXAFICLRE = 'SI') AS encuentro_cantidad_positivo,
+                (SELECT COUNT(e1.EXAFICCOD)FROM exa.EXAFIC e1 WHERE e1.EXAFICENC = a.EXAFICENC AND e1.EXAFICEQC = a.EXAFICEQC AND e1.EXAFICTEC = b.DOMFICCOD AND e1.EXAFICEST = c.DOMFICCOD AND e1.EXAFICLRE = 'NO') AS encuentro_cantidad_negativo
+                
+                FROM exa.EXAFIC a
+                
+                INNER JOIN adm.DOMFIC b ON a.EXAFICTEC = b.DOMFICCOD
+                INNER JOIN adm.DOMFIC c ON a.EXAFICEST = c.DOMFICCOD
+                INNER JOIN [view].juego d ON a.EXAFICENC = d.JUEGO_CODIGO AND (a.EXAFICEQC = d.EQUIPO_LOCAL_CODIGO OR a.EXAFICEQC = d.EQUIPO_VISITANTE_CODIGO) 
+                
+                WHERE a.EXAFICEQC = ? AND b.DOMFICVAL = 'EXAMENMEDICOTIPO' AND b.DOMFICPAR = 1 AND c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND c.DOMFICPAR = 1 and a.EXAFICLRE IS NOT NULL
+                GROUP BY a.EXAFICENC, d.EQUIPO_LOCAL_NOMBRE, d.EQUIPO_VISITANTE_NOMBRE, a.EXAFICEQC, b.DOMFICCOD, c.DOMFICCOD, d.JUEGO_HORARIO";
+           
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                $stmtMSSQL->execute([$val00]); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                   
+
+                    $detalle    = array(
+                        'encuentro_codigo'                    => $rowMSSQL['encuentro_codigo'],
+                        'encuentro_equipo'                    => trim(strtoupper(strtolower($rowMSSQL['encuentro_equipo']))),
+                        'encuentro_cantidad_positivo'         => $rowMSSQL['encuentro_cantidad_positivo'],
+                        'encuentro_cantidad_negativo'         => $rowMSSQL['encuentro_cantidad_negativo']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'encuentro_codigo'                    => '',
+                        'encuentro_equipo'                    => '',
+                        'encuentro_cantidad_positivo'         => '',
+                        'encuentro_cantidad_negativo'         => ''
+                       
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
 
     $app->get('/v2/200/competicion/encuentro/{equipo}/{competicion}', function($request) {
         require __DIR__.'/../src/connect.php';
