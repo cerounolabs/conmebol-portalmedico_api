@@ -8059,12 +8059,12 @@
                         $encuentro_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['encuentro_fecha']));
                     }
 
-                    $equipovisitante = $rowMSSQL['encuentro_equipo_visitante_nombre'];
-                    $aux = '.vs';
-                    if ($rowMSSQL['EQUIPO_LOCAL_CODIGO']<> $rowMSSQL['equipo']){
-                        $nomEquipo =  $aux.' '.$equipovisitante;
+
+                    $aux = 'vs';
+                    if ($rowMSSQL['EQUIPO_LOCAL_CODIGO'] != $val00){
+                        $nomEquipo =  $aux.' '.$rowMSSQL['encuentro_equipo_visitante_nombre'];
                     } else {
-                        $nomEquipo = '';
+                        $nomEquipo =  $aux.' '.$rowMSSQL['encuentro_equipo_local_nombre'];
                     }
 
                     $detalle    = array(
