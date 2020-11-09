@@ -8025,7 +8025,6 @@
         if (isset($val00)) {
                 $sql00  = "SELECT 
                 a.EXAFICENC AS encuentro_codigo,
-                --RTRIM(d.EQUIPO_LOCAL_NOMBRE)+' vs '+RTRIM(d.EQUIPO_VISITANTE_NOMBRE) AS encuentro_equipo,
                 d.EQUIPO_LOCAL_NOMBRE AS encuentro_equipo_local_nombre,
                 d.EQUIPO_VISITANTE_NOMBRE AS encuentro_equipo_visitante_nombre,
                 d.JUEGO_HORARIO AS encuentro_fecha,
@@ -8057,7 +8056,11 @@
                         $encuentro_fecha_1 = $rowMSSQL['encuentro_fecha'];
                         $encuentro_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['encuentro_fecha']));
                     }
-                   $nomEquipo = 'encuentro_equipo_local_nombre'.' vs '.'encuentro_equipo_visitante_nombre';
+
+                    $equipolocal    = $rowMSSQL['encuentro_equipo_local_nombre'];
+                    $equipovis       = $rowMSSQL['encuentro_equipo_visitante_nombre'];
+
+                   $nomEquipo = $equipolocal.' vs '.$equipovis;
 
                     $detalle    = array(
                         'encuentro_codigo'                    => $rowMSSQL['encuentro_codigo'],
