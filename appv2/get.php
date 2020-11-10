@@ -9210,7 +9210,8 @@
         
         return $json;
     });
-
+    
+/*
     $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -9386,7 +9387,7 @@
         
         return $json;
     });    
-
+*/
 
 
 
