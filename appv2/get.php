@@ -8849,7 +8849,7 @@
 
     $app->get('/v2/801/examen/prueba/{equipo}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
-
+ 
         $val01      = $request->getAttribute('equipo');
         $val02      = $request->getAttribute('encuentro');
 
