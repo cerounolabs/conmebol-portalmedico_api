@@ -9367,7 +9367,7 @@
                         $examen_fecha_1_2 = '';
                     } else {
                         $examen_fecha_1_1 = $rowMSSQL['examen_fecha_1'];
-                        $examen_fecha_1_1 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
+                        $examen_fecha_1_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
                     }
 
                     if ($rowMSSQL['examen_fecha_2'] == '1900-01-01' || $rowMSSQL['examen_fecha_2'] == null){
