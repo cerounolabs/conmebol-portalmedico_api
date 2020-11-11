@@ -9305,6 +9305,238 @@
         
         return $json;
     });
+    
+    $app->get('/v2/801/examen/prueba/detalle/{codigo}', function($request) {//20201111
+        require __DIR__.'/../src/connect.php';
+
+        $val00      = $request->getAttribute('codigo');
+
+        if (isset($val00)) {
+                $sql00  = "SELECT
+                a.EXATESCOD        AS          examen_test_codigo,
+                a.EXATESVAL        AS          examen_test_valor,
+                a.EXATESOBS        AS          examen_test_observacion,
+                
+                a.EXATESAUS        AS          auditoria_usuario,
+                a.EXATESAFH        AS          auditoria_fecha_hora,
+                a.EXATESAIP        AS          auditoria_ip,
+                
+                b.DOMFICCOD        AS          tipo_test_codigo,
+                b.DOMFICNOI        AS          tipo_test_nombre_ingles,
+                b.DOMFICNOC        AS          tipo_test_nombre_castellano,
+                b.DOMFICNOP        AS          tipo_test_nombre_portugues,
+                b.DOMFICPAR        AS          tipo_test_parametro,
+                
+                c.EXAFICCOD        AS          examen_codigo,
+                c.EXAFICFE1        AS          examen_fecha_1,
+                c.EXAFICFE2        AS          examen_fecha_2,
+                c.EXAFICFE3        AS          examen_fecha_3,
+                c.EXAFICACA        AS          examen_cantidad_adulto,
+                c.EXAFICMCA        AS          examen_cantidad_menor,
+                c.EXAFICJCO        AS          examen_persona_convocado,
+                c.EXAFICJPO        AS          examen_persona_posicion,
+                c.EXAFICJCA        AS          examen_persona_camiseta,
+                c.EXAFICLNO        AS          examen_laboratorio_nombre,
+                c.EXAFICLFE        AS          examen_laboratorio_fecha_envio,
+                c.EXAFICLFR        AS          examen_laboratorio_fecha_recepcion,
+                c.EXAFICLFA        AS          examen_laboratorio_fecha_aislamiento,
+                c.EXAFICLFF        AS          examen_laboratorio_fecha_finaliza,
+                c.EXAFICLRE        AS          examen_laboratorio_resultado,
+                c.EXAFICLIC        AS          examen_laboratorio_cuarentena,
+                c.EXAFICLNT        AS          examen_laboratorio_test,
+                c.EXAFICLAD        AS          examen_laboratorio_adjunto,
+                c.EXAFICLOB        AS          examen_laboratorio_observacion,
+                c.EXAFICBAN        AS          examen_bandera,
+                c.EXAFICOBS        AS          examen_observacion
+                
+                FROM exa.EXATES a
+                INNER JOIN adm.DOMFIC b ON a.EXATESTTC = b.DOMFICCOD
+                INNER JOIN exa.EXAFIC c ON a.EXATESEXC = c.EXAFICCOD
+                
+                WHERE a.EXATESEXC = ?";
+
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                $stmtMSSQL->execute([$val00]); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['examen_fecha_1'] == '1900-01-01' || $rowMSSQL['examen_fecha_1'] == null){
+                        $examen_fecha_1_1 = '';
+                        $examen_fecha_1_2 = '';
+                    } else {
+                        $examen_fecha_1_1 = $rowMSSQL['examen_fecha_1'];
+                        $examen_fecha_1_1 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
+                    }
+
+                    if ($rowMSSQL['examen_fecha_2'] == '1900-01-01' || $rowMSSQL['examen_fecha_2'] == null){
+                        $examen_fecha_2_1 = '';
+                        $examen_fecha_2_2 = '';
+                    } else {
+                        $examen_fecha_2_1 = $rowMSSQL['examen_fecha_2'];
+                        $examen_fecha_2_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_2']));
+                    }
+
+                    if ($rowMSSQL['examen_fecha_3'] == '1900-01-01' || $rowMSSQL['examen_fecha_3'] == null){
+                        $examen_fecha_3_1 = '';
+                        $examen_fecha_3_2 = '';
+                    } else {
+                        $examen_fecha_3_1 = $rowMSSQL['examen_fecha_3'];
+                        $examen_fecha_3_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_3']));
+                    }
+
+                    if ($rowMSSQL['examen_laboratorio_fecha_envio'] == '1900-01-01' || $rowMSSQL['examen_laboratorio_fecha_envio'] == null){
+                        $examen_laboratorio_fecha_envio_1 = '';
+                        $examen_laboratorio_fecha_envio_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_envio_1 = $rowMSSQL['examen_laboratorio_fecha_envio'];
+                        $examen_laboratorio_fecha_envio_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_envio']));
+                    }
+                    
+                    if ($rowMSSQL['examen_laboratorio_fecha_recepcion'] == '1900-01-01' || $rowMSSQL['examen_laboratorio_fecha_recepcion'] == null){
+                        $examen_laboratorio_fecha_recepcion_1 = '';
+                        $examen_laboratorio_fecha_recepcion_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_recepcion_1 = $rowMSSQL['examen_laboratorio_fecha_recepcion'];
+                        $examen_laboratorio_fecha_recepcion_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_recepcion']));
+                    }
+                    
+                    if ($rowMSSQL['examen_laboratorio_fecha_aislamiento'] == '1900-01-01' || $rowMSSQL['examen_laboratorio_fecha_aislamiento'] == null){
+                        $examen_laboratorio_fecha_aislamiento_1 = '';
+                        $examen_laboratorio_fecha_aislamiento_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_aislamiento_1 = $rowMSSQL['examen_laboratorio_fecha_aislamiento'];
+                        $examen_laboratorio_fecha_aislamiento_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_aislamiento']));
+                    }
+                                    
+                    if ($rowMSSQL['examen_laboratorio_fecha_finaliza'] == '1900-01-01' || $rowMSSQL['examen_laboratorio_fecha_finaliza'] == null){
+                        $examen_laboratorio_fecha_finaliza_1 = '';
+                        $examen_laboratorio_fecha_finaliza_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_finaliza_1 = $rowMSSQL['examen_laboratorio_fecha_finaliza'];
+                        $examen_laboratorio_fecha_finaliza_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_finaliza']));
+                    }
+                    
+                    
+
+                    $detalle    = array(
+                        'examen_test_codigo'                            => $rowMSSQL['examen_test_codigo'],
+                        'examen_test_valor'                             => trim(strtoupper(strtolower($rowMSSQL['examen_test_valor']))),
+                        'examen_test_observacion'                       => trim($rowMSSQL['examen_test_observacion']),
+
+                        'auditoria_usuario'                             => trim(strtoupper(strtolower($rowMSSQL00['auditoria_usuario']))),
+                        'auditoria_fecha_hora'                          => date("d/m/Y", strtotime($rowMSSQL00['auditoria_fecha_hora'])),
+                        'auditoria_ip'                                  => trim(strtoupper(strtolower($rowMSSQL00['auditoria_ip']))),
+
+                        'tipo_test_codigo'                              => $rowMSSQL['examen_test_codigo'],
+                        'tipo_test_nombre_ingles'                       => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_ingles']))),
+                        'tipo_test_nombre_castellano'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_castellano']))),
+                        'tipo_test_nombre_portugues'                    => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_portugues']))),
+                        'tipo_test_parametro'                           => $rowMSSQL['tipo_test_parametro'],
+                        
+                        'examen_codigo'                                 => $rowMSSQL['examen_codigo'],
+                        'examen_fecha_1_1'                              => $examen_fecha_1_1,
+                        'examen_fecha_1_2'                              => $examen_fecha_1_2,
+                        'examen_fecha_2_1'                              => $examen_fecha_2_1,
+                        'examen_fecha_2_2'                              => $examen_fecha_2_2,
+                        'examen_fecha_3_1'                              => $examen_fecha_3_1,
+                        'examen_fecha_3_2'                              => $examen_fecha_3_2,
+                        'examen_cantidad_adulto'                        => $rowMSSQL['examen_cantidad_adulto'],
+                        'examen_cantidad_menor'                         => $rowMSSQL['examen_cantidad_menor'],
+                        'examen_persona_convocado'                      => trim(strtoupper(strtolower($rowMSSQL['examen_persona_convocado']))),
+                        'examen_persona_posicion'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_posicion']))),
+                        'examen_persona_camiseta'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_camiseta']))),
+                        'examen_laboratorio_nombre'                     => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_nombre']))),
+                        'examen_laboratorio_fecha_envio_1'              => $examen_laboratorio_fecha_envio_1,
+                        'examen_laboratorio_fecha_envio_2'              => $examen_laboratorio_fecha_envio_2,
+                        'examen_laboratorio_fecha_recepcion_1'          => $examen_laboratorio_fecha_recepcion_1,
+                        'examen_laboratorio_fecha_recepcion_2'          => $examen_laboratorio_fecha_recepcion_2,
+                        'examen_laboratorio_fecha_aislamiento_1'        => $examen_laboratorio_fecha_aislamiento_1,
+                        'examen_laboratorio_fecha_aislamiento_2'        => $examen_laboratorio_fecha_aislamiento_2,
+                        'examen_laboratorio_fecha_finaliza_1'           => $examen_laboratorio_fecha_finaliza_1,
+                        'examen_laboratorio_fecha_finaliza_2'           => $examen_laboratorio_fecha_finaliza_2,
+                        'examen_laboratorio_resultado'                  => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_resultado']))),
+                        'examen_laboratorio_cuarentena'                 => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_cuarentena']))),
+                        'examen_laboratorio_test'                       => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_test']))),
+                        'examen_laboratorio_adjunto'                    => trim(strtolower($rowMSSQL['examen_laboratorio_adjunto'])),
+                        'examen_laboratorio_observacion'                => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_observacion']))),
+                        'examen_bandera'                                => trim(strtoupper(strtolower($rowMSSQL['examen_bandera']))),
+                        'examen_observacion'                            => trim(strtoupper(strtolower($rowMSSQL['examen_observacion'])))
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'examen_test_codigo'                            => '',
+                        'examen_test_valor'                             => '',
+                        'examen_test_observacion'                       => '',
+
+                        'auditoria_usuario'                             => '',
+                        'auditoria_fecha_hora'                          => '',
+                        'auditoria_ip'                                  => '',
+
+                        'tipo_test_codigo'                              => '',
+                        'tipo_test_nombre_ingles'                       => '',
+                        'tipo_test_nombre_castellano'                   => '',
+                        'tipo_test_nombre_portugues'                    => '',
+                        'tipo_test_parametro'                           => '',
+                        
+                        'examen_codigo'                                 => '',
+                        'examen_fecha_1_1'                              => '',
+                        'examen_fecha_1_2'                              => '',
+                        'examen_fecha_2_1'                              => '',
+                        'examen_fecha_2_2'                              => '',
+                        'examen_fecha_3_1'                              => '',
+                        'examen_fecha_3_2'                              => '',
+                        'examen_cantidad_adulto'                        => '',
+                        'examen_cantidad_menor'                         => '',
+                        'examen_persona_convocado'                      => '',
+                        'examen_persona_posicion'                       => '',
+                        'examen_persona_camiseta'                       => '',
+                        'examen_laboratorio_nombre'                     => '',
+                        'examen_laboratorio_fecha_envio_1'              => '',
+                        'examen_laboratorio_fecha_envio_2'              => '',
+                        'examen_laboratorio_fecha_recepcion_1'          => '',
+                        'examen_laboratorio_fecha_recepcion_2'          => '',
+                        'examen_laboratorio_fecha_aislamiento_1'        => '',
+                        'examen_laboratorio_fecha_aislamiento_2'        => '',
+                        'examen_laboratorio_fecha_finaliza_1'           => '',
+                        'examen_laboratorio_fecha_finaliza_2'           => '',
+                        'examen_laboratorio_resultado'                  => '',
+                        'examen_laboratorio_cuarentena'                 => '',
+                        'examen_laboratorio_test'                       => '',
+                        'examen_laboratorio_adjunto'                    => '',
+                        'examen_laboratorio_observacion'                => '',
+                        'examen_bandera'                                => '',
+                        'examen_observacion'                            => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
 
     $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
