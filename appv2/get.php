@@ -9306,7 +9306,7 @@
         return $json;
     });
     
-    /*$app->get('/v2/801/examen/prueba/detalle/{codigo}', function($request) {//20201111
+    $app->get('/v2/801/examen/prueba/detalle/consulta/{codigo}', function($request) {//20201111
         require __DIR__.'/../src/connect.php';
 
         $val00      = $request->getAttribute('codigo');
@@ -9535,7 +9535,7 @@
         $connMSSQL  = null;
         
         return $json;
-    });*/
+    });
 
     $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
