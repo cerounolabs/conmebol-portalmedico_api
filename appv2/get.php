@@ -9537,10 +9537,11 @@
         return $json;
     });
 
-    $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
+    $app->get('/v2/801/examen/competicion/chart01/{equipo1}/{equipo2}/{competicion}/{examen}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
 
-        $val01      = $request->getAttribute('equipo');
+        $val01_1      = $request->getAttribute('equipo1');
+        $val01_2      = $request->getAttribute('equipo2');
         $val02      = $request->getAttribute('competicion');
         $val03      = $request->getAttribute('examen');
         $val04      = $request->getAttribute('encuentro');
@@ -9550,15 +9551,15 @@
 
             if($val01 == 39393) {
                 $sql00  = "SELECT
-                    '1'                         AS     tipo_codigo,
-                    'TOTAL PERSONA'             AS     tipo_nombre,
-                    COUNT(*)                    AS     cantidad_persona
-                    
-                    FROM comet.competitions_teams_players a
-                    
-                    WHERE a.competitionFifaId = ?
-                    
-                    GROUP BY a.competitionFifaId";
+                '1'                         AS     tipo_codigo,
+                'TOTAL PERSONA'             AS     tipo_nombre,
+                COUNT(*)                    AS     cantidad_persona
+                
+                FROM comet.competitions_teams_players a
+                
+                WHERE a.competitionFifaId = ? AND (a.teamFifaId = ? OR a.teamFifaId = ?)
+                
+                GROUP BY a.competitionFifaId";
 
                 $sql01  = "SELECT
                     a.DOMFICCOD                  AS  tipo_codigo,
@@ -9580,7 +9581,7 @@
                     COUNT(*)                     AS     cantidad_persona
                     
                     FROM comet.competitions_teams_players  a
-                    WHERE a.competitionFifaId = ? AND
+                    WHERE a.competitionFifaId = ? AND (a.teamFifaId = ? OR a.teamFifaId = ?)
                     NOT EXISTS
                         (SELECT * 
                             FROM exa.EXAFIC b 
@@ -9640,9 +9641,9 @@
                 $stmtMSSQL02= $connMSSQL->prepare($sql02);
 
                 if ($val01 == 39393) {
-                    $stmtMSSQL00->execute([$val02]);
+                    $stmtMSSQL00->execute([$val02, $val01_1, $val01_2]);
                     $stmtMSSQL01->execute([$val03, $val02, $val02, $val04]);
-                    $stmtMSSQL02->execute([$val02, $val03, $val04]);
+                    $stmtMSSQL02->execute([$val02, $val03, $val04, $val01_1, $val01_2]);
                 } else {
                     $stmtMSSQL00->execute([$val02, $val01]);
                     $stmtMSSQL01->execute([$val03, $val01, $val02, $val02, $val04]);
