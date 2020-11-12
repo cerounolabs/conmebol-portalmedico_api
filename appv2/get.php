@@ -9553,7 +9553,7 @@
                     '1'                         AS     tipo_codigo,
                     'TOTAL PERSONA'             AS     tipo_nombre,
                     ((SELECT COUNT(*) from comet.competitions_teams_players b1 WHERE (b1.competitionFifaId = a.COMPETICION_ID OR b1.competitionFifaId = a.COMPETICION_PADRE_ID) AND b1.teamFifaId = a.EQUIPO_LOCAL_CODIGO) +
-                    (SELECT COUNT(*) from comet.competitions_teams_players b2 WHERE (b2.competitionFifaId = a.COMPETICION_ID OR b2.competitionFifaId = a.COMPETICION_PADRE_ID) AND b2.teamFifaId = a.EQUIPO_VISITANTE_CODIGO)) AS TOTAL_PERSONA
+                    (SELECT COUNT(*) from comet.competitions_teams_players b2 WHERE (b2.competitionFifaId = a.COMPETICION_ID OR b2.competitionFifaId = a.COMPETICION_PADRE_ID) AND b2.teamFifaId = a.EQUIPO_VISITANTE_CODIGO)) AS cantidad_persona
                         
                     FROM [VIEW].juego a
                         
@@ -9574,21 +9574,17 @@
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
                 $sql02 = "SELECT
-                    '2'                          AS     tipo_codigo,
-                    'PENDIENTE DE CARGA'         AS     tipo_nombre,
-                    COUNT(*)                     AS     cantidad_persona
+                    '2'                           AS     tipo_codigo,
+                    'PENDIENTE DE CARGA'          AS     tipo_nombre,
+                    (((SELECT COUNT(*) from comet.competitions_teams_players b1 WHERE (b1.competitionFifaId = a.COMPETICION_ID OR b1.competitionFifaId = a.COMPETICION_PADRE_ID) AND b1.teamFifaId = a.EQUIPO_LOCAL_CODIGO) +
+                    ( SELECT COUNT(*) from comet.competitions_teams_players b2 WHERE (b2.competitionFifaId = a.COMPETICION_ID OR b2.competitionFifaId = a.COMPETICION_PADRE_ID) AND b2.teamFifaId = a.EQUIPO_VISITANTE_CODIGO)) -
                     
-                    FROM comet.competitions_teams_players  a
-                    WHERE a.competitionFifaId = ? AND
-                    NOT EXISTS
-                        (SELECT * 
-                            FROM exa.EXAFIC b 
-                            INNER JOIN adm.DOMFIC c ON b.EXAFICEST = c.DOMFICCOD
-                            INNER JOIN comet.competitions d ON (b.EXAFICCOC = d.competitionFifaId OR b.EXAFICCOC = d.superiorCompetitionFifaId)
-                        
-                            WHERE c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICPEC = a.playerFifaId AND b.EXAFICTEC = ? AND b.EXAFICENC = ?
-                        )
-                    GROUP BY a.competitionFifaId";
+                    ((SELECT COUNT(DISTINCT(b3.EXAFICPEC)) FROM exa.EXAFIC b3 WHERE (b3.EXAFICCOC = a.COMPETICION_ID OR b3.EXAFICCOC = a.COMPETICION_PADRE_ID) AND b3.EXAFICEQC = a.EQUIPO_LOCAL_CODIGO AND b3.EXAFICTEC = ? AND b3.EXAFICENC = a.JUEGO_CODIGO)+
+                    (SELECT COUNT(DISTINCT(b4.EXAFICPEC)) FROM exa.EXAFIC b4 WHERE (b4.EXAFICCOC = a.COMPETICION_ID OR b4.EXAFICCOC = a.COMPETICION_PADRE_ID) AND b4.EXAFICEQC = a.EQUIPO_VISITANTE_CODIGO AND b4.EXAFICTEC = ? AND b4.EXAFICENC = a.JUEGO_CODIGO))) AS cantidad_persona 
+                    
+                    FROM [VIEW].juego a
+                    
+                    WHERE (a.COMPETICION_PADRE_ID = ? OR a.COMPETICION_ID = ?) AND a.JUEGO_CODIGO = ?";
             } else {
                 $sql00  = "SELECT
                     '1'                                          AS     tipo_codigo,
@@ -9610,7 +9606,7 @@
                     INNER JOIN comet.competitions c ON b.EXAFICCOC = c.competitionFifaId
                     
                     WHERE b.EXAFICTEC = ? AND b.EXAFICEQC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICENC = ?
-                    AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)
+                    /*AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)*/
                     AND NOT EXISTS (SELECT * FROM comet.competitions_teams_players e WHERE (e.competitionFifaId = c.competitionFifaId OR e.competitionFifaId = c.superiorCompetitionFifaId) AND e.playerType = 'Z' AND e.playerFifaId = b.EXAFICPEC)
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
@@ -9641,7 +9637,7 @@
                 if ($val01 == 39393) {
                     $stmtMSSQL00->execute([$val02, $val02, $val04]);
                     $stmtMSSQL01->execute([$val03, $val02, $val02, $val04]);
-                    $stmtMSSQL02->execute([$val02, $val03, $val04]);
+                    $stmtMSSQL02->execute([$val03, $val03, $val02, $val02, $val04]);
                 } else {
                     $stmtMSSQL00->execute([$val02, $val01]);
                     $stmtMSSQL01->execute([$val03, $val01, $val02, $val02, $val04]);
@@ -9710,4 +9706,4 @@
         $connMSSQL  = null;
         
         return $json;
-    });
+    }); 
