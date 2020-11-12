@@ -9563,7 +9563,7 @@
                     INNER JOIN comet.competitions c ON b.EXAFICCOC = c.competitionFifaId
                     
                     WHERE b.EXAFICTEC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICENC = ?
-                    AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)
+                    /*AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)*/
                     
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
