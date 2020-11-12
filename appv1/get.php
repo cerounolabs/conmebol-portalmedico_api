@@ -9546,13 +9546,12 @@
                 $sql00  = "SELECT
                     '1'                         AS     tipo_codigo,
                     'TOTAL PERSONA'             AS     tipo_nombre,
-                    COUNT(*)                    AS     cantidad_persona
-                    
-                    FROM comet.competitions_teams_players a
-                    
-                    WHERE a.competitionFifaId = ?
-                    
-                    GROUP BY a.competitionFifaId";
+                    ((SELECT COUNT(*) from comet.competitions_teams_players b1 WHERE (b1.competitionFifaId = a.COMPETICION_ID OR b1.competitionFifaId = a.COMPETICION_PADRE_ID) AND b1.teamFifaId = a.EQUIPO_LOCAL_CODIGO) +
+                    (SELECT COUNT(*) from comet.competitions_teams_players b2 WHERE (b2.competitionFifaId = a.COMPETICION_ID OR b2.competitionFifaId = a.COMPETICION_PADRE_ID) AND b2.teamFifaId = a.EQUIPO_VISITANTE_CODIGO)) AS cantidad_persona
+                        
+                    FROM [VIEW].juego a
+                        
+                    WHERE (a.COMPETICION_PADRE_ID = ? OR a.COMPETICION_ID = ?) AND a.JUEGO_CODIGO = ?";
 
                 $sql01  = "SELECT
                     a.DOMFICCOD                  AS  tipo_codigo,
@@ -9605,7 +9604,7 @@
                     INNER JOIN comet.competitions c ON b.EXAFICCOC = c.competitionFifaId
                     
                     WHERE b.EXAFICTEC = ? AND b.EXAFICEQC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICENC = ?
-                    /*AND NOT EXISTS (SELECT * FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)*/
+                    /*AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE b.EXAFICPEC = d.personFifaId)*/
                     AND NOT EXISTS (SELECT * FROM comet.competitions_teams_players e WHERE (e.competitionFifaId = c.competitionFifaId OR e.competitionFifaId = c.superiorCompetitionFifaId) AND e.playerType = 'Z' AND e.playerFifaId = b.EXAFICPEC)
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
@@ -9634,7 +9633,7 @@
                 $stmtMSSQL02= $connMSSQL->prepare($sql02);
 
                 if ($val01 == 39393) {
-                    $stmtMSSQL00->execute([$val02]);
+                    $stmtMSSQL00->execute([$val02, $val02, $val04]);
                     $stmtMSSQL01->execute([$val03, $val02, $val02, $val04]);
                     $stmtMSSQL02->execute([$val02, $val03, $val04]);
                 } else {
@@ -9705,4 +9704,4 @@
         $connMSSQL  = null;
         
         return $json;
-    });    
+    }); 
