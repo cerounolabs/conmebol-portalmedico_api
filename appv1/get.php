@@ -8053,7 +8053,7 @@
                 FROM [view].[juego] a
                 
                 
-                WHERE a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?
+                WHERE (a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?) AND a.JUEGO_NOMBRE IS NOT NULL
                 
                 ORDER BY a.JUEGO_CODIGO DESC";
            
