@@ -359,8 +359,8 @@
 
     $app->put('/v2/801/examen/test/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
-
-        $val00      = $request->getAttribute()('codigo'); 
+        
+        $val00      = $request->getAttribute('codigo'); 
         $val01      = $request->getParsedBody()['tipo_test_codigo'];
         $val02      = trim(strtoupper(strtolower($request->getParsedBody()['tipo_test_dominio'])));
         $val03      = $request->getParsedBody()['examen_codigo'];
