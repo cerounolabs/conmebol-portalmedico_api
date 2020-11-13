@@ -357,10 +357,10 @@
         return $json;
     });
 
-   /* $app->put('/v2/801/examen/test/{codigo}', function($request) {
+    $app->put('/v2/801/examen/test/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
-        $val00      = $request->getAttribute()['codigo'];
+        $val00      = $request->getAttribute()('codigo');
         $val01      = $request->getParsedBody()['tipo_test_codigo'];
         $val02      = trim(strtoupper(strtolower($request->getParsedBody()['tipo_test_dominio'])));
         $val03      = $request->getParsedBody()['examen_codigo'];
@@ -371,7 +371,7 @@
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
-        if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
+        if (isset($val00) && isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
                 $sql00  = "UPDATE [exa].[EXATES] SET EXATESTTC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = ? AND DOMFICPAR = ?), EXATESEXC = ?, EXATESVAL = ?, EXATESOBS = ?, EXATESAUS = ?, EXATESAFH = GETDATE(), EXATESAIP = ? WHERE EXATESCOD = ?";
             
             try {
@@ -396,6 +396,4 @@
         $connMSSQL  = null;
         
         return $json;
-    });*/
-
-
+    });
