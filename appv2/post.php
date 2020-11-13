@@ -658,21 +658,22 @@
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getParsedBody()['tipo_test_codigo'];
-        $val02      = $request->getParsedBody()['examen_codigo'];
-        $val03      = $request->getParsedBody()['examen_test_valor'];
-        $val04      = $request->getParsedBody()['examen_test_observacion'];
+        $val02      = $request->getParsedBody()['tipo_test_dominio'];
+        $val03      = $request->getParsedBody()['examen_codigo'];
+        $val04      = $request->getParsedBody()['examen_test_valor'];
+        $val05      = $request->getParsedBody()['examen_test_observacion'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
-        if (isset($val01) && isset($val02) && isset($val03)) {
-            $sql00  = "INSERT INTO [exa].[EXATES] (EXATESTTC, EXATESEXC, EXATESVAL, EXATESOBS, EXATESAUS, EXATESAFH, EXATESAIP) VALUES (?, ?, ?, ?, ?, GETDATE(), ?)";
+        if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
+            $sql00  = "INSERT INTO [exa].[EXATES] (EXATESTTC, EXATESEXC, EXATESVAL, EXATESOBS, EXATESAUS, EXATESAFH, EXATESAIP) VALUES ((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = ? AND DOMFICPAR = ?)?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $aud01, $aud03]); 
+                $stmtMSSQL->execute([$val02, $val01, $val03, $val04, $val05, $aud01, $aud03]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => 0), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
