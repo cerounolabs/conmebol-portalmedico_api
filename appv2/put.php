@@ -357,7 +357,7 @@
         return $json;
     });
 
-   /* $app->put('/v2/801/examen/test/{codigo}', function($request) {
+    $app->put('/v2/801/examen/test/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val00      = $request->getAttribute()('codigo');
@@ -396,6 +396,4 @@
         $connMSSQL  = null;
         
         return $json;
-    });*/
-
-
+    });
