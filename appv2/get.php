@@ -9433,7 +9433,7 @@
                         'auditoria_fecha_hora'                          => date("d/m/Y", strtotime($rowMSSQL['auditoria_fecha_hora'])),
                         'auditoria_ip'                                  => trim(strtoupper(strtolower($rowMSSQL['auditoria_ip']))),
 
-                        'tipo_test_codigo'                              => $rowMSSQL['examen_test_codigo'],
+                        'tipo_test_codigo'                              => $rowMSSQL['tipo_test_codigo'],
                         'tipo_test_nombre_ingles'                       => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_ingles']))),
                         'tipo_test_nombre_castellano'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_castellano']))),
                         'tipo_test_nombre_portugues'                    => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_portugues']))),
