@@ -361,7 +361,7 @@
         require __DIR__.'/../src/connect.php';
         
         $val00      = $request->getAttribute('codigo'); 
-        $val01      = $request->getParsedBody()['tipo_test_codigo'];
+        $val01      = $request->getParsedBody()['tipo_test_parametro'];
         $val02      = trim(strtoupper(strtolower($request->getParsedBody()['tipo_test_dominio'])));
         $val03      = $request->getParsedBody()['examen_codigo'];
         $val04      = $request->getParsedBody()['examen_test_valor'];
