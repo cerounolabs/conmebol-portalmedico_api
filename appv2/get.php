@@ -9329,6 +9329,7 @@
                 b.DOMFICNOI        AS          tipo_test_nombre_ingles,
                 b.DOMFICNOC        AS          tipo_test_nombre_castellano,
                 b.DOMFICNOP        AS          tipo_test_nombre_portugues,
+                b.DOMFICVAL        AS          tipo_test_dominio,
                 b.DOMFICPAR        AS          tipo_test_parametro,
                 
                 c.EXAFICCOD        AS          examen_codigo,
@@ -9438,6 +9439,7 @@
                         'tipo_test_nombre_castellano'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_castellano']))),
                         'tipo_test_nombre_portugues'                    => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_portugues']))),
                         'tipo_test_parametro'                           => $rowMSSQL['tipo_test_parametro'],
+                        'tipo_test_dominio'                             => trim(strtoupper(strtolower($rowMSSQL['tipo_test_dominio']))),                           
                         
                         'examen_codigo'                                 => $rowMSSQL['examen_codigo'],
                         'examen_fecha_1_1'                              => $examen_fecha_1_1,
@@ -9490,6 +9492,7 @@
                         'tipo_test_nombre_castellano'                   => '',
                         'tipo_test_nombre_portugues'                    => '',
                         'tipo_test_parametro'                           => '',
+                        'tipo_test_dominio'                             => '',
                         
                         'examen_codigo'                                 => '',
                         'examen_fecha_1_1'                              => '',
