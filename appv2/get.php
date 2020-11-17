@@ -7978,9 +7978,10 @@
                     }
 
                     if ($rowMSSQL['competicion_codigo_padre'] == 0 || $rowMSSQL['competicion_codigo_padre'] == null){
-                        $competicion = $rowMSSQL['competicion_codigo']; 
+                        //$competicion = $rowMSSQL['competicion_codigo']; 
+                        $competicion = 1; 
                     } else {
-                        $competicion = $rowMSSQL['competicion_codigo_padre'];
+                        $competicion = 2;
                     }
 
                     $detalle    = array(
