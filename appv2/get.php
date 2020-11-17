@@ -7055,7 +7055,7 @@
             if ($val01 == 39393) {
                 $sql00  = "SELECT 
                     a.PERCOMOBS                         AS          competicion_persona_observacion,
-                    a.PERCOMRTS                         AS          competicion_persona_RTS,
+                    a.PERCOMRTS                         AS          competicion_persona_rts,
 
                     a.PERCOMAUS                         AS          auditoria_usuario,
                     a.PERCOMAFH                         AS          auditoria_fecha_hora,
