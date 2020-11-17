@@ -7979,9 +7979,9 @@
 
                     if ($rowMSSQL['competicion_codigo_padre'] == 0 || $rowMSSQL['competicion_codigo_padre'] == null){
                         //$competicion = $rowMSSQL['competicion_codigo']; 
-                        $competicioncodigo = 1; 
+                        $competicioncodigo = $rowMSSQL['competicion_codigo'];  
                     } else {
-                        $competicioncodigo = 2;
+                        $competicioncodigo = $rowMSSQL['competicion_codigo']; 
                     }
 
                     $detalle    = array(
