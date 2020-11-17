@@ -8711,7 +8711,22 @@
 
             while ($rowMSSQL = $stmtMSSQL->fetch()) {    
                 $auditoria_fecha_hora = date_format(date_create($rowMSSQL['auditoria_fecha_hora']), 'd/m/Y H:i:s');
-                
+
+                if ($rowMSSQL['competicion_desde'] == '1900-01-01' || $rowMSSQL['competicion_desde'] == null){
+                    $competicion_desde_1 = '';
+                    $competicion_desde_2 = '';
+                } else {
+                    $competicion_desde_1 = $rowMSSQL['competicion_desde'];
+                    $competicion_desde_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_desde']));
+                }
+
+                if ($rowMSSQL['competicion_hasta'] == '1900-01-01' || $rowMSSQL['competicion_hasta'] == null){
+                    $competicion_hasta_1 = '';
+                    $competicion_hasta_2 = '';
+                } else {
+                    $competicion_hasta_1 = $rowMSSQL['competicion_hasta'];
+                    $competicion_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_hasta']));
+                }
                 if (isset($rowMSSQL['persona_path'])){
                     $persona_path = $rowMSSQL['persona_path'];
                 } else {
@@ -8754,6 +8769,8 @@
                     'tipo_estado_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
                     'tipo_estado_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
                     'tipo_estado_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                    'tipo_modulo_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_dominio']))),
+                    'tipo_modulo_parametro'                 => $rowMSSQL['tipo_modulo_parametro'],
 
                     'tipo_acceso_codigo'                    => $rowMSSQL['tipo_acceso_codigo'],
                     'tipo_acceso_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_ingles']))),
@@ -8781,8 +8798,10 @@
                     'competicion_anho'                      => $rowMSSQL['competicion_anho'],
                     'competicion_categoria_codigo'          => trim(strtoupper(strtolower($rowMSSQL['competicion_categoria_codigo']))),
                     'competicion_categoria_nombre'          => trim(strtoupper(strtolower($rowMSSQL['competicion_categoria_nombre']))),
-                    'competicion_desde'                     => $rowMSSQL['competicion_desde'],
-                    'competicion_hasta'                     => $rowMSSQL['competicion_hasta'],
+                    'competicion_desde_1'                   => $competicion_desde_1,
+                    'competicion_desde_2'                   => $competicion_desde_2,
+                    'competicion_hasta_1'                   => $competicion_hasta_1,
+                    'competicion_hasta_2'                   => $competicion_hasta_2,
                     'competicion_disciplina'                => trim(strtoupper(strtolower($rowMSSQL['competicion_disciplina']))),
                     'competicion_genero'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_genero']))),
                     'competicion_imagen_codigo'             => $rowMSSQL['competicion_imagen_codigo'],
@@ -8829,6 +8848,8 @@
                     'tipo_estado_nombre_ingles'             => '',
                     'tipo_estado_nombre_castellano'         => '',
                     'tipo_estado_nombre_portugues'          => '',
+                    'tipo_modulo_dominio'                   => '',
+                    'tipo_modulo_parametro'                 => '',
 
                     'tipo_acceso_codigo'                    => '',
                     'tipo_acceso_nombre_ingles'             => '',
@@ -8856,8 +8877,10 @@
                     'competicion_anho'                      => '',
                     'competicion_categoria_codigo'          => '',
                     'competicion_categoria_nombre'          => '',
-                    'competicion_desde'                     => '',
-                    'competicion_hasta'                     => '',
+                    'competicion_desde_1'                   => '',
+                    'competicion_desde_2'                   => '',
+                    'competicion_hasta_1'                   => '',
+                    'competicion_hasta_2'                   => '',
                     'competicion_disciplina'                => '',
                     'competicion_genero'                    => '',
                     'competicion_imagen_codigo'             => '',
