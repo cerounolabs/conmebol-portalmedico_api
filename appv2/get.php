@@ -7981,7 +7981,7 @@
                         //$competicion = $rowMSSQL['competicion_codigo']; 
                         $competicioncodigo = $rowMSSQL['competicion_codigo'];  
                     } else {
-                        $competicioncodigo = $rowMSSQL['competicion_codigo']; 
+                        $competicioncodigo = $rowMSSQL['competicion_codigo_padre']; 
                     }
 
                     $detalle    = array(
@@ -8000,13 +8000,13 @@
                         'equipo_local_nombre'                   => trim(strtoupper(strtolower($rowMSSQL['equipo_local_nombre']))),
                         'equipo_local_resultado_primer'         => $rowMSSQL['equipo_local_resultado_primer'],
                         'equipo_local_resultado_segundo'        => $rowMSSQL['equipo_local_resultado_segundo'],
-                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_segundo'],
+                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_final'],
 
                         'equipo_visitante_codigo'               => $rowMSSQL['equipo_visitante_codigo'],
                         'equipo_visitante_nombre'               => trim(strtoupper(strtolower($rowMSSQL['equipo_visitante_nombre']))),
                         'equipo_visitante_resultado_primer'     => $rowMSSQL['equipo_visitante_resultado_primer'],
                         'equipo_visitante_resultado_segundo'    => $rowMSSQL['equipo_visitante_resultado_segundo'],
-                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_segundo']
+                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_final']
                     );
 
                     $result[]   = $detalle;
