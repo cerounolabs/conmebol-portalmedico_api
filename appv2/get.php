@@ -7977,10 +7977,10 @@
                         $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
                     }
 
-                    if ($rowMSSQL['COMPETICION_PADRE_ID'] == 0 || $rowMSSQL['COMPETICION_PADRE_ID'] == null){
-                        $competicion = $rowMSSQL['COMPETICION_ID']; 
+                    if ($rowMSSQL['competicion_codigo_padre'] == 0 || $rowMSSQL['competicion_codigo_padre'] == null){
+                        $competicion = $rowMSSQL['competicion_codigo']; 
                     } else {
-                        $competicion = $rowMSSQL['COMPETICION_ID'];
+                        $competicion = $rowMSSQL['competicion_codigo'];
                     }
 
                     $detalle    = array(
