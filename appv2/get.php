@@ -7985,7 +7985,7 @@
 
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
-                        'competicion_codigo_padre'              =>  $competicion,
+                        'competicion_codigo_padre'              => $competicion,
                         'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
 
@@ -8016,7 +8016,6 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'competicion_codigo'                    => '',
                         'competicion_codigo'                    => '',
                         'competicion_codigo_padre'              => '',
                         'competicion_estado'                    => '',
