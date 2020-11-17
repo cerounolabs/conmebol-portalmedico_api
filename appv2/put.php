@@ -421,7 +421,7 @@
             $stmtMSSQL->execute([$val03, $val04, $aud01, $aud03, $val05, $val01, $val02]); 
             
             header("Content-Type: application/json; charset=utf-8");
-            $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val01.', '.$val02), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
 
             $stmtMSSQL->closeCursor();
             $stmtMSSQL = null;
