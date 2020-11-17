@@ -360,20 +360,22 @@
         
         $val01      = $request->getParsedBody()['competicion_codigo'];
         $val02      = $request->getParsedBody()['persona_codigo'];
-        $val03      = $request->getParsedBody()['tipo_modulo_codigo'];
+        $val03      = $request->getParsedBody()['tipo_modulo_parametro'];
         $val04      = $request->getParsedBody()['competicion_persona_observacion'];
+        $val05      = $request->getParsedBody()['competicion_persona_RTS'];
+        
         
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03)) {
-            $sql00  = "INSERT INTO [adm].[PERCOM] (PERCOMCOC, PERCOMPEC, PERCOMTMC, PERCOMOBS, PERCOMAUS, PERCOMAFH, PERCOMAIP) VALUES (?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql00  = "INSERT INTO [adm].[PERCOM] (PERCOMCOC, PERCOMPEC, PERCOMTMC, PERCOMOBS, PERCOMAUS, PERCOMAFH, PERCOMAIP, PERCOMRTS) VALUES (?, ?, (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'USUARIOMODULO' AND DOMFICPAR = ?), ?, ?, GETDATE(), ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $aud01, $aud03]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $aud01, $aud03, $val05]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
