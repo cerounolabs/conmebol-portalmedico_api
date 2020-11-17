@@ -8752,7 +8752,7 @@
                 }
 
                 $detalle    = array(
-                    'competicion_persona_observacion'       => trim(strtoupper(strtolower($rowMSSQL['competicion_persona_observacion']))),
+                    'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
                     'competicion_persona_rts'               => trim($rowMSSQL['competicion_persona_rts']),
                     'auditoria_usuario'                     => trim(strtoupper(strtolower($rowMSSQL['auditoria_usuario']))),
                     'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
