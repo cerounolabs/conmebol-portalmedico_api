@@ -7966,7 +7966,7 @@
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
-                    $stmtMSSQL->execute([$val00, $val00]); 
+                $stmtMSSQL->execute([$val00, $val00]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     if ($rowMSSQL['juego_horario'] == '1900-01-01' || $rowMSSQL['juego_horario'] == null){
@@ -7979,14 +7979,14 @@
 
                     if ($rowMSSQL['competicion_codigo_padre'] == 0 || $rowMSSQL['competicion_codigo_padre'] == null){
                         //$competicion = $rowMSSQL['competicion_codigo']; 
-                        $competicion = 1; 
+                        $competicioncodigo = 1; 
                     } else {
-                        $competicion = 2;
+                        $competicioncodigo = 2;
                     }
 
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
-                        'competicion_codigo_padre'              => $rowMSSQL[$competicion],
+                        'competicion_codigo_padre'              => $competicioncodigo,
                         'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
 
