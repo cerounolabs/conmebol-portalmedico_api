@@ -7977,9 +7977,15 @@
                         $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
                     }
 
+                    if ($rowMSSQL['COMPETICION_PADRE_ID'] == 0 || $rowMSSQL['COMPETICION_PADRE_ID'] == null){
+                        $competicion = $rowMSSQL['COMPETICION_ID']; 
+                    } else {
+                        $competicion = $rowMSSQL['COMPETICION_ID'];
+                    }
+
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
-                        'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_codigo_padre'              =>  $competicion,
                         'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
 
@@ -8053,6 +8059,7 @@
         
         return $json;
     });
+
     $app->get('/v2/200/competicion/home/resultado/{equipo}', function($request) {//20201109
         require __DIR__.'/../src/connect.php';
 
