@@ -7203,7 +7203,9 @@
                     i.DOMFICCOD                         AS          tipo_modulo_codigo,
                     i.DOMFICNOI                         AS          tipo_modulo_nombre_ingles,
                     i.DOMFICNOC                         AS          tipo_modulo_nombre_castellano,
-                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues
+                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues,
+                    i.DOMFICVAL                         AS          tipo_modulo_dominio,
+                    i.DOMFICPAR                         AS          tipo_modulo_parametro   
                     
                     FROM [adm].[PERCOM] a
                     INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
