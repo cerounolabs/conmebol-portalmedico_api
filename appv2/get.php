@@ -7277,7 +7277,7 @@
 
                     $detalle    = array(
                         'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
-                        'competicion_persona_rts'               => trim($rowMSSQL['competicion_persona_RTS']),
+                        'competicion_persona_rts'               => trim($rowMSSQL['competicion_persona_rts']),
 
                         'auditoria_usuario'                     => $rowMSSQL['auditoria_usuario'],
                         'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
@@ -8623,6 +8623,7 @@
 
         $sql00  = "SELECT 
             a.PERCOMOBS                         AS          competicion_persona_observacion,
+            a.PERCOMRTS                         AS          competicion_persona_rts,
             
             a.PERCOMAUS                         AS          auditoria_usuario,
             a.PERCOMAFH                         AS          auditoria_fecha_hora,
@@ -8687,8 +8688,10 @@
             i.DOMFICCOD                         AS          tipo_modulo_codigo,
             i.DOMFICNOI                         AS          tipo_modulo_nombre_ingles,
             i.DOMFICNOC                         AS          tipo_modulo_nombre_castellano,
-            i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues
-            
+            i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues,
+            i.DOMFICVAL                         AS          tipo_modulo_dominio,
+            i.DOMFICPAR                         AS          tipo_modulo_parametro  
+
             FROM [adm].[PERCOM] a
             INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
             INNER JOIN [adm].[DOMFIC] c ON b.PERFICEST = c.DOMFICCOD
@@ -8735,6 +8738,7 @@
 
                 $detalle    = array(
                     'competicion_persona_observacion'       => trim(strtoupper(strtolower($rowMSSQL['competicion_persona_observacion']))),
+                    'competicion_persona_rts'               => trim($rowMSSQL['competicion_persona_rts']),
                     'auditoria_usuario'                     => trim(strtoupper(strtolower($rowMSSQL['auditoria_usuario']))),
                     'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
                     'auditoria_ip'                          => trim(strtoupper(strtolower($rowMSSQL['auditoria_ip']))),
@@ -8809,6 +8813,7 @@
             } else {
                 $detalle    = array(
                     'competicion_persona_observacion'       => '',
+                    'competicion_persona_rts'               => '',
                     'auditoria_usuario'                     => '',
                     'auditoria_fecha_hora'                  => '',
                     'auditoria_ip'                          => '',
