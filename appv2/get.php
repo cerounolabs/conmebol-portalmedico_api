@@ -7343,7 +7343,9 @@
                         'tipo_modulo_codigo'                    => $rowMSSQL['tipo_modulo_codigo'],
                         'tipo_modulo_nombre_ingles'             => trim($rowMSSQL['tipo_modulo_nombre_ingles']),
                         'tipo_modulo_nombre_castellano'         => trim($rowMSSQL['tipo_modulo_nombre_castellano']),
-                        'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues'])
+                        'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues']),
+                        'tipo_modulo_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_dominio']))),
+                        'tipo_modulo_parametro'                 => $rowMSSQL['tipo_modulo_parametro']
                     );
 
                     $result[]   = $detalle;
@@ -7420,7 +7422,9 @@
                         'tipo_modulo_codigo'                    => '',
                         'tipo_modulo_nombre_ingles'             => '',
                         'tipo_modulo_nombre_castellano'         => '',
-                        'tipo_modulo_nombre_portugues'          => ''
+                        'tipo_modulo_nombre_portugues'          => '',
+                        'tipo_modulo_dominio'                   => '',
+                        'tipo_modulo_parametro'                 => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
