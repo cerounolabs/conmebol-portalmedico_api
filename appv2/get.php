@@ -8769,8 +8769,6 @@
                     'tipo_estado_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
                     'tipo_estado_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
                     'tipo_estado_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
-                    'tipo_modulo_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_dominio']))),
-                    'tipo_modulo_parametro'                 => $rowMSSQL['tipo_modulo_parametro'],
 
                     'tipo_acceso_codigo'                    => $rowMSSQL['tipo_acceso_codigo'],
                     'tipo_acceso_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_ingles']))),
@@ -8820,7 +8818,9 @@
                     'tipo_modulo_codigo'                    => $rowMSSQL['tipo_modulo_codigo'],
                     'tipo_modulo_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_ingles']))),
                     'tipo_modulo_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_castellano']))),
-                    'tipo_modulo_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_portugues'])))
+                    'tipo_modulo_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_portugues']))),
+                    'tipo_modulo_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_dominio']))),
+                    'tipo_modulo_parametro'                 => $rowMSSQL['tipo_modulo_parametro']
                 );
 
                 $result[]   = $detalle;
