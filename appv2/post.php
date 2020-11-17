@@ -362,7 +362,7 @@
         $val02      = $request->getParsedBody()['persona_codigo'];
         $val03      = $request->getParsedBody()['tipo_modulo_parametro'];
         $val04      = $request->getParsedBody()['competicion_persona_observacion'];
-        $val05      = $request->getParsedBody()['competicion_persona_RTS'];
+        $val05      = $request->getParsedBody()['competicion_persona_rts'];
         
         
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
@@ -370,7 +370,7 @@
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03)) {
-            $sql00  = "INSERT INTO [adm].[PERCOM] (PERCOMCOC, PERCOMPEC, PERCOMTMC, PERCOMOBS, PERCOMAUS, PERCOMAFH, PERCOMAIP, PERCOMRTS) VALUES (?, ?, (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'USUARIOMODULO' AND DOMFICPAR = ?), ?, ?, GETDATE(), ?)";
+            $sql00  = "INSERT INTO [adm].[PERCOM] (PERCOMCOC, PERCOMPEC, PERCOMTMC, PERCOMOBS, PERCOMAUS, PERCOMAFH, PERCOMAIP, PERCOMRTS) VALUES (?, ?, (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'USUARIOMODULO' AND DOMFICPAR = ?), ?, ?, GETDATE(), ?, ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
