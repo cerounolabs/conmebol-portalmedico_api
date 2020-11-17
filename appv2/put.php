@@ -406,7 +406,7 @@
     $val02      = $request->getAttribute('persona');
     $val03      = $request->getParsedBody()['tipo_modulo_parametro'];
     $val04      = $request->getParsedBody()['competicion_persona_observacion'];
-    $val05      = $request->getParsedBody()['competicion_persona_RTS'];
+    $val05      = $request->getParsedBody()['competicion_persona_rts'];
     
     $aud01      = $request->getParsedBody()['auditoria_usuario'];
     $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];

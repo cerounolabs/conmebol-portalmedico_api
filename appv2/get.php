@@ -7138,7 +7138,7 @@
             } else {
                 $sql00  = "SELECT 
                     a.PERCOMOBS                         AS          competicion_persona_observacion,
-                    a.PERCOMRTS                         AS          competicion_persona_RTS,
+                    a.PERCOMRTS                         AS          competicion_persona_rts,
                     
                     a.PERCOMAUS                         AS          auditoria_usuario,
                     a.PERCOMAFH                         AS          auditoria_fecha_hora,
@@ -7277,7 +7277,7 @@
 
                     $detalle    = array(
                         'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
-                        'competicion_persona_RTS'               => trim($rowMSSQL['competicion_persona_RTS']),
+                        'competicion_persona_rts'               => trim($rowMSSQL['competicion_persona_RTS']),
 
                         'auditoria_usuario'                     => $rowMSSQL['auditoria_usuario'],
                         'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
@@ -7355,7 +7355,7 @@
                 } else {
                     $detalle    = array(
                         'competicion_persona_observacion'       => '',
-                        'competicion_persona_RTS'               =>'' ,
+                        'competicion_persona_rts'               =>'' ,
 
                         'auditoria_usuario'                     => '',
                         'auditoria_fecha_hora'                  => '',
