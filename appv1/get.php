@@ -8073,9 +8073,15 @@
                         $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
                     }
 
+                    if ($rowMSSQL['competicion_codigo_padre'] == 0 || $rowMSSQL['competicion_codigo_padre'] == null){ 
+                        $competicioncodigo = $rowMSSQL['competicion_codigo'];  
+                    } else {
+                        $competicioncodigo = $rowMSSQL['competicion_codigo_padre']; 
+                    }
+
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
-                        'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_codigo_padre'              => $competicioncodigo,
                         'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
 
