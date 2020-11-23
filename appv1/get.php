@@ -2757,7 +2757,7 @@
 
         $sql00  = "SELECT 
         a.PERCOMOBS                         AS          competicion_persona_observacion,
-        
+        a.PERCOMRTS                         AS          competicion_persona_rts,
         a.PERCOMAUS                         AS          auditoria_usuario,
         a.PERCOMAFH                         AS          auditoria_fecha_hora,
         a.PERCOMAIP                         AS          auditoria_ip,
@@ -2770,27 +2770,52 @@
         b.PERFICTEF                         AS          persona_telefono,
 
         c.DOMFICCOD                         AS          tipo_estado_codigo,
+        c.DOMFICEST                         AS          tipo_estado_estado_codigo,
+        c.DOMFICORD                         AS          tipo_estado_orden,
         c.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
         c.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
         c.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+        c.DOMFICPAT                         AS          tipo_estado_path,
+        c.DOMFICVAL                         AS          tipo_estado_dominio,
+        c.DOMFICOBS                         AS          tipo_estado_observacion,
+        c.DOMFICPAR                         AS          tipo_estado_parametro,
 
         d.DOMFICCOD                         AS          tipo_acceso_codigo,
+        d.DOMFICEST                         AS          tipo_acceso_estado_codigo,
+        d.DOMFICORD                         AS          tipo_acceso_orden,
         d.DOMFICNOI                         AS          tipo_acceso_nombre_ingles,
         d.DOMFICNOC                         AS          tipo_acceso_nombre_castellano,
         d.DOMFICNOP                         AS          tipo_acceso_nombre_portugues,
+        d.DOMFICPAT                         AS          tipo_acceso_path,
+        d.DOMFICVAL                         AS          tipo_acceso_dominio,
+        d.DOMFICOBS                         AS          tipo_acceso_observacion,
+        d.DOMFICPAR                         AS          tipo_acceso_parametro,
 
         e.DOMFICCOD                         AS          tipo_perfil_codigo,
+        e.DOMFICEST                         AS          tipo_perfil_estado_codigo,
+        e.DOMFICORD                         AS          tipo_perfil_orden,
         e.DOMFICNOI                         AS          tipo_perfil_nombre_ingles,
         e.DOMFICNOC                         AS          tipo_perfil_nombre_castellano,
         e.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
+        e.DOMFICPAT                         AS          tipo_perfil_path,
+        e.DOMFICVAL                         AS          tipo_perfil_dominio,
+        e.DOMFICOBS                         AS          tipo_perfil_observacion,
+        e.DOMFICPAR                         AS          tipo_perfil_parametro,
+
 
         f.teamFifaId                        AS          equipo_codigo,
         f.internationalShortName            AS          equipo_nombre,
 
         g.DOMFICCOD                         AS          tipo_categoria_codigo,
+        g.DOMFICEST                         AS          tipo_categoria_estado_codigo,
+        g.DOMFICORD                         AS          tipo_categoria_orden,
         g.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
         g.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
         g.DOMFICNOP                         AS          tipo_categoria_nombre_portugues,
+        g.DOMFICPAT                         AS          tipo_categoria_path,
+        g.DOMFICVAL                         AS          tipo_categoria_dominio,
+        g.DOMFICOBS                         AS          tipo_categoria_observacion,
+        g.DOMFICPAR                         AS          tipo_categoria_parametro,
 
         h.competitionFifaId                 AS          competicion_codigo,
         h.superiorCompetitionFifaId         AS          competicion_codigo_padre,
@@ -2819,9 +2844,15 @@
         h.lastUpdate                        AS          competicion_ultima_actualizacion,
 
         i.DOMFICCOD                         AS          tipo_modulo_codigo,
+        i.DOMFICEST                         AS          tipo_modulo_estado_codigo,
+        i.DOMFICORD                         AS          tipo_modulo_orden,
         i.DOMFICNOI                         AS          tipo_modulo_nombre_ingles,
         i.DOMFICNOC                         AS          tipo_modulo_nombre_castellano,
-        i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues
+        i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues,
+        i.DOMFICPAT                         AS          tipo_modulo_path,
+        i.DOMFICVAL                         AS          tipo_modulo_dominio,
+        i.DOMFICOBS                         AS          tipo_modulo_observacion,
+        i.DOMFICPAR                         AS          tipo_modulo_parametro
         
         FROM [adm].[PERCOM] a
         INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
@@ -2869,6 +2900,7 @@
 
                 $detalle    = array(
                     'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
+                    'competicion_persona_rts'               => trim(strtoupper(strtolower($rowMSSQL['competicion_persona_rts']))),
                     'auditoria_usuario'                     => trim($rowMSSQL['auditoria_usuario']),
                     'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
                     'auditoria_ip'                          => trim($rowMSSQL['auditoria_ip']),
@@ -2881,27 +2913,51 @@
                     'persona_telefono'                      => trim($rowMSSQL['persona_telefono']),
 
                     'tipo_estado_codigo'                    => $rowMSSQL['tipo_estado_codigo'],
+                    'tipo_estado_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_estado_codigo']))),
+                    'tipo_estado_orden'                     => $rowMSSQL['tipo_estado_orden'],
                     'tipo_estado_nombre_ingles'             => trim($rowMSSQL['tipo_estado_nombre_ingles']),
                     'tipo_estado_nombre_castellano'         => trim($rowMSSQL['tipo_estado_nombre_castellano']),
                     'tipo_estado_nombre_portugues'          => trim($rowMSSQL['tipo_estado_nombre_portugues']),
+                    'tipo_estado_path'                      => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                    'tipo_estado_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))),
+                    'tipo_estado_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+                    'tipo_estado_parametro'                 => $rowMSSQL['tipo_estado_parametro'],
 
                     'tipo_acceso_codigo'                    => $rowMSSQL['tipo_acceso_codigo'],
+                    'tipo_acceso_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_estado_codigo']))),
+                    'tipo_acceso_orden'                     => $rowMSSQL['tipo_acceso_orden'],
                     'tipo_acceso_nombre_ingles'             => trim($rowMSSQL['tipo_acceso_nombre_ingles']),
                     'tipo_acceso_nombre_castellano'         => trim($rowMSSQL['tipo_acceso_nombre_castellano']),
                     'tipo_acceso_nombre_portugues'          => trim($rowMSSQL['tipo_acceso_nombre_portugues']),
+                    'tipo_acceso_path'                      => trim(strtolower($rowMSSQL['tipo_acceso_path'])),
+                    'tipo_acceso_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_dominio']))),
+                    'tipo_acceso_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_observacion']))),
+                    'tipo_acceso_parametro'                 => $rowMSSQL['tipo_acceso_parametro'],
 
                     'tipo_perfil_codigo'                    => $rowMSSQL['tipo_perfil_codigo'],
+                    'tipo_perfil_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_estado_codigo']))),
+                    'tipo_perfil_orden'                     => $rowMSSQL['tipo_perfil_orden'],
                     'tipo_perfil_nombre_ingles'             => trim($rowMSSQL['tipo_perfil_nombre_ingles']),
                     'tipo_perfil_nombre_castellano'         => trim($rowMSSQL['tipo_perfil_nombre_castellano']),
                     'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
+                    'tipo_perfil_path'                      => trim(strtolower($rowMSSQL['tipo_perfil_path'])),
+                    'tipo_perfil_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_dominio']))),
+                    'tipo_perfil_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_observacion']))),
+                    'tipo_perfil_parametro'                 => $rowMSSQL['tipo_perfil_parametro'],
 
                     'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
                     'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
 
                     'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
+                    'tipo_categoria_estado_codigo'          => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_estado_codigo']))),
+                    'tipo_categoria_orden'                  => $rowMSSQL['tipo_categoria_orden'],
                     'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
                     'tipo_categoria_nombre_castellano'      => trim($rowMSSQL['tipo_categoria_nombre_castellano']),
                     'tipo_categoria_nombre_portugues'       => trim($rowMSSQL['tipo_categoria_nombre_portugues']),
+                    'tipo_categoria_path'                   => trim(strtolower($rowMSSQL['tipo_categoria_path'])),
+                    'tipo_categoria_dominio'                => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_dominio']))),
+                    'tipo_categoria_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_observacion']))),
+                    'tipo_categoria_parametro'              => $rowMSSQL['tipo_categoria_parametro'],
 
                     'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                     'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
@@ -2929,9 +2985,15 @@
                     'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
                     'tipo_modulo_codigo'                    => $rowMSSQL['tipo_modulo_codigo'],
+                    'tipo_modulo_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_estado_codigo']))),
+                    'tipo_modulo_orden'                     => $rowMSSQL['tipo_modulo_orden'],
                     'tipo_modulo_nombre_ingles'             => trim($rowMSSQL['tipo_modulo_nombre_ingles']),
                     'tipo_modulo_nombre_castellano'         => trim($rowMSSQL['tipo_modulo_nombre_castellano']),
-                    'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues'])
+                    'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues']),
+                    'tipo_modulo_path'                      => trim(strtolower($rowMSSQL['tipo_modulo_path'])),
+                    'tipo_modulo_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_dominio']))),
+                    'tipo_modulo_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_observacion']))),
+                    'tipo_modulo_parametro'                 => $rowMSSQL['tipo_modulo_parametro']
                 );
 
                 $result[]   = $detalle;
@@ -2943,6 +3005,7 @@
             } else {
                 $detalle    = array(
                     'competicion_persona_observacion'       => '',
+                    'competicion_persona_rts'               => '',
                     'auditoria_usuario'                     => '',
                     'auditoria_fecha_hora'                  => '',
                     'auditoria_ip'                          => '',
@@ -2955,27 +3018,52 @@
                     'persona_telefono'                      => '',
 
                     'tipo_estado_codigo'                    => '',
+                    'tipo_estado_estado_codigo'             => '',
+                    'tipo_estado_orden'                     => '',
                     'tipo_estado_nombre_ingles'             => '',
                     'tipo_estado_nombre_castellano'         => '',
                     'tipo_estado_nombre_portugues'          => '',
+                    'tipo_estado_path'                      => '',
+                    'tipo_estado_dominio'                   => '',
+                    'tipo_estado_observacion'               => '',
+                    'tipo_estado_parametro'                 => '',
+                    
 
                     'tipo_acceso_codigo'                    => '',
+                    'tipo_acceso_estado_codigo'             => '',
+                    'tipo_acceso_orden'                     => '',
                     'tipo_acceso_nombre_ingles'             => '',
                     'tipo_acceso_nombre_castellano'         => '',
                     'tipo_acceso_nombre_portugues'          => '',
+                    'tipo_acceso_path'                      => '',
+                    'tipo_acceso_dominio'                   => '',
+                    'tipo_acceso_observacion'               => '',
+                    'tipo_acceso_parametro'                 => '',
 
                     'tipo_perfil_codigo'                    => '',
+                    'tipo_perfil_estado_codigo'             => '',
+                    'tipo_perfil_orden'                     => '',
                     'tipo_perfil_nombre_ingles'             => '',
                     'tipo_perfil_nombre_castellano'         => '',
                     'tipo_perfil_nombre_portugues'          => '',
+                    'tipo_perfil_path'                      => '',
+                    'tipo_perfil_dominio'                   => '',
+                    'tipo_perfil_observacion'               => '',
+                    'tipo_perfil_parametro'                 => '',
 
                     'equipo_codigo'                         => '',
                     'equipo_nombre'                         => '',
 
-                    'tipo_categoria_codigo'                 => '',
+                   'tipo_categoria_codigo'                 => '',
+                    'tipo_categoria_estado_codigo'          => '',
+                    'tipo_categoria_orden'                  => '',
                     'tipo_categoria_nombre_ingles'          => '',
                     'tipo_categoria_nombre_castellano'      => '',
                     'tipo_categoria_nombre_portugues'       => '',
+                    'tipo_categoria_path'                   => '',
+                    'tipo_categoria_dominio'                => '',
+                    'tipo_categoria_observacion'            => '',
+                    'tipo_categoria_parametro'              => '',
 
                     'competicion_codigo'                    => '',
                     'competicion_codigo_padre'              => '',
@@ -3002,9 +3090,16 @@
                     'competicion_ultima_actualizacion'      => '',
 
                     'tipo_modulo_codigo'                    => '',
+                    'tipo_modulo_estado_codigo'             => '',
+                    'tipo_modulo_orden'                     => '',
                     'tipo_modulo_nombre_ingles'             => '',
                     'tipo_modulo_nombre_castellano'         => '',
-                    'tipo_modulo_nombre_portugues'          => ''
+                    'tipo_modulo_nombre_portugues'          => '',
+                    'tipo_modulo_path'                      => '',
+                    'tipo_modulo_dominio'                   => '',
+                    'tipo_modulo_observacion'               => '',
+                    'tipo_modulo_parametro'                 => ''
+                    
                 );
 
                 header("Content-Type: application/json; charset=utf-8");
@@ -3023,7 +3118,7 @@
         return $json;
     });
 
-    $app->get('/v1/401/competicion/{equipo}/{persona}', function($request) {
+    $app->get('/v1/401/competicion/{equipo}/{persona}', function($request) {//20201123
         require __DIR__.'/../src/connect.php';
 
         $val01  = $request->getAttribute('equipo');
@@ -3033,6 +3128,7 @@
             if ($val01 == 39393) {
                 $sql00  = "SELECT 
                     a.PERCOMOBS                         AS          competicion_persona_observacion,
+                    a.PERCOMRTS                         AS          competicion_persona_rts,
                     
                     a.PERCOMAUS                         AS          auditoria_usuario,
                     a.PERCOMAFH                         AS          auditoria_fecha_hora,
@@ -3046,27 +3142,51 @@
                     b.PERFICTEF                         AS          persona_telefono,
 
                     c.DOMFICCOD                         AS          tipo_estado_codigo,
+                    c.DOMFICEST                         AS          tipo_estado_estado_codigo,
+                    c.DOMFICORD                         AS          tipo_estado_orden,
                     c.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
                     c.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
                     c.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+                    c.DOMFICPAT                         AS          tipo_estado_path,
+                    c.DOMFICVAL                         AS          tipo_estado_dominio,
+                    c.DOMFICOBS                         AS          tipo_estado_observacion,
+                    c.DOMFICPAR                         AS          tipo_estado_parametro,
 
                     d.DOMFICCOD                         AS          tipo_acceso_codigo,
+                    d.DOMFICEST                         AS          tipo_acceso_estado_codigo,
+                    d.DOMFICORD                         AS          tipo_acceso_orden,
                     d.DOMFICNOI                         AS          tipo_acceso_nombre_ingles,
                     d.DOMFICNOC                         AS          tipo_acceso_nombre_castellano,
                     d.DOMFICNOP                         AS          tipo_acceso_nombre_portugues,
+                    d.DOMFICPAT                         AS          tipo_acceso_path,
+                    d.DOMFICVAL                         AS          tipo_acceso_dominio,
+                    d.DOMFICOBS                         AS          tipo_acceso_observacion,
+                    d.DOMFICPAR                         AS          tipo_acceso_parametro,
 
                     e.DOMFICCOD                         AS          tipo_perfil_codigo,
+                    e.DOMFICEST                         AS          tipo_perfil_estado_codigo,
+                    e.DOMFICORD                         AS          tipo_perfil_orden,
                     e.DOMFICNOI                         AS          tipo_perfil_nombre_ingles,
                     e.DOMFICNOC                         AS          tipo_perfil_nombre_castellano,
                     e.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
+                    e.DOMFICPAT                         AS          tipo_perfil_path,
+                    e.DOMFICVAL                         AS          tipo_perfil_dominio,
+                    e.DOMFICOBS                         AS          tipo_perfil_observacion,
+                    e.DOMFICPAR                         AS          tipo_perfil_parametro,
 
                     f.teamFifaId                        AS          equipo_codigo,
                     f.internationalShortName            AS          equipo_nombre,
 
                     g.DOMFICCOD                         AS          tipo_categoria_codigo,
+                    g.DOMFICEST                         AS          tipo_categoria_estado_codigo,
+                    g.DOMFICORD                         AS          tipo_categoria_orden,
                     g.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
                     g.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
                     g.DOMFICNOP                         AS          tipo_categoria_nombre_portugues,
+                    g.DOMFICPAT                         AS          tipo_categoria_path,
+                    g.DOMFICVAL                         AS          tipo_categoria_dominio,
+                    g.DOMFICOBS                         AS          tipo_categoria_observacion,
+                    g.DOMFICPAR                         AS          tipo_categoria_parametro,
 
                     h.competitionFifaId                 AS          competicion_codigo,
                     h.superiorCompetitionFifaId         AS          competicion_codigo_padre,
@@ -3095,9 +3215,15 @@
                     h.lastUpdate                        AS          competicion_ultima_actualizacion,
 
                     i.DOMFICCOD                         AS          tipo_modulo_codigo,
+                    i.DOMFICEST                         AS          tipo_modulo_estado_codigo,
+                    i.DOMFICORD                         AS          tipo_modulo_orden,
                     i.DOMFICNOI                         AS          tipo_modulo_nombre_ingles,
                     i.DOMFICNOC                         AS          tipo_modulo_nombre_castellano,
-                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues
+                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues,
+                    i.DOMFICPAT                         AS          tipo_modulo_path,
+                    i.DOMFICVAL                         AS          tipo_modulo_dominio,
+                    i.DOMFICOBS                         AS          tipo_modulo_observacion,
+                    i.DOMFICPAR                         AS          tipo_modulo_parametro
                     
                     FROM [adm].[PERCOM] a
                     INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
@@ -3113,7 +3239,7 @@
             } else {
                 $sql00  = "SELECT 
                     a.PERCOMOBS                         AS          competicion_persona_observacion,
-                    
+                    a.PERCOMRTS                         AS          competicion_persona_rts,
                     a.PERCOMAUS                         AS          auditoria_usuario,
                     a.PERCOMAFH                         AS          auditoria_fecha_hora,
                     a.PERCOMAIP                         AS          auditoria_ip,
@@ -3126,27 +3252,51 @@
                     b.PERFICTEF                         AS          persona_telefono,
 
                     c.DOMFICCOD                         AS          tipo_estado_codigo,
+                    c.DOMFICEST                         AS          tipo_estado_estado_codigo,
+                    c.DOMFICORD                         AS          tipo_estado_orden,
                     c.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
                     c.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
                     c.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+                    c.DOMFICPAT                         AS          tipo_estado_path,
+                    c.DOMFICVAL                         AS          tipo_estado_dominio,
+                    c.DOMFICOBS                         AS          tipo_estado_observacion,
+                    c.DOMFICPAR                         AS          tipo_estado_parametro,
 
                     d.DOMFICCOD                         AS          tipo_acceso_codigo,
+                    d.DOMFICEST                         AS          tipo_acceso_estado_codigo,
+                    d.DOMFICORD                         AS          tipo_acceso_orden,
                     d.DOMFICNOI                         AS          tipo_acceso_nombre_ingles,
                     d.DOMFICNOC                         AS          tipo_acceso_nombre_castellano,
                     d.DOMFICNOP                         AS          tipo_acceso_nombre_portugues,
+                    d.DOMFICPAT                         AS          tipo_acceso_path,
+                    d.DOMFICVAL                         AS          tipo_acceso_dominio,
+                    d.DOMFICOBS                         AS          tipo_acceso_observacion,
+                    d.DOMFICPAR                         AS          tipo_acceso_parametro,
 
                     e.DOMFICCOD                         AS          tipo_perfil_codigo,
+                    e.DOMFICEST                         AS          tipo_perfil_estado_codigo,
+                    e.DOMFICORD                         AS          tipo_perfil_orden,
                     e.DOMFICNOI                         AS          tipo_perfil_nombre_ingles,
                     e.DOMFICNOC                         AS          tipo_perfil_nombre_castellano,
                     e.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
+                    e.DOMFICPAT                         AS          tipo_perfil_path,
+                    e.DOMFICVAL                         AS          tipo_perfil_dominio,
+                    e.DOMFICOBS                         AS          tipo_perfil_observacion,
+                    e.DOMFICPAR                         AS          tipo_perfil_parametro,
 
                     f.teamFifaId                        AS          equipo_codigo,
                     f.internationalShortName            AS          equipo_nombre,
 
                     g.DOMFICCOD                         AS          tipo_categoria_codigo,
+                    g.DOMFICEST                         AS          tipo_categoria_estado_codigo,
+                    g.DOMFICORD                         AS          tipo_categoria_orden,
                     g.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
                     g.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
                     g.DOMFICNOP                         AS          tipo_categoria_nombre_portugues,
+                    g.DOMFICPAT                         AS          tipo_categoria_path,
+                    g.DOMFICVAL                         AS          tipo_categoria_dominio,
+                    g.DOMFICOBS                         AS          tipo_categoria_observacion,
+                    g.DOMFICPAR                         AS          tipo_categoria_parametro,
 
                     h.competitionFifaId                 AS          competicion_codigo,
                     h.superiorCompetitionFifaId         AS          competicion_codigo_padre,
@@ -3175,9 +3325,15 @@
                     h.lastUpdate                        AS          competicion_ultima_actualizacion,
 
                     i.DOMFICCOD                         AS          tipo_modulo_codigo,
+                    i.DOMFICEST                         AS          tipo_modulo_estado_codigo,
+                    i.DOMFICORD                         AS          tipo_modulo_orden,
                     i.DOMFICNOI                         AS          tipo_modulo_nombre_ingles,
                     i.DOMFICNOC                         AS          tipo_modulo_nombre_castellano,
-                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues
+                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues,
+                    i.DOMFICPAT                         AS          tipo_modulo_path,
+                    i.DOMFICVAL                         AS          tipo_modulo_dominio,
+                    i.DOMFICOBS                         AS          tipo_modulo_observacion,
+                    i.DOMFICPAR                         AS          tipo_modulo_parametro
                     
                     FROM [adm].[PERCOM] a
                     INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
@@ -3233,6 +3389,7 @@
 
                     $detalle    = array(
                         'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
+                        'competicion_persona_rts'               => trim(strtoupper(strtolower($rowMSSQL['competicion_persona_rts']))),
                         'auditoria_usuario'                     => trim($rowMSSQL['auditoria_usuario']),
                         'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
                         'auditoria_ip'                          => trim($rowMSSQL['auditoria_ip']),
@@ -3245,27 +3402,51 @@
                         'persona_telefono'                      => trim($rowMSSQL['persona_telefono']),
 
                         'tipo_estado_codigo'                    => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_estado_codigo']))),
+                        'tipo_estado_orden'                     => $rowMSSQL['tipo_estado_orden'],
                         'tipo_estado_nombre_ingles'             => trim($rowMSSQL['tipo_estado_nombre_ingles']),
                         'tipo_estado_nombre_castellano'         => trim($rowMSSQL['tipo_estado_nombre_castellano']),
                         'tipo_estado_nombre_portugues'          => trim($rowMSSQL['tipo_estado_nombre_portugues']),
+                        'tipo_estado_path'                      => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))),
+                        'tipo_estado_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+                        'tipo_estado_parametro'                 => $rowMSSQL['tipo_estado_parametro'],
 
                         'tipo_acceso_codigo'                    => $rowMSSQL['tipo_acceso_codigo'],
+                        'tipo_acceso_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_estado_codigo']))),
+                        'tipo_acceso_orden'                     => $rowMSSQL['tipo_acceso_orden'],
                         'tipo_acceso_nombre_ingles'             => trim($rowMSSQL['tipo_acceso_nombre_ingles']),
                         'tipo_acceso_nombre_castellano'         => trim($rowMSSQL['tipo_acceso_nombre_castellano']),
                         'tipo_acceso_nombre_portugues'          => trim($rowMSSQL['tipo_acceso_nombre_portugues']),
+                        'tipo_acceso_path'                      => trim(strtolower($rowMSSQL['tipo_acceso_path'])),
+                        'tipo_acceso_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_dominio']))),
+                        'tipo_acceso_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_observacion']))),
+                        'tipo_acceso_parametro'                 => $rowMSSQL['tipo_acceso_parametro'],
 
                         'tipo_perfil_codigo'                    => $rowMSSQL['tipo_perfil_codigo'],
+                        'tipo_perfil_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_estado_codigo']))),
+                        'tipo_perfil_orden'                     => $rowMSSQL['tipo_perfil_orden'],
                         'tipo_perfil_nombre_ingles'             => trim($rowMSSQL['tipo_perfil_nombre_ingles']),
                         'tipo_perfil_nombre_castellano'         => trim($rowMSSQL['tipo_perfil_nombre_castellano']),
                         'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
+                        'tipo_perfil_path'                      => trim(strtolower($rowMSSQL['tipo_perfil_path'])),
+                        'tipo_perfil_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_dominio']))),
+                        'tipo_perfil_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_observacion']))),
+                        'tipo_perfil_parametro'                 => $rowMSSQL['tipo_perfil_parametro'],
 
                         'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
                         'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
 
                         'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
+                        'tipo_categoria_estado_codigo'          => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_estado_codigo']))),
+                        'tipo_categoria_orden'                  => $rowMSSQL['tipo_categoria_orden'],
                         'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
                         'tipo_categoria_nombre_castellano'      => trim($rowMSSQL['tipo_categoria_nombre_castellano']),
                         'tipo_categoria_nombre_portugues'       => trim($rowMSSQL['tipo_categoria_nombre_portugues']),
+                        'tipo_categoria_path'                   => trim(strtolower($rowMSSQL['tipo_categoria_path'])),
+                        'tipo_categoria_dominio'                => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_dominio']))),
+                        'tipo_categoria_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_observacion']))),
+                        'tipo_categoria_parametro'              => $rowMSSQL['tipo_categoria_parametro'],
 
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
@@ -3293,9 +3474,15 @@
                         'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
                         'tipo_modulo_codigo'                    => $rowMSSQL['tipo_modulo_codigo'],
+                        'tipo_modulo_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_estado_codigo']))),
+                        'tipo_modulo_orden'                     => $rowMSSQL['tipo_modulo_orden'],
                         'tipo_modulo_nombre_ingles'             => trim($rowMSSQL['tipo_modulo_nombre_ingles']),
                         'tipo_modulo_nombre_castellano'         => trim($rowMSSQL['tipo_modulo_nombre_castellano']),
-                        'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues'])
+                        'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues']),
+                        'tipo_modulo_path'                      => trim(strtolower($rowMSSQL['tipo_modulo_path'])),
+                        'tipo_modulo_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_dominio']))),
+                        'tipo_modulo_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_observacion']))),
+                        'tipo_modulo_parametro'                 => $rowMSSQL['tipo_modulo_parametro']
                     );
 
                     $result[]   = $detalle;
@@ -3307,6 +3494,7 @@
                 } else {
                     $detalle    = array(
                         'competicion_persona_observacion'       => '',
+                        'competicion_persona_rts'               => '',
                         'auditoria_usuario'                     => '',
                         'auditoria_fecha_hora'                  => '',
                         'auditoria_ip'                          => '',
@@ -3319,27 +3507,51 @@
                         'persona_telefono'                      => '',
 
                         'tipo_estado_codigo'                    => '',
+                        'tipo_estado_estado_codigo'             => '',
+                        'tipo_estado_orden'                     => '',
                         'tipo_estado_nombre_ingles'             => '',
                         'tipo_estado_nombre_castellano'         => '',
                         'tipo_estado_nombre_portugues'          => '',
+                        'tipo_estado_path'                      => '',
+                        'tipo_estado_dominio'                   => '',
+                        'tipo_estado_observacion'               => '',
+                        'tipo_estado_parametro'                 => '',
 
                         'tipo_acceso_codigo'                    => '',
+                        'tipo_acceso_estado_codigo'             => '',
+                        'tipo_acceso_orden'                     => '',
                         'tipo_acceso_nombre_ingles'             => '',
                         'tipo_acceso_nombre_castellano'         => '',
                         'tipo_acceso_nombre_portugues'          => '',
+                        'tipo_acceso_path'                      => '',
+                        'tipo_acceso_dominio'                   => '',
+                        'tipo_acceso_observacion'               => '',
+                        'tipo_acceso_parametro'                 => '',
 
                         'tipo_perfil_codigo'                    => '',
+                        'tipo_perfil_estado_codigo'             => '',
+                        'tipo_perfil_orden'                     => '',
                         'tipo_perfil_nombre_ingles'             => '',
                         'tipo_perfil_nombre_castellano'         => '',
                         'tipo_perfil_nombre_portugues'          => '',
+                        'tipo_perfil_path'                      => '',
+                        'tipo_perfil_dominio'                   => '',
+                        'tipo_perfil_observacion'               => '',
+                        'tipo_perfil_parametro'                 => '',
 
                         'equipo_codigo'                         => '',
                         'equipo_nombre'                         => '',
 
                         'tipo_categoria_codigo'                 => '',
+                        'tipo_categoria_estado_codigo'          => '',
+                        'tipo_categoria_orden'                  => '',
                         'tipo_categoria_nombre_ingles'          => '',
                         'tipo_categoria_nombre_castellano'      => '',
                         'tipo_categoria_nombre_portugues'       => '',
+                        'tipo_categoria_path'                   => '',
+                        'tipo_categoria_dominio'                => '',
+                        'tipo_categoria_observacion'            => '',
+                        'tipo_categoria_parametro'              => '',
 
                         'competicion_codigo'                    => '',
                         'competicion_codigo_padre'              => '',
@@ -3366,9 +3578,15 @@
                         'competicion_ultima_actualizacion'      => '',
 
                         'tipo_modulo_codigo'                    => '',
+                        'tipo_modulo_estado_codigo'             => '',
+                        'tipo_modulo_orden'                     => '',
                         'tipo_modulo_nombre_ingles'             => '',
                         'tipo_modulo_nombre_castellano'         => '',
-                        'tipo_modulo_nombre_portugues'          => ''
+                        'tipo_modulo_nombre_portugues'          => '',
+                        'tipo_modulo_path'                      => '',
+                        'tipo_modulo_dominio'                   => '',
+                        'tipo_modulo_observacion'               => '',
+                        'tipo_modulo_parametro'                 => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
@@ -6941,7 +7159,7 @@
         return $json;
     });
 
-    $app->get('/v1/200/competicion/medico/{equipo}/{persona}', function($request) {
+    $app->get('/v1/200/competicion/medico/{equipo}/{persona}', function($request) {//20201117
         require __DIR__.'/../src/connect.php';
 
         $val01  = $request->getAttribute('equipo');
@@ -6951,7 +7169,8 @@
             if ($val01 == 39393) {
                 $sql00  = "SELECT 
                     a.PERCOMOBS                         AS          competicion_persona_observacion,
-                    
+                    a.PERCOMRTS                         AS          competicion_persona_rts,
+
                     a.PERCOMAUS                         AS          auditoria_usuario,
                     a.PERCOMAFH                         AS          auditoria_fecha_hora,
                     a.PERCOMAIP                         AS          auditoria_ip,
@@ -6964,27 +7183,51 @@
                     b.PERFICTEF                         AS          persona_telefono,
 
                     c.DOMFICCOD                         AS          tipo_estado_codigo,
+                    c.DOMFICEST                         AS          tipo_estado_estado_codigo,
+                    c.DOMFICORD                         AS          tipo_estado_orden,
                     c.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
                     c.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
                     c.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+                    c.DOMFICPAT                         AS          tipo_estado_path,
+                    c.DOMFICVAL                         AS          tipo_estado_dominio,
+                    c.DOMFICOBS                         AS          tipo_estado_observacion,
+                    c.DOMFICPAR                         AS          tipo_estado_parametro,
 
                     d.DOMFICCOD                         AS          tipo_acceso_codigo,
+                    d.DOMFICEST                         AS          tipo_acceso_estado_codigo,
+                    d.DOMFICORD                         AS          tipo_acceso_orden,
                     d.DOMFICNOI                         AS          tipo_acceso_nombre_ingles,
                     d.DOMFICNOC                         AS          tipo_acceso_nombre_castellano,
                     d.DOMFICNOP                         AS          tipo_acceso_nombre_portugues,
+                    d.DOMFICPAT                         AS          tipo_acceso_path,
+                    d.DOMFICVAL                         AS          tipo_acceso_dominio,
+                    d.DOMFICOBS                         AS          tipo_acceso_observacion,
+                    d.DOMFICPAR                         AS          tipo_acceso_parametro,
 
                     e.DOMFICCOD                         AS          tipo_perfil_codigo,
+                    e.DOMFICEST                         AS          tipo_perfil_estado_codigo,
+                    e.DOMFICORD                         AS          tipo_perfil_orden,
                     e.DOMFICNOI                         AS          tipo_perfil_nombre_ingles,
                     e.DOMFICNOC                         AS          tipo_perfil_nombre_castellano,
                     e.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
+                    e.DOMFICPAT                         AS          tipo_perfil_path,
+                    e.DOMFICVAL                         AS          tipo_perfil_dominio,
+                    e.DOMFICOBS                         AS          tipo_perfil_observacion,
+                    e.DOMFICPAR                         AS          tipo_perfil_parametro,
 
                     f.teamFifaId                        AS          equipo_codigo,
                     f.internationalShortName            AS          equipo_nombre,
 
                     g.DOMFICCOD                         AS          tipo_categoria_codigo,
+                    g.DOMFICEST                         AS          tipo_categoria_estado_codigo,
+                    g.DOMFICORD                         AS          tipo_categoria_orden,
                     g.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
                     g.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
                     g.DOMFICNOP                         AS          tipo_categoria_nombre_portugues,
+                    g.DOMFICPAT                         AS          tipo_categoria_path,
+                    g.DOMFICVAL                         AS          tipo_categoria_dominio,
+                    g.DOMFICOBS                         AS          tipo_categoria_observacion,
+                    g.DOMFICPAR                         AS          tipo_categoria_parametro,
 
                     h.competitionFifaId                 AS          competicion_codigo,
                     h.superiorCompetitionFifaId         AS          competicion_codigo_padre,
@@ -7013,9 +7256,15 @@
                     h.lastUpdate                        AS          competicion_ultima_actualizacion,
 
                     i.DOMFICCOD                         AS          tipo_modulo_codigo,
+                    i.DOMFICEST                         AS          tipo_modulo_estado_codigo,
+                    i.DOMFICORD                         AS          tipo_modulo_orden,
                     i.DOMFICNOI                         AS          tipo_modulo_nombre_ingles,
                     i.DOMFICNOC                         AS          tipo_modulo_nombre_castellano,
-                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues
+                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues,
+                    i.DOMFICPAT                         AS          tipo_modulo_path,
+                    i.DOMFICVAL                         AS          tipo_modulo_dominio,
+                    i.DOMFICOBS                         AS          tipo_modulo_observacion,
+                    i.DOMFICPAR                         AS          tipo_modulo_parametro
                     
                     FROM [adm].[PERCOM] a
                     INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
@@ -7033,6 +7282,7 @@
             } else {
                 $sql00  = "SELECT 
                     a.PERCOMOBS                         AS          competicion_persona_observacion,
+                    a.PERCOMRTS                         AS          competicion_persona_rts,
                     
                     a.PERCOMAUS                         AS          auditoria_usuario,
                     a.PERCOMAFH                         AS          auditoria_fecha_hora,
@@ -7044,29 +7294,53 @@
                     b.PERFICPAT                         AS          persona_path,
                     b.PERFICMAI                         AS          persona_email,
                     b.PERFICTEF                         AS          persona_telefono,
-
+                    
                     c.DOMFICCOD                         AS          tipo_estado_codigo,
+                    c.DOMFICEST                         AS          tipo_estado_estado_codigo,
+                    c.DOMFICORD                         AS          tipo_estado_orden,
                     c.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
                     c.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
                     c.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+                    c.DOMFICPAT                         AS          tipo_estado_path,
+                    c.DOMFICVAL                         AS          tipo_estado_dominio,
+                    c.DOMFICOBS                         AS          tipo_estado_observacion,
+                    c.DOMFICPAR                         AS          tipo_estado_parametro,
 
                     d.DOMFICCOD                         AS          tipo_acceso_codigo,
+                    d.DOMFICEST                         AS          tipo_acceso_estado_codigo,
+                    d.DOMFICORD                         AS          tipo_acceso_orden,
                     d.DOMFICNOI                         AS          tipo_acceso_nombre_ingles,
                     d.DOMFICNOC                         AS          tipo_acceso_nombre_castellano,
                     d.DOMFICNOP                         AS          tipo_acceso_nombre_portugues,
+                    d.DOMFICPAT                         AS          tipo_acceso_path,
+                    d.DOMFICVAL                         AS          tipo_acceso_dominio,
+                    d.DOMFICOBS                         AS          tipo_acceso_observacion,
+                    d.DOMFICPAR                         AS          tipo_acceso_parametro,
 
                     e.DOMFICCOD                         AS          tipo_perfil_codigo,
+                    e.DOMFICEST                         AS          tipo_perfil_estado_codigo,
+                    e.DOMFICORD                         AS          tipo_perfil_orden,
                     e.DOMFICNOI                         AS          tipo_perfil_nombre_ingles,
                     e.DOMFICNOC                         AS          tipo_perfil_nombre_castellano,
                     e.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
+                    e.DOMFICPAT                         AS          tipo_perfil_path,
+                    e.DOMFICVAL                         AS          tipo_perfil_dominio,
+                    e.DOMFICOBS                         AS          tipo_perfil_observacion,
+                    e.DOMFICPAR                         AS          tipo_perfil_parametro,
 
                     f.teamFifaId                        AS          equipo_codigo,
                     f.internationalShortName            AS          equipo_nombre,
 
                     g.DOMFICCOD                         AS          tipo_categoria_codigo,
+                    g.DOMFICEST                         AS          tipo_categoria_estado_codigo,
+                    g.DOMFICORD                         AS          tipo_categoria_orden,
                     g.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
                     g.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
                     g.DOMFICNOP                         AS          tipo_categoria_nombre_portugues,
+                    g.DOMFICPAT                         AS          tipo_categoria_path,
+                    g.DOMFICVAL                         AS          tipo_categoria_dominio,
+                    g.DOMFICOBS                         AS          tipo_categoria_observacion,
+                    g.DOMFICPAR                         AS          tipo_categoria_parametro,
 
                     h.competitionFifaId                 AS          competicion_codigo,
                     h.superiorCompetitionFifaId         AS          competicion_codigo_padre,
@@ -7095,9 +7369,15 @@
                     h.lastUpdate                        AS          competicion_ultima_actualizacion,
 
                     i.DOMFICCOD                         AS          tipo_modulo_codigo,
+                    i.DOMFICEST                         AS          tipo_modulo_estado_codigo,
+                    i.DOMFICORD                         AS          tipo_modulo_orden,
                     i.DOMFICNOI                         AS          tipo_modulo_nombre_ingles,
                     i.DOMFICNOC                         AS          tipo_modulo_nombre_castellano,
-                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues
+                    i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues,
+                    i.DOMFICPAT                         AS          tipo_modulo_path,
+                    i.DOMFICVAL                         AS          tipo_modulo_dominio,
+                    i.DOMFICOBS                         AS          tipo_modulo_observacion,
+                    i.DOMFICPAR                         AS          tipo_modulo_parametro
                     
                     FROM [adm].[PERCOM] a
                     INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
@@ -7126,7 +7406,23 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {    
                     $auditoria_fecha_hora = date_format(date_create($rowMSSQL['auditoria_fecha_hora']), 'd/m/Y H:i:s');
-                    
+
+                    if ($rowMSSQL['competicion_desde'] == '1900-01-01' || $rowMSSQL['competicion_desde'] == null){
+                        $competicion_desde_1 = '';
+                        $competicion_desde_2 = '';
+                    } else {
+                        $competicion_desde_1 = $rowMSSQL['competicion_desde'];
+                        $competicion_desde_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_desde']));
+                    }
+
+                    if ($rowMSSQL['competicion_hasta'] == '1900-01-01' || $rowMSSQL['competicion_hasta'] == null){
+                        $competicion_hasta_1 = '';
+                        $competicion_hasta_2 = '';
+                    } else {
+                        $competicion_hasta_1 = $rowMSSQL['competicion_hasta'];
+                        $competicion_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_hasta']));
+                    }
+
                     if (isset($rowMSSQL['persona_path'])){
                         $persona_path = $rowMSSQL['persona_path'];
                     } else {
@@ -7152,59 +7448,87 @@
                     }
 
                     $detalle    = array(
-                        'competicion_persona_observacion'       => trim(strtoupper(strtolower($rowMSSQL['competicion_persona_observacion']))),
-                        'auditoria_usuario'                     => trim(strtoupper(strtolower($rowMSSQL['auditoria_usuario']))),
+                        'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
+                        'competicion_persona_rts'               => trim($rowMSSQL['competicion_persona_rts']),
+
+                        'auditoria_usuario'                     => $rowMSSQL['auditoria_usuario'],
                         'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
-                        'auditoria_ip'                          => trim(strtoupper(strtolower($rowMSSQL['auditoria_ip']))),
+                        'auditoria_ip'                          => $rowMSSQL['auditoria_ip'],
 
                         'persona_codigo'                        => $rowMSSQL['persona_codigo'],
                         'persona_nombre'                        => trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
                         'persona_user'                          => trim(strtoupper(strtolower($rowMSSQL['persona_user']))),
-                        'persona_path'                          => trim(strtoupper(strtolower($persona_path))),
-                        'persona_email'                         => trim(strtoupper(strtolower($rowMSSQL['persona_email']))),
-                        'persona_telefono'                      => trim(strtoupper(strtolower($rowMSSQL['persona_telefono']))),
+                        'persona_path'                          => trim($persona_path),
+                        'persona_email'                         => trim($rowMSSQL['persona_email']),
+                        'persona_telefono'                      => trim($rowMSSQL['persona_telefono']),
 
                         'tipo_estado_codigo'                    => $rowMSSQL['tipo_estado_codigo'],
-                        'tipo_estado_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
-                        'tipo_estado_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
-                        'tipo_estado_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_estado_codigo']))),
+                        'tipo_estado_orden'                     => $rowMSSQL['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'             => trim($rowMSSQL['tipo_estado_nombre_ingles']),
+                        'tipo_estado_nombre_castellano'         => trim($rowMSSQL['tipo_estado_nombre_castellano']),
+                        'tipo_estado_nombre_portugues'          => trim($rowMSSQL['tipo_estado_nombre_portugues']),
+                        'tipo_estado_path'                      => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))),
+                        'tipo_estado_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+                        'tipo_estado_parametro'                 => $rowMSSQL['tipo_estado_parametro'],
 
                         'tipo_acceso_codigo'                    => $rowMSSQL['tipo_acceso_codigo'],
-                        'tipo_acceso_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_ingles']))),
-                        'tipo_acceso_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_castellano']))),
-                        'tipo_acceso_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_portugues']))),
+                        'tipo_acceso_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_estado_codigo']))),
+                        'tipo_acceso_orden'                     => $rowMSSQL['tipo_acceso_orden'],
+                        'tipo_acceso_nombre_ingles'             => trim($rowMSSQL['tipo_acceso_nombre_ingles']),
+                        'tipo_acceso_nombre_castellano'         => trim($rowMSSQL['tipo_acceso_nombre_castellano']),
+                        'tipo_acceso_nombre_portugues'          => trim($rowMSSQL['tipo_acceso_nombre_portugues']),
+                        'tipo_acceso_path'                      => trim(strtolower($rowMSSQL['tipo_acceso_path'])),
+                        'tipo_acceso_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_dominio']))),
+                        'tipo_acceso_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_observacion']))),
+                        'tipo_acceso_parametro'                 => $rowMSSQL['tipo_acceso_parametro'],
 
                         'tipo_perfil_codigo'                    => $rowMSSQL['tipo_perfil_codigo'],
-                        'tipo_perfil_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_nombre_ingles']))),
-                        'tipo_perfil_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_nombre_castellano']))),
-                        'tipo_perfil_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_nombre_portugues']))),
+                        'tipo_perfil_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_estado_codigo']))),
+                        'tipo_perfil_orden'                     => $rowMSSQL['tipo_perfil_orden'],
+                        'tipo_perfil_nombre_ingles'             => trim($rowMSSQL['tipo_perfil_nombre_ingles']),
+                        'tipo_perfil_nombre_castellano'         => trim($rowMSSQL['tipo_perfil_nombre_castellano']),
+                        'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
+                        'tipo_perfil_path'                      => trim(strtolower($rowMSSQL['tipo_perfil_path'])),
+                        'tipo_perfil_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_dominio']))),
+                        'tipo_perfil_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_observacion']))),
+                        'tipo_perfil_parametro'                 => $rowMSSQL['tipo_perfil_parametro'],
 
                         'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
-                        'equipo_nombre'                         => trim(strtoupper(strtolower($rowMSSQL['equipo_nombre']))),
+                        'equipo_nombre'                         => trim($rowMSSQL['equipo_nombre']),
 
                         'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
-                        'tipo_categoria_nombre_ingles'          => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_nombre_ingles']))),
-                        'tipo_categoria_nombre_castellano'      => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_nombre_castellano']))),
-                        'tipo_categoria_nombre_portugues'       => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_nombre_portugues']))),
+                        'tipo_categoria_estado_codigo'          => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_estado_codigo']))),
+                        'tipo_categoria_orden'                  => $rowMSSQL['tipo_categoria_orden'],
+                        'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
+                        'tipo_categoria_nombre_castellano'      => trim($rowMSSQL['tipo_categoria_nombre_castellano']),
+                        'tipo_categoria_nombre_portugues'       => trim($rowMSSQL['tipo_categoria_nombre_portugues']),
+                        'tipo_categoria_path'                   => trim(strtolower($rowMSSQL['tipo_categoria_path'])),
+                        'tipo_categoria_dominio'                => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_dominio']))),
+                        'tipo_categoria_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_observacion']))),
+                        'tipo_categoria_parametro'              => $rowMSSQL['tipo_categoria_parametro'],
 
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
-                        'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
-                        'competicion_nombre'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre']))),
-                        'competicion_nombre_corto'              => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre_corto']))),
+                        'competicion_estado'                    => trim($rowMSSQL['competicion_estado']),
+                        'competicion_nombre'                    => trim($rowMSSQL['competicion_nombre']),
+                        'competicion_nombre_corto'              => trim($rowMSSQL['competicion_nombre_corto']),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
-                        'competicion_categoria_codigo'          => trim(strtoupper(strtolower($rowMSSQL['competicion_categoria_codigo']))),
-                        'competicion_categoria_nombre'          => trim(strtoupper(strtolower($rowMSSQL['competicion_categoria_nombre']))),
-                        'competicion_desde'                     => $rowMSSQL['competicion_desde'],
-                        'competicion_hasta'                     => $rowMSSQL['competicion_hasta'],
-                        'competicion_disciplina'                => trim(strtoupper(strtolower($rowMSSQL['competicion_disciplina']))),
-                        'competicion_genero'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_genero']))),
+                        'competicion_categoria_codigo'          => trim($rowMSSQL['competicion_categoria_codigo']),
+                        'competicion_categoria_nombre'          => trim($rowMSSQL['competicion_categoria_nombre']),
+                        'competicion_desde_1'                   => $competicion_desde_1,
+                        'competicion_desde_2'                   => $competicion_desde_2,
+                        'competicion_hasta_1'                   => $competicion_hasta_1,
+                        'competicion_hasta_2'                   => $competicion_hasta_2,
+                        'competicion_disciplina'                => trim($rowMSSQL['competicion_disciplina']),
+                        'competicion_genero'                    => trim($rowMSSQL['competicion_genero']),
                         'competicion_imagen_codigo'             => $rowMSSQL['competicion_imagen_codigo'],
                         'competicion_multiplicador'             => $rowMSSQL['competicion_multiplicador'],
-                        'competicion_naturaleza'                => trim(strtoupper(strtolower($rowMSSQL['competicion_naturaleza']))),
+                        'competicion_naturaleza'                => trim($rowMSSQL['competicion_naturaleza']),
                         'competicion_numero_participante'       => $rowMSSQL['competicion_numero_participante'],
                         'competicion_numero_orden'              => $rowMSSQL['competicion_numero_orden'],
-                        'competicion_equipo_tipo'               => trim(strtoupper(strtolower($rowMSSQL['competicion_equipo_tipo']))),
+                        'competicion_equipo_tipo'               => trim($rowMSSQL['competicion_equipo_tipo']),
                         'competicion_sustitucion'               => $rowMSSQL['competicion_sustitucion'],
                         'competicion_penal'                     => $rowMSSQL['competicion_penal'],
                         'competicion_tipo'                      => trim(strtoupper(strtolower($rowMSSQL['competicion_tipo']))),
@@ -7213,9 +7537,15 @@
                         'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
                         'tipo_modulo_codigo'                    => $rowMSSQL['tipo_modulo_codigo'],
-                        'tipo_modulo_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_ingles']))),
-                        'tipo_modulo_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_castellano']))),
-                        'tipo_modulo_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_portugues'])))
+                        'tipo_modulo_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_estado_codigo']))),
+                        'tipo_modulo_orden'                     => $rowMSSQL['tipo_modulo_orden'],
+                        'tipo_modulo_nombre_ingles'             => trim($rowMSSQL['tipo_modulo_nombre_ingles']),
+                        'tipo_modulo_nombre_castellano'         => trim($rowMSSQL['tipo_modulo_nombre_castellano']),
+                        'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues']),
+                        'tipo_modulo_path'                      => trim(strtolower($rowMSSQL['tipo_modulo_path'])),
+                        'tipo_modulo_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_dominio']))),
+                        'tipo_modulo_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_observacion']))),
+                        'tipo_modulo_parametro'                 => $rowMSSQL['tipo_modulo_parametro']
                     );
 
                     $result[]   = $detalle;
@@ -7227,6 +7557,8 @@
                 } else {
                     $detalle    = array(
                         'competicion_persona_observacion'       => '',
+                        'competicion_persona_rts'               =>'' ,
+
                         'auditoria_usuario'                     => '',
                         'auditoria_fecha_hora'                  => '',
                         'auditoria_ip'                          => '',
@@ -7238,28 +7570,53 @@
                         'persona_email'                         => '',
                         'persona_telefono'                      => '',
 
+                        
                         'tipo_estado_codigo'                    => '',
+                        'tipo_estado_estado_codigo'             => '',
+                        'tipo_estado_orden'                     => '',
                         'tipo_estado_nombre_ingles'             => '',
                         'tipo_estado_nombre_castellano'         => '',
                         'tipo_estado_nombre_portugues'          => '',
+                        'tipo_estado_path'                      => '',
+                        'tipo_estado_dominio'                   => '',
+                        'tipo_estado_observacion'               => '',
+                        'tipo_estado_parametro'                 => '',
 
                         'tipo_acceso_codigo'                    => '',
+                        'tipo_acceso_estado_codigo'             => '',
+                        'tipo_acceso_orden'                     => '',
                         'tipo_acceso_nombre_ingles'             => '',
                         'tipo_acceso_nombre_castellano'         => '',
                         'tipo_acceso_nombre_portugues'          => '',
+                        'tipo_acceso_path'                      => '',
+                        'tipo_acceso_dominio'                   => '',
+                        'tipo_acceso_observacion'               => '',
+                        'tipo_acceso_parametro'                 => '',
 
                         'tipo_perfil_codigo'                    => '',
+                        'tipo_perfil_estado_codigo'             => '',
+                        'tipo_perfil_orden'                     => '',
                         'tipo_perfil_nombre_ingles'             => '',
                         'tipo_perfil_nombre_castellano'         => '',
                         'tipo_perfil_nombre_portugues'          => '',
+                        'tipo_perfil_path'                      => '',
+                        'tipo_perfil_dominio'                   => '',
+                        'tipo_perfil_observacion'               => '',
+                        'tipo_perfil_parametro'                 => '',
 
                         'equipo_codigo'                         => '',
                         'equipo_nombre'                         => '',
 
                         'tipo_categoria_codigo'                 => '',
+                        'tipo_categoria_estado_codigo'          => '',
+                        'tipo_categoria_orden'                  => '',
                         'tipo_categoria_nombre_ingles'          => '',
                         'tipo_categoria_nombre_castellano'      => '',
                         'tipo_categoria_nombre_portugues'       => '',
+                        'tipo_categoria_path'                   => '',
+                        'tipo_categoria_dominio'                => '',
+                        'tipo_categoria_observacion'            => '',
+                        'tipo_categoria_parametro'              => '',
 
                         'competicion_codigo'                    => '',
                         'competicion_codigo_padre'              => '',
@@ -7269,8 +7626,10 @@
                         'competicion_anho'                      => '',
                         'competicion_categoria_codigo'          => '',
                         'competicion_categoria_nombre'          => '',
-                        'competicion_desde'                     => '',
-                        'competicion_hasta'                     => '',
+                        'competicion_desde_1'                   => '',
+                        'competicion_desde_2'                   => '',
+                        'competicion_hasta_1'                   => '',
+                        'competicion_hasta_2'                   => '',
                         'competicion_disciplina'                => '',
                         'competicion_genero'                    => '',
                         'competicion_imagen_codigo'             => '',
@@ -7286,9 +7645,15 @@
                         'competicion_ultima_actualizacion'      => '',
 
                         'tipo_modulo_codigo'                    => '',
+                        'tipo_modulo_estado_codigo'             => '',
+                        'tipo_modulo_orden'                     => '',
                         'tipo_modulo_nombre_ingles'             => '',
                         'tipo_modulo_nombre_castellano'         => '',
-                        'tipo_modulo_nombre_portugues'          => ''
+                        'tipo_modulo_nombre_portugues'          => '',
+                        'tipo_modulo_path'                      => '',
+                        'tipo_modulo_dominio'                   => '',
+                        'tipo_modulo_observacion'               => '',
+                        'tipo_modulo_parametro'                 => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
@@ -8817,6 +9182,7 @@
 
         $sql00  = "SELECT 
             a.PERCOMOBS                         AS          competicion_persona_observacion,
+            a.PERCOMRTS                         AS          competicion_persona_rts,
             
             a.PERCOMAUS                         AS          auditoria_usuario,
             a.PERCOMAFH                         AS          auditoria_fecha_hora,
@@ -8830,27 +9196,52 @@
             b.PERFICTEF                         AS          persona_telefono,
 
             c.DOMFICCOD                         AS          tipo_estado_codigo,
+            c.DOMFICEST                         AS          tipo_estado_estado_codigo,
+            c.DOMFICORD                         AS          tipo_estado_orden,
             c.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
             c.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
             c.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+            c.DOMFICPAT                         AS          tipo_estado_path,
+            c.DOMFICVAL                         AS          tipo_estado_dominio,
+            c.DOMFICOBS                         AS          tipo_estado_observacion,
+            c.DOMFICPAR                         AS          tipo_estado_parametro,
 
             d.DOMFICCOD                         AS          tipo_acceso_codigo,
+            d.DOMFICEST                         AS          tipo_acceso_estado_codigo,
+            d.DOMFICORD                         AS          tipo_acceso_orden,
             d.DOMFICNOI                         AS          tipo_acceso_nombre_ingles,
             d.DOMFICNOC                         AS          tipo_acceso_nombre_castellano,
             d.DOMFICNOP                         AS          tipo_acceso_nombre_portugues,
+            d.DOMFICPAT                         AS          tipo_acceso_path,
+            d.DOMFICVAL                         AS          tipo_acceso_dominio,
+            d.DOMFICOBS                         AS          tipo_acceso_observacion,
+            d.DOMFICPAR                         AS          tipo_acceso_parametro,
 
             e.DOMFICCOD                         AS          tipo_perfil_codigo,
+            e.DOMFICEST                         AS          tipo_perfil_estado_codigo,
+            e.DOMFICORD                         AS          tipo_perfil_orden,
             e.DOMFICNOI                         AS          tipo_perfil_nombre_ingles,
             e.DOMFICNOC                         AS          tipo_perfil_nombre_castellano,
             e.DOMFICNOP                         AS          tipo_perfil_nombre_portugues,
+            e.DOMFICPAT                         AS          tipo_perfil_path,
+            e.DOMFICVAL                         AS          tipo_perfil_dominio,
+            e.DOMFICOBS                         AS          tipo_perfil_observacion,
+            e.DOMFICPAR                         AS          tipo_perfil_parametro,
 
             f.teamFifaId                        AS          equipo_codigo,
             f.internationalShortName            AS          equipo_nombre,
 
+            
             g.DOMFICCOD                         AS          tipo_categoria_codigo,
+            g.DOMFICEST                         AS          tipo_categoria_estado_codigo,
+            g.DOMFICORD                         AS          tipo_categoria_orden,
             g.DOMFICNOI                         AS          tipo_categoria_nombre_ingles,
             g.DOMFICNOC                         AS          tipo_categoria_nombre_castellano,
             g.DOMFICNOP                         AS          tipo_categoria_nombre_portugues,
+            g.DOMFICPAT                         AS          tipo_categoria_path,
+            g.DOMFICVAL                         AS          tipo_categoria_dominio,
+            g.DOMFICOBS                         AS          tipo_categoria_observacion,
+            g.DOMFICPAR                         AS          tipo_categoria_parametro,
 
             h.competitionFifaId                 AS          competicion_codigo,
             h.superiorCompetitionFifaId         AS          competicion_codigo_padre,
@@ -8879,10 +9270,16 @@
             h.lastUpdate                        AS          competicion_ultima_actualizacion,
 
             i.DOMFICCOD                         AS          tipo_modulo_codigo,
+            i.DOMFICEST                         AS          tipo_modulo_estado_codigo,
+            i.DOMFICORD                         AS          tipo_modulo_orden,
             i.DOMFICNOI                         AS          tipo_modulo_nombre_ingles,
             i.DOMFICNOC                         AS          tipo_modulo_nombre_castellano,
-            i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues
-            
+            i.DOMFICNOP                         AS          tipo_modulo_nombre_portugues,
+            i.DOMFICPAT                         AS          tipo_modulo_path,
+            i.DOMFICVAL                         AS          tipo_modulo_dominio,
+            i.DOMFICOBS                         AS          tipo_modulo_observacion,
+            i.DOMFICPAR                         AS          tipo_modulo_parametro 
+
             FROM [adm].[PERCOM] a
             INNER JOIN [adm].[PERFIC] b ON a.PERCOMPEC = b.PERFICCOD
             INNER JOIN [adm].[DOMFIC] c ON b.PERFICEST = c.DOMFICCOD
@@ -8902,7 +9299,22 @@
 
             while ($rowMSSQL = $stmtMSSQL->fetch()) {    
                 $auditoria_fecha_hora = date_format(date_create($rowMSSQL['auditoria_fecha_hora']), 'd/m/Y H:i:s');
-                
+
+                if ($rowMSSQL['competicion_desde'] == '1900-01-01' || $rowMSSQL['competicion_desde'] == null){
+                    $competicion_desde_1 = '';
+                    $competicion_desde_2 = '';
+                } else {
+                    $competicion_desde_1 = $rowMSSQL['competicion_desde'];
+                    $competicion_desde_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_desde']));
+                }
+
+                if ($rowMSSQL['competicion_hasta'] == '1900-01-01' || $rowMSSQL['competicion_hasta'] == null){
+                    $competicion_hasta_1 = '';
+                    $competicion_hasta_2 = '';
+                } else {
+                    $competicion_hasta_1 = $rowMSSQL['competicion_hasta'];
+                    $competicion_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_hasta']));
+                }
                 if (isset($rowMSSQL['persona_path'])){
                     $persona_path = $rowMSSQL['persona_path'];
                 } else {
@@ -8928,7 +9340,8 @@
                 }
 
                 $detalle    = array(
-                    'competicion_persona_observacion'       => trim(strtoupper(strtolower($rowMSSQL['competicion_persona_observacion']))),
+                    'competicion_persona_observacion'       => trim($rowMSSQL['competicion_persona_observacion']),
+                    'competicion_persona_rts'               => trim($rowMSSQL['competicion_persona_rts']),
                     'auditoria_usuario'                     => trim(strtoupper(strtolower($rowMSSQL['auditoria_usuario']))),
                     'auditoria_fecha_hora'                  => $auditoria_fecha_hora,
                     'auditoria_ip'                          => trim(strtoupper(strtolower($rowMSSQL['auditoria_ip']))),
@@ -8941,27 +9354,51 @@
                     'persona_telefono'                      => trim(strtoupper(strtolower($rowMSSQL['persona_telefono']))),
 
                     'tipo_estado_codigo'                    => $rowMSSQL['tipo_estado_codigo'],
-                    'tipo_estado_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
-                    'tipo_estado_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
-                    'tipo_estado_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                    'tipo_estado_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_estado_codigo']))),
+                    'tipo_estado_orden'                     => $rowMSSQL['tipo_estado_orden'],
+                    'tipo_estado_nombre_ingles'             => trim($rowMSSQL['tipo_estado_nombre_ingles']),
+                    'tipo_estado_nombre_castellano'         => trim($rowMSSQL['tipo_estado_nombre_castellano']),
+                    'tipo_estado_nombre_portugues'          => trim($rowMSSQL['tipo_estado_nombre_portugues']),
+                    'tipo_estado_path'                      => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                    'tipo_estado_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))),
+                    'tipo_estado_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+                    'tipo_estado_parametro'                 => $rowMSSQL['tipo_estado_parametro'],
 
                     'tipo_acceso_codigo'                    => $rowMSSQL['tipo_acceso_codigo'],
-                    'tipo_acceso_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_ingles']))),
-                    'tipo_acceso_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_castellano']))),
-                    'tipo_acceso_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_nombre_portugues']))),
+                    'tipo_acceso_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_estado_codigo']))),
+                    'tipo_acceso_orden'                     => $rowMSSQL['tipo_acceso_orden'],
+                    'tipo_acceso_nombre_ingles'             => trim($rowMSSQL['tipo_acceso_nombre_ingles']),
+                    'tipo_acceso_nombre_castellano'         => trim($rowMSSQL['tipo_acceso_nombre_castellano']),
+                    'tipo_acceso_nombre_portugues'          => trim($rowMSSQL['tipo_acceso_nombre_portugues']),
+                    'tipo_acceso_path'                      => trim(strtolower($rowMSSQL['tipo_acceso_path'])),
+                    'tipo_acceso_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_dominio']))),
+                    'tipo_acceso_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_acceso_observacion']))),
+                    'tipo_acceso_parametro'                 => $rowMSSQL['tipo_acceso_parametro'],
 
                     'tipo_perfil_codigo'                    => $rowMSSQL['tipo_perfil_codigo'],
-                    'tipo_perfil_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_nombre_ingles']))),
-                    'tipo_perfil_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_nombre_castellano']))),
-                    'tipo_perfil_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_nombre_portugues']))),
+                    'tipo_perfil_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_estado_codigo']))),
+                    'tipo_perfil_orden'                     => $rowMSSQL['tipo_perfil_orden'],
+                    'tipo_perfil_nombre_ingles'             => trim($rowMSSQL['tipo_perfil_nombre_ingles']),
+                    'tipo_perfil_nombre_castellano'         => trim($rowMSSQL['tipo_perfil_nombre_castellano']),
+                    'tipo_perfil_nombre_portugues'          => trim($rowMSSQL['tipo_perfil_nombre_portugues']),
+                    'tipo_perfil_path'                      => trim(strtolower($rowMSSQL['tipo_perfil_path'])),
+                    'tipo_perfil_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_dominio']))),
+                    'tipo_perfil_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_perfil_observacion']))),
+                    'tipo_perfil_parametro'                 => $rowMSSQL['tipo_perfil_parametro'],
 
                     'equipo_codigo'                         => $rowMSSQL['equipo_codigo'],
                     'equipo_nombre'                         => trim(strtoupper(strtolower($rowMSSQL['equipo_nombre']))),
 
                     'tipo_categoria_codigo'                 => $rowMSSQL['tipo_categoria_codigo'],
-                    'tipo_categoria_nombre_ingles'          => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_nombre_ingles']))),
-                    'tipo_categoria_nombre_castellano'      => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_nombre_castellano']))),
-                    'tipo_categoria_nombre_portugues'       => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_nombre_portugues']))),
+                    'tipo_categoria_estado_codigo'          => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_estado_codigo']))),
+                    'tipo_categoria_orden'                  => $rowMSSQL['tipo_categoria_orden'],
+                    'tipo_categoria_nombre_ingles'          => trim($rowMSSQL['tipo_categoria_nombre_ingles']),
+                    'tipo_categoria_nombre_castellano'      => trim($rowMSSQL['tipo_categoria_nombre_castellano']),
+                    'tipo_categoria_nombre_portugues'       => trim($rowMSSQL['tipo_categoria_nombre_portugues']),
+                    'tipo_categoria_path'                   => trim(strtolower($rowMSSQL['tipo_categoria_path'])),
+                    'tipo_categoria_dominio'                => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_dominio']))),
+                    'tipo_categoria_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_categoria_observacion']))),
+                    'tipo_categoria_parametro'              => $rowMSSQL['tipo_categoria_parametro'],
 
                     'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                     'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
@@ -8971,8 +9408,10 @@
                     'competicion_anho'                      => $rowMSSQL['competicion_anho'],
                     'competicion_categoria_codigo'          => trim(strtoupper(strtolower($rowMSSQL['competicion_categoria_codigo']))),
                     'competicion_categoria_nombre'          => trim(strtoupper(strtolower($rowMSSQL['competicion_categoria_nombre']))),
-                    'competicion_desde'                     => $rowMSSQL['competicion_desde'],
-                    'competicion_hasta'                     => $rowMSSQL['competicion_hasta'],
+                    'competicion_desde_1'                   => $competicion_desde_1,
+                    'competicion_desde_2'                   => $competicion_desde_2,
+                    'competicion_hasta_1'                   => $competicion_hasta_1,
+                    'competicion_hasta_2'                   => $competicion_hasta_2,
                     'competicion_disciplina'                => trim(strtoupper(strtolower($rowMSSQL['competicion_disciplina']))),
                     'competicion_genero'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_genero']))),
                     'competicion_imagen_codigo'             => $rowMSSQL['competicion_imagen_codigo'],
@@ -8989,9 +9428,15 @@
                     'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
                     'tipo_modulo_codigo'                    => $rowMSSQL['tipo_modulo_codigo'],
-                    'tipo_modulo_nombre_ingles'             => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_ingles']))),
-                    'tipo_modulo_nombre_castellano'         => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_castellano']))),
-                    'tipo_modulo_nombre_portugues'          => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_nombre_portugues'])))
+                    'tipo_modulo_estado_codigo'             => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_estado_codigo']))),
+                    'tipo_modulo_orden'                     => $rowMSSQL['tipo_modulo_orden'],
+                    'tipo_modulo_nombre_ingles'             => trim($rowMSSQL['tipo_modulo_nombre_ingles']),
+                    'tipo_modulo_nombre_castellano'         => trim($rowMSSQL['tipo_modulo_nombre_castellano']),
+                    'tipo_modulo_nombre_portugues'          => trim($rowMSSQL['tipo_modulo_nombre_portugues']),
+                    'tipo_modulo_path'                      => trim(strtolower($rowMSSQL['tipo_modulo_path'])),
+                    'tipo_modulo_dominio'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_dominio']))),
+                    'tipo_modulo_observacion'               => trim(strtoupper(strtolower($rowMSSQL['tipo_modulo_observacion']))),
+                    'tipo_modulo_parametro'                 => $rowMSSQL['tipo_modulo_parametro']
                 );
 
                 $result[]   = $detalle;
@@ -9003,6 +9448,7 @@
             } else {
                 $detalle    = array(
                     'competicion_persona_observacion'       => '',
+                    'competicion_persona_rts'               => '',
                     'auditoria_usuario'                     => '',
                     'auditoria_fecha_hora'                  => '',
                     'auditoria_ip'                          => '',
@@ -9015,27 +9461,51 @@
                     'persona_telefono'                      => '',
 
                     'tipo_estado_codigo'                    => '',
+                    'tipo_estado_estado_codigo'             => '',
+                    'tipo_estado_orden'                     => '',
                     'tipo_estado_nombre_ingles'             => '',
                     'tipo_estado_nombre_castellano'         => '',
                     'tipo_estado_nombre_portugues'          => '',
-
+                    'tipo_estado_path'                      => '',
+                    'tipo_estado_dominio'                   => '',
+                    'tipo_estado_observacion'               => '',
+                    'tipo_estado_parametro'                 => '',
+                    
                     'tipo_acceso_codigo'                    => '',
+                    'tipo_acceso_estado_codigo'             => '',
+                    'tipo_acceso_orden'                     => '',
                     'tipo_acceso_nombre_ingles'             => '',
                     'tipo_acceso_nombre_castellano'         => '',
                     'tipo_acceso_nombre_portugues'          => '',
+                    'tipo_acceso_path'                      => '',
+                    'tipo_acceso_dominio'                   => '',
+                    'tipo_acceso_observacion'               => '',
+                    'tipo_acceso_parametro'                 => '',
 
                     'tipo_perfil_codigo'                    => '',
+                    'tipo_perfil_estado_codigo'             => '',
+                    'tipo_perfil_orden'                     => '',
                     'tipo_perfil_nombre_ingles'             => '',
                     'tipo_perfil_nombre_castellano'         => '',
                     'tipo_perfil_nombre_portugues'          => '',
+                    'tipo_perfil_path'                      => '',
+                    'tipo_perfil_dominio'                   => '',
+                    'tipo_perfil_observacion'               => '',
+                    'tipo_perfil_parametro'                 => '',
 
                     'equipo_codigo'                         => '',
                     'equipo_nombre'                         => '',
 
                     'tipo_categoria_codigo'                 => '',
+                    'tipo_categoria_estado_codigo'          => '',
+                    'tipo_categoria_orden'                  => '',
                     'tipo_categoria_nombre_ingles'          => '',
                     'tipo_categoria_nombre_castellano'      => '',
                     'tipo_categoria_nombre_portugues'       => '',
+                    'tipo_categoria_path'                   => '',
+                    'tipo_categoria_dominio'                => '',
+                    'tipo_categoria_observacion'            => '',
+                    'tipo_categoria_parametro'              => '',
 
                     'competicion_codigo'                    => '',
                     'competicion_codigo_padre'              => '',
@@ -9045,8 +9515,10 @@
                     'competicion_anho'                      => '',
                     'competicion_categoria_codigo'          => '',
                     'competicion_categoria_nombre'          => '',
-                    'competicion_desde'                     => '',
-                    'competicion_hasta'                     => '',
+                    'competicion_desde_1'                   => '',
+                    'competicion_desde_2'                   => '',
+                    'competicion_hasta_1'                   => '',
+                    'competicion_hasta_2'                   => '',
                     'competicion_disciplina'                => '',
                     'competicion_genero'                    => '',
                     'competicion_imagen_codigo'             => '',
@@ -9062,9 +9534,15 @@
                     'competicion_ultima_actualizacion'      => '',
 
                     'tipo_modulo_codigo'                    => '',
+                    'tipo_modulo_estado_codigo'             => '',
+                    'tipo_modulo_orden'                     => '',
                     'tipo_modulo_nombre_ingles'             => '',
                     'tipo_modulo_nombre_castellano'         => '',
-                    'tipo_modulo_nombre_portugues'          => ''
+                    'tipo_modulo_nombre_portugues'          => '',
+                    'tipo_modulo_path'                      => '',
+                    'tipo_modulo_dominio'                   => '',
+                    'tipo_modulo_observacion'               => '',
+                    'tipo_modulo_parametro'                 => ''
                 );
 
                 header("Content-Type: application/json; charset=utf-8");

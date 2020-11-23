@@ -176,3 +176,51 @@
         
         return $json;
     });
+    /*MODULO PERSONA*/
+    $app->delete('/v1/200/competicion/medico/{competicion}/{persona}', function($request) {
+            require __DIR__.'/../src/connect.php';
+    
+            $val01      = $request->getAttribute('competicion');
+            $val02      = $request->getAttribute('persona');
+            $val03      = $request->getParsedBody()['tipo_modulo_parametro'];
+            $val04      = $request->getParsedBody()['competicion_persona_observacion'];
+            $val05      = $request->getParsedBody()['competicion_persona_rts'];
+            
+            $aud01      = $request->getParsedBody()['auditoria_usuario'];
+            $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+            $aud03      = $request->getParsedBody()['auditoria_ip'];
+    
+            if (isset($val01) && isset($val02)) {
+                $sql00  = "UPDATE [adm].[PERCOM] SET PERCOMAUS = ?, PERCOMAFH = GETDATE(), PERCOMAIP = ? WHERE PERCOMCOC = ? AND PERCOMPEC = ?";
+                $sql01  = "DELETE FROM [adm].[PERCOM] WHERE PERCOMCOC = ? AND PERCOMPEC = ?";
+    
+                try {
+                    $connMSSQL  = getConnectionMSSQLv1();
+                    $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                    $stmtMSSQL01= $connMSSQL->prepare($sql01);
+    
+                    $stmtMSSQL00->execute([$aud01, $aud03, $val01, $val02]);
+                    $stmtMSSQL01->execute([$val01, $val02]);
+    
+                    $stmtMSSQL00->closeCursor();
+                    $stmtMSSQL01->closeCursor();
+    
+                    $stmtMSSQL00 = null;
+                    $stmtMSSQL01 = null;
+                    
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success DELETE', 'codigo' => $val01.', '.$val02), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    
+                } catch (PDOException $e) {
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error DELETE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+            } else {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+    
+            $connMSSQL  = null;
+            
+            return $json;
+        });
