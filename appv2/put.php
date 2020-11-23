@@ -400,41 +400,41 @@
 
 /*MODULO PERSONA*/
     $app->put('/v2/200/competicion/medico/{competicion}/{persona}', function($request) {//20201117
-    require __DIR__.'/../src/connect.php';
+        require __DIR__.'/../src/connect.php';
 
-    $val01      = $request->getAttribute('competicion');
-    $val02      = $request->getAttribute('persona');
-    $val03      = $request->getParsedBody()['tipo_modulo_parametro'];
-    $val04      = $request->getParsedBody()['competicion_persona_observacion'];
-    $val05      = $request->getParsedBody()['competicion_persona_rts'];
-    
-    $aud01      = $request->getParsedBody()['auditoria_usuario'];
-    $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
-    $aud03      = $request->getParsedBody()['auditoria_ip'];
+        $val01      = $request->getAttribute('competicion');
+        $val02      = $request->getAttribute('persona');
+        $val03      = $request->getParsedBody()['tipo_modulo_parametro'];
+        $val04      = $request->getParsedBody()['competicion_persona_observacion'];
+        $val05      = $request->getParsedBody()['competicion_persona_rts'];
+        
+        $aud01      = $request->getParsedBody()['auditoria_usuario'];
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = $request->getParsedBody()['auditoria_ip'];
 
-    if (isset($val01) && isset($val02) && isset($val03)) {
-        $sql00  = "UPDATE [adm].[PERCOM] SET PERCOMTMC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'USUARIOMODULO' AND DOMFICPAR = ?), PERCOMOBS = ?, PERCOMAUS = ?, PERCOMAFH = GETDATE(), PERCOMAIP = ?, PERCOMRTS = ? WHERE PERCOMCOC = ? AND PERCOMPEC = ?";
+        if (isset($val01) && isset($val02) && isset($val03)) {
+            $sql00  = "UPDATE [adm].[PERCOM] SET PERCOMTMC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'USUARIOMODULO' AND DOMFICPAR = ?), PERCOMOBS = ?, PERCOMAUS = ?, PERCOMAFH = GETDATE(), PERCOMAIP = ?, PERCOMRTS = ? WHERE PERCOMCOC = ? AND PERCOMPEC = ?";
 
-        try {
-            $connMSSQL  = getConnectionMSSQLv2();
-            $stmtMSSQL  = $connMSSQL->prepare($sql00);
-            $stmtMSSQL->execute([$val03, $val04, $aud01, $aud03, $val05, $val01, $val02]); 
-            
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val03, $val04, $aud01, $aud03, $val05, $val01, $val02]); 
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val01.', '.$val02), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
             header("Content-Type: application/json; charset=utf-8");
-            $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val01.', '.$val02), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-
-            $stmtMSSQL->closeCursor();
-            $stmtMSSQL = null;
-        } catch (PDOException $e) {
-            header("Content-Type: application/json; charset=utf-8");
-            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
         }
-    } else {
-        header("Content-Type: application/json; charset=utf-8");
-        $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-    }
 
-    $connMSSQL  = null;
-    
-    return $json;
+        $connMSSQL  = null;
+        
+        return $json;
 });
