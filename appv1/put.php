@@ -404,13 +404,14 @@
         
         return $json;
     });
-    /*MODULO PERSONA*/
+
+/*MODULO PERSONA*/
     $app->put('/v1/200/competicion/medico/{competicion}/{persona}', function($request) {//20201117
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('competicion');
         $val02      = $request->getAttribute('persona');
-        $val03      = $request->getParsedBody()['tipo_modulo_parametro'];
+        $val03      = $request->getParsedBody()['tipo_modulo_codigo'];
         $val04      = $request->getParsedBody()['competicion_persona_observacion'];
         $val05      = $request->getParsedBody()['competicion_persona_rts'];
         
