@@ -10127,7 +10127,7 @@
                 $stmtMSSQL02= $connMSSQL->prepare($sql02);
 
                 if ($val01 == 39393) {
-                    $stmtMSSQL00->execute([$val02, $val02, $val04]);
+                    $stmtMSSQL00->execute([$val02, $val02, $val04, $val04]);
                     $stmtMSSQL01->execute([$val03, $val02, $val02, $val04]);
                     $stmtMSSQL02->execute([$val03, $val03, $val02, $val02, $val04]);
                 } else {
