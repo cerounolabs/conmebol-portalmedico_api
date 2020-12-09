@@ -10040,7 +10040,16 @@
                         
                     FROM [VIEW].juego a
                         
-                    WHERE (a.COMPETICION_PADRE_ID = ? OR a.COMPETICION_ID = ?) AND a.JUEGO_CODIGO = ?";
+                    WHERE (a.COMPETICION_PADRE_ID = ? OR a.COMPETICION_ID = ?) AND a.JUEGO_CODIGO = ?
+                    
+                    UNION ALL
+                
+                    SELECT
+                        '1'                     AS     tipo_codigo,
+                        'TOTAL PERSONA'         AS     tipo_nombre,
+                        COUNT(*)                AS     cantidad_persona                        
+                        FROM comet.matches_officials a
+                        WHERE a.matchFifaId = ?";
 
                 $sql01  = "SELECT
                     a.DOMFICCOD                  AS  tipo_codigo,
@@ -10126,15 +10135,20 @@
                     $stmtMSSQL01->execute([$val03, $val01, $val02, $val02, $val04]);
                     $stmtMSSQL02->execute([$val02, $val01, $val03, $val04]);
                 }
+
+                $cantRegistro = 0;
+
                 while ($rowMSSQL = $stmtMSSQL00->fetch()) {
+                    $cantRegistro = $cantRegistro + $rowMSSQL['cantidad_persona'];
+
                     $detalle    = array(
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
-                        'cantidad_persona'          => $rowMSSQL['cantidad_persona']
+                        'cantidad_persona'          => $cantRegistro
                     );
-
-                    $result[]   = $detalle;
                 }
+
+                $result[]   = $detalle;
 
                 while ($rowMSSQL = $stmtMSSQL01->fetch()) {
                     $detalle    = array(
