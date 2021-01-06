@@ -12,6 +12,7 @@
         a.DOMFICPAT         AS          tipo_path,
         a.DOMFICVAL         AS          tipo_dominio,
         a.DOMFICOBS         AS          tipo_observacion,
+
         a.DOMFICAUS         AS          tipo_usuario,
         a.DOMFICAFH         AS          tipo_fecha_hora,
         a.DOMFICAIP         AS          tipo_ip
@@ -6906,32 +6907,58 @@
         return $json;
     });
 
-       //20201022
+    //20201022
     $app->get('/v2/200/persona/codigo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('codigo');
 
         if (isset($val01)) {
-            $sql00  = "SELECT
+            $sql00  = " SELECT
                 a.personFifaId                  AS          persona_codigo,
-                a.personType                    AS          persona_tipo,
                 a.internationalFirstName        AS          persona_nombre,
                 a.internationalLastName         AS          persona_apellido,
-                a.gender                        AS          persona_genero,
+                a.popularName                   AS          persona_popular_name,
+                a.birthName                     AS          persona_birth_Name,
+                a.language                      AS          persona_languaje,
+                a.title                         AS          persona_title,
+                a.countryOfBirth                AS          persona_country_Of_Birth,
+                a.countryOfBirthFIFA            AS          persona_country_Of_BirthFIFA,
+                a.regionOfBirth                 AS          persona_region_Of_Birth,
+                a.placeOfBirth                  AS          persona_place_Of_Birth,
                 a.dateOfBirth                   AS          persona_fecha_nacimiento,
+                a.gender                        AS          persona_genero,
+                a.homegrown                     AS          persona_homegrown,
+                a.national_team                 AS          persona_national_team,
+                a.nationality                   AS          persona_nationality,
+                a.nationalityFIFA               AS          persona_nationalityFIFA,
+                a.place                         AS          persona_place,
                 a.playerPosition                AS          persona_funcion,
+                a.rowNumber                     AS          persona_rowNumber,
+                a.lastUpdate                    AS          persona_ultima_actualizacion,
+                a.pictureContentType            AS          persona_pictureContentType,
+                a.pictureLink                   AS          persona_pictureLink,
+                a.pictureValue                  AS          persona_pictureValue,
+                a.role                          AS          persona_role,
+                a.cometRoleName                 AS          persona_cometRoleName,
+                a.cometRoleNameKey              AS          persona_cometRoleNameKey,
+                a.personType                    AS          persona_tipo,
 
                 b.DOMFICCOD                     AS          tipo_documento_codigo,
+                b.DOMFICEST                     AS          tipo_documento_estado_codigo,
+                b.DOMFICORD                     AS          tipo_documento_orden,
                 b.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
                 b.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
                 b.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+                b.DOMFICPAT                     AS          tipo_documento_path,
+                b.DOMFICVAL                     AS          tipo_documento_dominio,
+                b.DOMFICOBS                     AS          tipo_documento_observacion,
                 a.documentNumber                AS          tipo_documento_numero
                 
                 FROM comet.persons a
                 INNER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
                 
-                WHERE  a.personFifaId = ? 
+                WHERE  a.personFifaId = ?
 
                 ORDER BY a.documentNumber";
 
@@ -6952,17 +6979,42 @@
                     $detalle    = array(
                         'persona_codigo'                        => $rowMSSQL['persona_codigo'],
                         'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
-                        'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
-                        'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
-                        'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                        'persona_nombre'                        => trim($rowMSSQL['persona_nombre']),
+                        'persona_apellido'                      => trim($rowMSSQL['persona_apellido']),
+                        'persona_popular_name'                  => trim($rowMSSQL['persona_popular_name']),
+                        'persona_birth_Name'                    => trim($rowMSSQL['persona_birth_Name']),
+                        'persona_languaje'                      => trim($rowMSSQL['persona_languaje']),
+                        'persona_title'                         => trim($rowMSSQL['persona_title']),
+                        'persona_country_Of_Birth'              => trim($rowMSSQL['persona_country_Of_Birth']),
+                        'persona_country_Of_BirthFIFA'          => trim($rowMSSQL['persona_country_Of_BirthFIFA']),
+                        'persona_region_Of_Birth'               => trim($rowMSSQL['persona_region_Of_Birth']),
+                        'persona_place_Of_Birth'                => trim($rowMSSQL['persona_place_Of_Birth']),              
                         'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
                         'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
-                        'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
-                        
+                        'persona_genero'                        => trim($rowMSSQL['persona_genero']),
+                        'persona_homegrown'                     => $rowMSSQL['persona_homegrown'],
+                        'persona_national_team'                 => trim($rowMSSQL['persona_national_team']),
+                        'persona_nationality'                   => trim($rowMSSQL['persona_nationality']),
+                        'persona_nationalityFIFA'               => trim($rowMSSQL['persona_nationalityFIFA']),
+                        'persona_place'                         => trim($rowMSSQL['persona_place']),
+                        'persona_funcion'                       => trim($rowMSSQL['persona_funcion']),
+                        'persona_rowNumber'                     => $rowMSSQL['persona_rowNumber'],
+                        'persona_ultima_actualizacion'          => $rowMSSQL['persona_ultima_actualizacion'],
+                        'persona_pictureContentType'            => trim($rowMSSQL['persona_pictureContentType']),
+                        'persona_pictureLink'                   => trim($rowMSSQL['persona_pictureLink']),
+                        'persona_pictureValue'                  => trim($rowMSSQL['persona_pictureValue']),
+                        'persona_role'                          => trim($rowMSSQL['persona_role']),
+                        'persona_cometRoleName'                 => trim($rowMSSQL['persona_cometRoleName']),
+                        'persona_cometRoleNameKey'              => trim($rowMSSQL['persona_cometRoleNameKey']),
+                       
                         'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
+                        'tipo_documento_orden'                  => $rowMSSQL['tipo_documento_orden'],
                         'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
                         'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
                         'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                        'tipo_documento_path'                   => strtolower(trim($rowMSSQL['tipo_documento_path'])),
+                        'tipo_documento_dominio'                => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_dominio']))),
+                        'tipo_documento_observacion'            => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_observacion']))),
                         'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
                     );
 
@@ -6978,15 +7030,40 @@
                         'persona_tipo'                          => '',
                         'persona_nombre'                        => '',
                         'persona_apellido'                      => '',
-                        'persona_genero'                        => '',
+                        'persona_popular_name'                  => '',
+                        'persona_birth_Name'                    => '',
+                        'persona_languaje'                      => '',
+                        'persona_title'                         => '',
+                        'persona_country_Of_Birth'              => '',
+                        'persona_country_Of_BirthFIFA'          => '',
+                        'persona_region_Of_Birth'               => '',
+                        'persona_place_Of_Birth'                => '',              
                         'persona_fecha_nacimiento_1'            => '',
                         'persona_fecha_nacimiento_2'            => '',
+                        'persona_genero'                        => '',
+                        'persona_homegrown'                     => '',
+                        'persona_national_team'                 => '',
+                        'persona_nationality'                   => '',
+                        'persona_nationalityFIFA'               => '',
+                        'persona_place'                         => '',
                         'persona_funcion'                       => '',
-                        
+                        'persona_rowNumber'                     => '',
+                        'persona_ultima_actualizacion'          => '',
+                        'persona_pictureContentType'            => '',
+                        'persona_pictureLink'                   => '',
+                        'persona_pictureValue'                  => '',
+                        'persona_role'                          => '',
+                        'persona_cometRoleName'                 => '',
+                        'persona_cometRoleNameKey'              => '',
+                       
                         'tipo_documento_codigo'                 => '',
+                        'tipo_documento_orden'                  => '',
                         'tipo_documento_nombre_ingles'          => '',
                         'tipo_documento_nombre_castellano'      => '',
                         'tipo_documento_nombre_portugues'       => '',
+                        'tipo_documento_path'                   => '',
+                        'tipo_documento_dominio'                => '',
+                        'tipo_documento_observacion'            => '',
                         'tipo_documento_numero'                 => ''
                     );
 
@@ -7009,6 +7086,8 @@
         
         return $json;
     });
+
+
 
     $app->get('/v2/200/competicion/persona/zona1/{competicion}/{tipo}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
@@ -8405,6 +8484,7 @@
                 d.EQUIPO_LOCAL_NOMBRE AS encuentro_equipo_local_nombre,
                 d.EQUIPO_VISITANTE_NOMBRE AS encuentro_equipo_visitante_nombre,
                 d.JUEGO_HORARIO AS encuentro_fecha,
+                e.internationalName AS encuentro_competicion,
                 (SELECT COUNT(e1.EXAFICCOD)FROM exa.EXAFIC e1 WHERE e1.EXAFICENC = a.EXAFICENC AND e1.EXAFICEQC = a.EXAFICEQC AND e1.EXAFICTEC = b.DOMFICCOD AND e1.EXAFICEST = c.DOMFICCOD AND e1.EXAFICLRE = 'SI') AS encuentro_cantidad_positivo,
                 (SELECT COUNT(e1.EXAFICCOD)FROM exa.EXAFIC e1 WHERE e1.EXAFICENC = a.EXAFICENC AND e1.EXAFICEQC = a.EXAFICEQC AND e1.EXAFICTEC = b.DOMFICCOD AND e1.EXAFICEST = c.DOMFICCOD AND e1.EXAFICLRE = 'NO') AS encuentro_cantidad_negativo
                 
@@ -8412,12 +8492,12 @@
                 
                 INNER JOIN adm.DOMFIC b ON a.EXAFICTEC = b.DOMFICCOD
                 INNER JOIN adm.DOMFIC c ON a.EXAFICEST = c.DOMFICCOD
-                INNER JOIN [view].juego d ON a.EXAFICENC = d.JUEGO_CODIGO AND (a.EXAFICEQC = d.EQUIPO_LOCAL_CODIGO OR a.EXAFICEQC = d.EQUIPO_VISITANTE_CODIGO) 
+                INNER JOIN [view].juego d ON a.EXAFICENC = d.JUEGO_CODIGO AND (a.EXAFICEQC = d.EQUIPO_LOCAL_CODIGO OR a.EXAFICEQC = d.EQUIPO_VISITANTE_CODIGO)
+                INNER JOIN comet.competitions e ON d.COMPETICION_PADRE_ID = e.competitionFifaId
                 
                 WHERE a.EXAFICEQC = ? AND b.DOMFICVAL = 'EXAMENMEDICOTIPO' AND b.DOMFICPAR = 1 AND c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND c.DOMFICPAR = 1 and a.EXAFICLRE IS NOT NULL
-                GROUP BY a.EXAFICENC, d.EQUIPO_LOCAL_CODIGO, d.EQUIPO_VISITANTE_CODIGO,d.EQUIPO_LOCAL_NOMBRE, d.EQUIPO_VISITANTE_NOMBRE, a.EXAFICEQC, b.DOMFICCOD, c.DOMFICCOD, d.JUEGO_HORARIO";
+                GROUP BY a.EXAFICENC, d.EQUIPO_LOCAL_CODIGO, d.EQUIPO_VISITANTE_CODIGO,d.EQUIPO_LOCAL_NOMBRE, d.EQUIPO_VISITANTE_NOMBRE, a.EXAFICEQC, b.DOMFICCOD, c.DOMFICCOD, d.JUEGO_HORARIO, e.internationalName";
            
-
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
@@ -8442,7 +8522,8 @@
 
                     $detalle    = array(
                         'encuentro_codigo'                    => $rowMSSQL['encuentro_codigo'],
-                        'encuentro_equipo'                    =>trim(strtoupper(strtolower($nomEquipo))),
+                        'encuentro_competicion'               => trim($rowMSSQL['encuentro_competicion']),
+                        'encuentro_equipo'                    => trim(strtoupper(strtolower($nomEquipo))),
 
                         'encuentro_fecha_1'                   => $encuentro_fecha_1,
                         'encuentro_fecha_2'                   => $encuentro_fecha_2,
@@ -8459,6 +8540,7 @@
                 } else {
                     $detalle = array(
                         'encuentro_codigo'                    => '',
+                        'encuentro_competicion'               => '',
                         'encuentro_equipo'                    => '',
                         'encuentro_cantidad_positivo'         => '',
                         'encuentro_cantidad_negativo'         => ''
@@ -8484,7 +8566,6 @@
         
         return $json;
     });
-
 
     $app->get('/v2/200/competicion/encuentro/{equipo}/{competicion}', function($request) {
         require __DIR__.'/../src/connect.php';
@@ -10215,3 +10296,5 @@
         
         return $json;
     }); 
+
+    
