@@ -8534,6 +8534,7 @@
                 d.EQUIPO_LOCAL_NOMBRE AS encuentro_equipo_local_nombre,
                 d.EQUIPO_VISITANTE_NOMBRE AS encuentro_equipo_visitante_nombre,
                 d.JUEGO_HORARIO AS encuentro_fecha,
+                e.internationalName AS encuentro_competicion,
                 (SELECT COUNT(e1.EXAFICCOD)FROM exa.EXAFIC e1 WHERE e1.EXAFICENC = a.EXAFICENC AND e1.EXAFICEQC = a.EXAFICEQC AND e1.EXAFICTEC = b.DOMFICCOD AND e1.EXAFICEST = c.DOMFICCOD AND e1.EXAFICLRE = 'SI') AS encuentro_cantidad_positivo,
                 (SELECT COUNT(e1.EXAFICCOD)FROM exa.EXAFIC e1 WHERE e1.EXAFICENC = a.EXAFICENC AND e1.EXAFICEQC = a.EXAFICEQC AND e1.EXAFICTEC = b.DOMFICCOD AND e1.EXAFICEST = c.DOMFICCOD AND e1.EXAFICLRE = 'NO') AS encuentro_cantidad_negativo
                 
@@ -8541,12 +8542,12 @@
                 
                 INNER JOIN adm.DOMFIC b ON a.EXAFICTEC = b.DOMFICCOD
                 INNER JOIN adm.DOMFIC c ON a.EXAFICEST = c.DOMFICCOD
-                INNER JOIN [view].juego d ON a.EXAFICENC = d.JUEGO_CODIGO AND (a.EXAFICEQC = d.EQUIPO_LOCAL_CODIGO OR a.EXAFICEQC = d.EQUIPO_VISITANTE_CODIGO) 
+                INNER JOIN [view].juego d ON a.EXAFICENC = d.JUEGO_CODIGO AND (a.EXAFICEQC = d.EQUIPO_LOCAL_CODIGO OR a.EXAFICEQC = d.EQUIPO_VISITANTE_CODIGO)
+                INNER JOIN comet.competitions e ON d.COMPETICION_PADRE_ID = e.competitionFifaId
                 
                 WHERE a.EXAFICEQC = ? AND b.DOMFICVAL = 'EXAMENMEDICOTIPO' AND b.DOMFICPAR = 1 AND c.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND c.DOMFICPAR = 1 and a.EXAFICLRE IS NOT NULL
-                GROUP BY a.EXAFICENC, d.EQUIPO_LOCAL_CODIGO, d.EQUIPO_VISITANTE_CODIGO,d.EQUIPO_LOCAL_NOMBRE, d.EQUIPO_VISITANTE_NOMBRE, a.EXAFICEQC, b.DOMFICCOD, c.DOMFICCOD, d.JUEGO_HORARIO";
+                GROUP BY a.EXAFICENC, d.EQUIPO_LOCAL_CODIGO, d.EQUIPO_VISITANTE_CODIGO,d.EQUIPO_LOCAL_NOMBRE, d.EQUIPO_VISITANTE_NOMBRE, a.EXAFICEQC, b.DOMFICCOD, c.DOMFICCOD, d.JUEGO_HORARIO, e.internationalName";
            
-
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
@@ -8571,7 +8572,8 @@
 
                     $detalle    = array(
                         'encuentro_codigo'                    => $rowMSSQL['encuentro_codigo'],
-                        'encuentro_equipo'                    =>trim(strtoupper(strtolower($nomEquipo))),
+                        'encuentro_competicion'               => trim($rowMSSQL['encuentro_competicion']),
+                        'encuentro_equipo'                    => trim(strtoupper(strtolower($nomEquipo))),
 
                         'encuentro_fecha_1'                   => $encuentro_fecha_1,
                         'encuentro_fecha_2'                   => $encuentro_fecha_2,
@@ -8588,6 +8590,7 @@
                 } else {
                     $detalle = array(
                         'encuentro_codigo'                    => '',
+                        'encuentro_competicion'               => '',
                         'encuentro_equipo'                    => '',
                         'encuentro_cantidad_positivo'         => '',
                         'encuentro_cantidad_negativo'         => ''
