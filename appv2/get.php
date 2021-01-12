@@ -7189,7 +7189,7 @@
                 $connMSSQL          = getConnectionMSSQLv2();
                 $stmtMSSQL00        = $connMSSQL->prepare($sql00);
                 $stmtMSSQL01        = $connMSSQL->prepare($sql01); 
-                
+
                 $stmtMSSQL00->execute([$val01]);
                 
                 while ($rowMSSQL = $stmtMSSQL00->fetch()) {
@@ -7357,7 +7357,7 @@
                     $result_examen[]  = $detalle;
                 }
 
-                if (!isset($result_examen)){
+                if (isset($result_examen)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result_examen), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
