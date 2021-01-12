@@ -7160,7 +7160,7 @@
                 INNER JOIN comet.persons d ON a.EXAFICPEC   = d.personFifaId
                 INNER JOIN adm.DOMFIC e ON d.documentType   = e.DOMFICCOD
                 
-                WHERE a.EXAFICPEC = ? AND c.DOMFICVAL = 'EXAMENMEDICOTIPO'
+                WHERE a.EXAFICPEC = ?
                 ORDER BY a.EXAFICCOD";
 
             $sql01  = "SELECT
@@ -7186,18 +7186,13 @@
 
             try {
                 $result_examen      = [];
-                $result_examen_test = [];
-
-                $connMSSQL      = getConnectionMSSQLv2();
-
-                $stmtMSSQL00    = $connMSSQL->prepare($sql00);
-                $stmtMSSQL01    = $connMSSQL->prepare($sql01); 
-
+                $connMSSQL          = getConnectionMSSQLv2();
+                $stmtMSSQL00        = $connMSSQL->prepare($sql00);
+                $stmtMSSQL01        = $connMSSQL->prepare($sql01); 
+                
                 $stmtMSSQL00->execute([$val01]);
-                //$stmtMSSQL01->execute([$val01]);
+                
                 while ($rowMSSQL = $stmtMSSQL00->fetch()) {
-
-                   
                     if ($rowMSSQL['examen_fecha_1'] == '1900-01-01' || $rowMSSQL['examen_fecha_1'] == null){
                         $examen_fecha_1_1 = '';
                         $examen_fecha_1_2 = '';
@@ -7260,6 +7255,30 @@
                     } else {
                         $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
                         $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
+                    $stmtMSSQL01->execute([$rowMSSQL['examen_codigo']]);
+                    $result_test = [];
+
+                    while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
+                        $detalle = array(
+                            'examen_test_codigo'                            => $rowMSSQL01['examen_test_codigo'],
+                            'examen_test_valor'                             => trim(strtoupper(strtolower($rowMSSQL01['examen_test_valor']))),
+                            'examen_test_observacion'                       => trim($rowMSSQL01['examen_test_observacion']),
+    
+                            'auditoria_usuario'                             => trim(strtoupper(strtolower($rowMSSQL01['auditoria_usuario']))),
+                            'auditoria_fecha_hora'                          => date("d/m/Y", strtotime($rowMSSQL01['auditoria_fecha_hora'])),
+                            'auditoria_ip'                                  => trim(strtoupper(strtolower($rowMSSQL01['auditoria_ip']))),
+    
+                            'tipo_test_codigo'                              => $rowMSSQL01['tipo_test_codigo'],
+                            'tipo_test_nombre_ingles'                       => trim(strtoupper(strtolower($rowMSSQL01['tipo_test_nombre_ingles']))),
+                            'tipo_test_nombre_castellano'                   => trim(strtoupper(strtolower($rowMSSQL01['tipo_test_nombre_castellano']))),
+                            'tipo_test_nombre_portugues'                    => trim(strtoupper(strtolower($rowMSSQL01['tipo_test_nombre_portugues']))),
+                            'tipo_test_parametro'                           => $rowMSSQL01['tipo_test_parametro'],
+                            'tipo_test_dominio'                             => trim(strtoupper(strtolower($rowMSSQL01['tipo_test_dominio']))) 
+                        );
+    
+                        $result_test [] = $detalle;
                     }
 
                     $detalle    = array(
@@ -7330,37 +7349,17 @@
                         'tipo_documento_path'                           => strtolower(trim($rowMSSQL['tipo_documento_path'])),
                         'tipo_documento_dominio'                        => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_dominio']))),
                         'tipo_documento_observacion'                    => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_observacion']))),
-                        'tipo_documento_numero'                         => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
-    
+                        'tipo_documento_numero'                         => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                        'examen_detalle'                                => $result_test
                     );
 
-                    while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
-                        $examen_test = $rowMSSQL01['examen_codigo'];
-                        $stmtMSSQL02->execute([$examen_test]);
-                        $detalle2 = array(
-                            'examen_test_codigo'                            => $rowMSSQL['examen_test_codigo'],
-                            'examen_test_valor'                             => trim(strtoupper(strtolower($rowMSSQL['examen_test_valor']))),
-                            'examen_test_observacion'                       => trim($rowMSSQL['examen_test_observacion']),
-    
-                            'auditoria_usuario'                             => trim(strtoupper(strtolower($rowMSSQL['auditoria_usuario']))),
-                            'auditoria_fecha_hora'                          => date("d/m/Y", strtotime($rowMSSQL['auditoria_fecha_hora'])),
-                            'auditoria_ip'                                  => trim(strtoupper(strtolower($rowMSSQL['auditoria_ip']))),
-    
-                            'tipo_test_codigo'                              => $rowMSSQL['tipo_test_codigo'],
-                            'tipo_test_nombre_ingles'                       => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_ingles']))),
-                            'tipo_test_nombre_castellano'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_castellano']))),
-                            'tipo_test_nombre_portugues'                    => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_portugues']))),
-                            'tipo_test_parametro'                           => $rowMSSQL['tipo_test_parametro'],
-                            'tipo_test_dominio'                             => trim(strtoupper(strtolower($rowMSSQL['tipo_test_dominio']))) 
-                    );
-    
-                   $result_test [] = $detalle2;
-                    }
-                    $result_examen[]   = $detalle;
+                    $result_examen[]  = $detalle;
                 }
+
                 if (!isset($result_examen)){
                     header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result_examen), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
                         'examen_codigo'                                 => '',
@@ -7391,7 +7390,6 @@
                         'examen_laboratorio_observacion'                => '',
                         'examen_bandera'                                => '',
                         'examen_observacion'                            => '',
-
 
                         'persona_codigo'                                => '',
                         'persona_tipo'                                  => '',
@@ -7431,54 +7429,19 @@
                         'tipo_documento_path'                           => '',
                         'tipo_documento_dominio'                        => '',
                         'tipo_documento_observacion'                    => '',
-                        'tipo_documento_numero'                         => ''
+                        'tipo_documento_numero'                         => '',
+
+                        'examen_detalle'                                => ''
                     );
-                    $result_examen[]   = $detalle;
- 
-                }
-
-                
-
-                if (!isset($result_test)){
-                    $detalle    = array(
-                        'examen_test_codigo'                            => '',
-                        'examen_test_valor'                             => '',
-                        'examen_test_observacion'                       => '',
-
-                        'auditoria_usuario'                             => '',
-                        'auditoria_fecha_hora'                          => '',
-                        'auditoria_ip'                                  => '',
-
-                        'tipo_test_codigo'                              => '',
-                        'tipo_test_nombre_ingles'                       => '',
-                        'tipo_test_nombre_castellano'                   => '',
-                        'tipo_test_nombre_portugues'                    => '',
-                        'tipo_test_parametro'                           => '',
-                        'tipo_test_dominio'                             => ''
-                    );
-                    $result_test = $detalle;
-                }
-
-                $result = array(
-                    'examen'                                        =>      $result_examen,
-                    'examen_test'                                   =>      $result_test
-                );
-
-                if (isset($result)){
-                    header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-                }else {
-                    $detalle = array(
-                        'examen'                                     =>      '',
-                        'examen_test'                                =>      ''
-                    );
-
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 }
 
                 $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
                 $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
             } catch (PDOException $e) {
                 header("Content-Type: application/json; charset=utf-8");
                 $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
