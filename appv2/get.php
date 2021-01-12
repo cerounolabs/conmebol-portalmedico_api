@@ -7482,7 +7482,7 @@
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
             
-                $stmtMSSQL->execute([$val01]);
+                $stmtMSSQL->execute([$val01, $val01, $val01]);
                 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                    
