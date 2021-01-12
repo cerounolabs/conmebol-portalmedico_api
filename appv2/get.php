@@ -7194,8 +7194,7 @@
                 $stmtMSSQL01    = $connMSSQL->prepare($sql01); 
 
                 $stmtMSSQL00->execute([$val01]);
-                $stmtMSSQL01->execute([$val01]);
-
+                //$stmtMSSQL01->execute([$val01]);
                 while ($rowMSSQL = $stmtMSSQL00->fetch()) {
 
                    
@@ -7436,8 +7435,8 @@
                     }
                 }
 
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL00 = null;
             } catch (PDOException $e) {
                 header("Content-Type: application/json; charset=utf-8");
                 $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
