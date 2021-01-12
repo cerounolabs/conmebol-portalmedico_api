@@ -6906,6 +6906,942 @@
         return $json;
     });
 
+    $app->get('/v1/200/persona/codigo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+
+        if (isset($val01)) {
+            $sql00  = " SELECT
+                a.personFifaId                  AS          persona_codigo,
+                a.internationalFirstName        AS          persona_nombre,
+                a.internationalLastName         AS          persona_apellido,
+                a.popularName                   AS          persona_popular_name,
+                a.birthName                     AS          persona_birth_Name,
+                a.language                      AS          persona_languaje,
+                a.title                         AS          persona_title,
+                a.countryOfBirth                AS          persona_country_Of_Birth,
+                a.countryOfBirthFIFA            AS          persona_country_Of_BirthFIFA,
+                a.regionOfBirth                 AS          persona_region_Of_Birth,
+                a.placeOfBirth                  AS          persona_place_Of_Birth,
+                a.dateOfBirth                   AS          persona_fecha_nacimiento,
+                a.gender                        AS          persona_genero,
+                a.homegrown                     AS          persona_homegrown,
+                a.national_team                 AS          persona_national_team,
+                a.nationality                   AS          persona_nationality,
+                a.nationalityFIFA               AS          persona_nationalityFIFA,
+                a.place                         AS          persona_place,
+                a.playerPosition                AS          persona_funcion,
+                a.rowNumber                     AS          persona_rowNumber,
+                a.lastUpdate                    AS          persona_ultima_actualizacion,
+                a.pictureContentType            AS          persona_pictureContentType,
+                a.pictureLink                   AS          persona_pictureLink,
+                a.pictureValue                  AS          persona_pictureValue,
+                a.role                          AS          persona_role,
+                a.cometRoleName                 AS          persona_cometRoleName,
+                a.cometRoleNameKey              AS          persona_cometRoleNameKey,
+                a.personType                    AS          persona_tipo,
+
+                b.DOMFICCOD                     AS          tipo_documento_codigo,
+                b.DOMFICEST                     AS          tipo_documento_estado_codigo,
+                b.DOMFICORD                     AS          tipo_documento_orden,
+                b.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+                b.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+                b.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+                b.DOMFICPAT                     AS          tipo_documento_path,
+                b.DOMFICVAL                     AS          tipo_documento_dominio,
+                b.DOMFICOBS                     AS          tipo_documento_observacion,
+                a.documentNumber                AS          tipo_documento_numero
+                
+                FROM comet.persons a
+                INNER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
+                
+                WHERE  a.personFifaId = ?
+
+                ORDER BY a.documentNumber";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]);
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
+                    $detalle    = array(
+                        'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                        => trim($rowMSSQL['persona_nombre']),
+                        'persona_apellido'                      => trim($rowMSSQL['persona_apellido']),
+                        'persona_popular_name'                  => trim($rowMSSQL['persona_popular_name']),
+                        'persona_birth_Name'                    => trim($rowMSSQL['persona_birth_Name']),
+                        'persona_languaje'                      => trim($rowMSSQL['persona_languaje']),
+                        'persona_title'                         => trim($rowMSSQL['persona_title']),
+                        'persona_country_Of_Birth'              => trim($rowMSSQL['persona_country_Of_Birth']),
+                        'persona_country_Of_BirthFIFA'          => trim($rowMSSQL['persona_country_Of_BirthFIFA']),
+                        'persona_region_Of_Birth'               => trim($rowMSSQL['persona_region_Of_Birth']),
+                        'persona_place_Of_Birth'                => trim($rowMSSQL['persona_place_Of_Birth']),              
+                        'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
+                        'persona_genero'                        => trim($rowMSSQL['persona_genero']),
+                        'persona_homegrown'                     => $rowMSSQL['persona_homegrown'],
+                        'persona_national_team'                 => trim($rowMSSQL['persona_national_team']),
+                        'persona_nationality'                   => trim($rowMSSQL['persona_nationality']),
+                        'persona_nationalityFIFA'               => trim($rowMSSQL['persona_nationalityFIFA']),
+                        'persona_place'                         => trim($rowMSSQL['persona_place']),
+                        'persona_funcion'                       => trim($rowMSSQL['persona_funcion']),
+                        'persona_rowNumber'                     => $rowMSSQL['persona_rowNumber'],
+                        'persona_ultima_actualizacion'          => $rowMSSQL['persona_ultima_actualizacion'],
+                        'persona_pictureContentType'            => trim($rowMSSQL['persona_pictureContentType']),
+                        'persona_pictureLink'                   => trim($rowMSSQL['persona_pictureLink']),
+                        'persona_pictureValue'                  => trim($rowMSSQL['persona_pictureValue']),
+                        'persona_role'                          => trim($rowMSSQL['persona_role']),
+                        'persona_cometRoleName'                 => trim($rowMSSQL['persona_cometRoleName']),
+                        'persona_cometRoleNameKey'              => trim($rowMSSQL['persona_cometRoleNameKey']),
+                       
+                        'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
+                        'tipo_documento_orden'                  => $rowMSSQL['tipo_documento_orden'],
+                        'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                        'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                        'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                        'tipo_documento_path'                   => strtolower(trim($rowMSSQL['tipo_documento_path'])),
+                        'tipo_documento_dominio'                => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_dominio']))),
+                        'tipo_documento_observacion'            => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_observacion']))),
+                        'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'persona_codigo'                        => '',
+                        'persona_tipo'                          => '',
+                        'persona_nombre'                        => '',
+                        'persona_apellido'                      => '',
+                        'persona_popular_name'                  => '',
+                        'persona_birth_Name'                    => '',
+                        'persona_languaje'                      => '',
+                        'persona_title'                         => '',
+                        'persona_country_Of_Birth'              => '',
+                        'persona_country_Of_BirthFIFA'          => '',
+                        'persona_region_Of_Birth'               => '',
+                        'persona_place_Of_Birth'                => '',              
+                        'persona_fecha_nacimiento_1'            => '',
+                        'persona_fecha_nacimiento_2'            => '',
+                        'persona_genero'                        => '',
+                        'persona_homegrown'                     => '',
+                        'persona_national_team'                 => '',
+                        'persona_nationality'                   => '',
+                        'persona_nationalityFIFA'               => '',
+                        'persona_place'                         => '',
+                        'persona_funcion'                       => '',
+                        'persona_rowNumber'                     => '',
+                        'persona_ultima_actualizacion'          => '',
+                        'persona_pictureContentType'            => '',
+                        'persona_pictureLink'                   => '',
+                        'persona_pictureValue'                  => '',
+                        'persona_role'                          => '',
+                        'persona_cometRoleName'                 => '',
+                        'persona_cometRoleNameKey'              => '',
+                       
+                        'tipo_documento_codigo'                 => '',
+                        'tipo_documento_orden'                  => '',
+                        'tipo_documento_nombre_ingles'          => '',
+                        'tipo_documento_nombre_castellano'      => '',
+                        'tipo_documento_nombre_portugues'       => '',
+                        'tipo_documento_path'                   => '',
+                        'tipo_documento_dominio'                => '',
+                        'tipo_documento_observacion'            => '',
+                        'tipo_documento_numero'                 => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }       
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/200/persona/test/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+
+        if (isset($val01)) {
+            $sql00  = "SELECT                    
+                a.EXAFICCOD                 AS          examen_codigo,
+                a.EXAFICFE1                 AS          examen_fecha_1,
+                a.EXAFICFE2                 AS          examen_fecha_2,
+                a.EXAFICFE3                 AS          examen_fecha_3,
+                a.EXAFICACA                 AS          examen_cantidad_adulto,
+                a.EXAFICMCA                 AS          examen_cantidad_menor,
+                a.EXAFICJCO                 AS          examen_persona_convocado,
+                a.EXAFICJPO                 AS          examen_persona_posicion,
+                a.EXAFICJCA                 AS          examen_persona_camiseta,
+                a.EXAFICLNO                 AS          examen_laboratorio_nombre,
+                a.EXAFICLFE                 AS          examen_laboratorio_fecha_envio,
+                a.EXAFICLFR                 AS          examen_laboratorio_fecha_recepcion,
+                a.EXAFICLFA                 AS          examen_laboratorio_fecha_aislamiento,
+                a.EXAFICLFF                 AS          examen_laboratorio_fecha_finaliza,
+                a.EXAFICLRE                 AS          examen_laboratorio_resultado,
+                a.EXAFICLIC                 AS          examen_laboratorio_cuarentena,
+                a.EXAFICLNT                 AS          examen_laboratorio_test,
+                a.EXAFICLAD                 AS          examen_laboratorio_adjunto,
+                a.EXAFICLOB                 AS          examen_laboratorio_observacion,
+                a.EXAFICBAN                 AS          examen_bandera,
+                a.EXAFICOBS                 AS          examen_observacion,
+                
+                b.DOMFICCOD                 AS          tipo_estado_codigo,
+                b.DOMFICEST                 AS          tipo_estado_codigo,
+                b.DOMFICORD                 AS          tipo_estado_orden,
+                b.DOMFICNOI                 AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC                 AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP                 AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT                 AS          tipo_estado_path,
+                b.DOMFICVAL                 AS          tipo_estado_dominio,
+                b.DOMFICOBS                 AS          tipo_estado_observacion,
+                
+                c.DOMFICCOD                 AS          tipo_examen_codigo,
+                c.DOMFICEST                 AS          tipo_examen_codigo,
+                c.DOMFICORD                 AS          tipo_examen_orden,
+                c.DOMFICNOI                 AS          tipo_examen_nombre_ingles,
+                c.DOMFICNOC                 AS          tipo_examen_nombre_castellano,
+                c.DOMFICNOP                 AS          tipo_examen_nombre_portugues,
+                c.DOMFICPAT                 AS          tipo_examen_path,
+                c.DOMFICVAL                 AS          tipo_examen_dominio,
+                c.DOMFICOBS                 AS          tipo_examen_observacion,
+                
+                d.EXATESCOD                 AS          examen_test_codigo,
+                d.EXATESVAL                 AS          examen_test_valor,
+                d.EXATESOBS                 AS          examen_test_observacion,
+                
+                e.DOMFICCOD                 AS          tipo_test_codigo,
+                e.DOMFICNOI                 AS          tipo_test_nombre_ingles,
+                e.DOMFICNOC                 AS          tipo_test_nombre_castellano,
+                e.DOMFICNOP                 AS          tipo_test_nombre_portugues,
+                e.DOMFICVAL                 AS          tipo_test_dominio,
+                e.DOMFICPAR                 AS          tipo_test_parametro,
+                                
+                f.personFifaId              AS          persona_codigo,
+                f.personType                AS          persona_tipo,
+                f.internationalFirstName    AS          persona_nombre,
+                f.internationalLastName     AS          persona_apellido,
+                f.gender                    AS          persona_genero,
+                f.dateOfBirth               AS          persona_fecha_nacimiento,
+                f.playerPosition            AS          persona_funcion,
+                
+                g.DOMFICCOD                 AS          tipo_documento_codigo,
+                g.DOMFICEST                 AS          tipo_documento_codigo,
+                g.DOMFICORD                 AS          tipo_documento_orden,
+                g.DOMFICNOI                 AS          tipo_documento_nombre_ingles,
+                g.DOMFICNOC                 AS          tipo_documento_nombre_castellano,
+                g.DOMFICNOP                 AS          tipo_documento_nombre_portugues,
+                g.DOMFICPAT                 AS          tipo_documento_path,
+                g.DOMFICVAL                 AS          tipo_documento_dominio,
+                g.DOMFICOBS                 AS          tipo_documento_observacion
+                
+                FROM exa.EXAFIC a
+                INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
+                INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
+                INNER JOIN exa.EXATES d ON a.EXAFICCOD      = d.EXATESEXC
+                INNER JOIN adm.DOMFIC e ON d.EXATESTTC      = e.DOMFICCOD
+                INNER JOIN comet.persons f ON a.EXAFICPEC   = f.personFifaId
+                INNER JOIN adm.DOMFIC g ON f.documentType   = g.DOMFICCOD
+                
+                WHERE a.EXAFICPEC = ?
+                ORDER BY a.EXAFICCOD";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]);
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                   
+                    if ($rowMSSQL['examen_fecha_1'] == '1900-01-01' || $rowMSSQL['examen_fecha_1'] == null){
+                        $examen_fecha_1_1 = '';
+                        $examen_fecha_1_2 = '';
+                    } else {
+                        $examen_fecha_1_1 = $rowMSSQL['examen_fecha_1'];
+                        $examen_fecha_1_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
+                    }
+
+                    if ($rowMSSQL['examen_fecha_2'] == '1900-01-01' || $rowMSSQL['examen_fecha_2'] == null){
+                        $examen_fecha_2_1 = '';
+                        $examen_fecha_2_2 = '';
+                    } else {
+                        $examen_fecha_2_1 = $rowMSSQL['examen_fecha_2'];
+                        $examen_fecha_2_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_2']));
+                    }
+
+                    if ($rowMSSQL['examen_fecha_3'] == '1900-01-01' || $rowMSSQL['examen_fecha_3'] == null){
+                        $examen_fecha_3_1 = '';
+                        $examen_fecha_3_2 = '';
+                    } else {
+                        $examen_fecha_3_1 = $rowMSSQL['examen_fecha_3'];
+                        $examen_fecha_3_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_3']));
+                    }
+
+                    if ($rowMSSQL['examen_laboratorio_fecha_envio'] == '1900-01-01' || $rowMSSQL['examen_laboratorio_fecha_envio'] == null){
+                        $examen_laboratorio_fecha_envio_1 = '';
+                        $examen_laboratorio_fecha_envio_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_envio_1 = $rowMSSQL['examen_laboratorio_fecha_envio'];
+                        $examen_laboratorio_fecha_envio_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_envio']));
+                    }
+                    
+                    if ($rowMSSQL['examen_laboratorio_fecha_recepcion'] == '1900-01-01' || $rowMSSQL['examen_laboratorio_fecha_recepcion'] == null){
+                        $examen_laboratorio_fecha_recepcion_1 = '';
+                        $examen_laboratorio_fecha_recepcion_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_recepcion_1 = $rowMSSQL['examen_laboratorio_fecha_recepcion'];
+                        $examen_laboratorio_fecha_recepcion_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_recepcion']));
+                    }
+                    
+                    if ($rowMSSQL['examen_laboratorio_fecha_aislamiento'] == '1900-01-01' || $rowMSSQL['examen_laboratorio_fecha_aislamiento'] == null){
+                        $examen_laboratorio_fecha_aislamiento_1 = '';
+                        $examen_laboratorio_fecha_aislamiento_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_aislamiento_1 = $rowMSSQL['examen_laboratorio_fecha_aislamiento'];
+                        $examen_laboratorio_fecha_aislamiento_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_aislamiento']));
+                    }
+                                    
+                    if ($rowMSSQL['examen_laboratorio_fecha_finaliza'] == '1900-01-01' || $rowMSSQL['examen_laboratorio_fecha_finaliza'] == null){
+                        $examen_laboratorio_fecha_finaliza_1 = '';
+                        $examen_laboratorio_fecha_finaliza_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_finaliza_1 = $rowMSSQL['examen_laboratorio_fecha_finaliza'];
+                        $examen_laboratorio_fecha_finaliza_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_finaliza']));
+                    }
+
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
+                    $detalle    = array(
+                        'examen_codigo'                                 => $rowMSSQL['examen_codigo'],
+                        'examen_fecha_1_1'                              => $examen_fecha_1_1,
+                        'examen_fecha_1_2'                              => $examen_fecha_1_2,
+                        'examen_fecha_2_1'                              => $examen_fecha_2_1,
+                        'examen_fecha_2_2'                              => $examen_fecha_2_2,
+                        'examen_fecha_3_1'                              => $examen_fecha_3_1,
+                        'examen_fecha_3_2'                              => $examen_fecha_3_2,
+                        'examen_cantidad_adulto'                        => $rowMSSQL['examen_cantidad_adulto'],
+                        'examen_cantidad_menor'                         => $rowMSSQL['examen_cantidad_menor'],
+                        'examen_persona_convocado'                      => trim(strtoupper(strtolower($rowMSSQL['examen_persona_convocado']))),
+                        'examen_persona_posicion'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_posicion']))),
+                        'examen_persona_camiseta'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_camiseta']))),
+                        'examen_laboratorio_nombre'                     => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_nombre']))),
+                        'examen_laboratorio_fecha_envio_1'              => $examen_laboratorio_fecha_envio_1,
+                        'examen_laboratorio_fecha_envio_2'              => $examen_laboratorio_fecha_envio_2,
+                        'examen_laboratorio_fecha_recepcion_1'          => $examen_laboratorio_fecha_recepcion_1,
+                        'examen_laboratorio_fecha_recepcion_2'          => $examen_laboratorio_fecha_recepcion_2,
+                        'examen_laboratorio_fecha_aislamiento_1'        => $examen_laboratorio_fecha_aislamiento_1,
+                        'examen_laboratorio_fecha_aislamiento_2'        => $examen_laboratorio_fecha_aislamiento_2,
+                        'examen_laboratorio_fecha_finaliza_1'           => $examen_laboratorio_fecha_finaliza_1,
+                        'examen_laboratorio_fecha_finaliza_2'           => $examen_laboratorio_fecha_finaliza_2,
+                        'examen_laboratorio_resultado'                  => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_resultado']))),
+                        'examen_laboratorio_cuarentena'                 => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_cuarentena']))),
+                        'examen_laboratorio_test'                       => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_test']))),
+                        'examen_laboratorio_adjunto'                    => trim(strtolower($rowMSSQL['examen_laboratorio_adjunto'])),
+                        'examen_laboratorio_observacion'                => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_observacion']))),
+                        'examen_bandera'                                => trim(strtoupper(strtolower($rowMSSQL['examen_bandera']))),
+                        'examen_observacion'                            => trim($rowMSSQL['examen_observacion']),
+
+                        'persona_codigo'                                => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                                  => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                                => trim($rowMSSQL['persona_nombre']),
+                        'persona_apellido'                              => trim($rowMSSQL['persona_apellido']),
+                        'persona_popular_name'                          => trim($rowMSSQL['persona_popular_name']),
+                        'persona_birth_Name'                            => trim($rowMSSQL['persona_birth_Name']),
+                        'persona_languaje'                              => trim($rowMSSQL['persona_languaje']),
+                        'persona_title'                                 => trim($rowMSSQL['persona_title']),
+                        'persona_country_Of_Birth'                      => trim($rowMSSQL['persona_country_Of_Birth']),
+                        'persona_country_Of_BirthFIFA'                  => trim($rowMSSQL['persona_country_Of_BirthFIFA']),
+                        'persona_region_Of_Birth'                       => trim($rowMSSQL['persona_region_Of_Birth']),
+                        'persona_place_Of_Birth'                        => trim($rowMSSQL['persona_place_Of_Birth']),              
+                        'persona_fecha_nacimiento_1'                    => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'                    => $persona_fecha_nacimiento_2,
+                        'persona_genero'                                => trim($rowMSSQL['persona_genero']),
+                        'persona_homegrown'                             => $rowMSSQL['persona_homegrown'],
+                        'persona_national_team'                         => trim($rowMSSQL['persona_national_team']),
+                        'persona_nationality'                           => trim($rowMSSQL['persona_nationality']),
+                        'persona_nationalityFIFA'                       => trim($rowMSSQL['persona_nationalityFIFA']),
+                        'persona_place'                                 => trim($rowMSSQL['persona_place']),
+                        'persona_funcion'                               => trim($rowMSSQL['persona_funcion']),
+                        'persona_rowNumber'                             => $rowMSSQL['persona_rowNumber'],
+                        'persona_ultima_actualizacion'                  => $rowMSSQL['persona_ultima_actualizacion'],
+                        'persona_pictureContentType'                    => trim($rowMSSQL['persona_pictureContentType']),
+                        'persona_pictureLink'                           => trim($rowMSSQL['persona_pictureLink']),
+                        'persona_pictureValue'                          => trim($rowMSSQL['persona_pictureValue']),
+                        'persona_role'                                  => trim($rowMSSQL['persona_role']),
+                        'persona_cometRoleName'                         => trim($rowMSSQL['persona_cometRoleName']),
+                        'persona_cometRoleNameKey'                      => trim($rowMSSQL['persona_cometRoleNameKey']),
+                       
+                        'tipo_documento_codigo'                         => $rowMSSQL['tipo_documento_codigo'],
+                        'tipo_documento_orden'                          => $rowMSSQL['tipo_documento_orden'],
+                        'tipo_documento_nombre_ingles'                  => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                        'tipo_documento_nombre_castellano'              => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                        'tipo_documento_nombre_portugues'               => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                        'tipo_documento_path'                           => strtolower(trim($rowMSSQL['tipo_documento_path'])),
+                        'tipo_documento_dominio'                        => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_dominio']))),
+                        'tipo_documento_observacion'                    => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_observacion']))),
+                        'tipo_documento_numero'                         => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'examen_codigo'                                 => '',
+                        'examen_fecha_1_1'                              => '',
+                        'examen_fecha_1_2'                              => '',
+                        'examen_fecha_2_1'                              => '',
+                        'examen_fecha_2_2'                              => '',
+                        'examen_fecha_3_1'                              => '',
+                        'examen_fecha_3_2'                              => '',
+                        'examen_cantidad_adulto'                        => '',
+                        'examen_cantidad_menor'                         => '',
+                        'examen_persona_convocado'                      => '',
+                        'examen_persona_posicion'                       => '',
+                        'examen_persona_camiseta'                       => '',
+                        'examen_laboratorio_nombre'                     => '',
+                        'examen_laboratorio_fecha_envio_1'              => '',
+                        'examen_laboratorio_fecha_envio_2'              => '',
+                        'examen_laboratorio_fecha_recepcion_1'          => '',
+                        'examen_laboratorio_fecha_recepcion_2'          => '',
+                        'examen_laboratorio_fecha_aislamiento_1'        => '',
+                        'examen_laboratorio_fecha_aislamiento_2'        => '',
+                        'examen_laboratorio_fecha_finaliza_1'           => '',
+                        'examen_laboratorio_fecha_finaliza_2'           => '',
+                        'examen_laboratorio_resultado'                  => '',
+                        'examen_laboratorio_cuarentena'                 => '',
+                        'examen_laboratorio_test'                       => '',
+                        'examen_laboratorio_adjunto'                    => '',
+                        'examen_laboratorio_observacion'                => '',
+                        'examen_bandera'                                => '',
+                        'examen_observacion'                            => '',
+
+
+                        'persona_codigo'                                => '',
+                        'persona_tipo'                                  => '',
+                        'persona_nombre'                                => '',
+                        'persona_apellido'                              => '',
+                        'persona_popular_name'                          => '',
+                        'persona_birth_Name'                            => '',
+                        'persona_languaje'                              => '',
+                        'persona_title'                                 => '',
+                        'persona_country_Of_Birth'                      => '',
+                        'persona_country_Of_BirthFIFA'                  => '',
+                        'persona_region_Of_Birth'                       => '',
+                        'persona_place_Of_Birth'                        => '',              
+                        'persona_fecha_nacimiento_1'                    => '',
+                        'persona_fecha_nacimiento_2'                    => '',
+                        'persona_genero'                                => '',
+                        'persona_homegrown'                             => '',
+                        'persona_national_team'                         => '',
+                        'persona_nationality'                           => '',
+                        'persona_nationalityFIFA'                       => '',
+                        'persona_place'                                 => '',
+                        'persona_funcion'                               => '',
+                        'persona_rowNumber'                             => '',
+                        'persona_ultima_actualizacion'                  => '',
+                        'persona_pictureContentType'                    => '',
+                        'persona_pictureLink'                           => '',
+                        'persona_pictureValue'                          => '',
+                        'persona_role'                                  => '',
+                        'persona_cometRoleName'                         => '',
+                        'persona_cometRoleNameKey'                      => '',
+                       
+                        'tipo_documento_codigo'                         => '',
+                        'tipo_documento_orden'                          => '',
+                        'tipo_documento_nombre_ingles'                  => '',
+                        'tipo_documento_nombre_castellano'              => '',
+                        'tipo_documento_nombre_portugues'               => '',
+                        'tipo_documento_path'                           => '',
+                        'tipo_documento_dominio'                        => '',
+                        'tipo_documento_observacion'                    => '',
+                        'tipo_documento_numero'                         => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }       
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/200/persona/testcantidad/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+
+        if (isset($val01)) {
+            $sql00  = "SELECT
+                    '1'                                       AS     tipo_test_codigo,
+                    'TOTAL TEST'                              AS     tipo_test_nombre,
+                    COUNT(d.EXATESCOD)                        AS     cantidad_test
+                    
+                    FROM exa.EXAFIC a
+                    INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
+                    INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
+                    INNER JOIN exa.EXATES d ON a.EXAFICCOD      = d.EXATESEXC
+                    INNER JOIN adm.DOMFIC e ON d.EXATESTTC      = e.DOMFICCOD
+                    INNER JOIN comet.persons f ON a.EXAFICPEC   = f.personFifaId
+                    INNER JOIN adm.DOMFIC g ON f.documentType   = g.DOMFICCOD
+                    
+                    WHERE a.EXAFICPEC = ?
+                    
+                    GROUP BY a.EXAFICPEC
+
+                UNION ALL
+
+                SELECT
+                    '2'                            AS     tipo_test_codigo,
+                    'TOTAL POSITIVO'               AS     tipo_test_nombre,
+                    COUNT(d.EXATESCOD)             AS     cantidad_test
+                    
+                    FROM exa.EXAFIC a
+                    INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
+                    INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
+                    INNER JOIN exa.EXATES d ON a.EXAFICCOD      = d.EXATESEXC
+                    INNER JOIN adm.DOMFIC e ON d.EXATESTTC      = e.DOMFICCOD
+                    INNER JOIN comet.persons f ON a.EXAFICPEC   = f.personFifaId
+                    INNER JOIN adm.DOMFIC g ON f.documentType = g.DOMFICCOD
+                    
+                    WHERE a.EXAFICPEC = ? AND a.EXAFICLRE = 'SI'
+                    
+                    GROUP BY a.EXAFICPEC 
+
+                UNION ALL
+            
+                SELECT
+                    '3'                            AS     tipo_test_codigo,
+                    'TOTAL NEGATIVO'               AS     tipo_test_nombre,
+                    COUNT(d.EXATESCOD)             AS     cantidad_test
+                    
+                    FROM exa.EXAFIC a
+                    INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
+                    INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
+                    INNER JOIN exa.EXATES d ON a.EXAFICCOD      = d.EXATESEXC
+                    INNER JOIN adm.DOMFIC e ON d.EXATESTTC      = e.DOMFICCOD
+                    INNER JOIN comet.persons f ON a.EXAFICPEC   = f.personFifaId
+                    INNER JOIN adm.DOMFIC g ON f.documentType = g.DOMFICCOD
+                    
+                    WHERE a.EXAFICPEC = ? AND a.EXAFICLRE = 'NO'
+                    
+                    GROUP BY a.EXAFICPEC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+            
+                $stmtMSSQL->execute([$val01, $val01, $val01]);
+                
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                   
+                    $detalle    = array(
+                       'tipo_test_codigo'       =>  $rowMSSQL['tipo_test_codigo'],
+                       'tipo_test_nombre'       =>  trim($rowMSSQL['tipo_test_nombre']),
+                       'cantidad_test'          =>  $rowMSSQL['cantidad_test']        
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'tipo_test_codigo'      =>  '',
+                        'tipo_test_nombre'      =>  '',
+                        'cantidad_test'         =>  '' 
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }       
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/200/persona/competicion/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+
+        if (isset($val01)) {
+            $sql00  = "SELECT 
+                a.competitionFifaId                 AS          competicion_codigo,
+                a.playerType                        AS          competicion_tipo_jugador,
+                a.shirtNumber                       AS          competicion_camiseta_numero,
+
+                b.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                b.status                            AS          competicion_estado,
+                b.internationalName                 AS          competicion_nombre,
+                b.internationalShortName            AS          competicion_nombre_corto,
+                b.season                            AS          competicion_anho,
+                b.ageCategory                       AS          competicion_categoria_codigo,
+                b.ageCategoryName                   AS          competicion_categoria_nombre,
+                b.dateFrom                          AS          competicion_desde,
+                b.dateTo                            AS          competicion_hasta,
+                b.discipline                        AS          competicion_disciplina,
+                b.gender                            AS          competicion_genero,
+                b.imageId                           AS          competicion_imagen_codigo,
+                b.multiplier                        AS          competicion_multiplicador,
+                b.nature                            AS          competicion_naturaleza,
+                b.numberOfParticipants              AS          competicion_numero_participante,
+                b.orderNumber                       AS          competicion_numero_orden,
+                b.teamCharacter                     AS          competicion_equipo_tipo,
+                b.flyingSubstitutions               AS          competicion_sustitucion,
+                b.penaltyShootout                   AS          competicion_penal,
+                b.matchType                         AS          competicion_tipo,
+                b.pictureContentType                AS          competicion_imagen_tipo,
+                b.pictureLink                       AS          competicion_image_link,
+                b.pictureValue                      AS          competicion_imagen_valor,
+                b.lastUpdate                        AS          competicion_ultima_actualizacion,
+
+                c.teamFifaId                        AS          equipo_codigo,
+                c.status                            AS          equipo_estado,
+                c.internationalName                 AS          equipo_nombre,
+                c.internationalShortName            AS          equipo_nombre_corto,
+                c.organisationNature                AS          equipo_naturaleza,
+                c.country                           AS          equipo_pais,
+                c.region                            AS          equipo_region,
+                c.town                              AS          equipo_ciudad,
+                c.postalCode                        AS          equipo_postal_codigo,
+                c.lastUpdate                        AS          equipo_ultima_actualizacion,
+
+                d.personFifaId                      AS          persona_codigo,
+                d.internationalFirstName            AS          persona_nombre,
+                d.internationalLastName             AS          persona_apellido,
+                d.popularName                       AS          persona_popular_name,
+                d.birthName                         AS          persona_birth_Name,
+                d.language                          AS          persona_languaje,
+                d.title                             AS          persona_title,
+                d.countryOfBirth                    AS          persona_country_Of_Birth,
+                d.countryOfBirthFIFA                AS          persona_country_Of_BirthFIFA,
+                d.regionOfBirth                     AS          persona_region_Of_Birth,
+                d.placeOfBirth                      AS          persona_place_Of_Birth,
+                d.dateOfBirth                       AS          persona_fecha_nacimiento,
+                d.gender                            AS          persona_genero,
+                d.homegrown                         AS          persona_homegrown,
+                d.national_team                     AS          persona_national_team,
+                d.nationality                       AS          persona_nationality,
+                d.nationalityFIFA                   AS          persona_nationalityFIFA,
+                d.place                             AS          persona_place,
+                d.playerPosition                    AS          persona_funcion,
+                d.rowNumber                         AS          persona_rowNumber,
+                d.lastUpdate                        AS          persona_ultima_actualizacion,
+                d.pictureContentType                AS          persona_pictureContentType,
+                d.pictureLink                       AS          persona_pictureLink,
+                d.pictureValue                      AS          persona_pictureValue,
+                d.role                              AS          persona_role,
+                d.cometRoleName                     AS          persona_cometRoleName,
+                d.cometRoleNameKey                  AS          persona_cometRoleNameKey,
+                d.personType                        AS          persona_tipo,
+
+                e.DOMFICCOD                         AS          tipo_documento_codigo,
+                e.DOMFICEST                         AS          tipo_documento_estado_codigo,
+                e.DOMFICORD                         AS          tipo_documento_orden,
+                e.DOMFICNOI                         AS          tipo_documento_nombre_ingles,
+                e.DOMFICNOC                         AS          tipo_documento_nombre_castellano,
+                e.DOMFICNOP                         AS          tipo_documento_nombre_portugues,
+                e.DOMFICPAT                         AS          tipo_documento_path,
+                e.DOMFICVAL                         AS          tipo_documento_dominio,
+                e.DOMFICOBS                         AS          tipo_documento_observacion,
+                d.documentNumber                    AS          tipo_documento_numero
+
+                FROM comet.competitions_teams_players a
+                INNER JOIN comet.competitions b ON a.competitionFifaId = b.competitionFifaId
+                INNER JOIN comet.teams c ON a.teamFifaId = c.teamFifaId
+                INNER JOIN comet.persons d ON a.playerFifaId = d.personFifaId
+                INNER JOIN adm.DOMFIC e ON d.documentType = e.DOMFICCOD
+
+                WHERE a.playerFifaId = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]);
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $juego_horario = date_format(date_create($rowMSSQL['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
+
+                    if ($rowMSSQL['competicion_desde'] == '1900-01-01' || $rowMSSQL['competicion_desde'] == null){
+                        $competicion_desde_1 = '';
+                        $competicion_desde_2 = '';
+                    } else {
+                        $competicion_desde_1 = $rowMSSQL['competicion_desde'];
+                        $competicion_desde_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_desde']));
+                    }
+
+                    if ($rowMSSQL['competicion_hasta'] == '1900-01-01' || $rowMSSQL['competicion_hasta'] == null){
+                        $competicion_hasta_1 = '';
+                        $competicion_hasta_2 = '';
+                    } else {
+                        $competicion_hasta_1 = $rowMSSQL['competicion_hasta'];
+                        $competicion_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_hasta']));
+                    }
+
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
+                    $detalle    = array(
+                        'competicion_codigo'                            => $rowMSSQL['competicion_codigo'],
+                        'competicion_tipo_jugador'                      => trim(strtoupper(strtolower($rowMSSQL['competicion_tipo_jugador']))),
+                        'competicion_camiseta_numero'                   => $rowMSSQL['competicion_camiseta_numero'],
+
+                        'competicion_codigo_padre'                      => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                            => trim($rowMSSQL['competicion_estado']),
+                        'competicion_nombre'                            => $competicion_nombre,
+                        'competicion_nombre_corto'                      => $competicion_nombre_corto,
+                        'competicion_anho'                              => $rowMSSQL['competicion_anho'],
+                        'competicion_categoria_codigo'                  => trim($rowMSSQL['competicion_categoria_codigo']),
+                        'competicion_categoria_nombre'                  => trim($rowMSSQL['competicion_categoria_nombre']),
+                        'competicion_desde_1'                           => $competicion_desde_1,
+                        'competicion_desde_2'                           => $competicion_desde_2,
+                        'competicion_hasta_1'                           => $competicion_hasta_1,
+                        'competicion_hasta_2'                           => $competicion_hasta_2,
+                        'competicion_disciplina'                        => trim($rowMSSQL['competicion_disciplina']),
+                        'competicion_genero'                            => trim($rowMSSQL['competicion_genero']),
+                        'competicion_imagen_codigo'                     => $rowMSSQL['competicion_imagen_codigo'],
+                        'competicion_multiplicador'                     => $rowMSSQL['competicion_multiplicador'],
+                        'competicion_naturaleza'                        => trim($rowMSSQL['competicion_naturaleza']),
+                        'competicion_numero_participante'               => $rowMSSQL['competicion_numero_participante'],
+                        'competicion_numero_orden'                      => $rowMSSQL['competicion_numero_orden'],
+                        'competicion_equipo_tipo'                       => trim($rowMSSQL['competicion_equipo_tipo']),
+                        'competicion_sustitucion'                       => $rowMSSQL['competicion_sustitucion'],
+                        'competicion_penal'                             => $rowMSSQL['competicion_penal'],
+                        'competicion_tipo'                              => trim($rowMSSQL['competicion_tipo']),
+                        'competicion_imagen_tipo'                       => trim($rowMSSQL['competicion_imagen_tipo']),
+                        'competicion_ultima_actualizacion'              => $rowMSSQL['competicion_ultima_actualizacion'],
+
+                        'equipo_codigo'                                 => $rowMSSQL['equipo_codigo'],
+                        'equipo_estado'                                 => trim($rowMSSQL['equipo_estado']),
+                        'equipo_nombre'                                 => trim($rowMSSQL['equipo_nombre']),
+                        'equipo_nombre_corto'                           => trim($rowMSSQL['equipo_nombre_corto']),
+                        'equipo_naturaleza'                             => trim($rowMSSQL['equipo_naturaleza']),
+                        'equipo_pais'                                   => trim($rowMSSQL['equipo_pais']),
+                        'equipo_region'                                 => trim($rowMSSQL['equipo_region']),
+                        'equipo_ciudad'                                 => trim($rowMSSQL['equipo_ciudad']),
+                        'equipo_postal_codigo'                          => $rowMSSQL['equipo_postal_codigo'],
+                        'equipo_ultima_actualizacion'                   => $juego_horario,
+
+                        'persona_codigo'                                => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                                  => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                                => trim($rowMSSQL['persona_nombre']),
+                        'persona_apellido'                              => trim($rowMSSQL['persona_apellido']),
+                        'persona_popular_name'                          => trim($rowMSSQL['persona_popular_name']),
+                        'persona_birth_Name'                            => trim($rowMSSQL['persona_birth_Name']),
+                        'persona_languaje'                              => trim($rowMSSQL['persona_languaje']),
+                        'persona_title'                                 => trim($rowMSSQL['persona_title']),
+                        'persona_country_Of_Birth'                      => trim($rowMSSQL['persona_country_Of_Birth']),
+                        'persona_country_Of_BirthFIFA'                  => trim($rowMSSQL['persona_country_Of_BirthFIFA']),
+                        'persona_region_Of_Birth'                       => trim($rowMSSQL['persona_region_Of_Birth']),
+                        'persona_place_Of_Birth'                        => trim($rowMSSQL['persona_place_Of_Birth']),              
+                        'persona_fecha_nacimiento_1'                    => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'                    => $persona_fecha_nacimiento_2,
+                        'persona_genero'                                => trim($rowMSSQL['persona_genero']),
+                        'persona_homegrown'                             => $rowMSSQL['persona_homegrown'],
+                        'persona_national_team'                         => trim($rowMSSQL['persona_national_team']),
+                        'persona_nationality'                           => trim($rowMSSQL['persona_nationality']),
+                        'persona_nationalityFIFA'                       => trim($rowMSSQL['persona_nationalityFIFA']),
+                        'persona_place'                                 => trim($rowMSSQL['persona_place']),
+                        'persona_funcion'                               => trim($rowMSSQL['persona_funcion']),
+                        'persona_rowNumber'                             => $rowMSSQL['persona_rowNumber'],
+                        'persona_ultima_actualizacion'                  => $rowMSSQL['persona_ultima_actualizacion'],
+                        'persona_pictureContentType'                    => trim($rowMSSQL['persona_pictureContentType']),
+                        'persona_pictureLink'                           => trim($rowMSSQL['persona_pictureLink']),
+                        'persona_pictureValue'                          => trim($rowMSSQL['persona_pictureValue']),
+                        'persona_role'                                  => trim($rowMSSQL['persona_role']),
+                        'persona_cometRoleName'                         => trim($rowMSSQL['persona_cometRoleName']),
+                        'persona_cometRoleNameKey'                      => trim($rowMSSQL['persona_cometRoleNameKey']),
+                       
+                        'tipo_documento_codigo'                         => $rowMSSQL['tipo_documento_codigo'],
+                        'tipo_documento_orden'                          => $rowMSSQL['tipo_documento_orden'],
+                        'tipo_documento_nombre_ingles'                  => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                        'tipo_documento_nombre_castellano'              => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                        'tipo_documento_nombre_portugues'               => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                        'tipo_documento_path'                           => strtolower(trim($rowMSSQL['tipo_documento_path'])),
+                        'tipo_documento_dominio'                        => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_dominio']))),
+                        'tipo_documento_observacion'                    => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_observacion']))),
+                        'tipo_documento_numero'                         => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'                            => '',
+                        'competicion_tipo_jugador'                      => '',
+                        'competicion_camiseta_numero'                   => '',
+
+                        'competicion_codigo_padre'                      => '',
+                        'competicion_estado'                            => '',
+                        'competicion_nombre'                            => '',
+                        'competicion_nombre_corto'                      => '',
+                        'competicion_anho'                              => '',
+                        'competicion_categoria_codigo'                  => '',
+                        'competicion_categoria_nombre'                  => '',
+                        'competicion_desde_1'                           => '',
+                        'competicion_desde_2'                           => '',
+                        'competicion_hasta_1'                           => '',
+                        'competicion_hasta_2'                           => '',
+                        'competicion_disciplina'                        => '',
+                        'competicion_genero'                            => '',
+                        'competicion_imagen_codigo'                     => '',
+                        'competicion_multiplicador'                     => '',
+                        'competicion_naturaleza'                        => '',
+                        'competicion_numero_participante'               => '',
+                        'competicion_numero_orden'                      => '',
+                        'competicion_equipo_tipo'                       => '',
+                        'competicion_sustitucion'                       => '',
+                        'competicion_penal'                             => '',
+                        'competicion_tipo'                              => '',
+                        'competicion_imagen_tipo'                       => '',
+                        'competicion_ultima_actualizacion'              => '',
+
+                        'equipo_codigo'                                 => '',
+                        'equipo_estado'                                 => '',
+                        'equipo_nombre'                                 => '',
+                        'equipo_nombre_corto'                           => '',
+                        'equipo_naturaleza'                             => '',
+                        'equipo_pais'                                   => '',
+                        'equipo_region'                                 => '',
+                        'equipo_ciudad'                                 => '',
+                        'equipo_postal_codigo'                          => '',
+                        'equipo_ultima_actualizacion'                   => '',
+
+
+                        'persona_codigo'                                => '',
+                        'persona_tipo'                                  => '',
+                        'persona_nombre'                                => '',
+                        'persona_apellido'                              => '',
+                        'persona_popular_name'                          => '',
+                        'persona_birth_Name'                            => '',
+                        'persona_languaje'                              => '',
+                        'persona_title'                                 => '',
+                        'persona_country_Of_Birth'                      => '',
+                        'persona_country_Of_BirthFIFA'                  => '',
+                        'persona_region_Of_Birth'                       => '',
+                        'persona_place_Of_Birth'                        => '',              
+                        'persona_fecha_nacimiento_1'                    => '',
+                        'persona_fecha_nacimiento_2'                    => '',
+                        'persona_genero'                                => '',
+                        'persona_homegrown'                             => '',
+                        'persona_national_team'                         => '',
+                        'persona_nationality'                           => '',
+                        'persona_nationalityFIFA'                       => '',
+                        'persona_place'                                 => '',
+                        'persona_funcion'                               => '',
+                        'persona_rowNumber'                             => '',
+                        'persona_ultima_actualizacion'                  => '',
+                        'persona_pictureContentType'                    => '',
+                        'persona_pictureLink'                           => '',
+                        'persona_pictureValue'                          => '',
+                        'persona_role'                                  => '',
+                        'persona_cometRoleName'                         => '',
+                        'persona_cometRoleNameKey'                      => '',
+                       
+                        'tipo_documento_codigo'                         => '',
+                        'tipo_documento_orden'                          => '',
+                        'tipo_documento_nombre_ingles'                  => '',
+                        'tipo_documento_nombre_castellano'              => '',
+                        'tipo_documento_nombre_portugues'               => '',
+                        'tipo_documento_path'                           => '',
+                        'tipo_documento_dominio'                        => '',
+                        'tipo_documento_observacion'                    => '',
+                        'tipo_documento_numero'                         => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }       
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->get('/v1/200/competicion/persona/zona1/{competicion}/{tipo}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
 
