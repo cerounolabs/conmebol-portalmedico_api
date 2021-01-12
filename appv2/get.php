@@ -7334,10 +7334,28 @@
     
                     );
 
-                    /*while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
+                    while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
                         $examen_test = $rowMSSQL01['examen_codigo'];
                         $stmtMSSQL02->execute([$examen_test]);
-                    }*/
+                        $detalle2 = array(
+                            'examen_test_codigo'                            => $rowMSSQL['examen_test_codigo'],
+                            'examen_test_valor'                             => trim(strtoupper(strtolower($rowMSSQL['examen_test_valor']))),
+                            'examen_test_observacion'                       => trim($rowMSSQL['examen_test_observacion']),
+    
+                            'auditoria_usuario'                             => trim(strtoupper(strtolower($rowMSSQL['auditoria_usuario']))),
+                            'auditoria_fecha_hora'                          => date("d/m/Y", strtotime($rowMSSQL['auditoria_fecha_hora'])),
+                            'auditoria_ip'                                  => trim(strtoupper(strtolower($rowMSSQL['auditoria_ip']))),
+    
+                            'tipo_test_codigo'                              => $rowMSSQL['tipo_test_codigo'],
+                            'tipo_test_nombre_ingles'                       => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_ingles']))),
+                            'tipo_test_nombre_castellano'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_castellano']))),
+                            'tipo_test_nombre_portugues'                    => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_portugues']))),
+                            'tipo_test_parametro'                           => $rowMSSQL['tipo_test_parametro'],
+                            'tipo_test_dominio'                             => trim(strtoupper(strtolower($rowMSSQL['tipo_test_dominio']))) 
+                    );
+    
+                   $result_test [] = $detalle2;
+                    }
                     $result_examen[]   = $detalle;
                 }
                 if (!isset($result_examen)){
@@ -7419,24 +7437,7 @@
  
                 }
 
-                $detalle = array(
-                        'examen_test_codigo'                            => $rowMSSQL['examen_test_codigo'],
-                        'examen_test_valor'                             => trim(strtoupper(strtolower($rowMSSQL['examen_test_valor']))),
-                        'examen_test_observacion'                       => trim($rowMSSQL['examen_test_observacion']),
-
-                        'auditoria_usuario'                             => trim(strtoupper(strtolower($rowMSSQL['auditoria_usuario']))),
-                        'auditoria_fecha_hora'                          => date("d/m/Y", strtotime($rowMSSQL['auditoria_fecha_hora'])),
-                        'auditoria_ip'                                  => trim(strtoupper(strtolower($rowMSSQL['auditoria_ip']))),
-
-                        'tipo_test_codigo'                              => $rowMSSQL['tipo_test_codigo'],
-                        'tipo_test_nombre_ingles'                       => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_ingles']))),
-                        'tipo_test_nombre_castellano'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_castellano']))),
-                        'tipo_test_nombre_portugues'                    => trim(strtoupper(strtolower($rowMSSQL['tipo_test_nombre_portugues']))),
-                        'tipo_test_parametro'                           => $rowMSSQL['tipo_test_parametro'],
-                        'tipo_test_dominio'                             => trim(strtoupper(strtolower($rowMSSQL['tipo_test_dominio']))) 
-                );
-
-                $result_test [] = $detalle;
+                
 
                 if (!isset($result_test)){
                     $detalle    = array(
