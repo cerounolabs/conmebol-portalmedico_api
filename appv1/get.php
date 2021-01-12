@@ -7422,59 +7422,44 @@
 
         if (isset($val01)) {
             $sql00  = "SELECT
-                    '1'                                       AS     tipo_test_codigo,
-                    'TOTAL TEST'                              AS     tipo_test_nombre,
-                    COUNT(d.EXATESCOD)                        AS     cantidad_test
-                    
-                    FROM exa.EXAFIC a
-                    INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
-                    INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
-                    INNER JOIN exa.EXATES d ON a.EXAFICCOD      = d.EXATESEXC
-                    INNER JOIN adm.DOMFIC e ON d.EXATESTTC      = e.DOMFICCOD
-                    INNER JOIN comet.persons f ON a.EXAFICPEC   = f.personFifaId
-                    INNER JOIN adm.DOMFIC g ON f.documentType   = g.DOMFICCOD
-                    
-                    WHERE a.EXAFICPEC = ?
-                    
-                    GROUP BY a.EXAFICPEC
-
-                UNION ALL
-
-                SELECT
-                    '2'                            AS     tipo_test_codigo,
-                    'TOTAL POSITIVO'               AS     tipo_test_nombre,
-                    COUNT(d.EXATESCOD)             AS     cantidad_test
-                    
-                    FROM exa.EXAFIC a
-                    INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
-                    INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
-                    INNER JOIN exa.EXATES d ON a.EXAFICCOD      = d.EXATESEXC
-                    INNER JOIN adm.DOMFIC e ON d.EXATESTTC      = e.DOMFICCOD
-                    INNER JOIN comet.persons f ON a.EXAFICPEC   = f.personFifaId
-                    INNER JOIN adm.DOMFIC g ON f.documentType = g.DOMFICCOD
-                    
-                    WHERE a.EXAFICPEC = ? AND a.EXAFICLRE = 'SI'
-                    
-                    GROUP BY a.EXAFICPEC 
-
-                UNION ALL
+                '1'                        AS     tipo_test_codigo,
+                'TOTAL TEST'               AS     tipo_test_nombre,
+                COUNT(*)                   AS     cantidad_test
+                
+                FROM exa.EXAFIC a
             
-                SELECT
-                    '3'                            AS     tipo_test_codigo,
-                    'TOTAL NEGATIVO'               AS     tipo_test_nombre,
-                    COUNT(d.EXATESCOD)             AS     cantidad_test
-                    
-                    FROM exa.EXAFIC a
-                    INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
-                    INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
-                    INNER JOIN exa.EXATES d ON a.EXAFICCOD      = d.EXATESEXC
-                    INNER JOIN adm.DOMFIC e ON d.EXATESTTC      = e.DOMFICCOD
-                    INNER JOIN comet.persons f ON a.EXAFICPEC   = f.personFifaId
-                    INNER JOIN adm.DOMFIC g ON f.documentType = g.DOMFICCOD
-                    
-                    WHERE a.EXAFICPEC = ? AND a.EXAFICLRE = 'NO'
-                    
-                    GROUP BY a.EXAFICPEC";
+                INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
+                INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
+                
+                WHERE a.EXAFICPEC = ? AND c.DOMFICVAL = 'EXAMENMEDICOTIPO' and c.DOMFICPAR = 1
+
+            UNION ALL
+
+            SELECT
+                '2'                        AS     tipo_test_codigo,
+                'TOTAL POSITIVO'           AS     tipo_test_nombre,
+                COUNT(*)                   AS     cantidad_test
+                
+                FROM exa.EXAFIC a
+            
+                INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
+                INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
+                
+                WHERE a.EXAFICPEC = ? AND c.DOMFICVAL = 'EXAMENMEDICOTIPO' and c.DOMFICPAR = 1 AND a.EXAFICLRE = 'SI'
+            
+
+            UNION ALL
+    
+            SELECT
+                '3'                         AS     tipo_test_codigo,
+                'TOTAL NEGATIVO'            AS     tipo_test_nombre,
+                COUNT(*)                   AS     cantidad_test
+                
+                FROM exa.EXAFIC a
+                INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
+                INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
+                
+                WHERE a.EXAFICPEC = ? AND c.DOMFICVAL = 'EXAMENMEDICOTIPO' AND c.DOMFICPAR = 1 AND a.EXAFICLRE = 'NO'";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
