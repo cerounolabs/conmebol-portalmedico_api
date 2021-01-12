@@ -7481,12 +7481,9 @@
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL01  = $connMSSQL->prepare($sql01);
-
+            
                 $stmtMSSQL->execute([$val01]);
-                $stmtMSSQL01->execute([$val01]);
-                $stmtMSSQL02->execute([$val01]);
-
+                
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                    
                     $detalle    = array(
