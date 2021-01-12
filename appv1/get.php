@@ -7091,7 +7091,7 @@
         $val01      = $request->getAttribute('codigo');
 
         if (isset($val01)) {
-            $sql00  = "SELECT                    
+            $sql00  = "SELECT              
                 a.EXAFICCOD                 AS          examen_codigo,
                 a.EXAFICFE1                 AS          examen_fecha_1,
                 a.EXAFICFE2                 AS          examen_fecha_2,
@@ -7133,54 +7133,64 @@
                 c.DOMFICPAT                 AS          tipo_examen_path,
                 c.DOMFICVAL                 AS          tipo_examen_dominio,
                 c.DOMFICOBS                 AS          tipo_examen_observacion,
-                
-                d.EXATESCOD                 AS          examen_test_codigo,
-                d.EXATESVAL                 AS          examen_test_valor,
-                d.EXATESOBS                 AS          examen_test_observacion,
-                
-                e.DOMFICCOD                 AS          tipo_test_codigo,
-                e.DOMFICNOI                 AS          tipo_test_nombre_ingles,
-                e.DOMFICNOC                 AS          tipo_test_nombre_castellano,
-                e.DOMFICNOP                 AS          tipo_test_nombre_portugues,
-                e.DOMFICVAL                 AS          tipo_test_dominio,
-                e.DOMFICPAR                 AS          tipo_test_parametro,
                                 
-                f.personFifaId              AS          persona_codigo,
-                f.personType                AS          persona_tipo,
-                f.internationalFirstName    AS          persona_nombre,
-                f.internationalLastName     AS          persona_apellido,
-                f.gender                    AS          persona_genero,
-                f.dateOfBirth               AS          persona_fecha_nacimiento,
-                f.playerPosition            AS          persona_funcion,
+                d.personFifaId              AS          persona_codigo,
+                d.personType                AS          persona_tipo,
+                d.internationalFirstName    AS          persona_nombre,
+                d.internationalLastName     AS          persona_apellido,
+                d.gender                    AS          persona_genero,
+                d.dateOfBirth               AS          persona_fecha_nacimiento,
+                d.playerPosition            AS          persona_funcion,
                 
-                g.DOMFICCOD                 AS          tipo_documento_codigo,
-                g.DOMFICEST                 AS          tipo_documento_codigo,
-                g.DOMFICORD                 AS          tipo_documento_orden,
-                g.DOMFICNOI                 AS          tipo_documento_nombre_ingles,
-                g.DOMFICNOC                 AS          tipo_documento_nombre_castellano,
-                g.DOMFICNOP                 AS          tipo_documento_nombre_portugues,
-                g.DOMFICPAT                 AS          tipo_documento_path,
-                g.DOMFICVAL                 AS          tipo_documento_dominio,
-                g.DOMFICOBS                 AS          tipo_documento_observacion
+                e.DOMFICCOD                 AS          tipo_documento_codigo,
+                e.DOMFICEST                 AS          tipo_documento_codigo,
+                e.DOMFICORD                 AS          tipo_documento_orden,
+                e.DOMFICNOI                 AS          tipo_documento_nombre_ingles,
+                e.DOMFICNOC                 AS          tipo_documento_nombre_castellano,
+                e.DOMFICNOP                 AS          tipo_documento_nombre_portugues,
+                e.DOMFICPAT                 AS          tipo_documento_path,
+                e.DOMFICVAL                 AS          tipo_documento_dominio,
+                e.DOMFICOBS                 AS          tipo_documento_observacion
                 
                 FROM exa.EXAFIC a
                 INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
                 INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
-                INNER JOIN exa.EXATES d ON a.EXAFICCOD      = d.EXATESEXC
-                INNER JOIN adm.DOMFIC e ON d.EXATESTTC      = e.DOMFICCOD
-                INNER JOIN comet.persons f ON a.EXAFICPEC   = f.personFifaId
-                INNER JOIN adm.DOMFIC g ON f.documentType   = g.DOMFICCOD
+                INNER JOIN comet.persons d ON a.EXAFICPEC   = d.personFifaId
+                INNER JOIN adm.DOMFIC e ON d.documentType   = e.DOMFICCOD
                 
                 WHERE a.EXAFICPEC = ?
                 ORDER BY a.EXAFICCOD";
 
-            try {
-                $connMSSQL  = getConnectionMSSQLv1();
-                $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01]);
+            $sql01  = "SELECT
+                a.EXATESCOD        AS          examen_test_codigo,
+                a.EXATESVAL        AS          examen_test_valor,
+                a.EXATESOBS        AS          examen_test_observacion,
+                
+                a.EXATESAUS        AS          auditoria_usuario,
+                a.EXATESAFH        AS          auditoria_fecha_hora,
+                a.EXATESAIP        AS          auditoria_ip,
+                
+                b.DOMFICCOD        AS          tipo_test_codigo,
+                b.DOMFICNOI        AS          tipo_test_nombre_ingles,
+                b.DOMFICNOC        AS          tipo_test_nombre_castellano,
+                b.DOMFICNOP        AS          tipo_test_nombre_portugues,
+                b.DOMFICVAL        AS          tipo_test_dominio,
+                b.DOMFICPAR        AS          tipo_test_parametro
+                
+                FROM exa.EXATES a
+                INNER JOIN adm.DOMFIC b ON a.EXATESTTC = b.DOMFICCOD
+                
+                WHERE a.EXATESEXC = ?";    
 
-                while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                   
+            try {
+                $result_examen      = [];
+                $connMSSQL          = getConnectionMSSQLv1();
+                $stmtMSSQL00        = $connMSSQL->prepare($sql00);
+                $stmtMSSQL01        = $connMSSQL->prepare($sql01); 
+
+                $stmtMSSQL00->execute([$val01]);
+                
+                while ($rowMSSQL = $stmtMSSQL00->fetch()) {
                     if ($rowMSSQL['examen_fecha_1'] == '1900-01-01' || $rowMSSQL['examen_fecha_1'] == null){
                         $examen_fecha_1_1 = '';
                         $examen_fecha_1_2 = '';
@@ -7243,6 +7253,30 @@
                     } else {
                         $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
                         $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
+                    $stmtMSSQL01->execute([$rowMSSQL['examen_codigo']]);
+                    $result_test = [];
+
+                    while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
+                        $detalle = array(
+                            'examen_test_codigo'                            => $rowMSSQL01['examen_test_codigo'],
+                            'examen_test_valor'                             => trim(strtoupper(strtolower($rowMSSQL01['examen_test_valor']))),
+                            'examen_test_observacion'                       => trim($rowMSSQL01['examen_test_observacion']),
+    
+                            'auditoria_usuario'                             => trim(strtoupper(strtolower($rowMSSQL01['auditoria_usuario']))),
+                            'auditoria_fecha_hora'                          => date("d/m/Y", strtotime($rowMSSQL01['auditoria_fecha_hora'])),
+                            'auditoria_ip'                                  => trim(strtoupper(strtolower($rowMSSQL01['auditoria_ip']))),
+    
+                            'tipo_test_codigo'                              => $rowMSSQL01['tipo_test_codigo'],
+                            'tipo_test_nombre_ingles'                       => trim(strtoupper(strtolower($rowMSSQL01['tipo_test_nombre_ingles']))),
+                            'tipo_test_nombre_castellano'                   => trim(strtoupper(strtolower($rowMSSQL01['tipo_test_nombre_castellano']))),
+                            'tipo_test_nombre_portugues'                    => trim(strtoupper(strtolower($rowMSSQL01['tipo_test_nombre_portugues']))),
+                            'tipo_test_parametro'                           => $rowMSSQL01['tipo_test_parametro'],
+                            'tipo_test_dominio'                             => trim(strtoupper(strtolower($rowMSSQL01['tipo_test_dominio']))) 
+                        );
+    
+                        $result_test [] = $detalle;
                     }
 
                     $detalle    = array(
@@ -7313,15 +7347,17 @@
                         'tipo_documento_path'                           => strtolower(trim($rowMSSQL['tipo_documento_path'])),
                         'tipo_documento_dominio'                        => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_dominio']))),
                         'tipo_documento_observacion'                    => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_observacion']))),
-                        'tipo_documento_numero'                         => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
+                        'tipo_documento_numero'                         => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                        'examen_detalle'                                => $result_test
                     );
 
-                    $result[]   = $detalle;
+                    $result_examen[]  = $detalle;
                 }
 
-                if (isset($result)){
+                if (isset($result_examen)){
                     header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result_examen), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
                         'examen_codigo'                                 => '',
@@ -7352,7 +7388,6 @@
                         'examen_laboratorio_observacion'                => '',
                         'examen_bandera'                                => '',
                         'examen_observacion'                            => '',
-
 
                         'persona_codigo'                                => '',
                         'persona_tipo'                                  => '',
@@ -7392,15 +7427,19 @@
                         'tipo_documento_path'                           => '',
                         'tipo_documento_dominio'                        => '',
                         'tipo_documento_observacion'                    => '',
-                        'tipo_documento_numero'                         => ''
-                    );
+                        'tipo_documento_numero'                         => '',
 
+                        'examen_detalle'                                => ''
+                    );
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 }
 
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
             } catch (PDOException $e) {
                 header("Content-Type: application/json; charset=utf-8");
                 $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
