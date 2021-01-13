@@ -6921,7 +6921,7 @@
         $val01      = $request->getAttribute('codigo');
 
         if (isset($val01)) {
-            $sql00  = " SELECT
+            $sql00  = "SELECT
                 a.personFifaId                  AS          persona_codigo,
                 a.internationalFirstName        AS          persona_nombre,
                 a.internationalLastName         AS          persona_apellido,
@@ -6963,7 +6963,7 @@
                 a.documentNumber                AS          tipo_documento_numero
                 
                 FROM comet.persons a
-                LEFT OUTER JOIN JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
+                LEFT OUTER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
                 
                 WHERE  a.personFifaId = ?
 
