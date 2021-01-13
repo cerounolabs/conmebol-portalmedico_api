@@ -7165,7 +7165,7 @@
             FROM exa.EXAFIC a
             INNER JOIN adm.DOMFIC b ON a.EXAFICEST          = b.DOMFICCOD
             INNER JOIN adm.DOMFIC c ON a.EXAFICTEC          = c.DOMFICCOD
-            LEFT OUTER JOIN comet.persons d ON a.EXAFICPEC  = d.personFifaId
+            INNER JOIN comet.persons d ON a.EXAFICPEC       = d.personFifaId
             LEFT OUTER JOIN adm.DOMFIC e ON d.documentType  = e.DOMFICCOD
             
             WHERE a.EXAFICPEC = ?
@@ -7687,10 +7687,10 @@
                 d.documentNumber                    AS          tipo_documento_numero
 
                 FROM comet.competitions_teams_players a
-                INNER JOIN comet.competitions b ON a.competitionFifaId = b.competitionFifaId
-                INNER JOIN comet.teams c ON a.teamFifaId = c.teamFifaId
-                INNER JOIN comet.persons d ON a.playerFifaId = d.personFifaId
-                INNER JOIN adm.DOMFIC e ON d.documentType = e.DOMFICCOD
+                INNER JOIN comet.competitions b ON a.competitionFifaId  = b.competitionFifaId
+                INNER JOIN comet.teams c ON a.teamFifaId                = c.teamFifaId
+                INNER JOIN comet.persons d ON a.playerFifaId            = d.personFifaId
+                LEFT OUTER JOIN adm.DOMFIC e ON d.documentType          = e.DOMFICCOD
 
                 WHERE a.playerFifaId = ?";
 
