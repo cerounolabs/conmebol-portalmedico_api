@@ -6963,7 +6963,7 @@
                 a.documentNumber                AS          tipo_documento_numero
                 
                 FROM comet.persons a
-                INNER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
+                LEFT OUTER JOIN JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
                 
                 WHERE  a.personFifaId = ?
 
@@ -7168,7 +7168,7 @@
             LEFT OUTER JOIN adm.DOMFIC e ON d.documentType  = e.DOMFICCOD
             
             WHERE a.EXAFICPEC = ?
-            
+
             ORDER BY a.EXAFICCOD";
 
             $sql01  = "SELECT

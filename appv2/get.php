@@ -6964,7 +6964,7 @@
                 a.documentNumber                AS          tipo_documento_numero
                 
                 FROM comet.persons a
-                INNER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
+                LEFT OUTER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
                 
                 WHERE  a.personFifaId = ?
 
