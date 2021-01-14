@@ -7100,91 +7100,90 @@
         $val01      = $request->getAttribute('codigo');
 
         if (isset($val01)) {
-            $sql00  = "SELECT   
-            a.EXAFICCOD                 AS          examen_codigo,
-            a.EXAFICFE1                 AS          examen_fecha_1,
-            a.EXAFICFE2                 AS          examen_fecha_2,
-            a.EXAFICFE3                 AS          examen_fecha_3,
-            a.EXAFICACA                 AS          examen_cantidad_adulto,
-            a.EXAFICMCA                 AS          examen_cantidad_menor,
-            a.EXAFICJCO                 AS          examen_persona_convocado,
-            a.EXAFICJPO                 AS          examen_persona_posicion,
-            a.EXAFICJCA                 AS          examen_persona_camiseta,
-            a.EXAFICLNO                 AS          examen_laboratorio_nombre,
-            a.EXAFICLFE                 AS          examen_laboratorio_fecha_envio,
-            a.EXAFICLFR                 AS          examen_laboratorio_fecha_recepcion,
-            a.EXAFICLFA                 AS          examen_laboratorio_fecha_aislamiento,
-            a.EXAFICLFF                 AS          examen_laboratorio_fecha_finaliza,
-            a.EXAFICLRE                 AS          examen_laboratorio_resultado,
-            a.EXAFICLIC                 AS          examen_laboratorio_cuarentena,
-            a.EXAFICLNT                 AS          examen_laboratorio_test,
-            a.EXAFICLAD                 AS          examen_laboratorio_adjunto,
-            a.EXAFICLOB                 AS          examen_laboratorio_observacion,
-            a.EXAFICBAN                 AS          examen_bandera,
-            a.EXAFICOBS                 AS          examen_observacion,
-            
-            b.DOMFICCOD                 AS          tipo_estado_codigo,
-            b.DOMFICORD                 AS          tipo_estado_orden,
-            b.DOMFICNOI                 AS          tipo_estado_nombre_ingles,
-            b.DOMFICNOC                 AS          tipo_estado_nombre_castellano,
-            b.DOMFICNOP                 AS          tipo_estado_nombre_portugues,
-            b.DOMFICPAT                 AS          tipo_estado_path,
-            b.DOMFICVAL                 AS          tipo_estado_dominio,
-            b.DOMFICPAR                 AS          tipo_estado_parametro,
-            b.DOMFICOBS                 AS          tipo_estado_observacion,
-            
-            c.DOMFICCOD                 AS          tipo_examen_codigo,
-            c.DOMFICORD                 AS          tipo_examen_orden,
-            c.DOMFICNOI                 AS          tipo_examen_nombre_ingles,
-            c.DOMFICNOC                 AS          tipo_examen_nombre_castellano,
-            c.DOMFICNOP                 AS          tipo_examen_nombre_portugues,
-            c.DOMFICPAT                 AS          tipo_examen_path,
-            c.DOMFICVAL                 AS          tipo_examen_dominio,
-            c.DOMFICPAR                 AS          tipo_examen_parametro,
-            c.DOMFICOBS                 AS          tipo_examen_observacion,
+            $sql00  = "SELECT      
+                a.EXAFICCOD                 AS          examen_codigo,
+                a.EXAFICFE1                 AS          examen_fecha_1,
+                a.EXAFICFE2                 AS          examen_fecha_2,
+                a.EXAFICFE3                 AS          examen_fecha_3,
+                a.EXAFICACA                 AS          examen_cantidad_adulto,
+                a.EXAFICMCA                 AS          examen_cantidad_menor,
+                a.EXAFICJCO                 AS          examen_persona_convocado,
+                a.EXAFICJPO                 AS          examen_persona_posicion,
+                a.EXAFICJCA                 AS          examen_persona_camiseta,
+                a.EXAFICLNO                 AS          examen_laboratorio_nombre,
+                a.EXAFICLFE                 AS          examen_laboratorio_fecha_envio,
+                a.EXAFICLFR                 AS          examen_laboratorio_fecha_recepcion,
+                a.EXAFICLFA                 AS          examen_laboratorio_fecha_aislamiento,
+                a.EXAFICLFF                 AS          examen_laboratorio_fecha_finaliza,
+                a.EXAFICLRE                 AS          examen_laboratorio_resultado,
+                a.EXAFICLIC                 AS          examen_laboratorio_cuarentena,
+                a.EXAFICLNT                 AS          examen_laboratorio_test,
+                a.EXAFICLAD                 AS          examen_laboratorio_adjunto,
+                a.EXAFICLOB                 AS          examen_laboratorio_observacion,
+                a.EXAFICBAN                 AS          examen_bandera,
+                a.EXAFICOBS                 AS          examen_observacion,
+                
+                b.DOMFICCOD                 AS          tipo_estado_codigo,
+                b.DOMFICORD                 AS          tipo_estado_orden,
+                b.DOMFICNOI                 AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC                 AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP                 AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT                 AS          tipo_estado_path,
+                b.DOMFICVAL                 AS          tipo_estado_dominio,
+                b.DOMFICPAR                 AS          tipo_estado_parametro,
+                b.DOMFICOBS                 AS          tipo_estado_observacion,
+                
+                c.DOMFICCOD                 AS          tipo_examen_codigo,
+                c.DOMFICORD                 AS          tipo_examen_orden,
+                c.DOMFICNOI                 AS          tipo_examen_nombre_ingles,
+                c.DOMFICNOC                 AS          tipo_examen_nombre_castellano,
+                c.DOMFICNOP                 AS          tipo_examen_nombre_portugues,
+                c.DOMFICPAT                 AS          tipo_examen_path,
+                c.DOMFICVAL                 AS          tipo_examen_dominio,
+                c.DOMFICPAR                 AS          tipo_examen_parametro,
+                c.DOMFICOBS                 AS          tipo_examen_observacion,
+                                
+                d.personFifaId              AS          persona_codigo,
+                d.personType                AS          persona_tipo_codigo,
+                CASE 
+                    WHEN d.personType = 'T' THEN 'CUERPO TÉCNICO'
+                    WHEN d.personType = 'O' THEN 'OFICIAL' 
+                    WHEN d.personType = 'Z' THEN 'ZONA 1'
+                    WHEN d.personType = 'P' THEN 'JUGADOR'
+                END AS persona_tipo_nombre,
+                d.internationalFirstName    AS          persona_nombre,
+                d.internationalLastName     AS          persona_apellido,
+                d.gender                    AS          persona_genero,
+                d.dateOfBirth               AS          persona_fecha_nacimiento,
+                d.playerPosition            AS          persona_funcion,
+                
+                e.DOMFICCOD                 AS          tipo_documento_codigo,
+                e.DOMFICORD                 AS          tipo_documento_orden,
+                e.DOMFICNOI                 AS          tipo_documento_nombre_ingles,
+                e.DOMFICNOC                 AS          tipo_documento_nombre_castellano,
+                e.DOMFICNOP                 AS          tipo_documento_nombre_portugues,
+                e.DOMFICPAT                 AS          tipo_documento_path,
+                e.DOMFICVAL                 AS          tipo_documento_dominio,
+                e.DOMFICPAR                 AS          tipo_documento_parametro,
+                e.DOMFICOBS                 AS          tipo_documento_observacion,
                             
-            d.personFifaId              AS          persona_codigo,
-            d.internationalFirstName    AS          persona_nombre,
-            d.internationalLastName     AS          persona_apellido,
-            d.gender                    AS          persona_genero,
-            d.dateOfBirth               AS          persona_fecha_nacimiento,
-            d.playerPosition            AS          persona_funcion,
-
-            d.personType                AS          persona_tipo_codigo,
-            CASE 
-                WHEN d.personType = 'T' THEN 'CUERPO TÉCNICO'
-                WHEN d.personType = 'O' THEN 'OFICIAL' 
-                WHEN d.personType = 'Z' THEN 'ZONA 1'
-                WHEN d.personType = 'P' THEN 'JUGADOR'
-            END AS persona_tipo_nombre,
-            
-            e.DOMFICCOD                 AS          tipo_documento_codigo,
-            e.DOMFICORD                 AS          tipo_documento_orden,
-            e.DOMFICNOI                 AS          tipo_documento_nombre_ingles,
-            e.DOMFICNOC                 AS          tipo_documento_nombre_castellano,
-            e.DOMFICNOP                 AS          tipo_documento_nombre_portugues,
-            e.DOMFICPAT                 AS          tipo_documento_path,
-            e.DOMFICVAL                 AS          tipo_documento_dominio,
-            e.DOMFICPAR                 AS          tipo_documento_parametro,
-            e.DOMFICOBS                 AS          tipo_documento_observacion,
-            
-            f.JUEGO_CODIGO              AS          juego_codigo,
-            f.JUEGO_NOMBRE              AS          juego_nombre,
-            
-            g.competitionFifaId         AS          competicion_codigo,
-            g.internationalName         AS          competicion_nombre
-            
-            FROM exa.EXAFIC a
-            INNER JOIN adm.DOMFIC b ON a.EXAFICEST                  = b.DOMFICCOD
-            INNER JOIN adm.DOMFIC c ON a.EXAFICTEC                  = c.DOMFICCOD
-            INNER JOIN comet.persons d ON a.EXAFICPEC               = d.personFifaId
-            LEFT OUTER JOIN adm.DOMFIC e ON d.documentType          = e.DOMFICCOD 
-            INNER JOIN [view].juego f ON (a.EXAFICCOC               = f.COMPETICION_ID OR a.EXAFICCOC = f.COMPETICION_PADRE_ID)
-            INNER JOIN comet.competitions g ON (g.competitionFifaId = f.COMPETICION_ID OR g.competitionFifaId = f.COMPETICION_PADRE_ID)
-            
-            WHERE a.EXAFICPEC = ? AND f.JUEGO_CODIGO = a.EXAFICENC AND g.superiorCompetitionFifaId IS NULL
-
-            ORDER BY a.EXAFICCOD DESC";
+                g.competitionFifaId         AS          competicion_codigo,
+                g.internationalName         AS          competicion_nombre,
+                
+                h.teamFifaId                AS          equipo_codigo,
+                h.internationalName         AS          equipo_nombre
+                
+                FROM exa.EXAFIC a
+                INNER JOIN adm.DOMFIC b ON a.EXAFICEST                  = b.DOMFICCOD
+                INNER JOIN adm.DOMFIC c ON a.EXAFICTEC                  = c.DOMFICCOD
+                INNER JOIN comet.persons d ON a.EXAFICPEC               = d.personFifaId
+                LEFT OUTER JOIN adm.DOMFIC e ON d.documentType          = e.DOMFICCOD 
+                INNER JOIN [view].juego f ON (a.EXAFICCOC               = f.COMPETICION_ID OR a.EXAFICCOC = f.COMPETICION_PADRE_ID) --AND (a.EXAFICEQC = f.EQUIPO_LOCAL_CODIGO OR a.EXAFICEQC = f.EQUIPO_VISITANTE_CODIGO)
+                INNER JOIN comet.competitions g ON (g.competitionFifaId = f.COMPETICION_ID OR g.competitionFifaId = f.COMPETICION_PADRE_ID)
+                INNER JOIN comet.teams h ON a.EXAFICEQC = h.teamFifaId
+                
+                WHERE a.EXAFICPEC = ? AND  f.JUEGO_CODIGO = a.EXAFICENC AND g.superiorCompetitionFifaId IS NULL
+                ORDER BY a.EXAFICCOD DESC";
 
             $sql01  = "SELECT
                 a.EXATESCOD        AS          examen_test_codigo,
@@ -7383,7 +7382,7 @@
                         'persona_cometRoleName'                         => trim($rowMSSQL['persona_cometRoleName']),
                         'persona_cometRoleNameKey'                      => trim($rowMSSQL['persona_cometRoleNameKey']),
 
-                        'persona_tipo_codigo'                           => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_tipo_codigo'                           => strtoupper(strtolower(trim($rowMSSQL['persona_tipo_codigo']))),
                         'persona_tipo_nombre'                           => trim($rowMSSQL['persona_tipo_nombre']),
                        
                         'tipo_documento_codigo'                         => $rowMSSQL['tipo_documento_codigo'],
