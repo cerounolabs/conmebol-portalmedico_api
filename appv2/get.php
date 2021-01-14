@@ -6953,10 +6953,10 @@
             
                 a.personType                    AS          persona_tipo_codigo,
                 CASE 
-                    WHEN d.personType = 'T' THEN 'CUERPO TÉCNICO'
-                    WHEN d.personType = 'O' THEN 'OFICIAL' 
-                    WHEN d.personType = 'Z' THEN 'ZONA 1'
-                    WHEN d.personType = 'P' THEN 'JUGADOR'
+                    WHEN a.personType = 'T' THEN 'CUERPO TÉCNICO'
+                    WHEN a.personType = 'O' THEN 'OFICIAL' 
+                    WHEN a.personType = 'Z' THEN 'ZONA 1'
+                    WHEN a.personType = 'P' THEN 'JUGADOR'
                 END AS persona_tipo_nombre,
 
                 b.DOMFICCOD                     AS          tipo_documento_codigo,

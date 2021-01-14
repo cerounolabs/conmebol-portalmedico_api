@@ -6922,55 +6922,55 @@
 
         if (isset($val01)) {
             $sql00  = "SELECT
-                a.personFifaId                  AS          persona_codigo,
-                a.internationalFirstName        AS          persona_nombre,
-                a.internationalLastName         AS          persona_apellido,
-                a.popularName                   AS          persona_popular_name,
-                a.birthName                     AS          persona_birth_Name,
-                a.language                      AS          persona_languaje,
-                a.title                         AS          persona_title,
-                a.countryOfBirth                AS          persona_country_Of_Birth,
-                a.countryOfBirthFIFA            AS          persona_country_Of_BirthFIFA,
-                a.regionOfBirth                 AS          persona_region_Of_Birth,
-                a.placeOfBirth                  AS          persona_place_Of_Birth,
-                a.dateOfBirth                   AS          persona_fecha_nacimiento,
-                a.gender                        AS          persona_genero,
-                a.homegrown                     AS          persona_homegrown,
-                a.national_team                 AS          persona_national_team,
-                a.nationality                   AS          persona_nationality,
-                a.nationalityFIFA               AS          persona_nationalityFIFA,
-                a.place                         AS          persona_place,
-                a.playerPosition                AS          persona_funcion,
-                a.rowNumber                     AS          persona_rowNumber,
-                a.lastUpdate                    AS          persona_ultima_actualizacion,
-                a.pictureContentType            AS          persona_pictureContentType,
-                a.pictureLink                   AS          persona_pictureLink,
-                a.pictureValue                  AS          persona_pictureValue,
-                a.role                          AS          persona_role,
-                a.cometRoleName                 AS          persona_cometRoleName,
-                a.cometRoleNameKey              AS          persona_cometRoleNameKey,
-                
-                a.personType                    AS          persona_tipo_codigo,
-                CASE 
-                    WHEN d.personType = 'T' THEN 'CUERPO TÉCNICO'
-                    WHEN d.personType = 'O' THEN 'OFICIAL' 
-                    WHEN d.personType = 'Z' THEN 'ZONA 1'
-                    WHEN d.personType = 'P' THEN 'JUGADOR'
-                END AS persona_tipo_nombre,
+            a.personFifaId                  AS          persona_codigo,
+            a.internationalFirstName        AS          persona_nombre,
+            a.internationalLastName         AS          persona_apellido,
+            a.popularName                   AS          persona_popular_name,
+            a.birthName                     AS          persona_birth_Name,
+            a.language                      AS          persona_languaje,
+            a.title                         AS          persona_title,
+            a.countryOfBirth                AS          persona_country_Of_Birth,
+            a.countryOfBirthFIFA            AS          persona_country_Of_BirthFIFA,
+            a.regionOfBirth                 AS          persona_region_Of_Birth,
+            a.placeOfBirth                  AS          persona_place_Of_Birth,
+            a.dateOfBirth                   AS          persona_fecha_nacimiento,
+            a.gender                        AS          persona_genero,
+            a.homegrown                     AS          persona_homegrown,
+            a.national_team                 AS          persona_national_team,
+            a.nationality                   AS          persona_nationality,
+            a.nationalityFIFA               AS          persona_nationalityFIFA,
+            a.place                         AS          persona_place,
+            a.playerPosition                AS          persona_funcion,
+            a.rowNumber                     AS          persona_rowNumber,
+            a.lastUpdate                    AS          persona_ultima_actualizacion,
+            a.pictureContentType            AS          persona_pictureContentType,
+            a.pictureLink                   AS          persona_pictureLink,
+            a.pictureValue                  AS          persona_pictureValue,
+            a.role                          AS          persona_role,
+            a.cometRoleName                 AS          persona_cometRoleName,
+            a.cometRoleNameKey              AS          persona_cometRoleNameKey,
+            
+            a.personType                    AS          persona_tipo_codigo,
+            CASE 
+                WHEN a.personType = 'T' THEN 'CUERPO TÉCNICO'
+                WHEN a.personType = 'O' THEN 'OFICIAL' 
+                WHEN a.personType = 'Z' THEN 'ZONA 1'
+                WHEN a.personType = 'P' THEN 'JUGADOR'
+            END AS persona_tipo_nombre,
 
-                b.DOMFICCOD                     AS          tipo_documento_codigo,
-                b.DOMFICEST                     AS          tipo_documento_estado_codigo,
-                b.DOMFICORD                     AS          tipo_documento_orden,
-                b.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
-                b.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
-                b.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
-                b.DOMFICPAT                     AS          tipo_documento_path,
-                b.DOMFICVAL                     AS          tipo_documento_dominio,
-                b.DOMFICOBS                     AS          tipo_documento_observacion,
-                a.documentNumber                AS          tipo_documento_numero
-                
-                FROM comet.persons a
-                LEFT OUTER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
+            b.DOMFICCOD                     AS          tipo_documento_codigo,
+            b.DOMFICEST                     AS          tipo_documento_estado_codigo,
+            b.DOMFICORD                     AS          tipo_documento_orden,
+            b.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+            b.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+            b.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+            b.DOMFICPAT                     AS          tipo_documento_path,
+            b.DOMFICVAL                     AS          tipo_documento_dominio,
+            b.DOMFICOBS                     AS          tipo_documento_observacion,
+            a.documentNumber                AS          tipo_documento_numero
+            
+            FROM comet.persons a
+            LEFT OUTER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
                 
                 WHERE  a.personFifaId = ?
 
