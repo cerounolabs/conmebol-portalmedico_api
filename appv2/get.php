@@ -7397,8 +7397,8 @@
                         'tipo_documento_observacion'                    => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_observacion']))),
                         'tipo_documento_numero'                         => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
 
-                        'juego_codigo'                                  => $rowMSSQL['juego_codigo'],
-                        'juego_nombre'                                  => trim($rowMSSQL['juego_nombre']),
+                        'equipo_codigo'                                 => $rowMSSQL['equipo_codigo'],
+                        'equipo_nombre'                                 => trim($rowMSSQL['equipo_nombre']),
                         
                         'competicion_codigo'                            => $rowMSSQL['competicion_codigo'],
                         'competicion_nombre'                            => trim($rowMSSQL['competicion_nombre']),
@@ -7506,8 +7506,8 @@
                         'tipo_documento_observacion'                    => '',
                         'tipo_documento_numero'                         => '',
 
-                        'juego_codigo'                                  => '',
-                        'juego_nombre'                                  => '',
+                        'equipo_codigo'                                 => '',
+                        'equipo_nombre'                                 => '',
                         'competicion_codigo'                            => '',
                         'competicion_nombre'                            => '',
 
