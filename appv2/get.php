@@ -7101,7 +7101,7 @@
         $val01      = $request->getAttribute('codigo');
 
         if (isset($val01)) {
-            $sql00  = "SELECT              
+            $sql00  = "SELECT   
             a.EXAFICCOD                 AS          examen_codigo,
             a.EXAFICFE1                 AS          examen_fecha_1,
             a.EXAFICFE2                 AS          examen_fecha_2,
@@ -7145,12 +7145,19 @@
             c.DOMFICOBS                 AS          tipo_examen_observacion,
                             
             d.personFifaId              AS          persona_codigo,
-            d.personType                AS          persona_tipo,
             d.internationalFirstName    AS          persona_nombre,
             d.internationalLastName     AS          persona_apellido,
             d.gender                    AS          persona_genero,
             d.dateOfBirth               AS          persona_fecha_nacimiento,
             d.playerPosition            AS          persona_funcion,
+
+            d.personType                AS          persona_tipo_codigo,
+            CASE 
+                WHEN d.personType = 'T' THEN 'CUERPO TÉCNICO'
+                WHEN d.personType = 'O' THEN 'OFICIAL' 
+                WHEN d.personType = 'Z' THEN 'ZONA 1'
+                WHEN d.personType = 'P' THEN 'JUGADOR'
+            END AS persona_tipo_nombre,
             
             e.DOMFICCOD                 AS          tipo_documento_codigo,
             e.DOMFICORD                 AS          tipo_documento_orden,
@@ -7160,16 +7167,25 @@
             e.DOMFICPAT                 AS          tipo_documento_path,
             e.DOMFICVAL                 AS          tipo_documento_dominio,
             e.DOMFICPAR                 AS          tipo_documento_parametro,
-            e.DOMFICOBS                 AS          tipo_documento_observacion
+            e.DOMFICOBS                 AS          tipo_documento_observacion,
+            
+            f.JUEGO_CODIGO              AS          juego_codigo,
+            f.JUEGO_NOMBRE              AS          juego_nombre,
+            
+            g.competitionFifaId         AS          competicion_codigo,
+            g.internationalName         AS          competicion_nombre
             
             FROM exa.EXAFIC a
-            INNER JOIN adm.DOMFIC b ON a.EXAFICEST          = b.DOMFICCOD
-            INNER JOIN adm.DOMFIC c ON a.EXAFICTEC          = c.DOMFICCOD
-            INNER JOIN comet.persons d ON a.EXAFICPEC       = d.personFifaId
-            LEFT OUTER JOIN adm.DOMFIC e ON d.documentType  = e.DOMFICCOD
+            INNER JOIN adm.DOMFIC b ON a.EXAFICEST                  = b.DOMFICCOD
+            INNER JOIN adm.DOMFIC c ON a.EXAFICTEC                  = c.DOMFICCOD
+            INNER JOIN comet.persons d ON a.EXAFICPEC               = d.personFifaId
+            LEFT OUTER JOIN adm.DOMFIC e ON d.documentType          = e.DOMFICCOD 
+            INNER JOIN [view].juego f ON (a.EXAFICCOC               = f.COMPETICION_ID OR a.EXAFICCOC = f.COMPETICION_PADRE_ID)
+            INNER JOIN comet.competitions g ON (g.competitionFifaId = f.COMPETICION_ID OR g.competitionFifaId = f.COMPETICION_PADRE_ID)
             
-            WHERE a.EXAFICPEC = ?
-            ORDER BY a.EXAFICCOD";
+            WHERE a.EXAFICPEC = ? AND f.JUEGO_CODIGO = a.EXAFICENC AND g.superiorCompetitionFifaId IS NULL
+
+            ORDER BY a.EXAFICCOD DESC";
 
             $sql01  = "SELECT
                 a.EXATESCOD        AS          examen_test_codigo,
@@ -7340,7 +7356,6 @@
                         'tipo_examen_observacion'                       => strtoupper(strtolower(trim($rowMSSQL['tipo_examen_observacion']))),
 
                         'persona_codigo'                                => $rowMSSQL['persona_codigo'],
-                        'persona_tipo'                                  => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
                         'persona_nombre'                                => trim($rowMSSQL['persona_nombre']),
                         'persona_apellido'                              => trim($rowMSSQL['persona_apellido']),
                         'persona_popular_name'                          => trim($rowMSSQL['persona_popular_name']),
@@ -7368,6 +7383,9 @@
                         'persona_role'                                  => trim($rowMSSQL['persona_role']),
                         'persona_cometRoleName'                         => trim($rowMSSQL['persona_cometRoleName']),
                         'persona_cometRoleNameKey'                      => trim($rowMSSQL['persona_cometRoleNameKey']),
+
+                        'persona_tipo_codigo'                           => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_tipo_nombre'                           => trim($rowMSSQL['persona_tipo_nombre']),
                        
                         'tipo_documento_codigo'                         => $rowMSSQL['tipo_documento_codigo'],
                         'tipo_documento_orden'                          => $rowMSSQL['tipo_documento_orden'],
@@ -7379,6 +7397,12 @@
                         'tipo_documento_parametro'                      => $rowMSSQL['tipo_documento_parametro'],
                         'tipo_documento_observacion'                    => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_observacion']))),
                         'tipo_documento_numero'                         => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                        'juego_codigo'                                  => $rowMSSQL['juego_codigo'],
+                        'juego_nombre'                                  => trim($rowMSSQL['juego_nombre']),
+                        
+                        'competicion_codigo'                            => $rowMSSQL['competicion_codigo'],
+                        'competicion_nombre'                            => trim($rowMSSQL['competicion_nombre']),
 
                         'examen_detalle'                                => $result_test
                     );
@@ -7441,7 +7465,6 @@
                         'tipo_examen_observacion'                       => '',
 
                         'persona_codigo'                                => '',
-                        'persona_tipo'                                  => '',
                         'persona_nombre'                                => '',
                         'persona_apellido'                              => '',
                         'persona_popular_name'                          => '',
@@ -7469,6 +7492,9 @@
                         'persona_role'                                  => '',
                         'persona_cometRoleName'                         => '',
                         'persona_cometRoleNameKey'                      => '',
+
+                        'persona_tipo_codigo'                           => '',
+                        'persona_tipo_nombre'                           => '',
                        
                         'tipo_documento_codigo'                         => '',
                         'tipo_documento_orden'                          => '',
@@ -7477,9 +7503,14 @@
                         'tipo_documento_nombre_portugues'               => '',
                         'tipo_documento_path'                           => '',
                         'tipo_documento_dominio'                        => '',
-                        'tipo_documento_parametro'                         => '',
+                        'tipo_documento_parametro'                      => '',
                         'tipo_documento_observacion'                    => '',
                         'tipo_documento_numero'                         => '',
+
+                        'juego_codigo'                                  => '',
+                        'juego_nombre'                                  => '',
+                        'competicion_codigo'                            => '',
+                        'competicion_nombre'                            => '',
 
                         'examen_detalle'                                => ''
                     );
