@@ -6950,7 +6950,14 @@
                 a.role                          AS          persona_role,
                 a.cometRoleName                 AS          persona_cometRoleName,
                 a.cometRoleNameKey              AS          persona_cometRoleNameKey,
-                a.personType                    AS          persona_tipo,
+            
+                a.personType                    AS          persona_tipo_codigo,
+                CASE 
+                    WHEN d.personType = 'T' THEN 'CUERPO TÉCNICO'
+                    WHEN d.personType = 'O' THEN 'OFICIAL' 
+                    WHEN d.personType = 'Z' THEN 'ZONA 1'
+                    WHEN d.personType = 'P' THEN 'JUGADOR'
+                END AS persona_tipo_nombre,
 
                 b.DOMFICCOD                     AS          tipo_documento_codigo,
                 b.DOMFICEST                     AS          tipo_documento_estado_codigo,
@@ -6986,7 +6993,6 @@
 
                     $detalle    = array(
                         'persona_codigo'                        => $rowMSSQL['persona_codigo'],
-                        'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
                         'persona_nombre'                        => trim($rowMSSQL['persona_nombre']),
                         'persona_apellido'                      => trim($rowMSSQL['persona_apellido']),
                         'persona_popular_name'                  => trim($rowMSSQL['persona_popular_name']),
@@ -7014,6 +7020,9 @@
                         'persona_role'                          => trim($rowMSSQL['persona_role']),
                         'persona_cometRoleName'                 => trim($rowMSSQL['persona_cometRoleName']),
                         'persona_cometRoleNameKey'              => trim($rowMSSQL['persona_cometRoleNameKey']),
+
+                        'persona_tipo_codigo'                   => strtoupper(strtolower(trim($rowMSSQL['persona_tipo_codigo']))),
+                        'persona_tipo_nombre'                   => trim($rowMSSQL['persona_tipo_nombre']),
                        
                         'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
                         'tipo_documento_orden'                  => $rowMSSQL['tipo_documento_orden'],
@@ -7063,6 +7072,9 @@
                         'persona_role'                          => '',
                         'persona_cometRoleName'                 => '',
                         'persona_cometRoleNameKey'              => '',
+
+                        'persona_tipo_codigo'                   => '',
+                        'persona_tipo_nombre'                   => '',
                        
                         'tipo_documento_codigo'                 => '',
                         'tipo_documento_orden'                  => '',
