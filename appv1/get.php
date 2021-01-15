@@ -11168,9 +11168,9 @@
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
                 $sql02 = "SELECT
-                    '2'                        AS     tipo_test_codigo,
-                    'TOTAL POSITIVO'           AS     tipo_test_nombre,
-                    COUNT(*)                   AS     cantidad_test
+                    '2'                        AS     tipo_codigo,
+                    'TOTAL POSITIVO'           AS     tipo_nombre,
+                    COUNT(*)                   AS     cantidad_persona
                     
                     FROM exa.EXAFIC a
                     
@@ -11181,9 +11181,9 @@
                 UNION ALL
                 
                 SELECT
-                    '3'                         AS     tipo_test_codigo,
-                    'TOTAL NEGATIVO'            AS     tipo_test_nombre,
-                    COUNT(*)                    AS     cantidad_test
+                    '3'                         AS     tipo_codigo,
+                    'TOTAL NEGATIVO'            AS     tipo_nombre,
+                    COUNT(*)                    AS     cantidad_persona
                     
                     FROM exa.EXAFIC a
                     INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
