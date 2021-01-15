@@ -11113,35 +11113,35 @@
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
                 $sql02 = "SELECT
-                    '2'                        AS     tipo_codigo,
-                    'TOTAL POSITIVO'           AS     tipo_nombre,
-                    COUNT(*)                   AS     cantidad_persona
+                    '2'                         AS     tipo_codigo,
+                    'TOTAL PENDIENTE'           AS     tipo_nombre,
+                    COUNT(*)                    AS     cantidad_persona
                     
-                    FROM exa.EXAFIC 
+                    FROM exa.EXAFIC
                     
-                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ? AND EXAFICLRE = 'SI'
-                            
+                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ? AND EXAFICLRE IS NULL
+
                     UNION ALL
-                    
+
                     SELECT
-                        '3'                         AS     tipo_codigo,
-                        'TOTAL NEGATIVO'            AS     tipo_nombre,
-                        COUNT(*)                    AS     cantidad_persona
+                        '3'                        AS     tipo_codigo,
+                        'TOTAL POSITIVO'           AS     tipo_nombre,
+                        COUNT(*)                   AS     cantidad_persona
                         
                         FROM exa.EXAFIC 
                         
-                        WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ? AND EXAFICLRE = 'NO'
-                        
-                    UNION ALL
+                        WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ? AND EXAFICLRE = 'SI'
+                                
+                        UNION ALL
                         
                         SELECT
-                        '3'                         AS     tipo_codigo,
-                        'TOTAL PENDIENTE'           AS     tipo_nombre,
-                        COUNT(*)                    AS     cantidad_persona
-                        
-                        FROM exa.EXAFIC
-                        
-                        WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ? AND EXAFICLRE IS NULL";
+                            '4'                         AS     tipo_codigo,
+                            'TOTAL NEGATIVO'            AS     tipo_nombre,
+                            COUNT(*)                    AS     cantidad_persona
+                            
+                            FROM exa.EXAFIC 
+                            
+                            WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ? AND EXAFICLRE = 'NO'";         
             } else {
                 $sql00  = "SELECT 
                     '1'                                         AS     tipo_codigo,
@@ -11168,39 +11168,39 @@
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
                 $sql02 = "SELECT
-                    '2'                        AS     tipo_codigo,
-                    'TOTAL POSITIVO'           AS     tipo_nombre,
-                    COUNT(*)                   AS     cantidad_persona
+                    '2'                         AS     tipo_codigo,
+                    'TOTAL PENDIENTE'           AS     tipo_nombre,
+                    COUNT(*)                    AS     cantidad_persona
                     
                     FROM exa.EXAFIC a
-                    
                     INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
                     
-                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'SI'
-                            
+                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE IS NULL
+                    
                     UNION ALL
-                
+                    
                     SELECT
-                        '3'                         AS     tipo_codigo,
+                        '3'                        AS     tipo_codigo,
+                        'TOTAL POSITIVO'           AS     tipo_nombre,
+                        COUNT(*)                   AS     cantidad_persona
+                        
+                        FROM exa.EXAFIC a
+                        
+                        INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
+                        
+                        WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'SI'
+                                
+                    UNION ALL
+                    
+                    SELECT
+                        '4'                         AS     tipo_codigo,
                         'TOTAL NEGATIVO'            AS     tipo_nombre,
                         COUNT(*)                    AS     cantidad_persona
                         
                         FROM exa.EXAFIC a
                         INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
                         
-                        WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'
-                    
-                    UNION ALL
-                    
-                        SELECT
-                        '3'                         AS     tipo_codigo,
-                        'TOTAL PENDIENTE'           AS     tipo_nombre,
-                        COUNT(*)                    AS     cantidad_persona
-                        
-                        FROM exa.EXAFIC a
-                        INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
-                        
-                        WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE IS NULL";
+                        WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'";
             }
 
             try {
