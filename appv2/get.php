@@ -10980,6 +10980,7 @@
         return $json;
     });
 
+
     $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -10992,15 +10993,13 @@
             $sql00  = "";
 
             if($val01 == 39393) {
-                $sql00  = "SELECT 
-                '1'                         AS     tipo_codigo,
-                'TOTAL REGISTRO'            AS     tipo_nombre,
-                COUNT(*)                    AS     cantidad_persona
-                FROM exa.EXAFIC a
-                
-                INNER JOIN comet.persons b ON a.EXAFICPEC = b.personFifaId
-                
-                WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND b.personType <> 'Z'";
+                $sql00  = "SELECT
+                    '1'                 AS     tipo_codigo,
+                    'TOTAL REGISTRO'    AS     tipo_nombre,
+                    COUNT(*)            AS     cantidad_persona
+                    FROM exa.EXAFIC 
+                    
+                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ?";
 
                 $sql01  = "SELECT
                     a.DOMFICCOD                  AS  tipo_codigo,
@@ -11017,30 +11016,45 @@
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
                 $sql02 = "SELECT
-                    '2'                           AS     tipo_codigo,
-                    'PENDIENTE DE CARGA'          AS     tipo_nombre,
-                    (((SELECT COUNT(*) from comet.competitions_teams_players b1 WHERE (b1.competitionFifaId = a.COMPETICION_ID OR b1.competitionFifaId = a.COMPETICION_PADRE_ID) AND b1.teamFifaId = a.EQUIPO_LOCAL_CODIGO) +
-                    (SELECT COUNT(*) from comet.competitions_teams_players b2 WHERE (b2.competitionFifaId = a.COMPETICION_ID OR b2.competitionFifaId = a.COMPETICION_PADRE_ID) AND b2.teamFifaId = a.EQUIPO_VISITANTE_CODIGO)+
-                    (SELECT COUNT(*) from comet.matches_officials b5 WHERE b5.matchFifaId = a.JUEGO_CODIGO)) -
+                    '2'                         AS     tipo_codigo,
+                    'TOTAL PENDIENTE'           AS     tipo_nombre,
+                    COUNT(*)                    AS     cantidad_persona
                     
-                    ((SELECT COUNT(DISTINCT(b3.EXAFICPEC)) FROM exa.EXAFIC b3 WHERE (b3.EXAFICCOC = a.COMPETICION_ID OR b3.EXAFICCOC = a.COMPETICION_PADRE_ID) AND b3.EXAFICEQC = a.EQUIPO_LOCAL_CODIGO AND b3.EXAFICTEC = ? AND b3.EXAFICENC = a.JUEGO_CODIGO)+
-                    (SELECT COUNT(DISTINCT(b4.EXAFICPEC)) FROM exa.EXAFIC b4 WHERE (b4.EXAFICCOC = a.COMPETICION_ID OR b4.EXAFICCOC = a.COMPETICION_PADRE_ID) AND b4.EXAFICEQC  = a.EQUIPO_VISITANTE_CODIGO AND b4.EXAFICTEC = ? AND b4.EXAFICENC = a.JUEGO_CODIGO)+
-                    (SELECT COUNT(DISTINCT(b6.EXAFICPEC))FROM exa.EXAFIC b6 WHERE (b6.EXAFICCOC =  a.COMPETICION_ID OR b6.EXAFICCOC = a.COMPETICION_PADRE_ID) AND b6.EXAFICEQC  = ? AND b6.EXAFICTEC = ? AND b6.EXAFICENC = a.JUEGO_CODIGO))) AS cantidad_persona 
+                    FROM exa.EXAFIC
                     
-                    FROM [VIEW].juego a
-                    
-                    WHERE (a.COMPETICION_PADRE_ID = ? OR a.COMPETICION_ID = ?) AND a.JUEGO_CODIGO = ? 
-                ";
+                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ? AND EXAFICLRE IS NULL
+
+                    UNION ALL
+
+                    SELECT
+                        '3'                        AS     tipo_codigo,
+                        'TOTAL POSITIVO'           AS     tipo_nombre,
+                        COUNT(*)                   AS     cantidad_persona
+                        
+                        FROM exa.EXAFIC 
+                        
+                        WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ? AND EXAFICLRE = 'SI'
+                                
+                        UNION ALL
+                        
+                        SELECT
+                            '4'                         AS     tipo_codigo,
+                            'TOTAL NEGATIVO'            AS     tipo_nombre,
+                            COUNT(*)                    AS     cantidad_persona
+                            
+                            FROM exa.EXAFIC 
+                            
+                            WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICTEC = ? AND EXAFICLRE = 'NO'";         
             } else {
                 $sql00  = "SELECT 
-                    '1'                         AS     tipo_codigo,
-                    'TOTAL REGISTRO'            AS     tipo_nombre,
-                    COUNT(*)                    AS     cantidad_persona
+                    '1'                                         AS     tipo_codigo,
+                    'TOTAL REGISTRO'                            AS     tipo_nombre,
+                    COUNT(*)                                    AS     cantidad_persona
                     FROM exa.EXAFIC a
                     
                     INNER JOIN comet.persons b ON a.EXAFICPEC = b.personFifaId
                     
-                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND b.personType <> 'Z'";
+                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z'";
 
                 $sql01  = "SELECT
                     a.DOMFICCOD                  AS  tipo_codigo,
@@ -11057,27 +11071,39 @@
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
                 $sql02 = "SELECT
-                    '2'                        AS     tipo_codigo,
-                    'TOTAL POSITIVO'           AS     tipo_nombre,
-                    COUNT(*)                   AS     cantidad_persona
+                    '2'                         AS     tipo_codigo,
+                    'TOTAL PENDIENTE'           AS     tipo_nombre,
+                    COUNT(*)                    AS     cantidad_persona
                     
                     FROM exa.EXAFIC a
+                    INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
                     
-                    INNER JOIN comet.persons b ON a.EXAFICPEC   = b.personFifaId
+                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE IS NULL
                     
-                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'SI'
-                        
                     UNION ALL
-            
+                    
                     SELECT
-                        '3'                         AS     tipo_test_codigo,
-                        'TOTAL NEGATIVO'            AS     tipo_test_nombre,
-                        COUNT(*)                    AS     cantidad_test
+                        '3'                        AS     tipo_codigo,
+                        'TOTAL POSITIVO'           AS     tipo_nombre,
+                        COUNT(*)                   AS     cantidad_persona
                         
                         FROM exa.EXAFIC a
-                        INNER JOIN comet.persons b ON a.EXAFICPEC   = b.personFifaId
                         
-                        WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'";
+                        INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
+                        
+                        WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'SI'
+                                
+                    UNION ALL
+                    
+                    SELECT
+                        '4'                         AS     tipo_codigo,
+                        'TOTAL NEGATIVO'            AS     tipo_nombre,
+                        COUNT(*)                    AS     cantidad_persona
+                        
+                        FROM exa.EXAFIC a
+                        INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
+                        
+                        WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'";
             }
 
             try {
@@ -11087,14 +11113,13 @@
                 $stmtMSSQL02= $connMSSQL->prepare($sql02);
 
                 if ($val01 == 39393) {
-                    $stmtMSSQL00->execute([$val02, $val02, $val04, $val04]);
+                    $stmtMSSQL00->execute([$val02, $val04, $val03]);
                     $stmtMSSQL01->execute([$val03, $val02, $val02, $val04]);
-                    $stmtMSSQL02->execute([$val03, $val03, $val01, $val03, $val02, $val02, $val04]);
+                    $stmtMSSQL02->execute([$val02, $val04, $val03, $val02, $val04, $val03, $val02, $val04, $val03]);
                 } else {
                     $stmtMSSQL00->execute([$val02, $val04, $val01, $val03]);
                     $stmtMSSQL01->execute([$val03, $val01, $val02, $val02, $val04]);
-                    //$stmtMSSQL02->execute([$val02, $val01, $val03, $val04]);
-                    $stmtMSSQL02->execute([$val02, $val04, $val01, $val03, $val02, $val04, $val01, $val03]);
+                    $stmtMSSQL02->execute([$val02, $val04, $val01, $val03, $val02, $val04, $val01, $val03, $val02, $val04, $val01, $val03]);
                 }
 
                 $cantRegistro = 0;
@@ -11165,5 +11190,4 @@
         
         return $json;
     }); 
-
     
