@@ -10992,24 +10992,15 @@
             $sql00  = "";
 
             if($val01 == 39393) {
-                $sql00  = "SELECT
-                    '1'                         AS     tipo_codigo,
-                    'TOTAL PERSONA'             AS     tipo_nombre,
-                    ((SELECT COUNT(*) from comet.competitions_teams_players b1 WHERE (b1.competitionFifaId = a.COMPETICION_ID OR b1.competitionFifaId = a.COMPETICION_PADRE_ID) AND b1.teamFifaId = a.EQUIPO_LOCAL_CODIGO) +
-                    (SELECT COUNT(*) from comet.competitions_teams_players b2 WHERE (b2.competitionFifaId = a.COMPETICION_ID OR b2.competitionFifaId = a.COMPETICION_PADRE_ID) AND b2.teamFifaId = a.EQUIPO_VISITANTE_CODIGO)) AS cantidad_persona
-                        
-                    FROM [VIEW].juego a
-                        
-                    WHERE (a.COMPETICION_PADRE_ID = ? OR a.COMPETICION_ID = ?) AND a.JUEGO_CODIGO = ?
-                    
-                    UNION ALL
+                $sql00  = "SELECT 
+                '1'                         AS     tipo_codigo,
+                'TOTAL REGISTRO'            AS     tipo_nombre,
+                COUNT(*)                    AS     cantidad_persona
+                FROM exa.EXAFIC a
                 
-                    SELECT
-                        '1'                     AS     tipo_codigo,
-                        'TOTAL PERSONA'         AS     tipo_nombre,
-                        COUNT(*)                AS     cantidad_persona                        
-                        FROM comet.matches_officials a
-                        WHERE a.matchFifaId = ?";
+                INNER JOIN comet.persons b ON a.EXAFICPEC = b.personFifaId
+                
+                WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND b.personType <> 'Z'";
 
                 $sql01  = "SELECT
                     a.DOMFICCOD                  AS  tipo_codigo,
