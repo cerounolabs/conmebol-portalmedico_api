@@ -11090,7 +11090,7 @@
             $sql00  = "";
 
             if($val01 == 39393) {
-                $sql00  = "SELECT*
+                $sql00  = "SELECT
                     '1'                 AS     tipo_codigo,
                     'TOTAL REGISTRO'    AS     tipo_nombre,
                     COUNT(*)            AS     cantidad_persona
@@ -11178,29 +11178,29 @@
                     
                     WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'SI'
                             
-                UNION ALL
-                
-                SELECT
-                    '3'                         AS     tipo_codigo,
-                    'TOTAL NEGATIVO'            AS     tipo_nombre,
-                    COUNT(*)                    AS     cantidad_persona
-                    
-                    FROM exa.EXAFIC a
-                    INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
-                    
-                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'
-                
-                UNION ALL
+                    UNION ALL
                 
                     SELECT
-                    '3'                         AS     tipo_codigo,
-                    'TOTAL PENDIENTE'           AS     tipo_nombre,
-                    COUNT(*)                    AS     cantidad_persona
+                        '3'                         AS     tipo_codigo,
+                        'TOTAL NEGATIVO'            AS     tipo_nombre,
+                        COUNT(*)                    AS     cantidad_persona
+                        
+                        FROM exa.EXAFIC a
+                        INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
+                        
+                        WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'
                     
-                    FROM exa.EXAFIC a
-                    INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
+                    UNION ALL
                     
-                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE IS NULL";
+                        SELECT
+                        '3'                         AS     tipo_codigo,
+                        'TOTAL PENDIENTE'           AS     tipo_nombre,
+                        COUNT(*)                    AS     cantidad_persona
+                        
+                        FROM exa.EXAFIC a
+                        INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
+                        
+                        WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE IS NULL";
             }
 
             try {
