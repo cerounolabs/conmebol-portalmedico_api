@@ -11151,7 +11151,7 @@
                     
                     INNER JOIN comet.persons b ON a.EXAFICPEC = b.personFifaId
                     
-                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND b.personType <> 'Z'";
+                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z'";
 
                 $sql01  = "SELECT
                     a.DOMFICCOD                  AS  tipo_codigo,
@@ -11176,7 +11176,7 @@
                     
                     INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
                     
-                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'SI'
+                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'SI'
                             
                 UNION ALL
                 
@@ -11188,7 +11188,7 @@
                     FROM exa.EXAFIC a
                     INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
                     
-                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND personType <> 'Z' AND a.EXAFICLRE = 'NO'
+                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'
                 
                 UNION ALL
                 
@@ -11197,9 +11197,10 @@
                     'TOTAL PENDIENTE'           AS     tipo_nombre,
                     COUNT(*)                    AS     cantidad_persona
                     
-                    FROM exa.EXAFIC
+                    FROM exa.EXAFIC a
+                    INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
                     
-                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND personType <> 'Z' AND EXAFICLRE IS NULL";
+                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE IS NULL";
             }
 
             try {
