@@ -11100,7 +11100,7 @@
                     $stmtMSSQL01->execute([$val03, $val02, $val02, $val04]);
                     $stmtMSSQL02->execute([$val03, $val03, $val01, $val03, $val02, $val02, $val04]);
                 } else {
-                    $stmtMSSQL00->execute([$val02, $val01]);
+                    $stmtMSSQL00->execute([$val02, $val04, $val01, $val03]);
                     $stmtMSSQL01->execute([$val03, $val01, $val02, $val02, $val04]);
                     //$stmtMSSQL02->execute([$val02, $val01, $val03, $val04]);
                     $stmtMSSQL02->execute([$val02, $val04, $val01, $val03]);
