@@ -11066,9 +11066,9 @@
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
                 $sql02 = "SELECT
-                    '2'                        AS     tipo_test_codigo,
-                    'TOTAL POSITIVO'           AS     tipo_test_nombre,
-                    COUNT(*)                   AS     cantidad_test
+                    '2'                        AS     tipo_codigo,
+                    'TOTAL POSITIVO'           AS     tipo_nombre,
+                    COUNT(*)                   AS     cantidad_persona
                     
                     FROM exa.EXAFIC a
                     
@@ -11103,7 +11103,7 @@
                     $stmtMSSQL00->execute([$val02, $val04, $val01, $val03]);
                     $stmtMSSQL01->execute([$val03, $val01, $val02, $val02, $val04]);
                     //$stmtMSSQL02->execute([$val02, $val01, $val03, $val04]);
-                    $stmtMSSQL02->execute([$val02, $val04, $val01, $val03]);
+                    $stmtMSSQL02->execute([$val02, $val04, $val01, $val03, $val02, $val04, $val01, $val03]);
                 }
 
                 $cantRegistro = 0;
