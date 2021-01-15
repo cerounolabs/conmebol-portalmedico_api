@@ -11188,7 +11188,7 @@
                     FROM exa.EXAFIC a
                     INNER JOIN comet.persons b ON a.EXAFICPEC      = b.personFifaId
                     
-                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'
+                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND personType <> 'Z' AND a.EXAFICLRE = 'NO'
                 
                 UNION ALL
                 
@@ -11199,7 +11199,7 @@
                     
                     FROM exa.EXAFIC
                     
-                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND b.personType <> 'Z' AND EXAFICLRE IS NULL";
+                    WHERE EXAFICCOC = ? AND EXAFICENC = ? AND EXAFICEQC = ? AND EXAFICTEC = ? AND personType <> 'Z' AND EXAFICLRE IS NULL";
             }
 
             try {
