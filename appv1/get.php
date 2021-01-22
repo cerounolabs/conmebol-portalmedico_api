@@ -11258,12 +11258,12 @@
                 }
 
                 while ($rowMSSQL    = $stmtMSSQL02->fetch()) {
-                    $porcResultado  = round(($rowMSSQL['cantidad_persona'] * 100)/ $porcResultado);
+                   // $porcResultado  = round(($rowMSSQL['cantidad_persona'] * 100)/ $porcResultado);
                     $detalle    = array(
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
                         'cantidad_persona'          => $rowMSSQL['cantidad_persona'],
-                        'porcentaje_persona'        => $porcResultado
+                        //'porcentaje_persona'        => $porcResultado
                     );
 
                     $result[]   = $detalle;
@@ -11277,7 +11277,7 @@
                         'tipo_codigo'               => '',
                         'tipo_nombre'               => '',
                         'cantidad_persona'          => '',
-                        'porcentaje_persona'        => ''
+                        //'porcentaje_persona'        => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
