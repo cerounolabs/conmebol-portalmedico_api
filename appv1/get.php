@@ -11078,7 +11078,7 @@
         return $json;
     });
 
-    $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
+    $app->get('/v1/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('equipo');
@@ -11216,7 +11216,7 @@
             }
 
             try {
-                $connMSSQL  = getConnectionMSSQLv2();
+                $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
                 $stmtMSSQL02= $connMSSQL->prepare($sql02);
