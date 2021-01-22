@@ -11246,11 +11246,11 @@
                 $result[]   = $detalle;
 
                 while ($rowMSSQL = $stmtMSSQL01->fetch()) {
-                    $porcRegistro= round(($rowMSSQL['cantidad_persona'] * 100) / $porcRegistro);
+                    $porcRegistro= ($rowMSSQL['cantidad_persona'] * 100) / $cantRegistro;
                     $detalle    = array(
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
-                        //'cantidad_persona'        => $rowMSSQL['cantidad_persona'],
+                        'cantidad_persona'          => $rowMSSQL['cantidad_persona'],
                         'porcentaje_persona'        => $porcRegistro,
                     );
 
