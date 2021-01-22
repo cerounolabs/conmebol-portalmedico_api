@@ -11239,7 +11239,8 @@
                     $detalle    = array(
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
-                        'cantidad_persona'          => round(($cantRegistro / $cantRegistro) *100)
+                        'cantidad_persona'          => $cantRegistro,
+                        'porcentaje_persona'        => round(($cantRegistro / $cantRegistro) *100)
                     );
                 }
 
