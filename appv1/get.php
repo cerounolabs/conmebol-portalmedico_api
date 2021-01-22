@@ -11246,22 +11246,24 @@
                 $result[]   = $detalle;
 
                 while ($rowMSSQL = $stmtMSSQL01->fetch()) {
-                    $porcRegitro= round(($rowMSSQL['cantidad_persona'] * 100) / $cantRegistro);
+                    $porcRegistro= round(($rowMSSQL['cantidad_persona'] * 100) / $porcRegistro);
                     $detalle    = array(
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
                         'cantidad_persona'          => $rowMSSQL['cantidad_persona'],
-                        'porcentaje_persona'        => $porcRegitro,
+                        'porcentaje_persona'        => $porcRegistro,
                     );
 
                     $result[]   = $detalle;
                 }
 
-                while ($rowMSSQL = $stmtMSSQL02->fetch()) {
+                while ($rowMSSQL    = $stmtMSSQL02->fetch()) {
+                    $porcResultado  = round(($rowMSSQL['cantidad_persona'] * 100)/ $porcResultado);
                     $detalle    = array(
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
-                        'cantidad_persona'          => $rowMSSQL['cantidad_persona']
+                        'cantidad_persona'          => $rowMSSQL['cantidad_persona'],
+                        'porcentaje_persona'        => $porcResultado
                     );
 
                     $result[]   = $detalle;
@@ -11274,7 +11276,8 @@
                     $detalle = array(
                         'tipo_codigo'               => '',
                         'tipo_nombre'               => '',
-                        'cantidad_persona'          => ''
+                        'cantidad_persona'          => '',
+                        'porcentaje_persona'        => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
