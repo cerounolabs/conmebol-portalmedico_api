@@ -11250,7 +11250,7 @@
                     $detalle    = array(
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
-                        'cantidad_persona'          => $rowMSSQL['cantidad_persona'],
+                        //'cantidad_persona'        => $rowMSSQL['cantidad_persona'],
                         'porcentaje_persona'        => $porcRegistro,
                     );
 
@@ -11277,7 +11277,7 @@
                         'tipo_codigo'               => '',
                         'tipo_nombre'               => '',
                         'cantidad_persona'          => '',
-                        //'porcentaje_persona'        => ''
+                        'porcentaje_persona'        => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
