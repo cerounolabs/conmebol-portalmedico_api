@@ -11232,6 +11232,7 @@
                 }
 
                 $cantRegistro = 0;
+                $porc = '%';
 
                 while ($rowMSSQL = $stmtMSSQL00->fetch()) {
                     $cantRegistro = $cantRegistro + $rowMSSQL['cantidad_persona'];
@@ -11240,14 +11241,14 @@
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
                         'cantidad_persona'          => $cantRegistro,
-                        'porcentaje_persona'        => round(($cantRegistro / $cantRegistro) *100)
+                        'porcentaje_persona'        => round(($cantRegistro / $cantRegistro) *100).$porc
                     );
                 }
 
                 $result[]   = $detalle;
 
                 while ($rowMSSQL = $stmtMSSQL01->fetch()) {
-                    $porcRegistro= round(($rowMSSQL['cantidad_persona'] * 100) / $cantRegistro);
+                    $porcRegistro= round(($rowMSSQL['cantidad_persona'] * 100) / $cantRegistro).$porc;
                     $detalle    = array(
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
@@ -11259,7 +11260,7 @@
                 }
 
                 while ($rowMSSQL    = $stmtMSSQL02->fetch()) {
-                    $porcResultado  = round(($rowMSSQL['cantidad_persona'] * 100) / $cantRegistro);
+                    $porcResultado  = round(($rowMSSQL['cantidad_persona'] * 100) / $cantRegistro).$porc;
                     $detalle    = array(
                         'tipo_codigo'               => $rowMSSQL['tipo_codigo'],
                         'tipo_nombre'               => trim(strtoupper(strtolower($rowMSSQL['tipo_nombre']))),
