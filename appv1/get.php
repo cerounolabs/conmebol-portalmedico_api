@@ -11146,7 +11146,7 @@
                     COUNT(*)                    AS     cantidad_persona
                     
                     FROM exa.EXAFIC a
-                    INNER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
+                    LEFT OUTER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
                     INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
                     
                     WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND EXAFICLRE IS NULL";  
