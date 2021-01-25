@@ -10804,7 +10804,7 @@
                     LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
                     LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
 
-                    WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ? /*AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE a.EXAFICPEC = d.personFifaId)*/
+                    WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND g.personType <> 'Z' /*AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE a.EXAFICPEC = d.personFifaId)*/
 
                     ORDER BY a.EXAFICENC ASC, a.EXAFICPEC ASC";
             }
@@ -11095,7 +11095,7 @@
                 'TOTAL REGISTRO'    AS     tipo_nombre,
                 COUNT(*)            AS     cantidad_persona
                 FROM exa.EXAFIC a
-                INNER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
+                LEFT OUTER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
                 INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
                 
                 WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = ?";
@@ -11115,7 +11115,33 @@
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
              $sql02  = "SELECT
-                    '2'                         AS     tipo_codigo,
+                        '2'                         AS     tipo_codigo,
+                        'TOTAL NEGATIVO'            AS     tipo_nombre,
+                        COUNT(*)                    AS     cantidad_persona
+                        
+                    FROM exa.EXAFIC a
+                    LEFT OUTER JOIN comet.persons b ON a.EXAFICPEC  = b.personFifaId
+                    INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
+                
+                    WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND  EXAFICLRE = 'NO'
+                    
+                    UNION ALL
+
+                    SELECT
+                    '3'                        AS     tipo_codigo,
+                    'TOTAL POSITIVO'           AS     tipo_nombre,
+                    COUNT(*)                   AS     cantidad_persona
+                    
+                    FROM exa.EXAFIC a
+                    LEFT OUTER JOIN comet.persons b ON a.EXAFICPEC  = b.personFifaId
+                    INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
+                
+                    WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND a.EXAFICLRE = 'SI'
+
+                    UNION ALL
+
+                    SELECT
+                    '4'                         AS     tipo_codigo,
                     'TOTAL PENDIENTE'           AS     tipo_nombre,
                     COUNT(*)                    AS     cantidad_persona
                     
@@ -11123,33 +11149,7 @@
                     INNER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
                     INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
                     
-                    WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND EXAFICLRE IS NULL
-                    
-                    UNION ALL
-                    
-                    SELECT
-                    '3'                        AS     tipo_codigo,
-                    'TOTAL POSITIVO'           AS     tipo_nombre,
-                    COUNT(*)                   AS     cantidad_persona
-                    
-                    FROM exa.EXAFIC a
-                    INNER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
-                    INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
-                
-                    WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND a.EXAFICLRE = 'SI'
-                            
-                    UNION ALL
-                    
-                    SELECT
-                        '4'                         AS     tipo_codigo,
-                        'TOTAL NEGATIVO'            AS     tipo_nombre,
-                        COUNT(*)                    AS     cantidad_persona
-                        
-                    FROM exa.EXAFIC a
-                    INNER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
-                    INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
-                
-                    WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND  EXAFICLRE = 'NO'";  
+                    WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND EXAFICLRE IS NULL";  
 
             } else {
                 $sql00  = "SELECT 
@@ -11158,7 +11158,7 @@
                             COUNT(*)                                    AS     cantidad_persona
                             FROM exa.EXAFIC a
                             
-                             INNER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
+                             LEFT OUTER JOIN comet.persons b ON a.EXAFICPEC  = b.personFifaId
                              INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
                             
                              WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z'";
@@ -11171,22 +11171,22 @@
                     FROM adm.DOMFIC a 
                     LEFT OUTER JOIN exa.EXAFIC b ON a.DOMFICCOD     = b.EXAFICEST 
                     INNER JOIN comet.competitions c ON b.EXAFICCOC  = c.competitionFifaId
-                    INNER JOIN comet.persons d ON b.EXAFICPEC       = d.personFifaId
+                    LEFT OUTER JOIN comet.persons d ON b.EXAFICPEC  = d.personFifaId
                     
                     WHERE b.EXAFICTEC = ? AND b.EXAFICEQC = ? AND (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND b.EXAFICENC = ? AND d.personType<>'Z'
                     GROUP BY a.DOMFICCOD, a.DOMFICNOC";
 
                 $sql02  = "SELECT
                     '2'                         AS     tipo_codigo,
-                    'TOTAL PENDIENTE'           AS     tipo_nombre,
+                    'TOTAL NEGATIVO'            AS     tipo_nombre,
                     COUNT(*)                    AS     cantidad_persona
                     
                     FROM exa.EXAFIC a
-                    INNER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
+                    LEFT OUTER JOIN comet.persons b ON a.EXAFICPEC  = b.personFifaId
                     INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
                     
-                    WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE IS NULL
-                    
+                    WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'
+                
                     UNION ALL
                 
                     SELECT
@@ -11196,23 +11196,23 @@
                         
                         FROM exa.EXAFIC a
                         
-                        INNER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
+                        LEFT OUTER JOIN comet.persons b ON a.EXAFICPEC  = b.personFifaId
                         INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
                         
                         WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'SI'
-                                
-                    UNION ALL
-                
-                    SELECT
+
+                        UNION ALL
+
+                        SELECT
                         '4'                         AS     tipo_codigo,
-                        'TOTAL NEGATIVO'            AS     tipo_nombre,
+                        'TOTAL PENDIENTE'           AS     tipo_nombre,
                         COUNT(*)                    AS     cantidad_persona
                         
                         FROM exa.EXAFIC a
-                        INNER JOIN comet.persons b ON a.EXAFICPEC       = b.personFifaId
+                        LEFT OUTER JOIN comet.persons b ON a.EXAFICPEC  = b.personFifaId
                         INNER JOIN comet.competitions c ON a.EXAFICCOC  = c.competitionFifaId
                         
-                        WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE = 'NO'";
+                        WHERE (c.superiorCompetitionFifaId = ? OR c.competitionFifaId = ?) AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND b.personType <> 'Z' AND a.EXAFICLRE IS NULL";
             }
 
             try {
