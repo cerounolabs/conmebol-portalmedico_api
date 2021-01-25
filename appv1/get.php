@@ -10804,7 +10804,7 @@
                     LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
                     LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
 
-                    WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND g.personType <> 'Z' /*AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE a.EXAFICPEC = d.personFifaId)*/
+                    WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ? AND g.personType <> 'Z' /*AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE a.EXAFICPEC = d.personFifaId)*/
 
                     ORDER BY a.EXAFICENC ASC, a.EXAFICPEC ASC";
             }
