@@ -10980,7 +10980,7 @@
         return $json;
     });
 
-    $app->get('/v2/801/examen/prueba/{equipo}/{encuentro}', function($request) {
+    /*$app->get('/v2/801/examen/prueba/{equipo}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('equipo');
@@ -11165,7 +11165,7 @@
                     LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
                     LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
 
-                    WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ? AND g.personType <> 'Z' /*AND NOT EXISTS (SELECT *FROM comet.matches_officials d WHERE a.EXAFICPEC = d.personFifaId)*/
+                    WHERE a.EXAFICEQC = ? AND a.EXAFICENC = ? AND g.personType <> 'Z' 
 
                     ORDER BY a.EXAFICENC ASC, a.EXAFICPEC ASC";
             }
@@ -11437,7 +11437,8 @@
         $connMSSQL  = null;
         
         return $json;
-    });
+    });*/
+    
 
     $app->get('/v2/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
