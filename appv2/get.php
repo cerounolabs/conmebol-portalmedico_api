@@ -11449,9 +11449,9 @@
                 
                 d.DOMFICCOD     AS  tipo_test_codigo,
                 d.DOMFICORD     AS  tipo_test_orden,
-                d.DOMFICNOI     AS  tipo_test_nombre_ingles,
-                d.DOMFICNOC     AS  tipo_test_nombre_castellano,
-                d.DOMFICNOP     AS  tipo_test_nombre_portugues,
+                d.DOMFICNOI     AS  tipo_test_ingles,
+                d.DOMFICNOC     AS  tipo_test_castellano,
+                d.DOMFICNOP     AS  tipo_test_portugues,
                 d.DOMFICPAT     AS  tipo_test_path,
                 d.DOMFICVAL     AS  tipo_test_dominio,
                 d.DOMFICPAR     AS  tipo_test_parametro,
