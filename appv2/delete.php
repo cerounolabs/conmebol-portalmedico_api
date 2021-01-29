@@ -225,3 +225,158 @@
         
         return $json;
     });
+
+    /*MODULO NOTIFICACION*/
+    $app->delete('/v2/802/notificacion/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val00      = $request->getAttribute('codigo'); 
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['notificacion_orden'];
+        $val03      = $request->getParsedBody()['tipo_notificacion_parametro'];
+        $val04      = $request->getParsedBody()['tipo_test_parametro'];
+        $val05      = $request->getParsedBody()['notificacion_parametro'];
+        $val06      = trim($request->getParsedBody()['notificacion_titulo']);
+        $val07      = trim($request->getParsedBody()['notificacion_descripcion']);
+        $val08      = $request->getParsedBody()['notificacion_fecha_desde'];
+        $val09      = $request->getParsedBody()['notificacion_fecha_hasta'];
+        $val10      = trim($request->getParsedBody()['notificacion_observacion']);
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+
+        if (isset($val00) && isset($val01) && isset($val03) && isset($val04)) {
+            $sql00  = "UPDATE [adm].[NOTFIC] SET NOTFICAUS = ?,	NOTFICAFH = GETDATE(), NOTFICAIP = ? WHERE NOTFICCOD = ?";
+            $sql01  = "DELETE FROM [adm].[NOTFIC] WHERE NOTFICCOD = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL00->execute([$aud01, $aud03, $val00]);
+                $stmtMSSQL01->execute([$val00]);
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success DELETE', 'codigo' => $val01.', '.$val02), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error DELETE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->delete('/v2/802/notificacioncompeticion/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val00      = $request->getAttribute('codigo'); 
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['notificacion_competicion_orden'];
+        $val03      = $request->getParsedBody()['notificacion_codigo'];
+        $val04      = $request->getParsedBody()['competicion_codigo'];
+        $val05      = $request->getParsedBody()['notificacion_competicion_observacion'];
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if (isset($val00) && isset($val01) && isset($val03) && isset($val04)) {
+            $sql00  = "UPDATE [adm].[NOTCOM] SET NOTCOMAUS = ?,	NOTCOMAFH = GETDATE(), NOTCOMAIP = ? WHERE NOTCOMCOD = ?";
+            $sql01  = "DELETE FROM [adm].[NOTCOM] WHERE NOTCOMCOD = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL00->execute([$aud01, $aud03, $val00]);
+                $stmtMSSQL01->execute([$val00]);
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success DELETE', 'codigo' => $val01.', '.$val02), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error DELETE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->delete('/v2/802/notificacionequipo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val00      = $request->getAttribute('codigo'); 
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['notificacion_equipo_orden'];
+        $val03      = $request->getParsedBody()['notificacion_competicion_codigo'];
+        $val04      = $request->getParsedBody()['equipo_codigo'];
+        $val05      = $request->getParsedBody()['notificacion_equipo_observacion'];
+
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if (isset($val00) && isset($val01) && isset($val03) && isset($val04)) {
+            $sql00  = "UPDATE [adm].[NOTEQU] SET NOTEQUAUS = ?,	NOTEQUAFH = GETDATE(), NOTEQUAIP = ? WHERE NOTEQUCOD = ?";
+            $sql01  = "DELETE FROM [adm].[NOTEQU] WHERE NOTEQUCOD = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL00->execute([$aud01, $aud03, $val00]);
+                $stmtMSSQL01->execute([$val00]);
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success DELETE', 'codigo' => $val01.', '.$val02), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error DELETE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
