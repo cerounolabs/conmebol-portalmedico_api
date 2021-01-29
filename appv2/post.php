@@ -978,7 +978,7 @@
 
         if (isset($val01) && isset($val03) && isset($val04)) {
             $sql00  = "INSERT INTO [adm].[NOTCOM](NOTCOMEST, NOTCOMORD, NOTCOMCOC, NOTCOMNOC, NOTCOMOBS, NOTCOMAUS, NOTCOMAFH, NOTCOMAIP) VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, GETDATE(), ?)";
-            $sql01  = "SELECT MAX(NOTCOMCCOD) AS notificacion_competicion_codigo FROM [adm].[NOTCOM]";
+            $sql01  = "SELECT MAX(NOTCOMCOD) AS notificacion_competicion_codigo FROM [adm].[NOTCOM]";
 
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
@@ -1025,7 +1025,7 @@
 
         if (isset($val01) && isset($val03) && isset($val04)) {
             $sql00  = "INSERT INTO [adm].[NOTEQU](NOTEQUEST, NOTEQUORD, NOTEQUNCM, NOTEQUEQC, NOTEQUOBS, NOTEQUAUS, NOTEQUAFH, NOTEQUAIP) VALUES((SELECT DOMFICCOD FROM [adm].[DOMFIC] WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, GETDATE(), ?)";
-            $sql01  = "SELECT MAX(NOTEQUCCOD) AS notificacion_equipo_codigo FROM [adm].[NOTEQU]";
+            $sql01  = "SELECT MAX(NOTEQUCOD) AS notificacion_equipo_codigo FROM [adm].[NOTEQU]";
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
