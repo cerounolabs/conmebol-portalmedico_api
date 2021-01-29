@@ -932,6 +932,7 @@
         if (isset($val01) && isset($val03) && isset($val04)) {
             $sql00  = "INSERT INTO [adm].[NOTFIC] (NOTFICEST, NOTFICORD, NOTFICTNC, NOTFICTTC, NOTFICPAC, NOTFICTIT, NOTFICDES, NOTFICFED, NOTFICFEH, NOTFICOBS, NOTFICAUS, NOTFICAFH, NOTFICAIP) VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), ?, (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONTIPO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql01  = "SELECT MAX(NOTFICCOD) AS notificacion_codigo FROM [adm].[NOTFIC]";
+            
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
@@ -943,7 +944,6 @@
                 $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
                 $codigo         =   $row_mssql01['notificacion_codigo'];
 
-                
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
 
@@ -979,6 +979,7 @@
         if (isset($val01) && isset($val03) && isset($val04)) {
             $sql00  = "INSERT INTO [adm].[NOTCOM](NOTCOMEST, NOTCOMORD, NOTCOMCOC, NOTCOMNOC, NOTCOMOBS, NOTCOMAUS, NOTCOMAFH, NOTCOMAIP) VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql01  = "SELECT MAX(NOTCOMCCOD) AS notificacion_competicion_codigo FROM [adm].[NOTCOM]";
+
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
@@ -989,7 +990,6 @@
                 
                 $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
                 $codigo         =   $row_mssql01['notificacion_competicion_codigo'];
-
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
@@ -1024,7 +1024,7 @@
         $aud03      = trim($request->getParsedBody()['auditoria_ip']);
 
         if (isset($val01) && isset($val03) && isset($val04)) {
-            $sql00  = "INSERT INTO [adm].[NOTEQU](NOTEQUEST, NOTEQUORD, NOTEQUNCM, NOTEQUEQC, NOTEQUOBS, NOTEQUAUS, NOTEQUAFH, NOTEQUAIP VALUES((SELECT DOMFICCOD FROM [adm].[DOMFIC] WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql00  = "INSERT INTO [adm].[NOTEQU](NOTEQUEST, NOTEQUORD, NOTEQUNCM, NOTEQUEQC, NOTEQUOBS, NOTEQUAUS, NOTEQUAFH, NOTEQUAIP) VALUES((SELECT DOMFICCOD FROM [adm].[DOMFIC] WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql01  = "SELECT MAX(NOTEQUCCOD) AS notificacion_equipo_codigo FROM [adm].[NOTEQU]";
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
