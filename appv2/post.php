@@ -910,3 +910,149 @@
         
         return $json;
     });
+/*MODULO NOTIFICACIONES*/
+    $app->post('/v2/802/notificacion', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['notificacion_orden'];
+        $val03      = $request->getParsedBody()['tipo_notificacion_parametro'];
+        $val04      = $request->getParsedBody()['tipo_test_parametro'];
+        $val05      = $request->getParsedBody()['notificacion_parametro'];
+        $val06      = trim($request->getParsedBody()['notificacion_titulo']);
+        $val07      = trim($request->getParsedBody()['notificacion_descripcion']);
+        $val08      = $request->getParsedBody()['notificacion_fecha_desde'];
+        $val09      = $request->getParsedBody()['notificacion_fecha_hasta'];
+        $val10      = trim($request->getParsedBody()['notificacion_observacion']);
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if (isset($val01) && isset($val03) && isset($val04)) {
+            $sql00  = "INSERT INTO [adm].[NOTFIC] (NOTFICEST, NOTFICORD, NOTFICTNC, NOTFICTTC, NOTFICPAC, NOTFICTIT, NOTFICDES, NOTFICFED, NOTFICFEH, NOTFICOBS, NOTFICAUS, NOTFICAFH, NOTFICAIP) VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), ?, (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONTIPO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql01  = "SELECT MAX(NOTFICCOD) AS notificacion_codigo FROM [adm].[NOTFIC]";
+            try {
+                $connMSSQL      =   getConnectionMSSQLv2();
+                $stmtMSSQL      =   $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $aud01, $aud03]); 
+
+                $stmtMSSQL01    =   $conn->prepare($sql01);
+                $stmtMSSQL01->execute();
+                
+                $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+                $codigo         =   $row_mssql01['notificacion_codigo'];
+
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->post('/v2/802/notificacioncompeticion', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['notificacion_competicion_orden'];
+        $val03      = $request->getParsedBody()['notificacion_codigo'];
+        $val04      = $request->getParsedBody()['competicion_codigo'];
+        $val05      = $request->getParsedBody()['notificacion_competicion_observacion'];
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if (isset($val01) && isset($val03) && isset($val04)) {
+            $sql00  = "INSERT INTO [adm].[NOTCOM](NOTCOMEST, NOTCOMORD, NOTCOMCOC, NOTCOMNOC, NOTCOMOBS, NOTCOMAUS, NOTCOMAFH, NOTCOMAIP) VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql01  = "SELECT MAX(NOTCOMCCOD) AS notificacion_competicion_codigo FROM [adm].[NOTCOM]";
+            try {
+                $connMSSQL      =   getConnectionMSSQLv2();
+                $stmtMSSQL      =   $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $aud01, $aud03]); 
+
+                $stmtMSSQL01    =   $conn->prepare($sql01);
+                $stmtMSSQL01->execute();
+                
+                $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+                $codigo         =   $row_mssql01['notificacion_competicion_codigo'];
+
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->post('/v2/802/notificacionequipo', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['notificacion_equipo_orden'];
+        $val03      = $request->getParsedBody()['notificacion_competicion_codigo'];
+        $val04      = $request->getParsedBody()['equipo_codigo'];
+        $val05      = $request->getParsedBody()['notificacion_equipo_observacion'];
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if (isset($val01) && isset($val03) && isset($val04)) {
+            $sql00  = "INSERT INTO [adm].[NOTEQU](NOTEQUEST, NOTEQUORD, NOTEQUNCM, NOTEQUEQC, NOTEQUOBS, NOTEQUAUS, NOTEQUAFH, NOTEQUAIP VALUES((SELECT DOMFICCOD FROM [adm].[DOMFIC] WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql01  = "SELECT MAX(NOTEQUCCOD) AS notificacion_equipo_codigo FROM [adm].[NOTEQU]";
+            try {
+                $connMSSQL      =   getConnectionMSSQLv2();
+                $stmtMSSQL      =   $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $aud01, $aud03]); 
+
+                $stmtMSSQL01    =   $conn->prepare($sql01);
+                $stmtMSSQL01->execute();
+                
+                $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+                $codigo         =   $row_mssql01['notificacion_equipo_codigo'];
+
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
