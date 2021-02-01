@@ -931,7 +931,7 @@
 
         if (isset($val01) && isset($val03) && isset($val04)) {
             $sql00  = "INSERT INTO [adm].[NOTFIC](                                                    NOTFICEST,  NOTFICORD,                                                                                NOTFICTNC,                                                                                 NOTFICTTC, NOTFICPAC, NOTFICTIT,   NOTFICDES, NOTFICFED, NOTFICFEH, NOTFICFCA ,NOTFICOBS, NOTFICAUS, NOTFICAFH, NOTFICAIP) 
-            SELECT  (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?),         ?, (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONTIPO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?),        ?,          ?,          ?,          ?,        ?,  GETDATE() ,        ?,         ?, GETDATE(),         ?)
+            SELECT  (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?),         ?, (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONTIPO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?),        ?,          ?,          ?,          ?,        ?,  GETDATE() ,        ?,         ?, GETDATE(),         ?
                             WHERE NOT EXISTS(SELECT * FROM [adm].[NOTFIC] WHERE NOTFICTTC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?) AND NOTFICFCA = GETDATE() AND NOTFICTIT = ? AND NOTFICDES = ?)";
            
             $sql01  = "SELECT MAX(NOTFICCOD) AS notificacion_codigo FROM [adm].[NOTFIC]";
