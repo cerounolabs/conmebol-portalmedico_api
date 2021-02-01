@@ -11222,6 +11222,7 @@
             a.NOTFICDES     AS  notificacion_descripcion,	
             a.NOTFICFED     AS  notificacion_fecha_desde,	
             a.NOTFICFEH     AS  notificacion_fecha_hasta,	
+            a.NOTFICFCA     AS  notificacion_fecha_carga,
             a.NOTFICOBS     AS  notificacion_observacion,
                 
             a.NOTFICAUS     AS  auditoria_usuario,
@@ -11287,6 +11288,14 @@
                         $notificacion_fecha_hasta_1 = $rowMSSQL['notificacion_fecha_hasta'];
                         $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
                     }
+
+                    if ($rowMSSQL['notificacion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_carga'] == null){
+                        $notificacion_fecha_carga_1 = '';
+                        $notificacion_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
+                        $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
+                    }
     
                     $detalle    = array(
 
@@ -11299,6 +11308,8 @@
                         'notificacion_fecha_desde_2'    =>  $notificacion_fecha_desde_2,	
                         'notificacion_fecha_hasta_1'    =>  $notificacion_fecha_hasta_1,
                         'notificacion_fecha_hasta_2'    =>  $notificacion_fecha_hasta_2,
+                        'notificacion_fecha_carga_1'    =>  $notificacion_fecha_carga_1,
+                        'notificacion_fecha_carga_2'    =>  $notificacion_fecha_carga_2,
                         'notificacion_observacion'      =>  trim($rowMSSQL['notificacion_observacion']),
 
                         'auditoria_usuario'             =>  trim($rowMSSQL['auditoria_usuario']),
@@ -11354,6 +11365,8 @@
                         'notificacion_fecha_desde_2'    =>  '',	
                         'notificacion_fecha_hasta_1'    =>  '',
                         'notificacion_fecha_hasta_2'    =>  '',
+                        'notificacion_fecha_carga_1'    =>  '',
+                        'notificacion_fecha_carga_2'    =>  '',
                         'notificacion_observacion'      =>  '',
 
                         'auditoria_usuario'             =>  '',
@@ -11420,7 +11433,8 @@
                 a.NOTFICTIT     AS  notificacion_titulo,	
                 a.NOTFICDES     AS  notificacion_descripcion,	
                 a.NOTFICFED     AS  notificacion_fecha_desde,	
-                a.NOTFICFEH     AS  notificacion_fecha_hasta,	
+                a.NOTFICFEH     AS  notificacion_fecha_hasta,
+                a.NOTFICFCA     AS  notificacion_fecha_carga,	
                 a.NOTFICOBS     AS  notificacion_observacion,
                     
                 a.NOTFICAUS     AS  auditoria_usuario,
@@ -11488,6 +11502,14 @@
                         $notificacion_fecha_hasta_1 = $rowMSSQL['notificacion_fecha_hasta'];
                         $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
                     }
+
+                    if ($rowMSSQL['notificacion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_carga'] == null){
+                        $notificacion_fecha_carga_1 = '';
+                        $notificacion_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
+                        $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
+                    }
     
                     $detalle    = array(
 
@@ -11500,6 +11522,8 @@
                         'notificacion_fecha_desde_2'    =>  $notificacion_fecha_desde_2,	
                         'notificacion_fecha_hasta_1'    =>  $notificacion_fecha_hasta_1,
                         'notificacion_fecha_hasta_2'    =>  $notificacion_fecha_hasta_2,
+                        'notificacion_fecha_carga_1'    =>  $notificacion_fecha_carga_1,
+                        'notificacion_fecha_carga_2'    =>  $notificacion_fecha_carga_2,
                         'notificacion_observacion'      =>  trim($rowMSSQL['notificacion_observacion']),
 
                         'auditoria_usuario'             =>  trim($rowMSSQL['auditoria_usuario']),
@@ -11555,6 +11579,8 @@
                         'notificacion_fecha_desde_2'    =>  '',	
                         'notificacion_fecha_hasta_1'    =>  '',
                         'notificacion_fecha_hasta_2'    =>  '',
+                        'notificacion_fecha_carga_1'    =>  '',
+                        'notificacion_fecha_carga_2'    =>  '',
                         'notificacion_observacion'      =>  '',
 
                         'auditoria_usuario'             =>  '',
@@ -11639,8 +11665,9 @@
             c.NOTFICPAC                     AS      notificacion_parametro,
             c.NOTFICTIT                     AS      notificacion_titulo,	
             c.NOTFICDES                     AS      notificacion_descripcion,	
-            c.NOTFICFED                     AS      notificacion_fecha_desde,	
-            c.NOTFICFEH                     AS      notificacion_fecha_hasta,	
+            c.NOTFICFED                     AS      notificacion_fecha_desde,		
+            c.NOTFICFEH                     AS      notificacion_fecha_hasta,
+            c.NOTFICFCA                     AS      notificacion_fecha_carga,	
             c.NOTFICOBS                     AS      notificacion_observacion,
             
             d.competitionFifaId             AS      competicion_codigo,
@@ -11676,6 +11703,14 @@
                         $notificacion_fecha_hasta_1 = $rowMSSQL['notificacion_fecha_hasta'];
                         $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
                     }
+
+                    if ($rowMSSQL['notificacion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_carga'] == null){
+                        $notificacion_fecha_carga_1 = '';
+                        $notificacion_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
+                        $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
+                    }
     
                     $detalle    = array(
 
@@ -11706,6 +11741,8 @@
                         'notificacion_fecha_desde_2'                =>  $notificacion_fecha_desde_2,	
                         'notificacion_fecha_hasta_1'                =>  $notificacion_fecha_hasta_1,
                         'notificacion_fecha_hasta_2'                =>  $notificacion_fecha_hasta_2,
+                        'notificacion_fecha_carga_1'                =>  $notificacion_fecha_carga_1,
+                        'notificacion_fecha_carga_2'                =>  $notificacion_fecha_carga_2,
                         'notificacion_observacion'                  =>  trim($rowMSSQL['notificacion_observacion']),
 
                         'competicion_codigo'                        =>  $rowMSSQL['notificacion_codigo'],
@@ -11806,7 +11843,8 @@
                 c.NOTFICTIT                     AS      notificacion_titulo,	
                 c.NOTFICDES                     AS      notificacion_descripcion,	
                 c.NOTFICFED                     AS      notificacion_fecha_desde,	
-                c.NOTFICFEH                     AS      notificacion_fecha_hasta,	
+                c.NOTFICFEH                     AS      notificacion_fecha_hasta,
+                c.NOTFICFCA                     AS      notificacion_fecha_carga,	
                 c.NOTFICOBS                     AS      notificacion_observacion,
                 
                 d.competitionFifaId             AS      competicion_codigo,
@@ -11845,6 +11883,13 @@
                         $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
                     }
     
+                    if ($rowMSSQL['notificacion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_carga'] == null){
+                        $notificacion_fecha_carga_1 = '';
+                        $notificacion_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
+                        $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
+                    }
                     $detalle    = array(
 
                         'notificacion_competicion_codigo'           =>  $rowMSSQL['notificacion_competicion_codigo'],
@@ -11874,6 +11919,8 @@
                         'notificacion_fecha_desde_2'                =>  $notificacion_fecha_desde_2,	
                         'notificacion_fecha_hasta_1'                =>  $notificacion_fecha_hasta_1,
                         'notificacion_fecha_hasta_2'                =>  $notificacion_fecha_hasta_2,
+                        'notificacion_fecha_carga_1'                =>  $notificacion_fecha_carga_1,
+                        'notificacion_fecha_carga_2'                =>  $notificacion_fecha_carga_2,
                         'notificacion_observacion'                  =>  trim($rowMSSQL['notificacion_observacion']),
 
                         'competicion_codigo'                        =>  $rowMSSQL['notificacion_codigo'],
@@ -11918,6 +11965,8 @@
                         'notificacion_fecha_desde_2'                =>  '',	
                         'notificacion_fecha_hasta_1'                =>  '',
                         'notificacion_fecha_hasta_2'                =>  '',
+                        'notificacion_fecha_carga_1'                =>  'S',
+                        'notificacion_fecha_carga_2'                =>  'S',
                         'notificacion_observacion'                  =>  '',
 
                         'competicion_codigo'                        =>  '',

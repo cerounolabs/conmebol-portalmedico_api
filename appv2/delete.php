@@ -240,7 +240,8 @@
         $val07      = trim($request->getParsedBody()['notificacion_descripcion']);
         $val08      = $request->getParsedBody()['notificacion_fecha_desde'];
         $val09      = $request->getParsedBody()['notificacion_fecha_hasta'];
-        $val10      = trim($request->getParsedBody()['notificacion_observacion']);
+        $val10      = $request->getParsedBody()['notificacion_fecha_hasta'];
+        $val11      = trim($request->getParsedBody()['notificacion_observacion']);
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
