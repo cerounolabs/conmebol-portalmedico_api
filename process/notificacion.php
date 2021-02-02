@@ -12,7 +12,7 @@
         global $DOMFICAIP;
         global $NOTMENOBS;
        
-        echo "ingresa funcion mensaje";
+        
         $sql00  =   "SELECT 
             a.NOTFICCOD     AS  notificacion_codigo,
             a.NOTFICORD     AS  notificacion_orden,  	
@@ -67,10 +67,10 @@
             WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2 AND a.NOTFICFED >= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH <= CONVERT(varchar(10), GETDATE(), 23)
      
             ORDER BY a.NOTFICCOD ASC";
-
+            echo "antes de la conexion mensaje=> ";
         try {
             $connMSSQL  = getConnectionMSSQLv2();
-
+            echo "dentro de la conexion mensaje=> ";
             $stmtMSSQL00= $connMSSQL->prepare($sql00);
             $stmtMSSQL00->execute();
 
@@ -78,11 +78,13 @@
             $stmtMSSQL00    = null;
 
         } catch (PDOException $e) {
+            echo "exception  mensaje=> ";
             echo "\n";
             echo 'Error getMensaje(): '.$e;
         }
 
         $connMSSQL  = null;
+        echo "sale  mensaje=> ";
     }
 
     echo "\n";
