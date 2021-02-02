@@ -70,7 +70,7 @@ function getMensaje(){
      
             ORDER BY a.NOTFICCOD ASC";
         
-        $sql01  =   "SELECT 
+        /*$sql01  =   "SELECT 
             a.NOTCOMCOD                     AS      notificacion_competicion_codigo,
             a.NOTCOMORD                     AS      notificacion_competicion_orden,
             a.NOTCOMOBS                     AS      notificacion_competicion_observacion,
@@ -261,16 +261,16 @@ function getMensaje(){
             WHERE  b.PERFICEQU = ? AND a.PERCOMCOC = ? AND i.DOMFICPAR = 2 ";
 
         $sql04  =   "INSERT INTO [adm].[NOTMEN](                                                               NOTMENEST, NOTMENNOC, NOTMENNCC, NOTMENNEC, NOTMENMEC, NOTMENFEP, NOTMENOBS, NOTMENAUS, NOTMENAFH, NOTMENAIP) 
-                     VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR  = ?),         ?,         ?,        ?,        ?,   GETDATE(),        ?,           ?, GETDATE(),       ?)";    
+                     VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR  = ?),         ?,         ?,        ?,        ?,   GETDATE(),        ?,           ?, GETDATE(),       ?)";  */  
 
         try {
             $connMSSQL  = getConnectionMSSQLv2();
 
             $stmtMSSQL00= $connMSSQL->prepare($sql00);
-            $stmtMSSQL01= $connMSSQL->prepare($sql01);
+            /*$stmtMSSQL01= $connMSSQL->prepare($sql01);
             $stmtMSSQL02= $connMSSQL->prepare($sql02);
             $stmtMSSQL03= $connMSSQL->prepare($sql03);
-            //$stmtMSSQL04= $connMSSQL->prepare($sql04);
+            $stmtMSSQL04= $connMSSQL->prepare($sql04);*/
 
             $stmtMSSQL00->execute();
            
@@ -278,7 +278,7 @@ function getMensaje(){
 
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
                 $estado     = $rowMSSQL00['tipo_estado_parametro'];
-                $stmtMSSQL01->execute([$NOTFICCOD]);
+               /* $stmtMSSQL01->execute([$NOTFICCOD]);
 
                 while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
 
@@ -292,26 +292,26 @@ function getMensaje(){
                         while ($rowMSSQL03 = $stmtMSSQL03->fetch()) {
                             $NOTMENMEC = $rowMSSQL03['persona_codigo'];
 
-                            //$stmtMSSQL04->execute([$estado, $NOTFICCOD, $NOTCOMCOD, $NOTEQUCOD, $NOTMENMEC, $NOTMENOBS, $DOMFICAUS,$DOMFICAIP]);
+                            $stmtMSSQL04->execute([$estado, $NOTFICCOD, $NOTCOMCOD, $NOTEQUCOD, $NOTMENMEC, $NOTMENOBS, $DOMFICAUS,$DOMFICAIP]);
 
                         }
 
                     }
-                }
+                }*/
 
             }
 
         $stmtMSSQL00->closeCursor();
-        $stmtMSSQL01->closeCursor();
+        /*$stmtMSSQL01->closeCursor();
         $stmtMSSQL02->closeCursor();
         $stmtMSSQL03->closeCursor();
-       // $stmtMSSQL04->closeCursor();
+        $stmtMSSQL04->closeCursor();*/
 
         $stmtMSSQL00    = null;
-        $stmtMSSQL01    = null;
+        /*$stmtMSSQL01    = null;
         $stmtMSSQL02    = null;
         $stmtMSSQL03    = null;
-        //$stmtMSSQL04    = null;
+        $stmtMSSQL04    = null;*/
 
         } catch (PDOException $e) {
             echo "\n";
