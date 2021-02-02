@@ -14,6 +14,7 @@ function getMensaje(){
         global $DOMFICAUS;
         global $DOMFICAIP;
         global $NOTMENOBS;
+        echo "entra en el proceso=>";
 
         $sql00  =   "SELECT 
             a.NOTFICCOD     AS  notificacion_codigo,
