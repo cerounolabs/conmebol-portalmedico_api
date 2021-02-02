@@ -69,7 +69,7 @@
             ORDER BY a.NOTFICCOD ASC";
             echo "antes de la conexion mensaje=> ";
         try {
-            $connMSSQL  = getConnectionMSSQLv1();
+            $connMSSQL  = getConnectionMSSQLv2();
             echo "dentro de la conexion mensaje=> ";
             $stmtMSSQL00= $connMSSQL->prepare($sql00);
             $stmtMSSQL00->execute();
