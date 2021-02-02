@@ -274,11 +274,11 @@ function getMensaje(){
 
             $stmtMSSQL00->execute();
            
-            while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
+            /*while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
 
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
                 $estado     = $rowMSSQL00['tipo_estado_parametro'];
-               /* $stmtMSSQL01->execute([$NOTFICCOD]);
+                $stmtMSSQL01->execute([$NOTFICCOD]);
 
                 while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
 
@@ -297,9 +297,9 @@ function getMensaje(){
                         }
 
                     }
-                }*/
+                }
 
-            }
+            }*/
 
         $stmtMSSQL00->closeCursor();
         /*$stmtMSSQL01->closeCursor();
