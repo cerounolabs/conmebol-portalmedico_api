@@ -288,6 +288,7 @@
                     while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
                         $NOTEQUCOD  = $rowMSSQL02['notificacion_equipo_codigo'];
                         $stmtMSSQL03->execute([$NOTEQUCOD, $NOTCOMCOD]);
+                        echo "equipo=> ".$NOTEQUCOD."competicion=> ".$NOTCOMCOD;
 
                         while ($rowMSSQL03 = $stmtMSSQL03->fetch()) {
                             $NOTMENMEC = $rowMSSQL03['persona_codigo'];
