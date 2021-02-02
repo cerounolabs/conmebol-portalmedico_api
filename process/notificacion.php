@@ -12,6 +12,7 @@
         global $DOMFICAIP;
         global $NOTMENOBS;
        
+        echo "ingresa funcion mensaje";
         $sql00  =   "SELECT 
             a.NOTFICCOD     AS  notificacion_codigo,
             a.NOTFICORD     AS  notificacion_orden,  	
