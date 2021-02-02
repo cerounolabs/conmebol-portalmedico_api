@@ -68,7 +68,7 @@
             
             WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2 AND a.NOTFICFED >= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH <= CONVERT(varchar(10), GETDATE(), 23)
      
-            ORDER BY a.NOTFICCOD ASC";
+            ORDER BY a.NOTFICCOD";
         
         $sql01  =   "SELECT 
             a.NOTCOMCOD                     AS      notificacion_competicion_codigo,
@@ -109,9 +109,9 @@
             INNER JOIN [adm].[NOTFIC] c ON a.NOTCOMNOC  = c.NOTFICCOD
             INNER JOIN [comet].[competitions] d ON a.NOTCOMCOC = d.competitionFifaId 
 
-            WHERE a.NOTCOMNOC = ?
+            WHERE a.NOTCOMNOC = ? AND b.DOMFICPAR = 1 
             
-            ORDER BY a.NOTCOMCOD DESC";
+            ORDER BY a.NOTCOMCOD";
 
         $sql02  =   "SELECT 
             a.NOTEQUCOD             AS      notificacion_equipo_codigo,	
@@ -145,9 +145,9 @@
             INNER JOIN [adm].[NOTCOM]  c   ON a.NOTEQUNCM  = c.NOTCOMCOD
             INNER JOIN [comet].[teams] d   ON a.NOTEQUEQC  = d.teamFifaId 
 
-            WHERE a.NOTEQUNCM = ?
+            WHERE a.NOTEQUNCM = ? AND b.DOMFICPAR = 1 
             
-            ORDER BY a.NOTEQUCOD DESC";
+            ORDER BY a.NOTEQUCOD";
 
         $sql03  =   "SELECT 
             a.PERCOMOBS                         AS          competicion_persona_observacion,
@@ -195,7 +195,6 @@
             e.DOMFICVAL                         AS          tipo_perfil_dominio,
             e.DOMFICOBS                         AS          tipo_perfil_observacion,
             e.DOMFICPAR                         AS          tipo_perfil_parametro,
-
 
             f.teamFifaId                        AS          equipo_codigo,
             f.internationalShortName            AS          equipo_nombre,
@@ -283,12 +282,14 @@
                 while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
 
                     $NOTCOMCOD  = $rowMSSQL01['notificacion_competicion_codigo'];
+                    $NOTCOMCOC  = $rowMSSQL01['competicion_codigo'];
                     $stmtMSSQL02->execute([$NOTCOMCOD]);
 
                     while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
                         $NOTEQUCOD  = $rowMSSQL02['notificacion_equipo_codigo'];
-                        $stmtMSSQL03->execute([$NOTEQUCOD, $NOTCOMCOD]);
-                        echo "equipo=> ".$NOTEQUCOD."competicion=> ".$NOTCOMCOD;
+                        $NOTEQUEQC  = $rowMSSQL02['equipo_codigo'];
+                        $stmtMSSQL03->execute([$NOTEQUEQC, $NOTCOMCOC]);
+                        echo " notificacion_equipo_codigo=> ".$NOTEQUCOD." equipo => ".$NOTEQUEQC." notificacion_competicion_codigo=> ".$NOTCOMCOD." competicion => ".$NOTCOMCOC;
 
                         while ($rowMSSQL03 = $stmtMSSQL03->fetch()) {
                             $NOTMENMEC = $rowMSSQL03['persona_codigo'];
