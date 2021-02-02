@@ -270,7 +270,7 @@ function getMensaje(){
             $stmtMSSQL01= $connMSSQL->prepare($sql01);
             $stmtMSSQL02= $connMSSQL->prepare($sql02);
             $stmtMSSQL03= $connMSSQL->prepare($sql03);
-            $stmtMSSQL04= $connMSSQL->prepare($sql04);
+            //$stmtMSSQL04= $connMSSQL->prepare($sql04);
 
             $stmtMSSQL00->execute();
            
@@ -292,7 +292,7 @@ function getMensaje(){
                         while ($rowMSSQL03 = $stmtMSSQL03->fetch()) {
                             $NOTMENMEC = $rowMSSQL03['persona_codigo'];
 
-                            $stmtMSSQL04->execute([$estado, $NOTFICCOD, $NOTCOMCOD, $NOTEQUCOD, $NOTMENMEC, $NOTMENOBS, $DOMFICAUS,$DOMFICAIP]);
+                            //$stmtMSSQL04->execute([$estado, $NOTFICCOD, $NOTCOMCOD, $NOTEQUCOD, $NOTMENMEC, $NOTMENOBS, $DOMFICAUS,$DOMFICAIP]);
 
                         }
 
@@ -305,13 +305,13 @@ function getMensaje(){
         $stmtMSSQL01->closeCursor();
         $stmtMSSQL02->closeCursor();
         $stmtMSSQL03->closeCursor();
-        $stmtMSSQL04->closeCursor();
+       // $stmtMSSQL04->closeCursor();
 
         $stmtMSSQL00    = null;
         $stmtMSSQL01    = null;
         $stmtMSSQL02    = null;
         $stmtMSSQL03    = null;
-        $stmtMSSQL04    = null;
+        //$stmtMSSQL04    = null;
 
         } catch (PDOException $e) {
             echo "\n";
