@@ -5,7 +5,7 @@
     $DOMFICAIP  = '0.0.0.0';
     $NOTMENOBS  = '';
 
-function getMensaje(){
+    function getMensaje(){
         global $DOMFICEST;
         global $DOMFICORD;
         global $DOMFICAUS;
