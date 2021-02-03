@@ -517,7 +517,8 @@
         $val02      = $request->getParsedBody()['notificacion_competicion_orden'];
         $val03      = $request->getParsedBody()['notificacion_codigo'];
         $val04      = $request->getParsedBody()['competicion_codigo'];
-        $val05      = $request->getParsedBody()['notificacion_competicion_observacion'];
+        $val05      = $request->getParsedBody()['notificacion_competicion_fecha_carga'];
+        $val06      = $request->getParsedBody()['notificacion_competicion_observacion'];
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -542,7 +543,7 @@
 
                 switch ($val00_1) {
                     case 1:
-                        $stmtMSSQL->execute([$val01, $val02, $val04, $val03, $val05, $aud01, $aud03, $val00]);
+                        $stmtMSSQL->execute([$val01, $val02, $val04, $val03, $val06, $aud01, $aud03, $val00]);
                     break;
 
                     case 2:
@@ -578,7 +579,8 @@
         $val02      = $request->getParsedBody()['notificacion_equipo_orden'];
         $val03      = $request->getParsedBody()['notificacion_competicion_codigo'];
         $val04      = $request->getParsedBody()['equipo_codigo'];
-        $val05      = $request->getParsedBody()['notificacion_equipo_observacion'];
+        $val05      = $request->getParsedBody()['notificacion_equipo_fecha_carga'];
+        $val06      = $request->getParsedBody()['notificacion_equipo_observacion'];
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -603,7 +605,7 @@
 
                 switch ($val00_1) {
                     case 1:
-                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $aud01, $aud03, $val00]);
+                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val06, $aud01, $aud03, $val00]);
                     break;
 
                     /*case 2:
