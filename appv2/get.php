@@ -11638,7 +11638,7 @@
         return $json;
     });
 
-    $app->get('/v2/802/notificacioncompeticion/listado', function($request) {
+    $app->get('/v2/802/notificacioncompeticion/listado', function($request) {   
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT 
