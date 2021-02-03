@@ -66,7 +66,7 @@
             INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
             
-            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2 AND a.NOTFICFED >= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH <= CONVERT(varchar(10), GETDATE(), 23)
+            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  AND a.NOTFICPAC = 1 AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)
      
             ORDER BY a.NOTFICCOD";
         

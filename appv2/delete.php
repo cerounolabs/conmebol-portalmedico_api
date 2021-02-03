@@ -241,7 +241,8 @@
         $val08      = $request->getParsedBody()['notificacion_fecha_desde'];
         $val09      = $request->getParsedBody()['notificacion_fecha_hasta'];
         $val10      = $request->getParsedBody()['notificacion_fecha_hasta'];
-        $val11      = trim($request->getParsedBody()['notificacion_observacion']);
+        $val11      = $request->getParsedBody()['notificacion_fecha_carga'];
+        $val12      = trim($request->getParsedBody()['notificacion_observacion']);
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -291,7 +292,8 @@
         $val02      = $request->getParsedBody()['notificacion_competicion_orden'];
         $val03      = $request->getParsedBody()['notificacion_codigo'];
         $val04      = $request->getParsedBody()['competicion_codigo'];
-        $val05      = $request->getParsedBody()['notificacion_competicion_observacion'];
+        $val05      = $request->getParsedBody()['notificacion_competicion_fecha_carga'];
+        $val06      = $request->getParsedBody()['notificacion_competicion_observacion'];
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -340,7 +342,8 @@
         $val02      = $request->getParsedBody()['notificacion_equipo_orden'];
         $val03      = $request->getParsedBody()['notificacion_competicion_codigo'];
         $val04      = $request->getParsedBody()['equipo_codigo'];
-        $val05      = $request->getParsedBody()['notificacion_equipo_observacion'];
+        $val05      = $request->getParsedBody()['notificacion_equipo_fecha_carga'];
+        $val06      = $request->getParsedBody()['notificacion_equipo_observacion'];
 
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);

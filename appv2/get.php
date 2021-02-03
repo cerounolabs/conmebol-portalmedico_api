@@ -11644,6 +11644,7 @@
         $sql00  = "SELECT 
             a.NOTCOMCOD                     AS      notificacion_competicion_codigo,
             a.NOTCOMORD                     AS      notificacion_competicion_orden,
+            a.NOTCOMFCA                     AS      notificacion_competicion_fecha_carga,
             a.NOTCOMOBS                     AS      notificacion_competicion_observacion,
             
             a.NOTCOMAUS                     AS      auditoria_usuario,
@@ -11711,11 +11712,21 @@
                         $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
                         $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
                     }
-    
+
+                    if ($rowMSSQL['notificacion_competicion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_competicion_fecha_carga'] == null){
+                        $notificacion_competicion_fecha_carga_1 = '';
+                        $notificacion_competicion_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_competicion_fecha_carga_1 = $rowMSSQL['notificacion_competicion_fecha_carga'];
+                        $notificacion_competicion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_competicion_fecha_carga']));
+                    }
+                    
                     $detalle    = array(
 
                         'notificacion_competicion_codigo'           =>  $rowMSSQL['notificacion_competicion_codigo'],
-                        'notificacion_competicion_orden'            =>  $rowMSSQL['notificacion_competicion_orden'],    	
+                        'notificacion_competicion_orden'            =>  $rowMSSQL['notificacion_competicion_orden'],   
+                        'notificacion_competicion_fecha_carga_1'    =>  $notificacion_competicion_fecha_carga_1,	
+                        'notificacion_competicion_fecha_carga_2'    =>  $notificacion_competicion_fecha_carga_2,	
                         'notificacion_competicion_observacion'      =>  trim($rowMSSQL['notificacion_competicion_observacion']),
 
                         'auditoria_usuario'                         =>  trim($rowMSSQL['auditoria_usuario']),
@@ -11761,7 +11772,9 @@
                 } else {
                     $detalle = array(
                         'notificacion_competicion_codigo'           =>  '',
-                        'notificacion_competicion_orden'            =>  '',    	
+                        'notificacion_competicion_orden'            =>  '', 
+                        'notificacion_competicion_fecha_carga_1'    =>  '',
+                        'notificacion_competicion_fecha_carga_2'    =>  '',   	
                         'notificacion_competicion_observacion'      =>  '',
 
                         'auditoria_usuario'                         =>  '',
@@ -11821,6 +11834,7 @@
             $sql00  = "SELECT 
                 a.NOTCOMCOD                     AS      notificacion_competicion_codigo,
                 a.NOTCOMORD                     AS      notificacion_competicion_orden,
+                a.NOTCOMFCA                     AS      notificacion_competicion_fecha_carga,
                 a.NOTCOMOBS                     AS      notificacion_competicion_observacion,
                 
                 a.NOTCOMAUS                     AS      auditoria_usuario,
@@ -11867,6 +11881,7 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
+
                     if ($rowMSSQL['notificacion_fecha_desde'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_desde'] == null){
                         $notificacion_fecha_desde_1 = '';
                         $notificacion_fecha_desde_2 = '';
@@ -11890,10 +11905,21 @@
                         $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
                         $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
                     }
+
+                    if ($rowMSSQL['notificacion_competicion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_competicion_fecha_carga'] == null){
+                        $notificacion_competicion_fecha_carga_1 = '';
+                        $notificacion_competicion_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_competicion_fecha_carga_1 = $rowMSSQL['notificacion_competicion_fecha_carga'];
+                        $notificacion_competicion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_competicion_fecha_carga']));
+                    }
+                    
                     $detalle    = array(
 
                         'notificacion_competicion_codigo'           =>  $rowMSSQL['notificacion_competicion_codigo'],
-                        'notificacion_competicion_orden'            =>  $rowMSSQL['notificacion_competicion_orden'],    	
+                        'notificacion_competicion_orden'            =>  $rowMSSQL['notificacion_competicion_orden'], 
+                        'notificacion_competicion_fecha_carga_1'    =>  $notificacion_competicion_fecha_carga_1,
+                        'notificacion_competicion_fecha_carga_2'    =>  $notificacion_competicion_fecha_carga_2,   	
                         'notificacion_competicion_observacion'      =>  trim($rowMSSQL['notificacion_competicion_observacion']),
 
                         'auditoria_usuario'                         =>  trim($rowMSSQL['auditoria_usuario']),
@@ -11939,7 +11965,9 @@
                 } else {
                     $detalle = array(
                         'notificacion_competicion_codigo'           =>  '',
-                        'notificacion_competicion_orden'            =>  '',    	
+                        'notificacion_competicion_orden'            =>  '', 
+                        'notificacion_competicion_fecha_carga_1'    =>  '',
+                        'notificacion_competicion_fecha_carga_2'    =>  '',   	
                         'notificacion_competicion_observacion'      =>  '',
 
                         'auditoria_usuario'                         =>  '',
@@ -12000,7 +12028,8 @@
         
         $sql00  = "SELECT 
             a.NOTEQUCOD             AS      notificacion_equipo_codigo,	
-            a.NOTEQUORD             AS      notificacion_equipo_orden,	
+            a.NOTEQUORD             AS      notificacion_equipo_orden,
+            a.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
             a.NOTEQUOBS             AS      notificacion_equipo_observacion,
                 
             a.NOTEQUAUS             AS      auditoria_usuario,
@@ -12039,10 +12068,20 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
     
+                    if ($rowMSSQL['notificacion_equipo_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_equipo_fecha_carga'] == null){
+                        $notificacion_equipo_fecha_carga_1 = '';
+                        $notificacion_equipo_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_equipo_fecha_carga_1 = $rowMSSQL['notificacion_equipo_fecha_carga'];
+                        $notificacion_equipo_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_equipo_fecha_carga']));
+                    }
+
                     $detalle    = array(
 
                         'notificacion_equipo_codigo'            =>  $rowMSSQL['notificacion_equipo_codigo'],
-                        'notificacion_equipo_orden'             =>  $rowMSSQL['notificacion_equipo_orden'],    	
+                        'notificacion_equipo_orden'             =>  $rowMSSQL['notificacion_equipo_orden'],
+                        'notificacion_equipo_fecha_carga_1'     =>  $notificacion_equipo_fecha_carga_1,
+                        'notificacion_equipo_fecha_carga_2'     =>  $notificacion_equipo_fecha_carga_2,   	
                         'notificacion_equipo_observacion'       =>  trim($rowMSSQL['notificacion_equipo_observacion']),
 
                         'auditoria_usuario'                     =>  trim($rowMSSQL['auditoria_usuario']),
@@ -12078,7 +12117,9 @@
                 } else {
                     $detalle = array(
                         'notificacion_equipo_codigo'            =>  '',
-                        'notificacion_equipo_orden'             =>  '',    	
+                        'notificacion_equipo_orden'             =>  '',
+                        'notificacion_equipo_fecha_carga_1'     =>  '',
+                        'notificacion_equipo_fecha_carga_2'     =>  '',    	
                         'notificacion_equipo_observacion'       =>  '',
 
                         'auditoria_usuario'                     =>  '',
@@ -12128,7 +12169,8 @@
         if (isset($val01)) {
             $sql00  = "SELECT 
                 a.NOTEQUCOD             AS      notificacion_equipo_codigo,	
-                a.NOTEQUORD             AS      notificacion_equipo_orden,	
+                a.NOTEQUORD             AS      notificacion_equipo_orden,
+                a.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
                 a.NOTEQUOBS             AS      notificacion_equipo_observacion,
                     
                 a.NOTEQUAUS             AS      auditoria_usuario,
@@ -12168,11 +12210,21 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
+
+                    if ($rowMSSQL['notificacion_equipo_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_equipo_fecha_carga'] == null){
+                        $notificacion_equipo_fecha_carga_1 = '';
+                        $notificacion_equipo_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_equipo_fecha_carga_1 = $rowMSSQL['notificacion_equipo_fecha_carga'];
+                        $notificacion_equipo_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_equipo_fecha_carga']));
+                    }
     
                     $detalle    = array(
 
                         'notificacion_equipo_codigo'        =>  $rowMSSQL['notificacion_equipo_codigo'],
-                        'notificacion_equipo_orden'         =>  $rowMSSQL['notificacion_equipo_orden'],    	
+                        'notificacion_equipo_orden'         =>  $rowMSSQL['notificacion_equipo_orden'],   
+                        'notificacion_equipo_fecha_carga_1' =>  $notificacion_equipo_fecha_carga_1,
+                        'notificacion_equipo_fecha_carga_2' =>  $notificacion_equipo_fecha_carga_2,   	
                         'notificacion_equipo_observacion'   =>  trim($rowMSSQL['notificacion_equipo_observacion']),
 
                         'auditoria_usuario'                 =>  trim($rowMSSQL['auditoria_usuario']),
@@ -12215,7 +12267,9 @@
                 } else {
                     $detalle = array(
                         'notificacion_equipo_codigo'        =>  '',
-                        'notificacion_equipo_orden'         =>  '',    	
+                        'notificacion_equipo_orden'         =>  '',
+                        'notificacion_equipo_fecha_carga_1' =>  '',
+                        'notificacion_equipo_fecha_carga_2' =>  '',
                         'notificacion_equipo_observacion'   =>  '',
 
                         'auditoria_usuario'                 =>  '',
