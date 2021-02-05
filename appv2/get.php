@@ -11215,55 +11215,61 @@
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT 
-            a.NOTFICCOD     AS  notificacion_codigo,
-            a.NOTFICORD     AS  notificacion_orden,  	
-            a.NOTFICPAC     AS  notificacion_parametro,
-            a.NOTFICTIT     AS  notificacion_titulo,	
-            a.NOTFICDES     AS  notificacion_descripcion,	
-            a.NOTFICFED     AS  notificacion_fecha_desde,	
-            a.NOTFICFEH     AS  notificacion_fecha_hasta,	
-            a.NOTFICFCA     AS  notificacion_fecha_carga,
-            a.NOTFICOBS     AS  notificacion_observacion,
+            a.NOTFICCOD                     AS      notificacion_codigo,
+            a.NOTFICORD                     AS      notificacion_orden,  	
+            a.NOTFICPAC                     AS      notificacion_parametro,
+            a.NOTFICTIT                     AS      notificacion_titulo,	
+            a.NOTFICDES                     AS      notificacion_descripcion,	
+            a.NOTFICFED                     AS      notificacion_fecha_desde,	
+            a.NOTFICFEH                     AS      notificacion_fecha_hasta,	
+            a.NOTFICFCA                     AS      notificacion_fecha_carga,
+            a.NOTFICOBS                     AS      notificacion_observacion,
                 
-            a.NOTFICAUS     AS  auditoria_usuario,
-            a.NOTFICAFH     AS  auditoria_fecha_hora,	
-            a.NOTFICAIP     AS  auditoria_ip,
+            a.NOTFICAUS                     AS      auditoria_usuario,
+            a.NOTFICAFH                     AS      auditoria_fecha_hora,	
+            a.NOTFICAIP                     AS      auditoria_ip,
             
-            b.DOMFICCOD     AS  tipo_estado_codigo,
-            b.DOMFICORD     AS  tipo_estado_orden,
-            b.DOMFICNOI     AS  tipo_estado_ingles,
-            b.DOMFICNOC     AS  tipo_estado_castellano,
-            b.DOMFICNOP     AS  tipo_estado_portugues,
-            b.DOMFICPAT     AS  tipo_estado_path,
-            b.DOMFICVAL     AS  tipo_estado_dominio,
-            b.DOMFICPAR     AS  tipo_estado_parametro,
-            b.DOMFICOBS     AS  tipo_estado_observacion,
+            b.DOMFICCOD                     AS      tipo_estado_codigo,
+            b.DOMFICORD                     AS      tipo_estado_orden,
+            b.DOMFICNOI                     AS      tipo_estado_ingles,
+            b.DOMFICNOC                     AS      tipo_estado_castellano,
+            b.DOMFICNOP                     AS      tipo_estado_portugues,
+            b.DOMFICPAT                     AS      tipo_estado_path,
+            b.DOMFICVAL                     AS      tipo_estado_dominio,
+            b.DOMFICPAR                     AS      tipo_estado_parametro,
+            b.DOMFICOBS                     AS      tipo_estado_observacion,
             
-            c.DOMFICCOD     AS  tipo_notificacion_codigo,
-            c.DOMFICORD     AS  tipo_notificacion_orden,
-            c.DOMFICNOI     AS  tipo_notificacion_ingles,
-            c.DOMFICNOC     AS  tipo_notificacion_castellano,
-            c.DOMFICNOP     AS  tipo_notificacion_portugues,
-            c.DOMFICPAT     AS  tipo_notificacion_path,
-            c.DOMFICVAL     AS  tipo_notificacion_dominio,
-            c.DOMFICPAR     AS  tipo_notificacion_parametro,
-            c.DOMFICOBS     AS  tipo_notificacion_observacion,
+            c.DOMFICCOD                     AS      tipo_notificacion_codigo,
+            c.DOMFICORD                     AS      tipo_notificacion_orden,
+            c.DOMFICNOI                     AS      tipo_notificacion_ingles,
+            c.DOMFICNOC                     AS      tipo_notificacion_castellano,
+            c.DOMFICNOP                     AS      tipo_notificacion_portugues,
+            c.DOMFICPAT                     AS      tipo_notificacion_path,
+            c.DOMFICVAL                     AS      tipo_notificacion_dominio,
+            c.DOMFICPAR                     AS      tipo_notificacion_parametro,
+            c.DOMFICOBS                     AS      tipo_notificacion_observacion,
             
-            d.DOMFICCOD     AS  tipo_test_codigo,
-            d.DOMFICORD     AS  tipo_test_orden,
-            d.DOMFICNOI     AS  tipo_test_ingles,
-            d.DOMFICNOC     AS  tipo_test_castellano,
-            d.DOMFICNOP     AS  tipo_test_portugues,
-            d.DOMFICPAT     AS  tipo_test_path,
-            d.DOMFICVAL     AS  tipo_test_dominio,
-            d.DOMFICPAR     AS  tipo_test_parametro,
-            d.DOMFICOBS     AS  tipo_test_observacion
-            
+            d.DOMFICCOD                     AS      tipo_test_codigo,
+            d.DOMFICORD                     AS      tipo_test_orden,
+            d.DOMFICNOI                     AS      tipo_test_ingles,
+            d.DOMFICNOC                     AS      tipo_test_castellano,
+            d.DOMFICNOP                     AS      tipo_test_portugues,
+            d.DOMFICPAT                     AS      tipo_test_path,
+            d.DOMFICVAL                     AS      tipo_test_dominio,
+            d.DOMFICPAR                     AS      tipo_test_parametro,
+            d.DOMFICOBS                     AS      tipo_test_observacion,
+
+            e.competitionFifaId             AS      competicion_codigo,
+            e.superiorCompetitionFifaId     AS      competicion_codigo_padre,
+            e.status                        AS      competicion_estado,
+            e.internationalName             AS      competicion_nombre
+
             FROM [adm].[NOTFIC] a
 
             INNER JOIN [adm].[DOMFIC] b ON a.NOTFICEST = b.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
+            INNER JOIN [comet].[competitions] e ON a.NOTFICCOC = e.competitionFifaId
             
             ORDER BY a.NOTFICCOD DESC";
 
@@ -11344,8 +11350,12 @@
                         'tipo_test_parametro'           => $rowMSSQL['tipo_test_parametro'],
                         'tipo_test_path'                => trim(strtolower($rowMSSQL['tipo_test_path'])),
                         'tipo_test_dominio'             => trim(strtoupper(strtolower($rowMSSQL['tipo_test_dominio']))), 
-                        'tipo_test_observacion'         => trim(strtoupper(strtolower($rowMSSQL['tipo_test_observacion'])))
-                        
+                        'tipo_test_observacion'         => trim(strtoupper(strtolower($rowMSSQL['tipo_test_observacion']))),
+
+                        'competicion_codigo'            =>  $rowMSSQL['notificacion_codigo'],
+                        'competicion_codigo_padre'      =>  $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'            =>  trim($rowMSSQL['competicion_estado']),
+                        'competicion_nombre'            =>  trim($rowMSSQL['competicion_nombre'])
                     );
     
                     $result[]   = $detalle;
@@ -11401,7 +11411,12 @@
                         'tipo_test_parametro'           =>  '',
                         'tipo_test_path'                =>  '',
                         'tipo_test_dominio'             =>  '', 
-                        'tipo_test_observacion'         =>  ''
+                        'tipo_test_observacion'         =>  '',
+
+                        'competicion_codigo'            =>  '',
+                        'competicion_codigo_padre'      =>  '',
+                        'competicion_estado'            =>  '',
+                        'competicion_nombre'            =>  ''
                     );
     
                     header("Content-Type: application/json; charset=utf-8");
@@ -11427,50 +11442,55 @@
         
         if (isset($val01)) {
             $sql00  = "SELECT 
-                a.NOTFICCOD     AS  notificacion_codigo,
-                a.NOTFICORD     AS  notificacion_orden,  	
-                a.NOTFICPAC     AS  notificacion_parametro,
-                a.NOTFICTIT     AS  notificacion_titulo,	
-                a.NOTFICDES     AS  notificacion_descripcion,	
-                a.NOTFICFED     AS  notificacion_fecha_desde,	
-                a.NOTFICFEH     AS  notificacion_fecha_hasta,
-                a.NOTFICFCA     AS  notificacion_fecha_carga,	
-                a.NOTFICOBS     AS  notificacion_observacion,
-                    
-                a.NOTFICAUS     AS  auditoria_usuario,
-                a.NOTFICAFH     AS  auditoria_fecha_hora,	
-                a.NOTFICAIP     AS  auditoria_ip,
+            a.NOTFICCOD                     AS      notificacion_codigo,
+            a.NOTFICORD                     AS      notificacion_orden,  	
+            a.NOTFICPAC                     AS      notificacion_parametro,
+            a.NOTFICTIT                     AS      notificacion_titulo,	
+            a.NOTFICDES                     AS      notificacion_descripcion,	
+            a.NOTFICFED                     AS      notificacion_fecha_desde,	
+            a.NOTFICFEH                     AS      notificacion_fecha_hasta,	
+            a.NOTFICFCA                     AS      notificacion_fecha_carga,
+            a.NOTFICOBS                     AS      notificacion_observacion,
                 
-                b.DOMFICCOD     AS  tipo_estado_codigo,
-                b.DOMFICORD     AS  tipo_estado_orden,
-                b.DOMFICNOI     AS  tipo_estado_ingles,
-                b.DOMFICNOC     AS  tipo_estado_castellano,
-                b.DOMFICNOP     AS  tipo_estado_portugues,
-                b.DOMFICPAT     AS  tipo_estado_path,
-                b.DOMFICVAL     AS  tipo_estado_dominio,
-                b.DOMFICPAR     AS  tipo_estado_parametro,
-                b.DOMFICOBS     AS  tipo_estado_observacion,
-                
-                c.DOMFICCOD     AS  tipo_notificacion_codigo,
-                c.DOMFICORD     AS  tipo_notificacion_orden,
-                c.DOMFICNOI     AS  tipo_notificacion_ingles,
-                c.DOMFICNOC     AS  tipo_notificacion_castellano,
-                c.DOMFICNOP     AS  tipo_notificacion_portugues,
-                c.DOMFICPAT     AS  tipo_notificacion_path,
-                c.DOMFICVAL     AS  tipo_notificacion_dominio,
-                c.DOMFICPAR     AS  tipo_notificacion_parametro,
-                c.DOMFICOBS     AS  tipo_notificacion_observacion,
-                
-                d.DOMFICCOD     AS  tipo_test_codigo,
-                d.DOMFICORD     AS  tipo_test_orden,
-                d.DOMFICNOI     AS  tipo_test_ingles,
-                d.DOMFICNOC     AS  tipo_test_castellano,
-                d.DOMFICNOP     AS  tipo_test_portugues,
-                d.DOMFICPAT     AS  tipo_test_path,
-                d.DOMFICVAL     AS  tipo_test_dominio,
-                d.DOMFICPAR     AS  tipo_test_parametro,
-                d.DOMFICOBS     AS  tipo_test_observacion
-                
+            a.NOTFICAUS                     AS      auditoria_usuario,
+            a.NOTFICAFH                     AS      auditoria_fecha_hora,	
+            a.NOTFICAIP                     AS      auditoria_ip,
+            
+            b.DOMFICCOD                     AS      tipo_estado_codigo,
+            b.DOMFICORD                     AS      tipo_estado_orden,
+            b.DOMFICNOI                     AS      tipo_estado_ingles,
+            b.DOMFICNOC                     AS      tipo_estado_castellano,
+            b.DOMFICNOP                     AS      tipo_estado_portugues,
+            b.DOMFICPAT                     AS      tipo_estado_path,
+            b.DOMFICVAL                     AS      tipo_estado_dominio,
+            b.DOMFICPAR                     AS      tipo_estado_parametro,
+            b.DOMFICOBS                     AS      tipo_estado_observacion,
+            
+            c.DOMFICCOD                     AS      tipo_notificacion_codigo,
+            c.DOMFICORD                     AS      tipo_notificacion_orden,
+            c.DOMFICNOI                     AS      tipo_notificacion_ingles,
+            c.DOMFICNOC                     AS      tipo_notificacion_castellano,
+            c.DOMFICNOP                     AS      tipo_notificacion_portugues,
+            c.DOMFICPAT                     AS      tipo_notificacion_path,
+            c.DOMFICVAL                     AS      tipo_notificacion_dominio,
+            c.DOMFICPAR                     AS      tipo_notificacion_parametro,
+            c.DOMFICOBS                     AS      tipo_notificacion_observacion,
+            
+            d.DOMFICCOD                     AS      tipo_test_codigo,
+            d.DOMFICORD                     AS      tipo_test_orden,
+            d.DOMFICNOI                     AS      tipo_test_ingles,
+            d.DOMFICNOC                     AS      tipo_test_castellano,
+            d.DOMFICNOP                     AS      tipo_test_portugues,
+            d.DOMFICPAT                     AS      tipo_test_path,
+            d.DOMFICVAL                     AS      tipo_test_dominio,
+            d.DOMFICPAR                     AS      tipo_test_parametro,
+            d.DOMFICOBS                     AS      tipo_test_observacion,
+
+            e.competitionFifaId             AS      competicion_codigo,
+            e.superiorCompetitionFifaId     AS      competicion_codigo_padre,
+            e.status                        AS      competicion_estado,
+            e.internationalName             AS      competicion_nombre
+
                 FROM [adm].[NOTFIC] a
 
                 INNER JOIN [adm].[DOMFIC] b ON a.NOTFICEST = b.DOMFICCOD
@@ -11558,7 +11578,12 @@
                         'tipo_test_parametro'           => $rowMSSQL['tipo_test_parametro'],
                         'tipo_test_path'                => trim(strtolower($rowMSSQL['tipo_test_path'])),
                         'tipo_test_dominio'             => trim(strtoupper(strtolower($rowMSSQL['tipo_test_dominio']))), 
-                        'tipo_test_observacion'         => trim(strtoupper(strtolower($rowMSSQL['tipo_test_observacion'])))
+                        'tipo_test_observacion'         => trim(strtoupper(strtolower($rowMSSQL['tipo_test_observacion']))),
+
+                        'competicion_codigo'            =>  $rowMSSQL['notificacion_codigo'],
+                        'competicion_codigo_padre'      =>  $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'            =>  trim($rowMSSQL['competicion_estado']),
+                        'competicion_nombre'            =>  trim($rowMSSQL['competicion_nombre'])
                         
                     );
     
@@ -11615,392 +11640,12 @@
                         'tipo_test_parametro'           =>  '',
                         'tipo_test_path'                =>  '',
                         'tipo_test_dominio'             =>  '', 
-                        'tipo_test_observacion'         =>  ''
-                    );
-    
-                    header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-                }
+                        'tipo_test_observacion'         =>  '',
 
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
-            } catch (PDOException $e) {
-                header("Content-Type: application/json; charset=utf-8");
-                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-            }
-        } else {
-            header("Content-Type: application/json; charset=utf-8");
-            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-        }
-
-        $connMSSQL  = null;
-        
-        return $json;
-    });
-
-    $app->get('/v2/802/notificacioncompeticion/listado', function($request) {   
-        require __DIR__.'/../src/connect.php';
-        
-        $sql00  = "SELECT 
-            a.NOTCOMCOD                     AS      notificacion_competicion_codigo,
-            a.NOTCOMORD                     AS      notificacion_competicion_orden,
-            a.NOTCOMFCA                     AS      notificacion_competicion_fecha_carga,
-            a.NOTCOMOBS                     AS      notificacion_competicion_observacion,
-            
-            a.NOTCOMAUS                     AS      auditoria_usuario,
-            a.NOTCOMAFH                     AS      auditoria_fecha_hora,
-            a.NOTCOMAIP                     AS      auditoria_ip,
-            
-            b.DOMFICCOD                     AS      tipo_estado_codigo,
-            b.DOMFICORD                     AS      tipo_estado_orden,
-            b.DOMFICNOI                     AS      tipo_estado_ingles,
-            b.DOMFICNOC                     AS      tipo_estado_castellano,
-            b.DOMFICNOP                     AS      tipo_estado_portugues,
-            b.DOMFICPAT                     AS      tipo_estado_path,
-            b.DOMFICVAL                     AS      tipo_estado_dominio,
-            b.DOMFICPAR                     AS      tipo_estado_parametro,
-            b.DOMFICOBS                     AS      tipo_estado_observacion,
-            
-            c.NOTFICCOD                     AS      notificacion_codigo,
-            c.NOTFICORD                     AS      notificacion_orden,  	
-            c.NOTFICPAC                     AS      notificacion_parametro,
-            c.NOTFICTIT                     AS      notificacion_titulo,	
-            c.NOTFICDES                     AS      notificacion_descripcion,	
-            c.NOTFICFED                     AS      notificacion_fecha_desde,		
-            c.NOTFICFEH                     AS      notificacion_fecha_hasta,
-            c.NOTFICFCA                     AS      notificacion_fecha_carga,	
-            c.NOTFICOBS                     AS      notificacion_observacion,
-            
-            d.competitionFifaId             AS      competicion_codigo,
-            d.superiorCompetitionFifaId     AS      competicion_codigo_padre,
-            d.status                        AS      competicion_estado,
-            d.internationalName             AS      competicion_nombre
-            
-            FROM [adm].[NOTCOM] a
-            INNER JOIN [adm].[DOMFIC] b ON a.NOTCOMEST  = b.DOMFICCOD
-            INNER JOIN [adm].[NOTFIC] c ON a.NOTCOMNOC  = c.NOTFICCOD
-            INNER JOIN [comet].[competitions] d ON a.NOTCOMCOC = d.competitionFifaId 
-            
-            ORDER BY a.NOTCOMCOD DESC";
-
-            try {
-                $connMSSQL  = getConnectionMSSQLv2();
-                $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute(); 
-
-                while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    if ($rowMSSQL['notificacion_fecha_desde'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_desde'] == null){
-                        $notificacion_fecha_desde_1 = '';
-                        $notificacion_fecha_desde_2 = '';
-                    } else {
-                        $notificacion_fecha_desde_1 = $rowMSSQL['notificacion_fecha_desde'];
-                        $notificacion_fecha_desde_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_desde']));
-                    }
-
-                    if ($rowMSSQL['notificacion_fecha_hasta'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_hasta'] == null){
-                        $notificacion_fecha_hasta_1 = '';
-                        $notificacion_fecha_hasta_2 = '';
-                    } else {
-                        $notificacion_fecha_hasta_1 = $rowMSSQL['notificacion_fecha_hasta'];
-                        $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
-                    }
-
-                    if ($rowMSSQL['notificacion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_carga'] == null){
-                        $notificacion_fecha_carga_1 = '';
-                        $notificacion_fecha_carga_2 = '';
-                    } else {
-                        $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
-                        $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
-                    }
-
-                    if ($rowMSSQL['notificacion_competicion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_competicion_fecha_carga'] == null){
-                        $notificacion_competicion_fecha_carga_1 = '';
-                        $notificacion_competicion_fecha_carga_2 = '';
-                    } else {
-                        $notificacion_competicion_fecha_carga_1 = $rowMSSQL['notificacion_competicion_fecha_carga'];
-                        $notificacion_competicion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_competicion_fecha_carga']));
-                    }
-                    
-                    $detalle    = array(
-
-                        'notificacion_competicion_codigo'           =>  $rowMSSQL['notificacion_competicion_codigo'],
-                        'notificacion_competicion_orden'            =>  $rowMSSQL['notificacion_competicion_orden'],   
-                        'notificacion_competicion_fecha_carga_1'    =>  $notificacion_competicion_fecha_carga_1,	
-                        'notificacion_competicion_fecha_carga_2'    =>  $notificacion_competicion_fecha_carga_2,	
-                        'notificacion_competicion_observacion'      =>  trim($rowMSSQL['notificacion_competicion_observacion']),
-
-                        'auditoria_usuario'                         =>  trim($rowMSSQL['auditoria_usuario']),
-                        'auditoria_fecha_hora'                      =>	$rowMSSQL['auditoria_fecha_hora'],    
-                        'auditoria_ip'                              =>  trim($rowMSSQL['auditoria_ip']),
-
-                        'tipo_estado_codigo'                        => $rowMSSQL['tipo_estado_codigo'],
-                        'tipo_estado_orden'                         => $rowMSSQL['tipo_estado_orden'],
-                        'tipo_estado_ingles'                        => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_ingles']))),
-                        'tipo_estado_castellano'                    => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_castellano']))),
-                        'tipo_estado_portugues'                     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_portugues']))),
-                        'tipo_estado_parametro'                     => $rowMSSQL['tipo_estado_parametro'],
-                        'tipo_estado_path'                          => trim(strtolower($rowMSSQL['tipo_estado_path'])),
-                        'tipo_estado_dominio'                       => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
-                        'tipo_estado_observacion'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
-
-                        'notificacion_codigo'                       =>  $rowMSSQL['notificacion_codigo'],
-                        'notificacion_orden'                        =>  $rowMSSQL['notificacion_orden'],    	
-                        'notificacion_parametro'                    =>  $rowMSSQL['notificacion_parametro'],  
-                        'notificacion_titulo'                       =>  trim($rowMSSQL['notificacion_titulo']),	
-                        'notificacion_descripcion'                  =>  trim($rowMSSQL['notificacion_descripcion']),		
-                        'notificacion_fecha_desde_1'                =>  $notificacion_fecha_desde_1,
-                        'notificacion_fecha_desde_2'                =>  $notificacion_fecha_desde_2,	
-                        'notificacion_fecha_hasta_1'                =>  $notificacion_fecha_hasta_1,
-                        'notificacion_fecha_hasta_2'                =>  $notificacion_fecha_hasta_2,
-                        'notificacion_fecha_carga_1'                =>  $notificacion_fecha_carga_1,
-                        'notificacion_fecha_carga_2'                =>  $notificacion_fecha_carga_2,
-                        'notificacion_observacion'                  =>  trim($rowMSSQL['notificacion_observacion']),
-
-                        'competicion_codigo'                        =>  $rowMSSQL['notificacion_codigo'],
-                        'competicion_codigo_padre'                  =>  $rowMSSQL['competicion_codigo_padre'],
-                        'competicion_estado'                        =>  trim($rowMSSQL['competicion_estado']),
-                        'competicion_nombre'                        =>  trim($rowMSSQL['competicion_nombre'])
-
-                    );
-    
-                    $result[]   = $detalle;
-                }
-    
-                if (isset($result)){
-                    header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-                } else {
-                    $detalle = array(
-                        'notificacion_competicion_codigo'           =>  '',
-                        'notificacion_competicion_orden'            =>  '', 
-                        'notificacion_competicion_fecha_carga_1'    =>  '',
-                        'notificacion_competicion_fecha_carga_2'    =>  '',   	
-                        'notificacion_competicion_observacion'      =>  '',
-
-                        'auditoria_usuario'                         =>  '',
-                        'auditoria_fecha_hora'                      =>	'',    
-                        'auditoria_ip'                              =>  '',
-
-                        'tipo_estado_codigo'                        =>  '',
-                        'tipo_estado_orden'                         =>  '',
-                        'tipo_estado_ingles'                        =>  '',
-                        'tipo_estado_castellano'                    =>  '',
-                        'tipo_estado_portugues'                     =>  '',
-                        'tipo_estado_parametro'                     =>  '',
-                        'tipo_estado_path'                          =>  '',
-                        'tipo_estado_dominio'                       =>  '', 
-                        'tipo_estado_observacion'                   =>  '',
-
-                        'notificacion_codigo'                       =>  '',
-                        'notificacion_orden'                        =>  '',    	
-                        'notificacion_parametro'                    =>  '',  
-                        'notificacion_titulo'                       =>  '',	
-                        'notificacion_descripcion'                  =>  '',		
-                        'notificacion_fecha_desde_1'                =>  '',
-                        'notificacion_fecha_desde_2'                =>  '',	
-                        'notificacion_fecha_hasta_1'                =>  '',
-                        'notificacion_fecha_hasta_2'                =>  '',
-                        'notificacion_observacion'                  =>  '',
-
-                        'competicion_codigo'                        =>  '',
-                        'competicion_codigo_padre'                  =>  '',
-                        'competicion_estado'                        =>  '',
-                        'competicion_nombre'                        =>  ''
-
-                    );
-    
-                    header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-                }
-
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
-            } catch (PDOException $e) {
-                header("Content-Type: application/json; charset=utf-8");
-                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-            }
-
-        $connMSSQL  = null;
-        
-        return $json;
-    });
-
-    $app->get('/v2/802/notificacioncompeticion/codigo/{codigo}', function($request) {
-        require __DIR__.'/../src/connect.php';
-
-		$val01      = $request->getAttribute('codigo');
-        
-        if (isset($val01)) {
-            $sql00  = "SELECT 
-                a.NOTCOMCOD                     AS      notificacion_competicion_codigo,
-                a.NOTCOMORD                     AS      notificacion_competicion_orden,
-                a.NOTCOMFCA                     AS      notificacion_competicion_fecha_carga,
-                a.NOTCOMOBS                     AS      notificacion_competicion_observacion,
-                
-                a.NOTCOMAUS                     AS      auditoria_usuario,
-                a.NOTCOMAFH                     AS      auditoria_fecha_hora,
-                a.NOTCOMAIP                     AS      auditoria_ip,
-                
-                b.DOMFICCOD                     AS      tipo_estado_codigo,
-                b.DOMFICORD                     AS      tipo_estado_orden,
-                b.DOMFICNOI                     AS      tipo_estado_ingles,
-                b.DOMFICNOC                     AS      tipo_estado_castellano,
-                b.DOMFICNOP                     AS      tipo_estado_portugues,
-                b.DOMFICPAT                     AS      tipo_estado_path,
-                b.DOMFICVAL                     AS      tipo_estado_dominio,
-                b.DOMFICPAR                     AS      tipo_estado_parametro,
-                b.DOMFICOBS                     AS      tipo_estado_observacion,
-                
-                c.NOTFICCOD                     AS      notificacion_codigo,
-                c.NOTFICORD                     AS      notificacion_orden,  	
-                c.NOTFICPAC                     AS      notificacion_parametro,
-                c.NOTFICTIT                     AS      notificacion_titulo,	
-                c.NOTFICDES                     AS      notificacion_descripcion,	
-                c.NOTFICFED                     AS      notificacion_fecha_desde,	
-                c.NOTFICFEH                     AS      notificacion_fecha_hasta,
-                c.NOTFICFCA                     AS      notificacion_fecha_carga,	
-                c.NOTFICOBS                     AS      notificacion_observacion,
-                
-                d.competitionFifaId             AS      competicion_codigo,
-                d.superiorCompetitionFifaId     AS      competicion_codigo_padre,
-                d.status                        AS      competicion_estado,
-                d.internationalName             AS      competicion_nombre
-                
-                FROM [adm].[NOTCOM] a
-                INNER JOIN [adm].[DOMFIC] b ON a.NOTCOMEST  = b.DOMFICCOD
-                INNER JOIN [adm].[NOTFIC] c ON a.NOTCOMNOC  = c.NOTFICCOD
-                INNER JOIN [comet].[competitions] d ON a.NOTCOMCOC = d.competitionFifaId 
-
-                WHERE NOTCOMCOD = ?
-                
-                ORDER BY a.NOTCOMCOD DESC";
-
-            try {
-                $connMSSQL  = getConnectionMSSQLv2();
-                $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01]); 
-
-                while ($rowMSSQL = $stmtMSSQL->fetch()) {
-
-                    if ($rowMSSQL['notificacion_fecha_desde'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_desde'] == null){
-                        $notificacion_fecha_desde_1 = '';
-                        $notificacion_fecha_desde_2 = '';
-                    } else {
-                        $notificacion_fecha_desde_1 = $rowMSSQL['notificacion_fecha_desde'];
-                        $notificacion_fecha_desde_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_desde']));
-                    }
-
-                    if ($rowMSSQL['notificacion_fecha_hasta'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_hasta'] == null){
-                        $notificacion_fecha_hasta_1 = '';
-                        $notificacion_fecha_hasta_2 = '';
-                    } else {
-                        $notificacion_fecha_hasta_1 = $rowMSSQL['notificacion_fecha_hasta'];
-                        $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
-                    }
-    
-                    if ($rowMSSQL['notificacion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_carga'] == null){
-                        $notificacion_fecha_carga_1 = '';
-                        $notificacion_fecha_carga_2 = '';
-                    } else {
-                        $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
-                        $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
-                    }
-
-                    if ($rowMSSQL['notificacion_competicion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_competicion_fecha_carga'] == null){
-                        $notificacion_competicion_fecha_carga_1 = '';
-                        $notificacion_competicion_fecha_carga_2 = '';
-                    } else {
-                        $notificacion_competicion_fecha_carga_1 = $rowMSSQL['notificacion_competicion_fecha_carga'];
-                        $notificacion_competicion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_competicion_fecha_carga']));
-                    }
-                    
-                    $detalle    = array(
-
-                        'notificacion_competicion_codigo'           =>  $rowMSSQL['notificacion_competicion_codigo'],
-                        'notificacion_competicion_orden'            =>  $rowMSSQL['notificacion_competicion_orden'], 
-                        'notificacion_competicion_fecha_carga_1'    =>  $notificacion_competicion_fecha_carga_1,
-                        'notificacion_competicion_fecha_carga_2'    =>  $notificacion_competicion_fecha_carga_2,   	
-                        'notificacion_competicion_observacion'      =>  trim($rowMSSQL['notificacion_competicion_observacion']),
-
-                        'auditoria_usuario'                         =>  trim($rowMSSQL['auditoria_usuario']),
-                        'auditoria_fecha_hora'                      =>	$rowMSSQL['auditoria_fecha_hora'],    
-                        'auditoria_ip'                              =>  trim($rowMSSQL['auditoria_ip']),
-
-                        'tipo_estado_codigo'                        => $rowMSSQL['tipo_estado_codigo'],
-                        'tipo_estado_orden'                         => $rowMSSQL['tipo_estado_orden'],
-                        'tipo_estado_ingles'                        => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_ingles']))),
-                        'tipo_estado_castellano'                    => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_castellano']))),
-                        'tipo_estado_portugues'                     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_portugues']))),
-                        'tipo_estado_parametro'                     => $rowMSSQL['tipo_estado_parametro'],
-                        'tipo_estado_path'                          => trim(strtolower($rowMSSQL['tipo_estado_path'])),
-                        'tipo_estado_dominio'                       => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
-                        'tipo_estado_observacion'                   => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
-
-                        'notificacion_codigo'                       =>  $rowMSSQL['notificacion_codigo'],
-                        'notificacion_orden'                        =>  $rowMSSQL['notificacion_orden'],    	
-                        'notificacion_parametro'                    =>  $rowMSSQL['notificacion_parametro'],  
-                        'notificacion_titulo'                       =>  trim($rowMSSQL['notificacion_titulo']),	
-                        'notificacion_descripcion'                  =>  trim($rowMSSQL['notificacion_descripcion']),		
-                        'notificacion_fecha_desde_1'                =>  $notificacion_fecha_desde_1,
-                        'notificacion_fecha_desde_2'                =>  $notificacion_fecha_desde_2,	
-                        'notificacion_fecha_hasta_1'                =>  $notificacion_fecha_hasta_1,
-                        'notificacion_fecha_hasta_2'                =>  $notificacion_fecha_hasta_2,
-                        'notificacion_fecha_carga_1'                =>  $notificacion_fecha_carga_1,
-                        'notificacion_fecha_carga_2'                =>  $notificacion_fecha_carga_2,
-                        'notificacion_observacion'                  =>  trim($rowMSSQL['notificacion_observacion']),
-
-                        'competicion_codigo'                        =>  $rowMSSQL['notificacion_codigo'],
-                        'competicion_codigo_padre'                  =>  $rowMSSQL['competicion_codigo_padre'],
-                        'competicion_estado'                        =>  trim($rowMSSQL['competicion_estado']),
-                        'competicion_nombre'                        =>  trim($rowMSSQL['competicion_nombre'])
-                        
-                    );
-    
-                    $result[]   = $detalle;
-                }
-    
-                if (isset($result)){
-                    header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-                } else {
-                    $detalle = array(
-                        'notificacion_competicion_codigo'           =>  '',
-                        'notificacion_competicion_orden'            =>  '', 
-                        'notificacion_competicion_fecha_carga_1'    =>  '',
-                        'notificacion_competicion_fecha_carga_2'    =>  '',   	
-                        'notificacion_competicion_observacion'      =>  '',
-
-                        'auditoria_usuario'                         =>  '',
-                        'auditoria_fecha_hora'                      =>	'',    
-                        'auditoria_ip'                              =>  '',
-
-                        'tipo_estado_codigo'                        =>  '',
-                        'tipo_estado_orden'                         =>  '',
-                        'tipo_estado_ingles'                        =>  '',
-                        'tipo_estado_castellano'                    =>  '',
-                        'tipo_estado_portugues'                     =>  '',
-                        'tipo_estado_parametro'                     =>  '',
-                        'tipo_estado_path'                          =>  '',
-                        'tipo_estado_dominio'                       =>  '', 
-                        'tipo_estado_observacion'                   =>  '',
-
-                        'notificacion_codigo'                       =>  '',
-                        'notificacion_orden'                        =>  '',    	
-                        'notificacion_parametro'                    =>  '',  
-                        'notificacion_titulo'                       =>  '',	
-                        'notificacion_descripcion'                  =>  '',		
-                        'notificacion_fecha_desde_1'                =>  '',
-                        'notificacion_fecha_desde_2'                =>  '',	
-                        'notificacion_fecha_hasta_1'                =>  '',
-                        'notificacion_fecha_hasta_2'                =>  '',
-                        'notificacion_fecha_carga_1'                =>  'S',
-                        'notificacion_fecha_carga_2'                =>  'S',
-                        'notificacion_observacion'                  =>  '',
-
-                        'competicion_codigo'                        =>  '',
-                        'competicion_codigo_padre'                  =>  '',
-                        'competicion_estado'                        =>  '',
-                        'competicion_nombre'                        =>  ''
+                        'competicion_codigo'            =>  '',
+                        'competicion_codigo_padre'      =>  '',
+                        'competicion_estado'            =>  '',
+                        'competicion_nombre'            =>  ''
                     );
     
                     header("Content-Type: application/json; charset=utf-8");
@@ -12046,9 +11691,15 @@
             b.DOMFICPAR             AS      tipo_estado_parametro,
             b.DOMFICOBS             AS      tipo_estado_observacion,
             
-            c.NOTCOMCOD             AS      notificacion_competicion_codigo,
-            c.NOTCOMORD             AS      notificacion_competicion_orden,
-            c.NOTCOMOBS             AS      notificacion_competicion_observacion,
+            c.NOTFICCOD             AS      notificacion_codigo,
+            c.NOTFICORD             AS      notificacion_orden,  	
+            c.NOTFICPAC             AS      notificacion_parametro,
+            c.NOTFICTIT             AS      notificacion_titulo,	
+            c.NOTFICDES             AS      notificacion_descripcion,	
+            c.NOTFICFED             AS      notificacion_fecha_desde,	
+            c.NOTFICFEH             AS      notificacion_fecha_hasta,	
+            c.NOTFICFCA             AS      notificacion_fecha_carga,
+            c.NOTFICOBS             AS      notificacion_observacion,
             
             d.teamFifaId            AS      equipo_codigo,
             d.status                AS      equipo_estado,
@@ -12056,7 +11707,7 @@
             
             FROM [adm].[NOTEQU] a
             INNER JOIN [adm].[DOMFIC]  b   ON a.NOTEQUEST  = b.DOMFICCOD
-            INNER JOIN [adm].[NOTCOM]  c   ON a.NOTEQUNCM  = c.NOTCOMCOD
+            INNER JOIN [adm].[NOTFIC]  c   ON a.NOTEQUNOC  = c.NOTFICCOD
             INNER JOIN [comet].[teams] d   ON a.NOTEQUEQC  = d.teamFifaId 
             
             ORDER BY a.NOTEQUCOD DESC";
@@ -12074,6 +11725,30 @@
                     } else {
                         $notificacion_equipo_fecha_carga_1 = $rowMSSQL['notificacion_equipo_fecha_carga'];
                         $notificacion_equipo_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_equipo_fecha_carga']));
+                    }
+
+                    if ($rowMSSQL['notificacion_fecha_desde'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_desde'] == null){
+                        $notificacion_fecha_desde_1 = '';
+                        $notificacion_fecha_desde_2 = '';
+                    } else {
+                        $notificacion_fecha_desde_1 = $rowMSSQL['notificacion_fecha_desde'];
+                        $notificacion_fecha_desde_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_desde']));
+                    }
+
+                    if ($rowMSSQL['notificacion_fecha_hasta'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_hasta'] == null){
+                        $notificacion_fecha_hasta_1 = '';
+                        $notificacion_fecha_hasta_2 = '';
+                    } else {
+                        $notificacion_fecha_hasta_1 = $rowMSSQL['notificacion_fecha_hasta'];
+                        $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
+                    }
+
+                    if ($rowMSSQL['notificacion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_carga'] == null){
+                        $notificacion_fecha_carga_1 = '';
+                        $notificacion_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
+                        $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
                     }
 
                     $detalle    = array(
@@ -12098,14 +11773,22 @@
                         'tipo_estado_dominio'                   =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
                         'tipo_estado_observacion'               =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
 
-                        'notificacion_competicion_codigo'       =>  $rowMSSQL['notificacion_competicion_codigo'],
-                        'notificacion_competicion_orden'        =>  $rowMSSQL['notificacion_competicion_orden'],
-                        'notificacion_competicion_observacion'  =>  trim($rowMSSQL['notificacion_competicion_observacion']),
+                        'notificacion_codigo'                   =>  $rowMSSQL['notificacion_codigo'],
+                        'notificacion_orden'                    =>  $rowMSSQL['notificacion_orden'],    	
+                        'notificacion_parametro'                =>  $rowMSSQL['notificacion_parametro'],  
+                        'notificacion_titulo'                   =>  trim($rowMSSQL['notificacion_titulo']),	
+                        'notificacion_descripcion'              =>  trim($rowMSSQL['notificacion_descripcion']),		
+                        'notificacion_fecha_desde_1'            =>  $notificacion_fecha_desde_1,
+                        'notificacion_fecha_desde_2'            =>  $notificacion_fecha_desde_2,	
+                        'notificacion_fecha_hasta_1'            =>  $notificacion_fecha_hasta_1,
+                        'notificacion_fecha_hasta_2'            =>  $notificacion_fecha_hasta_2,
+                        'notificacion_fecha_carga_1'            =>  $notificacion_fecha_carga_1,
+                        'notificacion_fecha_carga_2'            =>  $notificacion_fecha_carga_2,
+                        'notificacion_observacion'              =>  trim($rowMSSQL['notificacion_observacion']),
 
                         'equipo_codigo'                         =>  $rowMSSQL['equipo_codigo'],
                         'equipo_estado'                         =>  $rowMSSQL['equipo_estado'],
                         'equipo_nombre'                         =>  trim($rowMSSQL['equipo_nombre'])
-
                     );
     
                     $result[]   = $detalle;
@@ -12136,9 +11819,18 @@
                         'tipo_estado_dominio'                   =>  '', 
                         'tipo_estado_observacion'               =>  '',
 
-                        'notificacion_competicion_codigo'       =>  '',
-                        'notificacion_competicion_orden'        =>  '',
-                        'notificacion_competicion_observacion'  =>  '',
+                        'notificacion_codigo'                   =>  '',
+                        'notificacion_orden'                    =>  '',   	
+                        'notificacion_parametro'                =>  '',  
+                        'notificacion_titulo'                   =>  '',	
+                        'notificacion_descripcion'              =>  '',		
+                        'notificacion_fecha_desde_1'            =>  '',
+                        'notificacion_fecha_desde_2'            =>  '',	
+                        'notificacion_fecha_hasta_1'            =>  '',
+                        'notificacion_fecha_hasta_2'            =>  '',
+                        'notificacion_fecha_carga_1'            =>  '',
+                        'notificacion_fecha_carga_2'            =>  '',
+                        'notificacion_observacion'              =>  '',
 
                         'equipo_codigo'                         =>  '',
                         'equipo_estado'                         =>  '',
@@ -12187,18 +11879,24 @@
                 b.DOMFICPAR             AS      tipo_estado_parametro,
                 b.DOMFICOBS             AS      tipo_estado_observacion,
                 
-                c.NOTCOMCOD             AS      notificacion_competicion_codigo,
-                c.NOTCOMORD             AS      notificacion_competicion_orden,
-                c.NOTCOMOBS             AS      notificacion_competicion_observacion,
-                
+                c.NOTFICCOD             AS      notificacion_codigo,
+                c.NOTFICORD             AS      notificacion_orden,  	
+                c.NOTFICPAC             AS      notificacion_parametro,
+                c.NOTFICTIT             AS      notificacion_titulo,	
+                c.NOTFICDES             AS      notificacion_descripcion,	
+                c.NOTFICFED             AS      notificacion_fecha_desde,	
+                c.NOTFICFEH             AS      notificacion_fecha_hasta,	
+                c.NOTFICFCA             AS      notificacion_fecha_carga,
+                c.NOTFICOBS             AS      notificacion_observacion,
+            
                 d.teamFifaId            AS      equipo_codigo,
                 d.status                AS      equipo_estado,
                 d.internationalName     AS      equipo_nombre
-                
+            
                 FROM [adm].[NOTEQU] a
                 INNER JOIN [adm].[DOMFIC]  b   ON a.NOTEQUEST  = b.DOMFICCOD
-                INNER JOIN [adm].[NOTCOM]  c   ON a.NOTEQUNCM  = c.NOTCOMCOD
-                INNER JOIN [comet].[teams] d   ON a.NOTEQUEQC  = d.teamFifaId 
+                INNER JOIN [adm].[NOTFIC]  c   ON a.NOTEQUNOC  = c.NOTFICCOD
+                INNER JOIN [comet].[teams] d   ON a.NOTEQUEQC  = d.teamFifaId  
 
                 WHERE a.NOTEQUCOD = ?
                 
@@ -12210,7 +11908,7 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-
+    
                     if ($rowMSSQL['notificacion_equipo_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_equipo_fecha_carga'] == null){
                         $notificacion_equipo_fecha_carga_1 = '';
                         $notificacion_equipo_fecha_carga_2 = '';
@@ -12218,44 +11916,69 @@
                         $notificacion_equipo_fecha_carga_1 = $rowMSSQL['notificacion_equipo_fecha_carga'];
                         $notificacion_equipo_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_equipo_fecha_carga']));
                     }
-    
+
+                    if ($rowMSSQL['notificacion_fecha_desde'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_desde'] == null){
+                        $notificacion_fecha_desde_1 = '';
+                        $notificacion_fecha_desde_2 = '';
+                    } else {
+                        $notificacion_fecha_desde_1 = $rowMSSQL['notificacion_fecha_desde'];
+                        $notificacion_fecha_desde_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_desde']));
+                    }
+
+                    if ($rowMSSQL['notificacion_fecha_hasta'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_hasta'] == null){
+                        $notificacion_fecha_hasta_1 = '';
+                        $notificacion_fecha_hasta_2 = '';
+                    } else {
+                        $notificacion_fecha_hasta_1 = $rowMSSQL['notificacion_fecha_hasta'];
+                        $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
+                    }
+
+                    if ($rowMSSQL['notificacion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_fecha_carga'] == null){
+                        $notificacion_fecha_carga_1 = '';
+                        $notificacion_fecha_carga_2 = '';
+                    } else {
+                        $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
+                        $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
+                    }
+
                     $detalle    = array(
 
-                        'notificacion_equipo_codigo'        =>  $rowMSSQL['notificacion_equipo_codigo'],
-                        'notificacion_equipo_orden'         =>  $rowMSSQL['notificacion_equipo_orden'],   
-                        'notificacion_equipo_fecha_carga_1' =>  $notificacion_equipo_fecha_carga_1,
-                        'notificacion_equipo_fecha_carga_2' =>  $notificacion_equipo_fecha_carga_2,   	
-                        'notificacion_equipo_observacion'   =>  trim($rowMSSQL['notificacion_equipo_observacion']),
+                        'notificacion_equipo_codigo'            =>  $rowMSSQL['notificacion_equipo_codigo'],
+                        'notificacion_equipo_orden'             =>  $rowMSSQL['notificacion_equipo_orden'],
+                        'notificacion_equipo_fecha_carga_1'     =>  $notificacion_equipo_fecha_carga_1,
+                        'notificacion_equipo_fecha_carga_2'     =>  $notificacion_equipo_fecha_carga_2,   	
+                        'notificacion_equipo_observacion'       =>  trim($rowMSSQL['notificacion_equipo_observacion']),
 
-                        'auditoria_usuario'                 =>  trim($rowMSSQL['auditoria_usuario']),
-                        'auditoria_fecha_hora'              =>	$rowMSSQL['auditoria_fecha_hora'],    
-                        'auditoria_ip'                      =>  trim($rowMSSQL['auditoria_ip']),
+                        'auditoria_usuario'                     =>  trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                  =>	$rowMSSQL['auditoria_fecha_hora'],    
+                        'auditoria_ip'                          =>  trim($rowMSSQL['auditoria_ip']),
 
-                        'tipo_estado_codigo'                =>  $rowMSSQL['tipo_estado_codigo'],
-                        'tipo_estado_orden'                 =>  $rowMSSQL['tipo_estado_orden'],
-                        'tipo_estado_ingles'                =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_ingles']))),
-                        'tipo_estado_castellano'            =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_castellano']))),
-                        'tipo_estado_portugues'             =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_portugues']))),
-                        'tipo_estado_parametro'             =>  $rowMSSQL['tipo_estado_parametro'],
-                        'tipo_estado_path'                  =>  trim(strtolower($rowMSSQL['tipo_estado_path'])),
-                        'tipo_estado_dominio'               =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
-                        'tipo_estado_observacion'           =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+                        'tipo_estado_codigo'                    =>  $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_orden'                     =>  $rowMSSQL['tipo_estado_orden'],
+                        'tipo_estado_ingles'                    =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_ingles']))),
+                        'tipo_estado_castellano'                =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_castellano']))),
+                        'tipo_estado_portugues'                 =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_portugues']))),
+                        'tipo_estado_parametro'                 =>  $rowMSSQL['tipo_estado_parametro'],
+                        'tipo_estado_path'                      =>  trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'                   =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
+                        'tipo_estado_observacion'               =>  trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
 
-                        'notificacion_codigo'               =>  $rowMSSQL['notificacion_codigo'],
-                        'notificacion_orden'                =>  $rowMSSQL['notificacion_orden'],    	
-                        'notificacion_parametro'            =>  $rowMSSQL['notificacion_parametro'],  
-                        'notificacion_titulo'               =>  trim($rowMSSQL['notificacion_titulo']),	
-                        'notificacion_descripcion'          =>  trim($rowMSSQL['notificacion_descripcion']),		
-                        'notificacion_fecha_desde_1'        =>  $notificacion_fecha_desde_1,
-                        'notificacion_fecha_desde_2'        =>  $notificacion_fecha_desde_2,	
-                        'notificacion_fecha_hasta_1'        =>  $notificacion_fecha_hasta_1,
-                        'notificacion_fecha_hasta_2'        =>  $notificacion_fecha_hasta_2,
-                        'notificacion_observacion'          =>  trim($rowMSSQL['notificacion_observacion']),
+                        'notificacion_codigo'                   =>  $rowMSSQL['notificacion_codigo'],
+                        'notificacion_orden'                    =>  $rowMSSQL['notificacion_orden'],    	
+                        'notificacion_parametro'                =>  $rowMSSQL['notificacion_parametro'],  
+                        'notificacion_titulo'                   =>  trim($rowMSSQL['notificacion_titulo']),	
+                        'notificacion_descripcion'              =>  trim($rowMSSQL['notificacion_descripcion']),		
+                        'notificacion_fecha_desde_1'            =>  $notificacion_fecha_desde_1,
+                        'notificacion_fecha_desde_2'            =>  $notificacion_fecha_desde_2,	
+                        'notificacion_fecha_hasta_1'            =>  $notificacion_fecha_hasta_1,
+                        'notificacion_fecha_hasta_2'            =>  $notificacion_fecha_hasta_2,
+                        'notificacion_fecha_carga_1'            =>  $notificacion_fecha_carga_1,
+                        'notificacion_fecha_carga_2'            =>  $notificacion_fecha_carga_2,
+                        'notificacion_observacion'              =>  trim($rowMSSQL['notificacion_observacion']),
 
-                        'equipo_codigo'                     =>  $rowMSSQL['equipo_codigo'],
-                        'equipo_estado'                     =>  $rowMSSQL['equipo_estado'],
-                        'equipo_nombre'                     =>  trim($rowMSSQL['equipo_nombre'])
-
+                        'equipo_codigo'                         =>  $rowMSSQL['equipo_codigo'],
+                        'equipo_estado'                         =>  $rowMSSQL['equipo_estado'],
+                        'equipo_nombre'                         =>  trim($rowMSSQL['equipo_nombre'])
                     );
     
                     $result[]   = $detalle;
@@ -12329,7 +12052,9 @@
         $sql00  = "SELECT 
             a.NOTMENCOD             AS      notificacion_mensaje_codigo,	
             a.NOTMENORD             AS      notificacion_mensaje_orden,
-            a.NOTMENFEP             AS      notificacion_mensaje_fecha_proceso,	
+            a.NOTMENFEP             AS      notificacion_mensaje_fecha_proceso,
+            a.NOTMENENC             AS      notificacion_mensaje_encuentro,
+            a.NOTMENMEN             AS      notificacion_mensaje_descripcion,
             a.NOTMENOBS             AS      notificacion_mensaje_observacion,
                 
             a.NOTMENAUS             AS      auditoria_usuario,
@@ -12355,31 +12080,25 @@
             c.NOTFICFEH             AS      notificacion_fecha_hasta,
             c.NOTFICFCA             AS      notificacion_fecha_carga,	
             c.NOTFICOBS             AS      notificacion_observacion,
-            
-            d.NOTCOMCOD             AS      notificacion_competicion_codigo,
-            d.NOTCOMORD             AS      notificacion_competicion_orden,
-            d.NOTCOMFCA             AS      notificacion_competicion_fecha_carga,
-            d.NOTCOMOBS             AS      notificacion_competicion_observacion,
 
-            e.NOTEQUCOD             AS      notificacion_equipo_codigo,	
-            e.NOTEQUORD             AS      notificacion_equipo_orden,
-            e.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
-            e.NOTEQUOBS             AS      notificacion_equipo_observacion,
+            d.NOTEQUCOD             AS      notificacion_equipo_codigo,	
+            d.NOTEQUORD             AS      notificacion_equipo_orden,
+            d.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
+            d.NOTEQUOBS             AS      notificacion_equipo_observacion,
             
-            f.PERFICCOD             AS      persona_codigo,
-            f.PERFICNOM             AS      persona_nombre,
-            f.PERFICUSE             AS      persona_user,
-            f.PERFICPAT             AS      persona_path,
-            f.PERFICMAI             AS      persona_email,
-            f.PERFICTEF             AS      persona_telefono
+            e.PERFICCOD             AS      persona_codigo,
+            e.PERFICNOM             AS      persona_nombre,
+            e.PERFICUSE             AS      persona_user,
+            e.PERFICPAT             AS      persona_path,
+            e.PERFICMAI             AS      persona_email,
+            e.PERFICTEF             AS      persona_telefono
 
 
             FROM [adm].[NOTMEN] a
             INNER JOIN [adm].[DOMFIC] b ON a.NOTMENEST  = b.DOMFICCOD
             INNER JOIN [adm].[NOTFIC] c ON a.NOTMENNOC  = c.NOTFICCOD
-            INNER JOIN [adm].[NOTCOM] d ON a.NOTMENNCC  = d.NOTCOMCOD
-            INNER JOIN [adm].[NOTEQU] e ON a.NOTMENNEC  = e.NOTEQUCOD
-            INNER JOIN [adm].[PERFIC] f ON a.NOTMENMEC  = f.PERFICCOD
+            INNER JOIN [adm].[NOTEQU] d ON a.NOTMENNEC  = d.NOTEQUCOD
+            INNER JOIN [adm].[PERFIC] e ON a.NOTMENMEC  = e.PERFICCOD
 
             ORDER BY a.NOTMENCOD DESC";
 
@@ -12414,13 +12133,6 @@
                         $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
                     }
 
-                    if ($rowMSSQL['notificacion_competicion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_competicion_fecha_carga'] == null){
-                        $notificacion_competicion_fecha_carga_1 = '';
-                        $notificacion_competicion_fecha_carga_2 = '';
-                    } else {
-                        $notificacion_competicion_fecha_carga_1 = $rowMSSQL['notificacion_competicion_fecha_carga'];
-                        $notificacion_competicion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_competicion_fecha_carga']));
-                    }
                     
                     if ($rowMSSQL['notificacion_equipo_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_equipo_fecha_carga'] == null){
                         $notificacion_equipo_fecha_carga_1 = '';
@@ -12442,6 +12154,8 @@
                         'notificacion_mensaje_orden'                =>  $rowMSSQL['notificacion_mensaje_orden'],
                         'notificacion_mensaje_fecha_proceso_1'      =>  $notificacion_mensaje_fecha_proceso_1,
                         'notificacion_mensaje_fecha_proceso_2'      =>  $notificacion_mensaje_fecha_proceso_2,
+                        'notificacion_mensaje_encuentro'            =>  $rowMSSQL['notificacion_mensaje_encuentro'],
+                        'notificacion_mensaje_descripcion'          =>  trim($rowMSSQL['notificacion_mensaje_descripcion']),
                         'notificacion_mensaje_observacion'          =>  trim($rowMSSQL['notificacion_mensaje_observacion']),
 
                         'auditoria_usuario'                         =>  trim($rowMSSQL['auditoria_usuario']),
@@ -12471,12 +12185,6 @@
                         'notificacion_fecha_carga_2'                =>  $notificacion_fecha_carga_2,
                         'notificacion_observacion'                  =>  trim($rowMSSQL['notificacion_observacion']),
 
-                        'notificacion_competicion_codigo'           =>  $rowMSSQL['notificacion_competicion_codigo'],
-                        'notificacion_competicion_orden'            =>  $rowMSSQL['notificacion_competicion_orden'], 
-                        'notificacion_competicion_fecha_carga_1'    =>  $notificacion_competicion_fecha_carga_1,
-                        'notificacion_competicion_fecha_carga_2'    =>  $notificacion_competicion_fecha_carga_2,   	
-                        'notificacion_competicion_observacion'      =>  trim($rowMSSQL['notificacion_competicion_observacion']),
-
                         'notificacion_equipo_codigo'                =>  $rowMSSQL['notificacion_equipo_codigo'],
                         'notificacion_equipo_orden'                 =>  $rowMSSQL['notificacion_equipo_orden'],
                         'notificacion_equipo_fecha_carga_1'         =>  $notificacion_equipo_fecha_carga_1,
@@ -12491,7 +12199,6 @@
                         'persona_email'                             => trim($rowMSSQL['persona_email']),
                         'persona_telefono'                          => trim($rowMSSQL['persona_telefono']),
                         'persona_observacion'                       => trim($rowMSSQL['persona_observacion'])
-
                     );
     
                     $result[]   = $detalle;
@@ -12506,6 +12213,8 @@
                         'notificacion_mensaje_orden'                =>  '',
                         'notificacion_mensaje_fecha_proceso_1'      =>  '',
                         'notificacion_mensaje_fecha_proceso_2'      =>  '',
+                        'notificacion_mensaje_encuentro'            =>  '',
+                        'notificacion_mensaje_descripcion'          =>  '',
                         'notificacion_mensaje_observacion'          =>  '',
 
                         'auditoria_usuario'                         =>  '',
@@ -12534,12 +12243,6 @@
                         'notificacion_fecha_carga_1'                =>  '',
                         'notificacion_fecha_carga_2'                =>  '',
                         'notificacion_observacion'                  =>  '',
-
-                        'notificacion_competicion_codigo'           =>  '',
-                        'notificacion_competicion_orden'            =>  '', 
-                        'notificacion_competicion_fecha_carga_1'    =>  '',
-                        'notificacion_competicion_fecha_carga_2'    =>  '',   	
-                        'notificacion_competicion_observacion'      =>  '',
 
                         'notificacion_equipo_codigo'                =>  '',
                         'notificacion_equipo_orden'                 =>  '',
@@ -12583,7 +12286,9 @@
             $sql00  = "SELECT 
             a.NOTMENCOD             AS      notificacion_mensaje_codigo,	
             a.NOTMENORD             AS      notificacion_mensaje_orden,
-            a.NOTMENFEP             AS      notificacion_mensaje_fecha_proceso,	
+            a.NOTMENFEP             AS      notificacion_mensaje_fecha_proceso,
+            a.NOTMENENC             AS      notificacion_mensaje_encuentro,
+            a.NOTMENMEN             AS      notificacion_mensaje_descripcion,
             a.NOTMENOBS             AS      notificacion_mensaje_observacion,
                 
             a.NOTMENAUS             AS      auditoria_usuario,
@@ -12609,31 +12314,25 @@
             c.NOTFICFEH             AS      notificacion_fecha_hasta,
             c.NOTFICFCA             AS      notificacion_fecha_carga,	
             c.NOTFICOBS             AS      notificacion_observacion,
-            
-            d.NOTCOMCOD             AS      notificacion_competicion_codigo,
-            d.NOTCOMORD             AS      notificacion_competicion_orden,
-            d.NOTCOMFCA             AS      notificacion_competicion_fecha_carga,
-            d.NOTCOMOBS             AS      notificacion_competicion_observacion,
 
-            e.NOTEQUCOD             AS      notificacion_equipo_codigo,	
-            e.NOTEQUORD             AS      notificacion_equipo_orden,
-            e.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
-            e.NOTEQUOBS             AS      notificacion_equipo_observacion,
+            d.NOTEQUCOD             AS      notificacion_equipo_codigo,	
+            d.NOTEQUORD             AS      notificacion_equipo_orden,
+            d.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
+            d.NOTEQUOBS             AS      notificacion_equipo_observacion,
             
-            f.PERFICCOD             AS      persona_codigo,
-            f.PERFICNOM             AS      persona_nombre,
-            f.PERFICUSE             AS      persona_user,
-            f.PERFICPAT             AS      persona_path,
-            f.PERFICMAI             AS      persona_email,
-            f.PERFICTEF             AS      persona_telefono
+            e.PERFICCOD             AS      persona_codigo,
+            e.PERFICNOM             AS      persona_nombre,
+            e.PERFICUSE             AS      persona_user,
+            e.PERFICPAT             AS      persona_path,
+            e.PERFICMAI             AS      persona_email,
+            e.PERFICTEF             AS      persona_telefono
 
 
             FROM [adm].[NOTMEN] a
             INNER JOIN [adm].[DOMFIC] b ON a.NOTMENEST  = b.DOMFICCOD
             INNER JOIN [adm].[NOTFIC] c ON a.NOTMENNOC  = c.NOTFICCOD
-            INNER JOIN [adm].[NOTCOM] d ON a.NOTMENNCC  = d.NOTCOMCOD
-            INNER JOIN [adm].[NOTEQU] e ON a.NOTMENNEC  = e.NOTEQUCOD
-            INNER JOIN [adm].[PERFIC] f ON a.NOTMENMEC  = f.PERFICCOD
+            INNER JOIN [adm].[NOTEQU] d ON a.NOTMENNEC  = d.NOTEQUCOD
+            INNER JOIN [adm].[PERFIC] e ON a.NOTMENMEC  = e.PERFICCOD
 
             WHERE a.NOTMENMEC = ?
 
@@ -12645,7 +12344,7 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-
+    
                     if ($rowMSSQL['notificacion_mensaje_fecha_proceso'] == '1900-01-01' || $rowMSSQL['notificacion_mensaje_fecha_proceso'] == null){
                         $notificacion_mensaje_fecha_proceso_1 = '';
                         $notificacion_mensaje_fecha_proceso_2 = '';
@@ -12670,13 +12369,6 @@
                         $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
                     }
 
-                    if ($rowMSSQL['notificacion_competicion_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_competicion_fecha_carga'] == null){
-                        $notificacion_competicion_fecha_carga_1 = '';
-                        $notificacion_competicion_fecha_carga_2 = '';
-                    } else {
-                        $notificacion_competicion_fecha_carga_1 = $rowMSSQL['notificacion_competicion_fecha_carga'];
-                        $notificacion_competicion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_competicion_fecha_carga']));
-                    }
                     
                     if ($rowMSSQL['notificacion_equipo_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_equipo_fecha_carga'] == null){
                         $notificacion_equipo_fecha_carga_1 = '';
@@ -12698,6 +12390,8 @@
                         'notificacion_mensaje_orden'                =>  $rowMSSQL['notificacion_mensaje_orden'],
                         'notificacion_mensaje_fecha_proceso_1'      =>  $notificacion_mensaje_fecha_proceso_1,
                         'notificacion_mensaje_fecha_proceso_2'      =>  $notificacion_mensaje_fecha_proceso_2,
+                        'notificacion_mensaje_encuentro'            =>  $rowMSSQL['notificacion_mensaje_encuentro'],
+                        'notificacion_mensaje_descripcion'          =>  trim($rowMSSQL['notificacion_mensaje_descripcion']),
                         'notificacion_mensaje_observacion'          =>  trim($rowMSSQL['notificacion_mensaje_observacion']),
 
                         'auditoria_usuario'                         =>  trim($rowMSSQL['auditoria_usuario']),
@@ -12727,12 +12421,6 @@
                         'notificacion_fecha_carga_2'                =>  $notificacion_fecha_carga_2,
                         'notificacion_observacion'                  =>  trim($rowMSSQL['notificacion_observacion']),
 
-                        'notificacion_competicion_codigo'           =>  $rowMSSQL['notificacion_competicion_codigo'],
-                        'notificacion_competicion_orden'            =>  $rowMSSQL['notificacion_competicion_orden'], 
-                        'notificacion_competicion_fecha_carga_1'    =>  $notificacion_competicion_fecha_carga_1,
-                        'notificacion_competicion_fecha_carga_2'    =>  $notificacion_competicion_fecha_carga_2,   	
-                        'notificacion_competicion_observacion'      =>  trim($rowMSSQL['notificacion_competicion_observacion']),
-
                         'notificacion_equipo_codigo'                =>  $rowMSSQL['notificacion_equipo_codigo'],
                         'notificacion_equipo_orden'                 =>  $rowMSSQL['notificacion_equipo_orden'],
                         'notificacion_equipo_fecha_carga_1'         =>  $notificacion_equipo_fecha_carga_1,
@@ -12747,12 +12435,11 @@
                         'persona_email'                             => trim($rowMSSQL['persona_email']),
                         'persona_telefono'                          => trim($rowMSSQL['persona_telefono']),
                         'persona_observacion'                       => trim($rowMSSQL['persona_observacion'])
-
                     );
-
+    
                     $result[]   = $detalle;
                 }
-
+    
                 if (isset($result)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
@@ -12762,6 +12449,8 @@
                         'notificacion_mensaje_orden'                =>  '',
                         'notificacion_mensaje_fecha_proceso_1'      =>  '',
                         'notificacion_mensaje_fecha_proceso_2'      =>  '',
+                        'notificacion_mensaje_encuentro'            =>  '',
+                        'notificacion_mensaje_descripcion'          =>  '',
                         'notificacion_mensaje_observacion'          =>  '',
 
                         'auditoria_usuario'                         =>  '',
@@ -12791,26 +12480,20 @@
                         'notificacion_fecha_carga_2'                =>  '',
                         'notificacion_observacion'                  =>  '',
 
-                        'notificacion_competicion_codigo'           =>  '',
-                        'notificacion_competicion_orden'            =>  '', 
-                        'notificacion_competicion_fecha_carga_1'    =>  '',
-                        'notificacion_competicion_fecha_carga_2'    =>  '',   	
-                        'notificacion_competicion_observacion'      =>  '',
-
                         'notificacion_equipo_codigo'                =>  '',
                         'notificacion_equipo_orden'                 =>  '',
                         'notificacion_equipo_fecha_carga_1'         =>  '',
                         'notificacion_equipo_fecha_carga_2'         =>  '',   	
                         'notificacion_equipo_observacion'           =>  '',
 
-                        'persona_codigo'                            => '',
-                        'persona_nombre'                            => '',
-                        'persona_user'                              => '',
-                        'persona_contrasenha'                       => '',
-                        'persona_path'                              => '',
-                        'persona_email'                             => '',
-                        'persona_telefono'                          => '',
-                        'persona_observacion'                       => ''
+                        'persona_codigo'                            =>  '',
+                        'persona_nombre'                            =>  '',
+                        'persona_user'                              =>  '',
+                        'persona_contrasenha'                       =>  '',
+                        'persona_path'                              =>  '',
+                        'persona_email'                             =>  '',
+                        'persona_telefono'                          =>  '',
+                        'persona_observacion'                       =>  ''
 
                     );
 
