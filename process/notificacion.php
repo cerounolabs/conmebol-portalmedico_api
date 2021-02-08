@@ -13,7 +13,7 @@
         global $DOMFICAUS;
         global $DOMFICAIP;
         global $NOTMENOBS;
-        global $MENSAJE;
+        $MENSAJE    = '';
         $NOTMENENC  = 0;
         $DOMFICPAR  = 2;
 
@@ -131,8 +131,8 @@
             
             WHERE a.PERFICEQU = ? AND b.PERCOMCOC = ? AND c.DOMFICPAR = 2";
 
-        $sql03  =   "INSERT INTO [adm].[NOTMEN](                                                               NOTMENEST, NOTMENNOC, NOTMENEQC, NOTMENENC, NOTMENMEC, NOTMENFEP, NOTMENMEN, NOTMENOBS, NOTMENAUS, NOTMENAFH, NOTMENAIP) 
-                     VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,   GETDATE(),        ?,        ?,         ?, GETDATE(),       ?)";  
+        $sql03  =   "INSERT INTO [adm].[NOTMEN](                                                               NOTMENEST, NOTMENNOC, NOTMENEQC, NOTMENENC, NOTMENMEC, NOTMENMEN, NOTMENOBS, NOTMENAUS, NOTMENAFH, NOTMENAIP) 
+                     VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,        ?,        ?,           ?, GETDATE(),       ?)";  
 
         try {
             $connMSSQL  = getConnectionMSSQLv2();
@@ -160,6 +160,7 @@
 
                     while ($rowMSSQL02  = $stmtMSSQL02->fetch()) {//RECORRE PERFIC
                         $NOTMENMEC      = $rowMSSQL02['persona_codigo'];
+                        echo('codigo persona => '.$NOTMENMEC);
                         $stmtMSSQL03->execute([$DOMFICPAR, $NOTFICCOD, $NOTEQUEQC, $NOTMENENC, $NOTMENMEC, $MENSAJE, $NOTMENOBS, $DOMFICAUS,$DOMFICAIP]);
                     }  
 
