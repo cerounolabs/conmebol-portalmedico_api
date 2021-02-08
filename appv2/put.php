@@ -441,135 +441,137 @@
 
 
 /*MODULO NOTIFICACION*/
-    $app->put('/v2/802/notificacion/{codigo}', function($request) {
-        require __DIR__.'/../src/connect.php';
+$app->put('/v2/802/notificacion/{codigo}', function($request) {
+    require __DIR__.'/../src/connect.php';
+    
+    $val00      = $request->getAttribute('codigo'); 
+    $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
+    $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+    $val02      = $request->getParsedBody()['notificacion_orden'];
+    $val03      = $request->getParsedBody()['tipo_notificacion_parametro'];
+    $val04      = $request->getParsedBody()['tipo_test_parametro'];
+    $val05      = $request->getParsedBody()['competicion_codigo'];
+    $val06      = $request->getParsedBody()['notificacion_parametro'];
+    $val07      = trim($request->getParsedBody()['notificacion_titulo']);
+    $val08      = trim($request->getParsedBody()['notificacion_descripcion']);
+    $val09      = $request->getParsedBody()['notificacion_fecha_desde'];
+    $val10      = $request->getParsedBody()['notificacion_fecha_hasta'];
+    $val11      = $request->getParsedBody()['notificacion_fecha_carga'];
+    $val12      = $request->getParsedBody()['notificacion_dia_inicio'];
+    $val13      = $request->getParsedBody()['notificacion_dia_fin'];
+    $val14      = trim($request->getParsedBody()['notificacion_observacion']);
+
+    $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+    $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+    $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+    if (isset($val00) && isset($val00_1)) {
+        $sql00  = "";
+
+        switch ($val00_1) {
+            case 1:
+                $sql00  = "UPDATE [adm].[NOTFIC] SET NOTFICEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), NOTFICORD = ?, NOTFICCOC = ?, NOTFICTIT = ?, NOTFICDES = ?, NOTFICFED = ?, NOTFICFEH = ?, NOTFICDIN = ?, NOTFICDFI = ?,NOTFICOBS = ?, NOTFICAUS = ?, NOTFICAFH = GETDATE(), NOTFICAIP = ? WHERE NOTFICCOD = ?";
+                break;
+
+            /*case 2;
+               
+            break;*/
+        }   
         
-        $val00      = $request->getAttribute('codigo'); 
-        $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
-        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
-        $val02      = $request->getParsedBody()['notificacion_orden'];
-        $val03      = $request->getParsedBody()['tipo_notificacion_parametro'];
-        $val04      = $request->getParsedBody()['tipo_test_parametro'];
-        $val05      = $request->getParsedBody()['competicion_codigo'];
-        $val06      = $request->getParsedBody()['notificacion_parametro'];
-        $val07      = trim($request->getParsedBody()['notificacion_titulo']);
-        $val08      = trim($request->getParsedBody()['notificacion_descripcion']);
-        $val09      = $request->getParsedBody()['notificacion_fecha_desde'];
-        $val10      = $request->getParsedBody()['notificacion_fecha_hasta'];
-        $val11      = $request->getParsedBody()['notificacion_fecha_carga'];
-        $val12      = $request->getParsedBody()['notificacion_dia_inicio'];
-        $val13      = $request->getParsedBody()['notificacion_dia_fin'];
-        $val14      = trim($request->getParsedBody()['notificacion_observacion']);
-
-        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
-        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
-        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
-
-        if (isset($val00) && isset($val00_1)) {
-            $sql00  = "";
+        try {
+            $connMSSQL  = getConnectionMSSQLv2();
+            $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
             switch ($val00_1) {
                 case 1:
-                    $sql00  = "UPDATE [adm].[NOTFIC] SET NOTFICEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), NOTFICORD = ?, NOTFICCOC = ?, NOTFICTIT = ?, NOTFICDES = ?, NOTFICFED = ?, NOTFICFEH = ?, NOTFICDIN = ?, NOTFICDFI = ?,NOTFICOBS = ?, NOTFICAUS = ?, NOTFICAFH = GETDATE(), NOTFICAIP = ? WHERE NOTFICCOD = ?";
-                    break;
+                    $stmtMSSQL->execute([$val01, $val02, $val05, $val07, $val08, $val09, $val10, $val12, $val13, $val14, $aud01, $aud03, $val00]);
+                break;
 
-                /*case 2;
-                   
+                /*case 2:
+                    $stmtMSSQL00->execute([]);
                 break;*/
-            }   
-            
-            try {
-                $connMSSQL  = getConnectionMSSQLv2();
-                $stmtMSSQL  = $connMSSQL->prepare($sql00);
-
-                switch ($val00_1) {
-                    case 1:
-                        $stmtMSSQL->execute([$val01, $val02, $val05, $val07, $val08, $val09, $val10, $val12, $val13, $val14, $aud01, $aud03, $val00]);
-                    break;
-
-                    /*case 2:
-                        $stmtMSSQL00->execute([]);
-                    break;*/
-                }
-                
-                header("Content-Type: application/json; charset=utf-8");
-                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
-            } catch (PDOException $e) {
-                header("Content-Type: application/json; charset=utf-8");
-                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
             }
-        } else {
+            
             header("Content-Type: application/json; charset=utf-8");
-            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
         }
+    } else {
+        header("Content-Type: application/json; charset=utf-8");
+        $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    }
 
-        $connMSSQL  = null;
+    $connMSSQL  = null;
+    
+    return $json;
+});
+
+$app->put('/v2/802/notificacionequipo/{codigo}', function($request) {
+    require __DIR__.'/../src/connect.php';
+    
+    $val00      = $request->getAttribute('codigo'); 
+    $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
+    $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+    $val02      = $request->getParsedBody()['notificacion_equipo_orden'];
+    $val03      = $request->getParsedBody()['notificacion_codigo'];
+    $val04      = $request->getParsedBody()['equipo_codigo'];
+    $val05      = $request->getParsedBody()['notificacion_equipo_fecha_carga'];
+    $val06      = $request->getParsedBody()['notificacion_equipo_observacion'];
+
+    $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+    $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+    $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+    if (isset($val00) && isset($val00_1)) {
+        $sql00  = "";
+
+        switch ($val00_1) {
+            case 1:
+                $sql00  = "UPDATE [adm].[NOTEQU] SET NOTEQUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), NOTEQUORD = ?, NOTEQUNOC = ?, NOTEQUEQC = ?, NOTEQUOBS = ?, NOTEQUAUS = ?, NOTEQUAFH = GETDATE(), NOTEQUAIP = ? WHERE NOTEQUCOD = ?";
+                break;
+
+            /*case 2;
+                
+            break;*/
+        }   
         
-        return $json;
-    });
-
-    $app->put('/v2/802/notificacionequipo/{codigo}', function($request) {
-        require __DIR__.'/../src/connect.php';
-        
-        $val00      = $request->getAttribute('codigo'); 
-        $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
-        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
-        $val02      = $request->getParsedBody()['notificacion_equipo_orden'];
-        $val03      = $request->getParsedBody()['notificacion_codigo'];
-        $val04      = $request->getParsedBody()['equipo_codigo'];
-        $val05      = $request->getParsedBody()['notificacion_equipo_fecha_carga'];
-        $val06      = $request->getParsedBody()['notificacion_equipo_observacion'];
-
-        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
-        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
-        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
-
-        if (isset($val00) && isset($val00_1)) {
-            $sql00  = "";
+        try {
+            $connMSSQL  = getConnectionMSSQLv2();
+            $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
             switch ($val00_1) {
                 case 1:
-                    $sql00  = "UPDATE [adm].[NOTEQU] SET NOTEQUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), NOTEQUORD = ?, NOTEQUNOC = ?, NOTEQUEQC = ?, NOTEQUOBS = ?, NOTEQUAUS = ?, NOTEQUAFH = GETDATE(), NOTEQUAIP = ? WHERE NOTEQUCOD = ?";
-                    break;
+                    $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val06, $aud01, $aud03, $val00]);
+                break;
 
-                /*case 2;
+                /*case 2:
                     
                 break;*/
-            }   
-            
-            try {
-                $connMSSQL  = getConnectionMSSQLv2();
-                $stmtMSSQL  = $connMSSQL->prepare($sql00);
-
-                switch ($val00_1) {
-                    case 1:
-                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val06, $aud01, $aud03, $val00]);
-                    break;
-
-                    /*case 2:
-                        
-                    break;*/
-                }
-                
-                header("Content-Type: application/json; charset=utf-8");
-                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
-            } catch (PDOException $e) {
-                header("Content-Type: application/json; charset=utf-8");
-                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
             }
-        } else {
+            
             header("Content-Type: application/json; charset=utf-8");
-            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-        }
+            $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
 
-        $connMSSQL  = null;
-        
-        return $json;
-    });
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+    } else {
+        header("Content-Type: application/json; charset=utf-8");
+        $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    }
+
+    $connMSSQL  = null;
+    
+    return $json;
+});
+
+
 
