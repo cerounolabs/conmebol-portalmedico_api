@@ -14,7 +14,7 @@
         global $DOMFICAIP;
         global $NOTMENOBS;
         $NOTMENENC  = 0;
-        $DOMFICPAR  = 2;
+        $DOMFICPAR  = 1;
 
         $sql00  =   "SELECT
             a.NOTFICCOD                     AS      notificacion_codigo,
