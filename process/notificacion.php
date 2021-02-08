@@ -13,7 +13,6 @@
         global $DOMFICAUS;
         global $DOMFICAIP;
         global $NOTMENOBS;
-       // $MENSAJE    = '';
         $NOTMENENC  = 0;
         $DOMFICPAR  = 2;
 
@@ -144,7 +143,6 @@
         
             $stmtMSSQL00->execute();
 
-           
             while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {//recorre NOTFIC
 
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
@@ -155,12 +153,12 @@
 
                 while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//RECORRE NOTEQU
                     $NOTEQUEQC      = $rowMSSQL01['equipo_codigo'];
-                    echo 'Competicion=> '.$NOTFICCOC.' Equipo=> '.$NOTEQUEQC;
+                    
                     $stmtMSSQL02->execute([$NOTEQUEQC, $NOTFICCOC]);
 
                     while ($rowMSSQL02  = $stmtMSSQL02->fetch()) {//RECORRE PERFIC
                         $NOTMENMEC      = $rowMSSQL02['persona_codigo'];
-                        echo('codigo persona => '.$NOTMENMEC);
+                       
                         $stmtMSSQL03->execute([$DOMFICPAR, $NOTFICCOD, $NOTEQUEQC, $NOTMENENC, $NOTMENMEC, $MENSAJE, $NOTMENOBS, $DOMFICAUS,$DOMFICAIP]);
                     }  
 
