@@ -457,7 +457,9 @@
         $val09      = $request->getParsedBody()['notificacion_fecha_desde'];
         $val10      = $request->getParsedBody()['notificacion_fecha_hasta'];
         $val11      = $request->getParsedBody()['notificacion_fecha_carga'];
-        $val12      = trim($request->getParsedBody()['notificacion_observacion']);
+        $val12      = $request->getParsedBody()['notificacion_dia_inicio'];
+        $val13      = $request->getParsedBody()['notificacion_dia_fin'];
+        $val14      = trim($request->getParsedBody()['notificacion_observacion']);
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -468,7 +470,7 @@
 
             switch ($val00_1) {
                 case 1:
-                    $sql00  = "UPDATE [adm].[NOTFIC] SET NOTFICEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), NOTFICORD = ?, NOTFICCOC = ?, NOTFICTIT = ?, NOTFICDES = ?, NOTFICFED = ?, NOTFICFEH = ?, NOTFICOBS = ?, NOTFICAUS = ?, NOTFICAFH = GETDATE(), NOTFICAIP = ? WHERE NOTFICCOD = ?";
+                    $sql00  = "UPDATE [adm].[NOTFIC] SET NOTFICEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), NOTFICORD = ?, NOTFICCOC = ?, NOTFICTIT = ?, NOTFICDES = ?, NOTFICFED = ?, NOTFICFEH = ?, NOTFICDIN = ?, NOTFICDFI = ?,NOTFICOBS = ?, NOTFICAUS = ?, NOTFICAFH = GETDATE(), NOTFICAIP = ? WHERE NOTFICCOD = ?";
                     break;
 
                 /*case 2;
@@ -482,7 +484,7 @@
 
                 switch ($val00_1) {
                     case 1:
-                        $stmtMSSQL->execute([$val01, $val02, $val05, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03, $val00]);
+                        $stmtMSSQL->execute([$val01, $val02, $val05, $val07, $val08, $val09, $val10, $val12, $val13, $val14, $aud01, $aud03, $val00]);
                     break;
 
                     /*case 2:
