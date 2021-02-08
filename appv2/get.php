@@ -11223,6 +11223,8 @@
             a.NOTFICFED                     AS      notificacion_fecha_desde,	
             a.NOTFICFEH                     AS      notificacion_fecha_hasta,	
             a.NOTFICFCA                     AS      notificacion_fecha_carga,
+            a.NOTFICDIN                     AS      notificacion_dia_inicio,
+            a.NOTFICDFI                     AS      notificacion_dia_fin,
             a.NOTFICOBS                     AS      notificacion_observacion,
                 
             a.NOTFICAUS                     AS      auditoria_usuario,
@@ -11316,6 +11318,8 @@
                         'notificacion_fecha_hasta_2'    =>  $notificacion_fecha_hasta_2,
                         'notificacion_fecha_carga_1'    =>  $notificacion_fecha_carga_1,
                         'notificacion_fecha_carga_2'    =>  $notificacion_fecha_carga_2,
+                        'notificacion_dia_inicio'       =>  $rowMSSQL['notificacion_dia_inicio'],
+                        'notificacion_dia_fin'          =>  $rowMSSQL['notificacion_dia_fin'],
                         'notificacion_observacion'      =>  trim($rowMSSQL['notificacion_observacion']),
 
                         'auditoria_usuario'             =>  trim($rowMSSQL['auditoria_usuario']),
@@ -11377,6 +11381,8 @@
                         'notificacion_fecha_hasta_2'    =>  '',
                         'notificacion_fecha_carga_1'    =>  '',
                         'notificacion_fecha_carga_2'    =>  '',
+                        'notificacion_dia_inicio'       =>  '',
+                        'notificacion_dia_fin'          =>  '',
                         'notificacion_observacion'      =>  '',
 
                         'auditoria_usuario'             =>  '',
@@ -11442,54 +11448,56 @@
         
         if (isset($val01)) {
             $sql00  = "SELECT 
-            a.NOTFICCOD                     AS      notificacion_codigo,
-            a.NOTFICORD                     AS      notificacion_orden,  	
-            a.NOTFICPAC                     AS      notificacion_parametro,
-            a.NOTFICTIT                     AS      notificacion_titulo,	
-            a.NOTFICDES                     AS      notificacion_descripcion,	
-            a.NOTFICFED                     AS      notificacion_fecha_desde,	
-            a.NOTFICFEH                     AS      notificacion_fecha_hasta,	
-            a.NOTFICFCA                     AS      notificacion_fecha_carga,
-            a.NOTFICOBS                     AS      notificacion_observacion,
+                a.NOTFICCOD                     AS      notificacion_codigo,
+                a.NOTFICORD                     AS      notificacion_orden,  	
+                a.NOTFICPAC                     AS      notificacion_parametro,
+                a.NOTFICTIT                     AS      notificacion_titulo,	
+                a.NOTFICDES                     AS      notificacion_descripcion,	
+                a.NOTFICFED                     AS      notificacion_fecha_desde,	
+                a.NOTFICFEH                     AS      notificacion_fecha_hasta,	
+                a.NOTFICFCA                     AS      notificacion_fecha_carga,
+                a.NOTFICDIN                     AS      notificacion_dia_inicio,
+                a.NOTFICDFI                     AS      notificacion_dia_fin,
+                a.NOTFICOBS                     AS      notificacion_observacion,
+                    
+                a.NOTFICAUS                     AS      auditoria_usuario,
+                a.NOTFICAFH                     AS      auditoria_fecha_hora,	
+                a.NOTFICAIP                     AS      auditoria_ip,
                 
-            a.NOTFICAUS                     AS      auditoria_usuario,
-            a.NOTFICAFH                     AS      auditoria_fecha_hora,	
-            a.NOTFICAIP                     AS      auditoria_ip,
-            
-            b.DOMFICCOD                     AS      tipo_estado_codigo,
-            b.DOMFICORD                     AS      tipo_estado_orden,
-            b.DOMFICNOI                     AS      tipo_estado_ingles,
-            b.DOMFICNOC                     AS      tipo_estado_castellano,
-            b.DOMFICNOP                     AS      tipo_estado_portugues,
-            b.DOMFICPAT                     AS      tipo_estado_path,
-            b.DOMFICVAL                     AS      tipo_estado_dominio,
-            b.DOMFICPAR                     AS      tipo_estado_parametro,
-            b.DOMFICOBS                     AS      tipo_estado_observacion,
-            
-            c.DOMFICCOD                     AS      tipo_notificacion_codigo,
-            c.DOMFICORD                     AS      tipo_notificacion_orden,
-            c.DOMFICNOI                     AS      tipo_notificacion_ingles,
-            c.DOMFICNOC                     AS      tipo_notificacion_castellano,
-            c.DOMFICNOP                     AS      tipo_notificacion_portugues,
-            c.DOMFICPAT                     AS      tipo_notificacion_path,
-            c.DOMFICVAL                     AS      tipo_notificacion_dominio,
-            c.DOMFICPAR                     AS      tipo_notificacion_parametro,
-            c.DOMFICOBS                     AS      tipo_notificacion_observacion,
-            
-            d.DOMFICCOD                     AS      tipo_test_codigo,
-            d.DOMFICORD                     AS      tipo_test_orden,
-            d.DOMFICNOI                     AS      tipo_test_ingles,
-            d.DOMFICNOC                     AS      tipo_test_castellano,
-            d.DOMFICNOP                     AS      tipo_test_portugues,
-            d.DOMFICPAT                     AS      tipo_test_path,
-            d.DOMFICVAL                     AS      tipo_test_dominio,
-            d.DOMFICPAR                     AS      tipo_test_parametro,
-            d.DOMFICOBS                     AS      tipo_test_observacion,
+                b.DOMFICCOD                     AS      tipo_estado_codigo,
+                b.DOMFICORD                     AS      tipo_estado_orden,
+                b.DOMFICNOI                     AS      tipo_estado_ingles,
+                b.DOMFICNOC                     AS      tipo_estado_castellano,
+                b.DOMFICNOP                     AS      tipo_estado_portugues,
+                b.DOMFICPAT                     AS      tipo_estado_path,
+                b.DOMFICVAL                     AS      tipo_estado_dominio,
+                b.DOMFICPAR                     AS      tipo_estado_parametro,
+                b.DOMFICOBS                     AS      tipo_estado_observacion,
+                
+                c.DOMFICCOD                     AS      tipo_notificacion_codigo,
+                c.DOMFICORD                     AS      tipo_notificacion_orden,
+                c.DOMFICNOI                     AS      tipo_notificacion_ingles,
+                c.DOMFICNOC                     AS      tipo_notificacion_castellano,
+                c.DOMFICNOP                     AS      tipo_notificacion_portugues,
+                c.DOMFICPAT                     AS      tipo_notificacion_path,
+                c.DOMFICVAL                     AS      tipo_notificacion_dominio,
+                c.DOMFICPAR                     AS      tipo_notificacion_parametro,
+                c.DOMFICOBS                     AS      tipo_notificacion_observacion,
+                
+                d.DOMFICCOD                     AS      tipo_test_codigo,
+                d.DOMFICORD                     AS      tipo_test_orden,
+                d.DOMFICNOI                     AS      tipo_test_ingles,
+                d.DOMFICNOC                     AS      tipo_test_castellano,
+                d.DOMFICNOP                     AS      tipo_test_portugues,
+                d.DOMFICPAT                     AS      tipo_test_path,
+                d.DOMFICVAL                     AS      tipo_test_dominio,
+                d.DOMFICPAR                     AS      tipo_test_parametro,
+                d.DOMFICOBS                     AS      tipo_test_observacion,
 
-            e.competitionFifaId             AS      competicion_codigo,
-            e.superiorCompetitionFifaId     AS      competicion_codigo_padre,
-            e.status                        AS      competicion_estado,
-            e.internationalName             AS      competicion_nombre
+                e.competitionFifaId             AS      competicion_codigo,
+                e.superiorCompetitionFifaId     AS      competicion_codigo_padre,
+                e.status                        AS      competicion_estado,
+                e.internationalName             AS      competicion_nombre
 
                 FROM [adm].[NOTFIC] a
 
@@ -11544,6 +11552,8 @@
                         'notificacion_fecha_hasta_2'    =>  $notificacion_fecha_hasta_2,
                         'notificacion_fecha_carga_1'    =>  $notificacion_fecha_carga_1,
                         'notificacion_fecha_carga_2'    =>  $notificacion_fecha_carga_2,
+                        'notificacion_dia_inicio'       =>  $rowMSSQL['notificacion_dia_inicio'],    	
+                        'notificacion_dia_fin'          =>  $rowMSSQL['notificacion_dia_fin'],
                         'notificacion_observacion'      =>  trim($rowMSSQL['notificacion_observacion']),
 
                         'auditoria_usuario'             =>  trim($rowMSSQL['auditoria_usuario']),
@@ -11606,6 +11616,8 @@
                         'notificacion_fecha_hasta_2'    =>  '',
                         'notificacion_fecha_carga_1'    =>  '',
                         'notificacion_fecha_carga_2'    =>  '',
+                        'notificacion_dia_inicio'       =>  '',    	
+                        'notificacion_dia_fin'          =>  '',
                         'notificacion_observacion'      =>  '',
 
                         'auditoria_usuario'             =>  '',
@@ -12081,10 +12093,10 @@
             c.NOTFICFCA             AS      notificacion_fecha_carga,	
             c.NOTFICOBS             AS      notificacion_observacion,
 
-            d.NOTEQUCOD             AS      notificacion_equipo_codigo,	
-            d.NOTEQUORD             AS      notificacion_equipo_orden,
-            d.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
-            d.NOTEQUOBS             AS      notificacion_equipo_observacion,
+            d.teamFifaId            AS      equipo_codigo,
+            d.status                AS      equipo_estado,
+            d.internationalName     AS      equipo_nombre,
+
             
             e.PERFICCOD             AS      persona_codigo,
             e.PERFICNOM             AS      persona_nombre,
@@ -12093,11 +12105,10 @@
             e.PERFICMAI             AS      persona_email,
             e.PERFICTEF             AS      persona_telefono
 
-
             FROM [adm].[NOTMEN] a
             INNER JOIN [adm].[DOMFIC] b ON a.NOTMENEST  = b.DOMFICCOD
             INNER JOIN [adm].[NOTFIC] c ON a.NOTMENNOC  = c.NOTFICCOD
-            INNER JOIN [adm].[NOTEQU] d ON a.NOTMENNEC  = d.NOTEQUCOD
+            INNER JOIN [comet].[teams]d ON a.NOTEQUEQC  = d.teamFifaId
             INNER JOIN [adm].[PERFIC] e ON a.NOTMENMEC  = e.PERFICCOD
 
             ORDER BY a.NOTMENCOD DESC";
@@ -12133,14 +12144,6 @@
                         $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
                     }
 
-                    
-                    if ($rowMSSQL['notificacion_equipo_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_equipo_fecha_carga'] == null){
-                        $notificacion_equipo_fecha_carga_1 = '';
-                        $notificacion_equipo_fecha_carga_2 = '';
-                    } else {
-                        $notificacion_equipo_fecha_carga_1 = $rowMSSQL['notificacion_equipo_fecha_carga'];
-                        $notificacion_equipo_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_equipo_fecha_carga']));
-                    }
                 
                     if (isset($rowMSSQL['persona_path'])){
                         $persona_path = $rowMSSQL['persona_path'];
@@ -12185,11 +12188,9 @@
                         'notificacion_fecha_carga_2'                =>  $notificacion_fecha_carga_2,
                         'notificacion_observacion'                  =>  trim($rowMSSQL['notificacion_observacion']),
 
-                        'notificacion_equipo_codigo'                =>  $rowMSSQL['notificacion_equipo_codigo'],
-                        'notificacion_equipo_orden'                 =>  $rowMSSQL['notificacion_equipo_orden'],
-                        'notificacion_equipo_fecha_carga_1'         =>  $notificacion_equipo_fecha_carga_1,
-                        'notificacion_equipo_fecha_carga_2'         =>  $notificacion_equipo_fecha_carga_2,   	
-                        'notificacion_equipo_observacion'           =>  trim($rowMSSQL['notificacion_equipo_observacion']),
+                        'equipo_codigo'                             =>  $rowMSSQL['equipo_codigo'],
+                        'equipo_estado'                             =>  trim($rowMSSQL['equipo_estado']),	
+                        'equipo_nombre'                             =>  trim($rowMSSQL['equipo_nombre']),
 
                         'persona_codigo'                            => $rowMSSQL['persona_codigo'],
                         'persona_nombre'                            => trim($rowMSSQL['persona_nombre']),
@@ -12244,11 +12245,9 @@
                         'notificacion_fecha_carga_2'                =>  '',
                         'notificacion_observacion'                  =>  '',
 
-                        'notificacion_equipo_codigo'                =>  '',
-                        'notificacion_equipo_orden'                 =>  '',
-                        'notificacion_equipo_fecha_carga_1'         =>  '',
-                        'notificacion_equipo_fecha_carga_2'         =>  '',   	
-                        'notificacion_equipo_observacion'           =>  '',
+                        'equipo_codigo'                             =>  '',
+                        'equipo_estado'                             =>  '',	
+                        'equipo_nombre'                             =>  '',
 
                         'persona_codigo'                            => '',
                         'persona_nombre'                            => '',
@@ -12315,10 +12314,9 @@
             c.NOTFICFCA             AS      notificacion_fecha_carga,	
             c.NOTFICOBS             AS      notificacion_observacion,
 
-            d.NOTEQUCOD             AS      notificacion_equipo_codigo,	
-            d.NOTEQUORD             AS      notificacion_equipo_orden,
-            d.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
-            d.NOTEQUOBS             AS      notificacion_equipo_observacion,
+            d.teamFifaId            AS      equipo_codigo,
+            d.status                AS      equipo_estado,
+            d.internationalName     AS      equipo_nombre,
             
             e.PERFICCOD             AS      persona_codigo,
             e.PERFICNOM             AS      persona_nombre,
@@ -12331,7 +12329,7 @@
             FROM [adm].[NOTMEN] a
             INNER JOIN [adm].[DOMFIC] b ON a.NOTMENEST  = b.DOMFICCOD
             INNER JOIN [adm].[NOTFIC] c ON a.NOTMENNOC  = c.NOTFICCOD
-            INNER JOIN [adm].[NOTEQU] d ON a.NOTMENNEC  = d.NOTEQUCOD
+            INNER JOIN [comet].[teams]d ON a.NOTMENEQC  = d.teamFifaId
             INNER JOIN [adm].[PERFIC] e ON a.NOTMENMEC  = e.PERFICCOD
 
             WHERE a.NOTMENMEC = ?
@@ -12368,16 +12366,7 @@
                         $notificacion_fecha_hasta_1 = $rowMSSQL['notificacion_fecha_hasta'];
                         $notificacion_fecha_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_hasta']));
                     }
-
-                    
-                    if ($rowMSSQL['notificacion_equipo_fecha_carga'] == '1900-01-01' || $rowMSSQL['notificacion_equipo_fecha_carga'] == null){
-                        $notificacion_equipo_fecha_carga_1 = '';
-                        $notificacion_equipo_fecha_carga_2 = '';
-                    } else {
-                        $notificacion_equipo_fecha_carga_1 = $rowMSSQL['notificacion_equipo_fecha_carga'];
-                        $notificacion_equipo_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_equipo_fecha_carga']));
-                    }
-                
+    
                     if (isset($rowMSSQL['persona_path'])){
                         $persona_path = $rowMSSQL['persona_path'];
                     } else {
@@ -12421,11 +12410,9 @@
                         'notificacion_fecha_carga_2'                =>  $notificacion_fecha_carga_2,
                         'notificacion_observacion'                  =>  trim($rowMSSQL['notificacion_observacion']),
 
-                        'notificacion_equipo_codigo'                =>  $rowMSSQL['notificacion_equipo_codigo'],
-                        'notificacion_equipo_orden'                 =>  $rowMSSQL['notificacion_equipo_orden'],
-                        'notificacion_equipo_fecha_carga_1'         =>  $notificacion_equipo_fecha_carga_1,
-                        'notificacion_equipo_fecha_carga_2'         =>  $notificacion_equipo_fecha_carga_2,   	
-                        'notificacion_equipo_observacion'           =>  trim($rowMSSQL['notificacion_equipo_observacion']),
+                        'equipo_codigo'                             =>  $rowMSSQL['equipo_codigo'],
+                        'equipo_estado'                             =>  trim($rowMSSQL['equipo_estado']),	
+                        'equipo_nombre'                             =>  trim($rowMSSQL['equipo_nombre']),
 
                         'persona_codigo'                            => $rowMSSQL['persona_codigo'],
                         'persona_nombre'                            => trim($rowMSSQL['persona_nombre']),
@@ -12480,11 +12467,9 @@
                         'notificacion_fecha_carga_2'                =>  '',
                         'notificacion_observacion'                  =>  '',
 
-                        'notificacion_equipo_codigo'                =>  '',
-                        'notificacion_equipo_orden'                 =>  '',
-                        'notificacion_equipo_fecha_carga_1'         =>  '',
-                        'notificacion_equipo_fecha_carga_2'         =>  '',   	
-                        'notificacion_equipo_observacion'           =>  '',
+                        'equipo_codigo'                             =>  '',
+                        'equipo_estado'                             =>  '',	
+                        'equipo_nombre'                             =>  '',
 
                         'persona_codigo'                            =>  '',
                         'persona_nombre'                            =>  '',
@@ -12494,7 +12479,6 @@
                         'persona_email'                             =>  '',
                         'persona_telefono'                          =>  '',
                         'persona_observacion'                       =>  ''
-
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
