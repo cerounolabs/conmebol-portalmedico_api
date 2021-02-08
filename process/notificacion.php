@@ -13,6 +13,7 @@
         global $DOMFICAUS;
         global $DOMFICAIP;
         global $NOTMENOBS;
+        global $MENSAJE;
         $NOTMENENC  = 0;
         $DOMFICPAR  = 2;
 
@@ -154,7 +155,7 @@
 
                 while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//RECORRE NOTEQU
                     $NOTEQUEQC      = $rowMSSQL01['equipo_codigo'];
-
+                    echo 'Competicion=> '.$NOTFICCOC.' Equipo=> '.$NOTEQUEQC;
                     $stmtMSSQL02->execute([$NOTEQUEQC, $NOTFICCOC]);
 
                     while ($rowMSSQL02  = $stmtMSSQL02->fetch()) {//RECORRE PERFIC
