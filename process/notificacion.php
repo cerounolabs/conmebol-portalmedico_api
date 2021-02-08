@@ -25,6 +25,7 @@
             a.NOTFICFED                     AS      notificacion_fecha_desde,	
             a.NOTFICFEH                     AS      notificacion_fecha_hasta,	
             a.NOTFICFCA                     AS      notificacion_fecha_carga,
+            a.NOTFICCOC                     AS      competicion_codigo,
             a.NOTFICOBS                     AS      notificacion_observacion,
                 
             a.NOTFICAUS                     AS      auditoria_usuario,
@@ -59,12 +60,7 @@
             d.DOMFICPAT                     AS      tipo_test_path,
             d.DOMFICVAL                     AS      tipo_test_dominio,
             d.DOMFICPAR                     AS      tipo_test_parametro,
-            d.DOMFICOBS                     AS      tipo_test_observacion,
-
-            e.competitionFifaId             AS      competicion_codigo,
-            e.superiorCompetitionFifaId     AS      competicion_codigo_padre,
-            e.status                        AS      competicion_estado,
-            e.internationalName             AS      competicion_nombre
+            d.DOMFICOBS                     AS      tipo_test_observacion
 
             FROM [adm].[NOTFIC] a
 
@@ -73,7 +69,7 @@
             INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
 
             WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  AND a.NOTFICPAC = 1 AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)
-     
+    
             ORDER BY a.NOTFICCOD";
 
         $sql01  =   "SELECT 
