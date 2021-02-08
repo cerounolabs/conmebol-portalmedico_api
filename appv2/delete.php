@@ -343,18 +343,18 @@
         $val01      = $request->getParsedBody()['tipo_estado_parametro'];
         $val02      = $request->getParsedBody()['notificacion_mensaje_orden'];
         $val03      = $request->getParsedBody()['notificacion_codigo'];
-        $val04      = $request->getParsedBody()['notificacion_competicion_codigo'];
-        $val05      = $request->getParsedBody()['notificacion_equipo_codigo'];
-        $val06      = $request->getParsedBody()['persona_codigo'];
-        $val07      = $request->getParsedBody()['notificacion_mensaje_fecha_proceso'];
-        $val08      = $request->getParsedBody()['notificacion_equipo_observacion'];
-
+        $val04      = $request->getParsedBody()['equipo_codigo'];
+        $val05      = $request->getParsedBody()['persona_codigo'];
+        $val06      = $request->getParsedBody()['notificacion_mensaje_fecha_proceso'];
+        $val07      = $request->getParsedBody()['notificacion_mensaje_encuentro'];
+        $val08      = trim($request->getParsedBody()['notificacion_mensaje_descripcion']);
+        $val09      = trim($request->getParsedBody()['notificacion_equipo_observacion']);
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = trim($request->getParsedBody()['auditoria_ip']);
 
-        if (isset($val00) && isset($val01) && isset($val03) && isset($val04) && isset($val05) && isset($val06)) {
+        if (isset($val00) && isset($val01) && isset($val03) && isset($val04) && isset($val05)) {
             $sql00  = "UPDATE [adm].[NOTMEN] SET NOTMENAUS = ?,	NOTMENAFH = GETDATE(), NOTMENAIP = ? WHERE NOTMENCOD = ?";
             $sql01  = "DELETE FROM [adm].[NOTMEN] WHERE NOTMENCOD = ?";
 
