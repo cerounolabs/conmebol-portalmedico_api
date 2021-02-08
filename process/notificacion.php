@@ -8,8 +8,7 @@
     $NOTMENOBS  = '';
 
     function getMensaje(){
-        global $DOMFICEST;
-        global $DOMFICORD;
+
         global $DOMFICAUS;
         global $DOMFICAIP;
         global $NOTMENOBS;
