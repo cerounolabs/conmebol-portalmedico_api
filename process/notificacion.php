@@ -13,7 +13,7 @@
         global $DOMFICAUS;
         global $DOMFICAIP;
         global $NOTMENOBS;
-        $MENSAJE    = '';
+       // $MENSAJE    = '';
         $NOTMENENC  = 0;
         $DOMFICPAR  = 2;
 
@@ -149,7 +149,7 @@
 
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
                 $NOTFICCOC  = $rowMSSQL00['competicion_codigo'];
-                $MENSAJE    = $rowMSSQL00(trim(['notificacion_titulo']));//.' '.$rowMSSQL00(trim(['notificacion_descripcion']));
+               // $MENSAJE    = $rowMSSQL00(trim(['notificacion_titulo']));//.' '.$rowMSSQL00(trim(['notificacion_descripcion']));
                 
                 $stmtMSSQL01->execute([$NOTFICCOD]);
 
