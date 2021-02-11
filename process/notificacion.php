@@ -65,7 +65,7 @@
             INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
 
-            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  AND /*a.NOTFICPAC = 1*/ AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)
+            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  /*AND a.NOTFICPAC = 1*/ AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)
     
             ORDER BY a.NOTFICCOD";
 
@@ -73,7 +73,7 @@
             a.NOTEQUCOD             AS      notificacion_equipo_codigo,	
             a.NOTEQUORD             AS      notificacion_equipo_orden,
             a.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
-            a.NOTEQUOBS             AS      notificacion_equipo_observacion,
+            a.NOTEQUOBS             AS      notificacion_equipo_observacion,x
                 
             a.NOTEQUAUS             AS      auditoria_usuario,
             a.NOTEQUAFH             AS      auditoria_fecha_hora,	
