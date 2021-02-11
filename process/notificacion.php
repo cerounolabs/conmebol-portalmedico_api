@@ -5,7 +5,7 @@
     $DOMFICAIP  = '0.0.0.0';
     $NOTMENOBS  = '';
 
-    function getMensajeManual(){
+    /*function getMensajeManual(){
 
         global $DOMFICAUS;
         global $DOMFICAIP;
@@ -65,7 +65,7 @@
             INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
 
-            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  /*AND a.NOTFICPAC = 1*/ AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)
+            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)
     
             ORDER BY a.NOTFICCOD";
 
@@ -163,15 +163,15 @@
 
             }
 
-        $stmtMSSQL00->closeCursor();
-        $stmtMSSQL01->closeCursor();
-        $stmtMSSQL02->closeCursor();
-        $stmtMSSQL03->closeCursor();
+            $stmtMSSQL00->closeCursor();
+            $stmtMSSQL01->closeCursor();
+            $stmtMSSQL02->closeCursor();
+            $stmtMSSQL03->closeCursor();
 
-        $stmtMSSQL00    = null;
-        $stmtMSSQL01    = null;
-        $stmtMSSQL02    = null;
-        $stmtMSSQL03    = null;
+            $stmtMSSQL00    = null;
+            $stmtMSSQL01    = null;
+            $stmtMSSQL02    = null;
+            $stmtMSSQL03    = null;
 
         } catch (PDOException $e) {
             echo "\n";
@@ -179,7 +179,7 @@
         }
 
         $connMSSQL  = null;
-    }
+    }*/
 
     function getMensajeAutomatico(){
 
@@ -301,8 +301,8 @@
     echo "++++++++++++++++++++++++++PROCESO DE NOTIFICACIÓN++++++++++++++++++++++++++";
     echo "\n";
 
-    echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
-    getMensajeManual();
+    //echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
+  //  getMensajeManual();
     getMensajeAutomatico();
     echo "\n";
     echo "FIN getMensajeManual() => ".date('Y-m-d H:i:s');
