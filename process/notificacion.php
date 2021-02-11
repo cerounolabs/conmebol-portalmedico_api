@@ -144,7 +144,7 @@
 
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
                 $NOTFICCOC  = $rowMSSQL00['competicion_codigo'];
-                //$MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
+                $MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
 
                 $stmtMSSQL01->execute([$NOTFICCOD]);
 
