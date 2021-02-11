@@ -1,13 +1,11 @@
 <?php
     require __DIR__.'/../src/connect.php';
 
-    /*$DOMFICEST  = 1;
-    $DOMFICORD  = 999;*/
     $DOMFICAUS  = 'SFHOLOX';
     $DOMFICAIP  = '0.0.0.0';
     $NOTMENOBS  = '';
 
-    function getMensaje(){
+    function getMensajeManual(){
 
         global $DOMFICAUS;
         global $DOMFICAIP;
@@ -67,7 +65,7 @@
             INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
 
-            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  AND a.NOTFICPAC = 1 AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)
+            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  AND /*a.NOTFICPAC = 1*/ AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)
     
             ORDER BY a.NOTFICCOD";
 
@@ -177,20 +175,131 @@
 
         } catch (PDOException $e) {
             echo "\n";
-            echo 'Error getMensaje(): '.$e;
+            echo 'Error getMensajeManual(): '.$e;
         }
 
         $connMSSQL  = null;
     }
 
+    function getMensajeAutomatico(){
+
+        $sql00  =   "SELECT 
+            a.NOTFICCOD                     AS      notificacion_codigo,
+            a.NOTFICORD                     AS      notificacion_orden,  	
+            a.NOTFICPAC                     AS      notificacion_parametro,
+            a.NOTFICTIT                     AS      notificacion_titulo,	
+            a.NOTFICDES                     AS      notificacion_descripcion,	
+            a.NOTFICFED                     AS      notificacion_fecha_desde,	
+            a.NOTFICFEH                     AS      notificacion_fecha_hasta,	
+            a.NOTFICFCA                     AS      notificacion_fecha_carga,
+            a.NOTFICDIN                     AS      notificacion_dia_inicio,
+            a.NOTFICDFI                     AS      notificacion_dia_fin,
+            a.NOTFICOBS                     AS      notificacion_observacion,
+                
+            a.NOTFICAUS                     AS      auditoria_usuario,
+            a.NOTFICAFH                     AS      auditoria_fecha_hora,	
+            a.NOTFICAIP                     AS      auditoria_ip,
+            
+            b.DOMFICCOD                     AS      tipo_estado_codigo,
+            b.DOMFICORD                     AS      tipo_estado_orden,
+            b.DOMFICNOI                     AS      tipo_estado_ingles,
+            b.DOMFICNOC                     AS      tipo_estado_castellano,
+            b.DOMFICNOP                     AS      tipo_estado_portugues,
+            b.DOMFICPAT                     AS      tipo_estado_path,
+            b.DOMFICVAL                     AS      tipo_estado_dominio,
+            b.DOMFICPAR                     AS      tipo_estado_parametro,
+            b.DOMFICOBS                     AS      tipo_estado_observacion,
+            
+            c.DOMFICCOD                     AS      tipo_notificacion_codigo,
+            c.DOMFICORD                     AS      tipo_notificacion_orden,
+            c.DOMFICNOI                     AS      tipo_notificacion_ingles,
+            c.DOMFICNOC                     AS      tipo_notificacion_castellano,
+            c.DOMFICNOP                     AS      tipo_notificacion_portugues,
+            c.DOMFICPAT                     AS      tipo_notificacion_path,
+            c.DOMFICVAL                     AS      tipo_notificacion_dominio,
+            c.DOMFICPAR                     AS      tipo_notificacion_parametro,
+            c.DOMFICOBS                     AS      tipo_notificacion_observacion,
+            
+            d.DOMFICCOD                     AS      tipo_test_codigo,
+            d.DOMFICORD                     AS      tipo_test_orden,
+            d.DOMFICNOI                     AS      tipo_test_ingles,
+            d.DOMFICNOC                     AS      tipo_test_castellano,
+            d.DOMFICNOP                     AS      tipo_test_portugues,
+            d.DOMFICPAT                     AS      tipo_test_path,
+            d.DOMFICVAL                     AS      tipo_test_dominio,
+            d.DOMFICPAR                     AS      tipo_test_parametro,
+            d.DOMFICOBS                     AS      tipo_test_observacion
+
+            FROM [adm].[NOTFIC] a
+
+            INNER JOIN [adm].[DOMFIC] b ON a.NOTFICEST = b.DOMFICCOD
+            INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
+            INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
+
+            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  /* AND a.NOTFICPAC = 1*/ AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)";
+
+        $sql01  =   "SELECT
+            a.COMPETICION_ID                        AS      competicion_codigo,
+            a.COMPETICION_PADRE_ID                  AS      competicion_codigo_padre,
+            a.COMPETICION_ESTADO                    AS      competicion_estado,
+            a.COMPETICION_ANHO                      AS      competicion_anho,
+            a.JUEGO_CODIGO                          AS      juego_codigo,
+            a.JUEGO_NOMBRE                          AS      juego_fase,
+            a.JUEGO_ESTADO                          AS      juego_estado,
+            a.JUEGO_HORARIO                         AS      juego_horario,
+            a.EQUIPO_LOCAL_CODIGO                   AS      equipo_local_codigo,
+            a.EQUIPO_LOCAL_NOMBRE                   AS      equipo_local_nombre,
+            a.EQUIPO_LOCAL_RESULTADO_PRIMER         AS      equipo_local_resultado_primer,
+            a.EQUIPO_LOCAL_RESULTADO_SEGUNDO        AS      equipo_local_resultado_segundo,
+            a.EQUIPO_VISITANTE_CODIGO               AS      equipo_visitante_codigo,
+            a.EQUIPO_VISITANTE_NOMBRE               AS      equipo_visitante_nombre,
+            a.EQUIPO_VISITANTE_RESULTADO_PRIMER     AS      equipo_visitante_resultado_primer,
+            a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO    AS      equipo_visitante_resultado_segundo
+
+            FROM [view].[juego] a
+
+            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND a.JUEGO_HORARIO IS NOT NULL AND a.COMPETICION_PADRE_ID = ?";
+
+
+        try {
+            $connMSSQL  = getConnectionMSSQLv2();
+            $stmtMSSQL00= $connMSSQL->prepare($sql00);
+            $stmtMSSQL00->execute();
+
+            $stmtMSSQL01= $connMSSQL->prepare($sql01);
+           
+            while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {//recorre NOTFIC
+                
+                $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
+                $NOTFICCOC  = $rowMSSQL00['competicion_codigo'];
+                $NOTFICDIN  = $rowMSSQL00['notificacion_dia_inicio'];
+                $NOTFICDFI  = $rowMSSQL00['notificacion_dia_fin'];
+                $MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
+                
+                $stmtMSSQL01->execute([$NOTFICCOC]);
+
+            }
+
+            $stmtMSSQL00->closeCursor();
+            $stmtMSSQL00= null;
+
+        } catch (PDOException $e) {
+            echo "\n";
+            echo 'Error getMensajeAutomatico(): '.$e;
+        }
+
+        $connMSSQL  = null;
+
+    }
+
     echo "\n";
     echo "++++++++++++++++++++++++++PROCESO DE NOTIFICACIÓN++++++++++++++++++++++++++";
     echo "\n";
-    /*echo "++++++++++++++++ SISTEMA CORPORATIVO => SISTEMA SFHOLOX ++++++++++++++++";*/
 
-    echo "INICIO getMensaje() => ".date('Y-m-d H:i:s');
-    getMensaje();
+    echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
+    getMensajeManual();
+    getMensajeAutomatico();
     echo "\n";
-    echo "FIN getMensaje() => ".date('Y-m-d H:i:s');
+    echo "FIN getMensajeManual() => ".date('Y-m-d H:i:s');
     echo "\n";
 ?>
