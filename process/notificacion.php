@@ -73,7 +73,7 @@
             a.NOTEQUCOD             AS      notificacion_equipo_codigo,	
             a.NOTEQUORD             AS      notificacion_equipo_orden,
             a.NOTEQUFCA             AS      notificacion_equipo_fecha_carga,	
-            a.NOTEQUOBS             AS      notificacion_equipo_observacion,x
+            a.NOTEQUOBS             AS      notificacion_equipo_observacion,
                 
             a.NOTEQUAUS             AS      auditoria_usuario,
             a.NOTEQUAFH             AS      auditoria_fecha_hora,	
@@ -145,7 +145,7 @@
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
                 $NOTFICCOC  = $rowMSSQL00['competicion_codigo'];
                 //$MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
-                
+
                 $stmtMSSQL01->execute([$NOTFICCOD]);
 
                 while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//RECORRE NOTEQU
