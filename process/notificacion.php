@@ -236,7 +236,7 @@
             INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
 
-            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 2  /* AND a.NOTFICPAC = 1*/ AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)";
+            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 1 AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)";
 
         $sql01  =   "SELECT
             a.COMPETICION_ID                        AS      competicion_codigo,
@@ -258,7 +258,7 @@
 
             FROM [view].[juego] a
 
-            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND a.JUEGO_HORARIO IS NOT NULL AND a.COMPETICION_PADRE_ID = ?";
+            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY,-?, a.JUEGO_HORARIO),103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY,-?, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
 
 
         try {
@@ -276,12 +276,16 @@
                 $NOTFICDFI  = $rowMSSQL00['notificacion_dia_fin'];
                 $MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
                 
-                $stmtMSSQL01->execute([$NOTFICCOC]);
+                $stmtMSSQL01->execute([$NOTFICCOC, $NOTFICDIN, $NOTFICDFI]);
+                echo 'entra en el proceso => ';
 
             }
 
             $stmtMSSQL00->closeCursor();
+            $stmtMSSQL01->closeCursor();
+
             $stmtMSSQL00= null;
+            $stmtMSSQL01= null;
 
         } catch (PDOException $e) {
             echo "\n";
