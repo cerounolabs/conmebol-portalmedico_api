@@ -5,7 +5,7 @@
     $DOMFICAIP  = '0.0.0.0';
     $NOTMENOBS  = '';
 
-    /*function getMensajeManual(){
+    function getMensajeManual(){
 
         global $DOMFICAUS;
         global $DOMFICAIP;
@@ -179,7 +179,7 @@
         }
 
         $connMSSQL  = null;
-    }*/
+    }
 
     function getMensajeAutomatico(){
 
@@ -255,11 +255,24 @@
             a.EQUIPO_VISITANTE_CODIGO               AS      equipo_visitante_codigo,
             a.EQUIPO_VISITANTE_NOMBRE               AS      equipo_visitante_nombre,
             a.EQUIPO_VISITANTE_RESULTADO_PRIMER     AS      equipo_visitante_resultado_primer,
-            a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO    AS      equipo_visitante_resultado_segundo
+            a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO    AS      equipo_visitante_resultado_segundo,
+            
+            b.NOTFICCOD                             AS      notificacion_codigo,
+            b.NOTFICORD                             AS      notificacion_orden,  	
+            b.NOTFICPAC                             AS      notificacion_parametro,
+            b.NOTFICTIT                             AS      notificacion_titulo,	
+            b.NOTFICDES                             AS      notificacion_descripcion,	
+            b.NOTFICFED                             AS      notificacion_fecha_desde,	
+            b.NOTFICFEH                             AS      notificacion_fecha_hasta,	
+            b.NOTFICFCA                             AS      notificacion_fecha_carga,
+            b.NOTFICDIN                             AS      notificacion_dia_inicio,
+            b.NOTFICDFI                             AS      notificacion_dia_fin,
+            b.NOTFICOBS                             AS      notificacion_observacion
 
             FROM [view].[juego] a
+            INNER JOIN [adm].[NOTFIC] b ON a.COMPETICION_PADRE_ID = b.NOTFICCOC
 
-            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY, - ?, a.JUEGO_HORARIO), 103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY, - ?, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
+            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDIN, a.JUEGO_HORARIO), 103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDFI, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
 
         try {
             $connMSSQL  = getConnectionMSSQLv2();
@@ -272,13 +285,9 @@
                 
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
                 $NOTFICCOC  = $rowMSSQL00['notificacion_competicion_codigo'];
-                $NOTFICDIN  = strval($rowMSSQL00['notificacion_dia_inicio']);
-                $NOTFICDFI  = strval($rowMSSQL00['notificacion_dia_fin']);
                 $MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
-                echo 'antes de ejecutar competicion => '.$NOTFICCOC.' inicio => '.$NOTFICDIN.' fin => '.$NOTFICDFI;
-                $stmtMSSQL01->execute([$NOTFICCOC, $NOTFICDIN, $NOTFICDFI]);
-                echo 'entra en el proceso => ';
-
+                echo 'antes de ejecutar competicion => '.$NOTFICCOC;
+                $stmtMSSQL01->execute([$NOTFICCOC]);
             }
 
             $stmtMSSQL00->closeCursor();
@@ -300,8 +309,8 @@
     echo "++++++++++++++++++++++++++PROCESO DE NOTIFICACIÓN++++++++++++++++++++++++++";
     echo "\n";
 
-    //echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
-  //  getMensajeManual();
+    echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
+    getMensajeManual();
     getMensajeAutomatico();
     echo "\n";
     echo "FIN getMensajeManual() => ".date('Y-m-d H:i:s');
