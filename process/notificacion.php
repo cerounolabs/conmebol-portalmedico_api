@@ -194,6 +194,7 @@
             a.NOTFICFCA                     AS      notificacion_fecha_carga,
             a.NOTFICDIN                     AS      notificacion_dia_inicio,
             a.NOTFICDFI                     AS      notificacion_dia_fin,
+            a.NOTFICCOC                     AS      notificacion_competicion_codigo,
             a.NOTFICOBS                     AS      notificacion_observacion,
                 
             a.NOTFICAUS                     AS      auditoria_usuario,
@@ -258,7 +259,7 @@
 
             FROM [view].[juego] a
 
-            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY,-?, a.JUEGO_HORARIO),103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY,-?, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
+            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY,- ?, a.JUEGO_HORARIO),103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY,- ?, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
 
 
         try {
@@ -271,7 +272,7 @@
             while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {//recorre NOTFIC
                 
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
-                $NOTFICCOC  = $rowMSSQL00['competicion_codigo'];
+                $NOTFICCOC  = $rowMSSQL00['notificacion_competicion_codigo'];
                 $NOTFICDIN  = $rowMSSQL00['notificacion_dia_inicio'];
                 $NOTFICDFI  = $rowMSSQL00['notificacion_dia_fin'];
                 $MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
