@@ -275,7 +275,7 @@
                 $NOTFICDIN  = $rowMSSQL00['notificacion_dia_inicio'];
                 $NOTFICDFI  = $rowMSSQL00['notificacion_dia_fin'];
                 $MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
-                
+                echo 'antes de ejecutar competicion => '.$NOTFICCOC.' inicio => '.$NOTFICDIN.' fin => '.$NOTFICDFI;
                 $stmtMSSQL01->execute([$NOTFICCOC, $NOTFICDIN, $NOTFICDFI]);
                 echo 'entra en el proceso => ';
 
