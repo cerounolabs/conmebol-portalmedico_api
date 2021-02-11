@@ -259,8 +259,7 @@
 
             FROM [view].[juego] a
 
-            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY, ?, a.JUEGO_HORARIO),103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY, ?, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
-
+            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY, 0, a.JUEGO_HORARIO),103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY, 0, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
 
         try {
             $connMSSQL  = getConnectionMSSQLv2();
@@ -277,7 +276,7 @@
                 $NOTFICDFI  = $rowMSSQL00['notificacion_dia_fin'];
                 $MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
                 echo 'antes de ejecutar competicion => '.$NOTFICCOC.' inicio => '.$NOTFICDIN.' fin => '.$NOTFICDFI;
-                $stmtMSSQL01->execute([$NOTFICCOC, $NOTFICDIN, $NOTFICDFI]);
+                $stmtMSSQL01->execute([$NOTFICCOC/*, $NOTFICDIN, $NOTFICDFI*/]);
                 echo 'entra en el proceso => ';
 
             }
