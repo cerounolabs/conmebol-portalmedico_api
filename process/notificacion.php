@@ -274,6 +274,8 @@
 
             WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDIN, a.JUEGO_HORARIO), 103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDFI, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
 
+        $sql02  =   "";
+
         try {
             $connMSSQL  = getConnectionMSSQLv2();
             $stmtMSSQL00= $connMSSQL->prepare($sql00);
@@ -285,9 +287,8 @@
                 
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
                 $NOTFICCOC  = $rowMSSQL00['notificacion_competicion_codigo'];
-                //$MENSAJE    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
-               // echo 'antes de ejecutar competicion => '.$NOTFICCOC;
                 $stmtMSSQL01->execute([$NOTFICCOC]);
+                //getMensajeResultado();
             }
 
             $stmtMSSQL00->closeCursor();
@@ -311,8 +312,21 @@
 
     echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
     getMensajeManual();
-    getMensajeAutomatico();
     echo "\n";
     echo "FIN getMensajeManual() => ".date('Y-m-d H:i:s');
     echo "\n";
+
+    echo "INICIO getMensajeAutomatico() => ".date('Y-m-d H:i:s');
+    getMensajeAutomatico();
+    echo "\n";
+    echo "FIN getMensajeAutomatico() => ".date('Y-m-d H:i:s');
+    echo "\n";
+
+    /*echo "INICIO getMensajeResultado() => ".date('Y-m-d H:i:s');
+    getMensajeResultado();
+    echo "\n";
+    echo "FIN getMensajeResultado() => ".date('Y-m-d H:i:s');
+    echo "\n";*/
+
+
 ?>
