@@ -621,27 +621,56 @@
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
-            $sql00  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICPEC, EXAFICAEC, EXAFICFE1, EXAFICACA, EXAFICMCA, EXAFICJCO, EXAFICJPO, EXAFICJCA, EXAFICLNO, EXAFICLFE, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
-            $sql01  = "SELECT MAX(EXAFICCOD) AS examen_codigo FROM [exa].[EXAFIC]";
+            $sql00  = "SELECT EXAFICCOD AS examen_codigo FROM exa.EXAFIC a WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICPEC = ? AND a.EXAFICEST <>  211 AND a.EXAFICTEC = ? AND EXAFICAEC = ?";
+            $sql01  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICPEC, EXAFICAEC, EXAFICFE1, EXAFICACA, EXAFICMCA, EXAFICJCO, EXAFICJPO, EXAFICJCA, EXAFICLNO, EXAFICLFE, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql02  = "SELECT MAX(EXAFICCOD) AS examen_codigo FROM [exa].[EXAFIC]";
+            $sql03  = "UPDATE [exa].[EXAFIC] SET EXAFICBAN = 'S' WHERE EXAFICCOD = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
+
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
-                $stmtMSSQL00->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $val16, $aud01, $aud03]); 
-                
-                $stmtMSSQL01= $connMSSQL->prepare($sql01);
-                $stmtMSSQL01->execute();
-                $row_mssql01= $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
-                $codigo     = $row_mssql01['examen_codigo']; 
-                
-                header("Content-Type: application/json; charset=utf-8");
-                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                $stmtMSSQL00->execute([$val03, $val04, $val05, $val06, $val02, $val07]);
+                $row_mssql00= $stmtMSSQL00->fetch(PDO::FETCH_ASSOC);
+                $codAux     = $row_mssql00['examen_codigo'];
 
-                $stmtMSSQL00->closeCursor();
-                $stmtMSSQL01->closeCursor();
+                if (empty($codAux)){
+                    $stmtMSSQL01= $connMSSQL->prepare($sql01);
+                    $stmtMSSQL01->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val12, $val13, $val14, $val15, $val16, $aud01, $aud03]); 
+                    
+                    $stmtMSSQL02= $connMSSQL->prepare($sql02);
+                    $stmtMSSQL02->execute();
+                    $row_mssql02= $stmtMSSQL02->fetch(PDO::FETCH_ASSOC);
+                    $codigo     = $row_mssql02['examen_codigo'];
 
-                $stmtMSSQL00 = null;
-                $stmtMSSQL01 = null;
+                    if ($val07 != 0){
+                        $stmtMSSQL03= $connMSSQL->prepare($sql03);
+                        $stmtMSSQL03->execute([$val07]);
+                    }
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    
+                    $stmtMSSQL00->closeCursor();
+                    $stmtMSSQL01->closeCursor();
+                    $stmtMSSQL02->closeCursor();
+    
+                    $stmtMSSQL00 = null;
+                    $stmtMSSQL01 = null;
+                    $stmtMSSQL02 = null;
+
+                    if ($val07 != 0){
+                        $stmtMSSQL03->closeCursor();
+                        $stmtMSSQL03 = null;
+                    }
+                } else {
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json       = json_encode(array('code' => 204, 'status' => 'error', 'message' => 'ERROR Ya existe el registro, favor verificar', 'codigo' => 0), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    
+                    $stmtMSSQL00->closeCursor();
+    
+                    $stmtMSSQL00 = null;
+                }
             } catch (PDOException $e) {
                 header("Content-Type: application/json; charset=utf-8");
                 $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
