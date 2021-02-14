@@ -823,7 +823,7 @@
                         gender = ?,
                         playerPosition = ?,
                         personType = ?,
-                        lastUpdate = GEDATE()
+                        lastUpdate = GETDATE()
                         WHERE documentType = ? AND documentNumber = ?";
             $sql02  = "INSERT INTO [comet].[persons] (personFifaId, internationalFirstName, internationalLastName, firstName, lastName, dateOfBirth, gender, playerPosition, documentType, documentNumber, personType, lastUpdate) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE() WHERE NOT EXISTS(SELECT * FROM comet.persons WHERE documentType = ? AND documentNumber = ?)";
             
