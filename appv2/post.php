@@ -805,14 +805,17 @@
         $val06      = strtoupper(strtolower(trim($request->getParsedBody()['persona_funcion'])));
         $val07      = $request->getParsedBody()['tipo_documento_codigo'];
         $val08      = strtoupper(strtolower(trim($request->getParsedBody()['tipo_documento_numero'])));
+        $val08      = str_replace('.', '', $val08);
+        $val08      = str_replace(' ', '', $val08);
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
-        if (isset($val00) && isset($val01) && isset($val02) && isset($val03) && isset($val07) && isset($val08)) {
+        if (isset($val00) && isset($val01) && isset($val02) && isset($val03) && isset($val07) && isset($val08) && !empty($val08)) {
             $sql00  = "SELECT personFifaId AS codigo FROM [comet].[persons] WHERE personFifaId = ?";
-            $sql01  = "INSERT INTO [comet].[persons] (personFifaId, internationalFirstName, internationalLastName, firstName, lastName, dateOfBirth, gender, playerPosition, documentType, documentNumber, personType, lastUpdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE())";
+            $sql01  = "INSERT INTO [comet].[persons] (personFifaId, internationalFirstName, internationalLastName, firstName, lastName, dateOfBirth, gender, playerPosition, documentType, documentNumber, personType, lastUpdate) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE() WHERE NOT EXISTS(SELECT * FROM comet.persons WHERE documentType = ? AND documentNumber = ?)";
+            
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
 
@@ -830,7 +833,7 @@
                     $codigo     = $row_mssql00['codigo'];
                 }
 
-                $stmtMSSQL01->execute([$val00, $val02, $val03, $val02, $val03, $val05, $val04, $val06, $val07, $val08, $val01]);
+                $stmtMSSQL01->execute([$val00, $val02, $val03, $val02, $val03, $val05, $val04, $val06, $val07, $val08, $val01, $val07, $val08]);
                 $codigo = $val00;
 
                 header("Content-Type: application/json; charset=utf-8");
@@ -1051,6 +1054,3 @@
         
         return $json;
     });
-
-
-

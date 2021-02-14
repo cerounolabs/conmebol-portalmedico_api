@@ -1,9 +1,13 @@
 <?php
     require __DIR__.'/../src/connect.php';
 
-    $DOMFICAUS  = 'SFHOLOX';
-    $DOMFICAIP  = '0.0.0.0';
-    $NOTMENOBS  = '';
+    $DOMFICAUS      = 'SFHOLOX';
+    $DOMFICAIP      = '0.0.0.0';
+    $NOTMENOBS      = '';
+    global $EQUIPOL; 
+    global $ENCUENTRO; 
+    global $COMPETICION;
+
 
     function getMensajeManual(){
 
@@ -183,6 +187,9 @@
 
     function getMensajeAutomatico(){
 
+        /*global $EQUIPOL; 
+        global $ENCUENTRO; 
+        global $COMPETICION;*/
         $sql00  =   "SELECT 
             a.NOTFICCOD                     AS      notificacion_codigo,
             a.NOTFICORD                     AS      notificacion_orden,  	
@@ -274,7 +281,7 @@
 
             WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDIN, a.JUEGO_HORARIO), 103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDFI, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
 
-        $sql02  =   "";
+        
 
         try {
             $connMSSQL  = getConnectionMSSQLv2();
@@ -288,7 +295,15 @@
                 $NOTFICCOD  = $rowMSSQL00['notificacion_codigo'];
                 $NOTFICCOC  = $rowMSSQL00['notificacion_competicion_codigo'];
                 $stmtMSSQL01->execute([$NOTFICCOC]);
-                //getMensajeResultado();
+
+                while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//recorre NOTFIC
+
+                    $EQUIPOL        = $rowMSSQL01['equipo_local_codigo'];
+                    $ENCUENTRO      = $rowMSSQL01['juego_codigo'];
+                    $COMPETICION    = $rowMSSQL01['competicion_codigo_padre'];
+                    
+                    getMensajeResultado($EQUIPOL, $ENCUENTRO, $COMPETICION);
+                }
             }
 
             $stmtMSSQL00->closeCursor();
@@ -305,6 +320,32 @@
         $connMSSQL  = null;
 
     }
+
+    function getMensajeResultado($EQUIPOL, $ENCUENTRO, $COMPETICION){
+
+        echo 'equipo local => '.$EQUIPOL.' encuentro => '.$ENCUENTRO.' competicion => '.$COMPETICION;
+
+        /*$sql02  =   "";
+
+        try {
+            $connMSSQL  = getConnectionMSSQLv2();
+            //$stmtMSSQL02= $connMSSQL->prepare($sql02);
+            //$stmtMSSQL02->execute(); 
+
+            //$stmtMSSQL02->closeCursor();
+            //$stmtMSSQL01->closeCursor();
+
+            $stmtMSSQL02= null;
+            //$stmtMSSQL01= null;
+
+        } catch (PDOException $e) {
+            echo "\n";
+            echo 'Error getMensajeAutomatico(): '.$e;
+        }
+
+        $connMSSQL  = null;*/
+    }
+
 
     echo "\n";
     echo "++++++++++++++++++++++++++PROCESO DE NOTIFICACIÓN++++++++++++++++++++++++++";
