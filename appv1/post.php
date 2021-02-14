@@ -806,6 +806,7 @@
         $val07      = $request->getParsedBody()['tipo_documento_codigo'];
         $val08      = strtoupper(strtolower(trim($request->getParsedBody()['tipo_documento_numero'])));
         $val08      = str_replace('.', '', $val08);
+        $val08      = str_replace(',', '', $val08);
         $val08      = str_replace(' ', '', $val08);
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
