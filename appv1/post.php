@@ -814,13 +814,25 @@
 
         if (isset($val00) && isset($val01) && isset($val02) && isset($val03) && isset($val07) && isset($val08) && !empty($val08)) {
             $sql00  = "SELECT personFifaId AS codigo FROM [comet].[persons] WHERE personFifaId = ?";
-            $sql01  = "INSERT INTO [comet].[persons] (personFifaId, internationalFirstName, internationalLastName, firstName, lastName, dateOfBirth, gender, playerPosition, documentType, documentNumber, personType, lastUpdate) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE() WHERE NOT EXISTS(SELECT * FROM comet.persons WHERE documentType = ? AND documentNumber = ?)";
+            $sql01  = "UPDATE comet.persons SET
+                        internationalFirstName = ?,
+                        internationalLastName = ?,
+                        firstName = ?,
+                        lastName = ?,
+                        dateOfBirth = ?,
+                        gender = ?,
+                        playerPosition = ?,
+                        personType = ?,
+                        lastUpdate = GEDATE()
+                        WHERE documentType = ? AND documentNumber = ?";
+            $sql02  = "INSERT INTO [comet].[persons] (personFifaId, internationalFirstName, internationalLastName, firstName, lastName, dateOfBirth, gender, playerPosition, documentType, documentNumber, personType, lastUpdate) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE() WHERE NOT EXISTS(SELECT * FROM comet.persons WHERE documentType = ? AND documentNumber = ?)";
             
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
 
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
+                $stmtMSSQL02= $connMSSQL->prepare($sql02);
             
                 $stmtMSSQL00->execute([$val00]); 
                 $row_mssql00= $stmtMSSQL00->fetch(PDO::FETCH_ASSOC);
@@ -833,7 +845,8 @@
                     $codigo     = $row_mssql00['codigo'];
                 }
 
-                $stmtMSSQL01->execute([$val00, $val02, $val03, $val02, $val03, $val05, $val04, $val06, $val07, $val08, $val01, $val07, $val08]);
+                $stmtMSSQL01->execute([$val02, $val03, $val02, $val03, $val05, $val04, $val06, $val01, $val07, $val08]);
+                $stmtMSSQL02->execute([$val00, $val02, $val03, $val02, $val03, $val05, $val04, $val06, $val07, $val08, $val01, $val07, $val08]);
                 $codigo = $val00;
 
                 header("Content-Type: application/json; charset=utf-8");
