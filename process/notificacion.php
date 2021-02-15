@@ -381,24 +381,25 @@
             $stmtMSSQL02_2  = $connMSSQL->prepare($sql02_2);
             $stmtMSSQL02_2->execute([$COMPETICION, $ENCUENTRO]); 
 
-            //$titulo= 'LISTADO PERSONAS PENDIENTES';
+            $persona_datos = '';
+            $persona_datos_2 = '';
 
             while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
                
-                $persona_datos  = trim($rowMSSQL01_1['persona_nombre_completo'])."\n";
-                echo 'PERSONAS PENDIENTES => '.$persona_datos;
+                $persona_datos  = 'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo'])."\n";
+
 
             }
 
             while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {
                 //$titulo2         = 'LISTADO DE PERSONAS - '.trim($rowMSSQL02_2['tipo_estado_nombre_castellano']);         
-                $persona_datos_2 = "\n".trim($rowMSSQL02_2['persona_nombre_completo']);
-                echo 'PERSONAS PENDIENTES RESULTADO => '.$persona_datos_2;
+                $persona_datos_2 = 'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo'])."\n";
 
 
             }
 
-
+            echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
+            echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
             $stmtMSSQL01_1->closeCursor();
             $stmtMSSQL02_2->closeCursor();
 
