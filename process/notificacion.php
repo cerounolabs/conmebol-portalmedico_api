@@ -386,18 +386,18 @@
 
             while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
                
-                $persona_datos  = 'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo'])."\n";
+                $persona_datos  = $persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
 
 
             }
 
             while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {
                 //$titulo2         = 'LISTADO DE PERSONAS - '.trim($rowMSSQL02_2['tipo_estado_nombre_castellano']);         
-                $persona_datos_2 = 'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo'])."\n";
+                $persona_datos_2 = $persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
 
 
             }
-
+            echo "\n";
             echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
             echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
             $stmtMSSQL01_1->closeCursor();
