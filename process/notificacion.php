@@ -7,7 +7,8 @@
     global $EQUIPOL; 
     global $ENCUENTRO; 
     global $COMPETICION;
-
+          
+    
 
     function getMensajeManual(){
 
@@ -296,7 +297,7 @@
                 $NOTFICCOC  = $rowMSSQL00['notificacion_competicion_codigo'];
                 $stmtMSSQL01->execute([$NOTFICCOC]);
 
-                while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//recorre NOTFIC
+                while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//recorre juego
 
                     $EQUIPOL        = $rowMSSQL01['equipo_local_codigo'];
                     $ENCUENTRO      = $rowMSSQL01['juego_codigo'];
@@ -323,19 +324,83 @@
 
     function getMensajeResultado($EQUIPOL, $ENCUENTRO, $COMPETICION){
 
-        echo 'equipo local => '.$EQUIPOL.' encuentro => '.$ENCUENTRO.' competicion => '.$COMPETICION;
+        //echo 'equipo local => '.$EQUIPOL.' encuentro => '.$ENCUENTRO.' competicion => '.$COMPETICION;
 
-        /*$sql02  =   "";
+        $sql01_1    =   "SELECT 
+            a.competitionFifaId        AS  competicion_codigo,
+            a.teamFifaId               AS  equipo_codigo,
+            
+            b.personFifaId             AS  persona_codigo,
+            b.internationalFirstName   AS  persona_nombre,
+            b.internationalLastName    AS  persona_apellido,
+            b.documentNumber           AS  persona_documento,
+            RTRIM(CONVERT(CHAR, b.personFifaId))+' -    '+(b.internationalFirstName)+' '+(b.internationalLastName) AS persona_nombre_completo
+            
+            FROM [comet].[competitions_teams_players] a 
+            INNER JOIN [comet].[persons]   b ON a.playerFifaId  = b.personFifaId
+
+            WHERE a.competitionFifaId = ? and a.teamFifaId  = ? AND NOT EXISTS (SELECT * FROM [exa].[EXAFIC] c
+
+                                                                                            INNER JOIN [adm].[DOMFIC]   d ON c.EXAFICEST  = d.DOMFICCOD
+                                                                                            INNER JOIN [adm].[DOMFIC]   e ON c.EXAFICTEC  = e.DOMFICCOD 
+                                                                                                
+                                                                                        WHERE c.EXAFICCOC = ? AND c.EXAFICEQC = ? AND c.EXAFICENC  = ? AND d.DOMFICPAR <> 3 AND e.DOMFICPAR = 1)";
+
+        $sql02_2    =   "SELECT 
+            RTRIM(CONVERT(CHAR, d.personFifaId))+' -    '+(d.internationalFirstName)+' '+(d.internationalLastName) AS persona_nombre_completo
+            b.DOMFICCOD     AS      tipo_estado_codigo,
+            b.DOMFICNOC     AS      tipo_estado_nombre_castellano  
+            FROM exa.EXAFIC a
+            INNER JOIN adm.DOMFIC b ON a.EXAFICEST  = b.DOMFICCOD
+            INNER JOIN adm.DOMFIC c ON a.EXAFICTEC  = c.DOMFICCOD
+            INNER JOIN comet.persons d ON a.EXAFICPEC = d.personFifaId
+            
+            WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND b.DOMFICPAR = 1 AND c.DOMFICPAR = 1";
+
+        $sql03_3    =   "SELECT 
+            a.PERFICCOD                         AS          persona_codigo,
+            a.PERFICNOM                         AS          persona_nombre,
+            a.PERFICMAI                         AS          persona_email,
+            a.PERFICTEF                         AS          persona_telefono,
+            a.PERFICEQU                         AS          persona_equipo,
+            
+            b.PERCOMCOC                         AS          competicion_persona_competicion                                                                                           
+            
+            FROM adm.PERFIC a
+            INNER JOIN adm.PERCOM b ON a.PERFICCOD = b.PERCOMPEC
+            INNER JOIN adm.DOMFIC c ON b.PERCOMTMC = c.DOMFICCOD
+            
+            WHERE a.PERFICEQU = ? AND b.PERCOMCOC = ? AND c.DOMFICPAR = 2";
+            
 
         try {
-            $connMSSQL  = getConnectionMSSQLv2();
-            //$stmtMSSQL02= $connMSSQL->prepare($sql02);
-            //$stmtMSSQL02->execute(); 
+            $connMSSQL      = getConnectionMSSQLv2();
+            $stmtMSSQL01_1  = $connMSSQL->prepare($sql01_1);
+            $stmtMSSQL01_1->execute([$COMPETICION, $EQUIPOL, $COMPETICION, $EQUIPOL, $ENCUENTRO]); 
 
-            //$stmtMSSQL02->closeCursor();
+            $stmtMSSQL02_2  = $connMSSQL->prepare($sql02_2);
+            $stmtMSSQL02_2->execute([$COMPETICION, $ENCUENTRO]); 
+
+            $titulo= 'LISTADO PERSONAS PENDIENTES';
+
+            while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
+               
+                $persona_datos  = $titulo."\n".trim($rowMSSQL01_1['persona_nombre_completo'])."\n";
+                echo 'PERSONAS => '.$persona_datos;
+            }
+
+            while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {
+                /*$titulo2         = 'LISTADO DE PERSONAS - '.trim($rowMSSQL02_2['tipo_estado_nombre_castellano']);         
+                $persona_datos_2 = "\n".trim($rowMSSQL02_2['persona_nombre_completo']);*/
+
+
+            }
+
+
+            $stmtMSSQL01_1->closeCursor();
             //$stmtMSSQL01->closeCursor();
 
-            $stmtMSSQL02= null;
+            $stmtMSSQL01_1= null;
             //$stmtMSSQL01= null;
 
         } catch (PDOException $e) {
@@ -343,7 +408,7 @@
             echo 'Error getMensajeAutomatico(): '.$e;
         }
 
-        $connMSSQL  = null;*/
+        $connMSSQL  = null;
     }
 
 
