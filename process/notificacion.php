@@ -347,7 +347,7 @@
                                                                                         WHERE c.EXAFICCOC = ? AND c.EXAFICEQC = ? AND c.EXAFICENC  = ? AND d.DOMFICPAR <> 3 AND e.DOMFICPAR = 1)";
 
         $sql02_2    =   "SELECT 
-            RTRIM(CONVERT(CHAR, d.personFifaId))+' -    '+(d.internationalFirstName)+' '+(d.internationalLastName) AS persona_nombre_completo
+            RTRIM(CONVERT(CHAR, d.personFifaId))+' -    '+(d.internationalFirstName)+' '+(d.internationalLastName) AS persona_nombre_completo,
             b.DOMFICCOD     AS      tipo_estado_codigo,
             b.DOMFICNOC     AS      tipo_estado_nombre_castellano  
             FROM exa.EXAFIC a
