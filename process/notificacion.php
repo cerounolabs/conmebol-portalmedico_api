@@ -357,7 +357,7 @@
             
             WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND b.DOMFICPAR = 1 AND c.DOMFICPAR = 1";
 
-        $sql03_3    =   "SELECT 
+        /*$sql03_3    =   "SELECT 
             a.PERFICCOD                         AS          persona_codigo,
             a.PERFICNOM                         AS          persona_nombre,
             a.PERFICMAI                         AS          persona_email,
@@ -370,7 +370,7 @@
             INNER JOIN adm.PERCOM b ON a.PERFICCOD = b.PERCOMPEC
             INNER JOIN adm.DOMFIC c ON b.PERCOMTMC = c.DOMFICCOD
             
-            WHERE a.PERFICEQU = ? AND b.PERCOMCOC = ? AND c.DOMFICPAR = 2";
+            WHERE a.PERFICEQU = ? AND b.PERCOMCOC = ? AND c.DOMFICPAR = 2";*/
             
 
         try {
@@ -378,8 +378,8 @@
             $stmtMSSQL01_1  = $connMSSQL->prepare($sql01_1);
             $stmtMSSQL01_1->execute([$COMPETICION, $EQUIPOL, $COMPETICION, $EQUIPOL, $ENCUENTRO]); 
 
-            $stmtMSSQL02_2  = $connMSSQL->prepare($sql02_2);
-            $stmtMSSQL02_2->execute([$COMPETICION, $ENCUENTRO]); 
+            /*$stmtMSSQL02_2  = $connMSSQL->prepare($sql02_2);
+            $stmtMSSQL02_2->execute([$COMPETICION, $ENCUENTRO]); */
 
             $titulo= 'LISTADO PERSONAS PENDIENTES';
 
@@ -389,12 +389,12 @@
                 echo 'PERSONAS => '.$persona_datos;
             }
 
-            while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {
-                /*$titulo2         = 'LISTADO DE PERSONAS - '.trim($rowMSSQL02_2['tipo_estado_nombre_castellano']);         
-                $persona_datos_2 = "\n".trim($rowMSSQL02_2['persona_nombre_completo']);*/
+            /*while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {
+                $titulo2         = 'LISTADO DE PERSONAS - '.trim($rowMSSQL02_2['tipo_estado_nombre_castellano']);         
+                $persona_datos_2 = "\n".trim($rowMSSQL02_2['persona_nombre_completo']);
 
 
-            }
+            }*/
 
 
             $stmtMSSQL01_1->closeCursor();
