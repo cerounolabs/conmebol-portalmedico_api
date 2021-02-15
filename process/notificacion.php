@@ -355,9 +355,9 @@
             INNER JOIN adm.DOMFIC c ON a.EXAFICTEC  = c.DOMFICCOD
             INNER JOIN comet.persons d ON a.EXAFICPEC = d.personFifaId
             
-            WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND b.DOMFICPAR = 1 AND c.DOMFICPAR = 1";
+            WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND b.DOMFICPAR = 2 AND c.DOMFICPAR = 1";
 
-        /*$sql03_3    =   "SELECT 
+        $sql03_3    =   "SELECT 
             a.PERFICCOD                         AS          persona_codigo,
             a.PERFICNOM                         AS          persona_nombre,
             a.PERFICMAI                         AS          persona_email,
@@ -370,7 +370,7 @@
             INNER JOIN adm.PERCOM b ON a.PERFICCOD = b.PERCOMPEC
             INNER JOIN adm.DOMFIC c ON b.PERCOMTMC = c.DOMFICCOD
             
-            WHERE a.PERFICEQU = ? AND b.PERCOMCOC = ? AND c.DOMFICPAR = 2";*/
+            WHERE a.PERFICEQU = ? AND b.PERCOMCOC = ? AND c.DOMFICPAR = 2";
             
 
         try {
@@ -378,30 +378,32 @@
             $stmtMSSQL01_1  = $connMSSQL->prepare($sql01_1);
             $stmtMSSQL01_1->execute([$COMPETICION, $EQUIPOL, $COMPETICION, $EQUIPOL, $ENCUENTRO]); 
 
-            /*$stmtMSSQL02_2  = $connMSSQL->prepare($sql02_2);
-            $stmtMSSQL02_2->execute([$COMPETICION, $ENCUENTRO]); */
+            $stmtMSSQL02_2  = $connMSSQL->prepare($sql02_2);
+            $stmtMSSQL02_2->execute([$COMPETICION, $ENCUENTRO]); 
 
-            $titulo= 'LISTADO PERSONAS PENDIENTES';
+            //$titulo= 'LISTADO PERSONAS PENDIENTES';
 
             while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
                
-                $persona_datos  = $titulo."\n".trim($rowMSSQL01_1['persona_nombre_completo'])."\n";
-                echo 'PERSONAS => '.$persona_datos;
+                $persona_datos  = trim($rowMSSQL01_1['persona_nombre_completo'])."\n";
+                echo 'PERSONAS PENDIENTES => '.$persona_datos;
+
             }
 
-            /*while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {
-                $titulo2         = 'LISTADO DE PERSONAS - '.trim($rowMSSQL02_2['tipo_estado_nombre_castellano']);         
+            while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {
+                //$titulo2         = 'LISTADO DE PERSONAS - '.trim($rowMSSQL02_2['tipo_estado_nombre_castellano']);         
                 $persona_datos_2 = "\n".trim($rowMSSQL02_2['persona_nombre_completo']);
+                echo 'PERSONAS PENDIENTES RESULTADO => '.$persona_datos_2;
 
 
-            }*/
+            }
 
 
             $stmtMSSQL01_1->closeCursor();
-            //$stmtMSSQL01->closeCursor();
+            $stmtMSSQL02_2->closeCursor();
 
             $stmtMSSQL01_1= null;
-            //$stmtMSSQL01= null;
+            $stmtMSSQL02_2= null;
 
         } catch (PDOException $e) {
             echo "\n";
