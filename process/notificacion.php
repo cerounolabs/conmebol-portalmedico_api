@@ -324,7 +324,7 @@
 
     function getMensajeResultado($EQUIPOL, $ENCUENTRO, $COMPETICION){
 
-        //echo 'equipo local => '.$EQUIPOL.' encuentro => '.$ENCUENTRO.' competicion => '.$COMPETICION;
+        echo 'equipo local => '.$EQUIPOL.' encuentro => '.$ENCUENTRO.' competicion => '.$COMPETICION;
 
         $sql01_1    =   "SELECT 
             a.competitionFifaId        AS  competicion_codigo,
