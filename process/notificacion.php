@@ -406,16 +406,16 @@
 
                 }
 
-                /*echo "\n";
+                echo "\n";
                 echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
                 echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
-                echo "\n";*/
+                echo "\n";
 
 
                 while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
                     $notmenmec  = $rowMSSQL03_3['persona_codigo'];
                     $mensaje    = trim($descripcion)."<br>".$persona_datos."<br>".$persona_datos_2;
-                    $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
+                    //$stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
 
                 }
 
