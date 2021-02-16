@@ -328,7 +328,7 @@
 
             echo 'ENTRA PROCESO RESULTADO*********************************************************equipo local => '.$codequipo.' encuentro => '.$codencuentro.' competicion => '.$codcompeticion.' notificacion codigo => '.$notficcod;
 
-            $sql01_1    =   "SELECT 
+            $sql01_1    =   " SELECT 
                 a.competitionFifaId        AS  competicion_codigo,
                 a.teamFifaId               AS  equipo_codigo,
                 
@@ -337,16 +337,15 @@
                 b.internationalLastName    AS  persona_apellido,
                 b.documentNumber           AS  persona_documento,
                 RTRIM(CONVERT(CHAR, b.personFifaId))+' -    '+(b.internationalFirstName)+' '+(b.internationalLastName) AS persona_nombre_completo
+            
+                FROM comet.competitions_teams_players a 
+                INNER JOIN comet.persons   b ON a.playerFifaId  = b.personFifaId
                 
-                FROM [comet].[competitions_teams_players] a 
-                INNER JOIN [comet].[persons]   b ON a.playerFifaId  = b.personFifaId
-
-                WHERE a.competitionFifaId = ? and a.teamFifaId  = ? AND NOT EXISTS (SELECT * FROM [exa].[EXAFIC] c
-
-                                                                                                INNER JOIN [adm].[DOMFIC]   d ON c.EXAFICEST  = d.DOMFICCOD
-                                                                                                INNER JOIN [adm].[DOMFIC]   e ON c.EXAFICTEC  = e.DOMFICCOD 
-                                                                                                    
-                                                                                            WHERE c.EXAFICCOC = ? AND c.EXAFICEQC = ? AND c.EXAFICENC  = ? AND d.DOMFICPAR NOT IN (3, 5) AND e.DOMFICPAR = 1)";
+                WHERE a.competitionFifaId = ? and a.teamFifaId = ? AND b.personType <> 'Z' AND b.personType <> 'O' AND NOT EXISTS (SELECT * FROM exa.EXAFIC c 
+                                                                                                                                         INNER JOIN adm.DOMFIC      d ON c.EXAFICEST  = d.DOMFICCOD
+                                                                                                                                         INNER JOIN adm.DOMFIC      e ON c.EXAFICTEC  = e.DOMFICCOD 
+                                                                                                                                              
+                                                                                                                                         WHERE c.EXAFICCOC = ? AND c.EXAFICEQC = ? AND c.EXAFICENC  = ? AND d.DOMFICPAR NOT IN (3,5) AND e.DOMFICPAR = 1 AND c.EXAFICPEC = a.playerFifaId)";
 
             $sql02_2    =   "SELECT 
                 RTRIM(CONVERT(CHAR, d.personFifaId))+' -    '+(d.internationalFirstName)+' '+(d.internationalLastName) AS persona_nombre_completo,
