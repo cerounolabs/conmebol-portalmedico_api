@@ -70,6 +70,7 @@
                     $message = trim($rowMSSQL00['notificacion_mensaje_descripcion']); 
                      
                     mail($to, $subject, $message); 
+                    echo 'email=> '.$to.' titulo => '.$subject.' cuerpo => '.$message;
                 }
 
                 $stmtMSSQL00->closeCursor();
