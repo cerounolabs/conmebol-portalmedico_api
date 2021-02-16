@@ -298,8 +298,8 @@
                         $codencuentro       = $rowMSSQL01['juego_codigo'];
                         $codcompeticion     = $rowMSSQL01['competicion_codigo_padre'];
                         
-                        getMensajeResultado($codequipol, $codencuentro, $codcompeticion, $notficcod, $descripcion);
-                        getMensajeResultado($codequipov, $codencuentro, $codcompeticion, $notficcod, $descripcion);
+                        getMensajeResultado($codequipol, $codencuentro, $codcompeticion, $notficcod, $descripcion, 'L');
+                        getMensajeResultado($codequipov, $codencuentro, $codcompeticion, $notficcod, $descripcion,'V');
                     }
                 }
 
@@ -318,14 +318,14 @@
 
         }
 
-        function getMensajeResultado($codequipo, $codencuentro, $codcompeticion, $notficcod, $descripcion){
+        function getMensajeResultado($codequipo, $codencuentro, $codcompeticion, $notficcod, $descripcion, $tipeq){
             
             global $DOMFICAUS;
             global $DOMFICAIP;
             global $NOTMENOBS;
             $DOMFICPAR  = 1;
 
-            echo 'ENTRA PROCESO RESULTADO*********************************************************equipo local => '.$codequipo.' encuentro => '.$codencuentro.' competicion => '.$codcompeticion.' notificacion codigo => '.$notficcod.' descripcion => '.$descripcion;
+            echo 'ENTRA PROCESO RESULTADO*********************************************************equipo local => '.$codequipo.' encuentro => '.$codencuentro.' competicion => '.$codcompeticion.' notificacion codigo => '.$notficcod;
 
             $sql01_1    =   "SELECT 
                 a.competitionFifaId        AS  competicion_codigo,
@@ -396,9 +396,7 @@
                 $mensaje_2       = '';
 
                 while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
-                    $persona_datos  = $persona_datos."\n".$descripcion."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
-                   // $persona_datos  = $persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']); original
-                   // $mensaje        = $descripcion."\n".$persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
+                    $persona_datos  = $persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
                     
                 }
 
@@ -421,6 +419,8 @@
                     $notmenmec  = $rowMSSQL03_3['persona_codigo'];
 
                     if ($tipeq = 'L'){
+                        $mensaje    = trim($descripcion)."\n".$persona_datos;
+                        echo 'mensaje_1 => '.$mensaje;
                         //$stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
                     }
                     
