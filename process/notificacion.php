@@ -410,7 +410,7 @@
                 echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
                 echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
                 echo "\n";
-                echo 'Mensaje => '.$mensaje;
+                //echo 'Mensaje => '.$mensaje;
 
                 while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
                     $notmenmec  = $rowMSSQL03_3['persona_codigo'];
