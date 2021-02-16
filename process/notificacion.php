@@ -388,7 +388,7 @@
                 $stmtMSSQL03_3  = $connMSSQL->prepare($sql03_3);
                 $stmtMSSQL03_3->execute([$codequipo, $codcompeticion]);
 
-                //$stmtMSSQL04_4  = $connMSSQL->prepare($sql04_4);
+                $stmtMSSQL04_4  = $connMSSQL->prepare($sql04_4);
 
                 $persona_datos   = '';
                 $persona_datos_2 = '';
@@ -402,40 +402,40 @@
 
                 while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {         
                     $persona_datos_2    = $persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
-                    //$mensaje_2          = $descripcion."\n".$persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
 
                 }
 
-                echo "\n";
-                //echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
-                //echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
+                /*echo "\n";
+                echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
+                echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
+                echo "\n";*/
 
-                /*echo 'PERSONAS PENDIENTES => '."\n".$mensaje."\n";
-                echo 'PENDIENTES RESULTADO => '."\n".$mensaje_2."\n";*/
-                echo "\n";
-                //echo 'Mensaje => '.$mensaje;
 
                 while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
                     $notmenmec  = $rowMSSQL03_3['persona_codigo'];
 
                     if ($tipeq = 'L'){
+
                         $mensaje    = trim($descripcion)."\n".$persona_datos;
-                        echo 'mensaje_1 => '.$mensaje;
-                        //$stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
+                        //echo 'mensaje_1 => '.$mensaje;
+                        $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
+                    
+                    }else{
+                        $mensaje_2    = trim($descripcion)."\n".$persona_datos_2;
+                        $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje_2, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
                     }
-                    
-                    
-                    //$stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
 
                 }
 
                 $stmtMSSQL01_1->closeCursor();
                 $stmtMSSQL02_2->closeCursor();
                 $stmtMSSQL03_3->closeCursor();
+                $stmtMSSQL04_4->closeCursor();
 
-                $stmtMSSQL01_1= null;
-                $stmtMSSQL02_2= null;
-                $stmtMSSQL03_3= null;
+                $stmtMSSQL01_1  = null;
+                $stmtMSSQL02_2  = null;
+                $stmtMSSQL03_3  = null;
+                $stmtMSSQL04_4  = null;
 
             } catch (PDOException $e) {
                 echo "\n";
