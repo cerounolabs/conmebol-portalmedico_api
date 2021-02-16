@@ -286,9 +286,9 @@
                 
                 while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {//recorre NOTFIC
                 
-                    $notficcod  = $rowMSSQL00['notificacion_codigo'];
-                    $notficcoc  = $rowMSSQL00['notificacion_competicion_codigo'];
-                    $mensaje    = trim($rowMSSQL00['notificacion_descripcion']);
+                    $notficcod      = $rowMSSQL00['notificacion_codigo'];
+                    $notficcoc      = $rowMSSQL00['notificacion_competicion_codigo'];
+                    $descripcion    = trim($rowMSSQL00['notificacion_descripcion']);
                     $stmtMSSQL01->execute([$notficcoc]);
 
                     while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//recorre juego
@@ -298,8 +298,8 @@
                         $codencuentro       = $rowMSSQL01['juego_codigo'];
                         $codcompeticion     = $rowMSSQL01['competicion_codigo_padre'];
                         
-                        getMensajeResultado($codequipol, $codencuentro, $codcompeticion, $notficcod, $mensaje);
-                        getMensajeResultado($codequipov, $codencuentro, $codcompeticion, $notficcod, $mensaje);
+                        getMensajeResultado($codequipol, $codencuentro, $codcompeticion, $notficcod, $descripcion);
+                        getMensajeResultado($codequipov, $codencuentro, $codcompeticion, $notficcod, $descripcion);
                     }
                 }
 
@@ -318,14 +318,14 @@
 
         }
 
-        function getMensajeResultado($codequipo, $codencuentro, $codcompeticion, $notficcod, $mensaje){
+        function getMensajeResultado($codequipo, $codencuentro, $codcompeticion, $notficcod, $descripcion){
             
             global $DOMFICAUS;
             global $DOMFICAIP;
             global $NOTMENOBS;
             $DOMFICPAR  = 1;
 
-            echo 'equipo local => '.$codequipo.' encuentro => '.$codencuentro.' competicion => '.$codcompeticion.' notificacion codigo => '.$notficcod.' mensaje => ';
+            echo 'equipo local => '.$codequipo.' encuentro => '.$codencuentro.' competicion => '.$codcompeticion.' notificacion codigo => '.$notficcod.' descripcion => '.$descripcion;
 
             $sql01_1    =   "SELECT 
                 a.competitionFifaId        AS  competicion_codigo,
@@ -395,11 +395,13 @@
 
                 while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
                     $persona_datos  = $persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
+                    $mensaje        = $descripcion.' '.$persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
                     
                 }
 
                 while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {         
-                    $persona_datos_2 = $persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
+                    $persona_datos_2    = $persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
+                    $mensaje            = $descripcion.' '.$persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
 
                 }
 
@@ -409,16 +411,21 @@
 
                 while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
                     $notmenmec  = $rowMSSQL03_3['persona_codigo'];
+
+                    echo 'Mensaje => '.$mensaje;
                     
-                    $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
+                    
+                    //$stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
 
                 }
 
                 $stmtMSSQL01_1->closeCursor();
                 $stmtMSSQL02_2->closeCursor();
+                $stmtMSSQL03_3->closeCursor();
 
                 $stmtMSSQL01_1= null;
                 $stmtMSSQL02_2= null;
+                $stmtMSSQL03_3= null;
 
             } catch (PDOException $e) {
                 echo "\n";
