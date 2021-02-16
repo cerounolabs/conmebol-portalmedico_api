@@ -184,6 +184,7 @@
 
 
         function getMensajeAutomatico(){
+            $persona_datos   = '';
 
             $sql00  =   "SELECT 
                 a.NOTFICCOD                     AS      notificacion_codigo,
@@ -393,7 +394,7 @@
 
                 $persona_datos   = '';
                 $persona_datos_2 = '';
-                $mensaje         = '';
+                //$mensaje         = '';
 
                 while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
                     $persona_datos  = $persona_datos."<br>".'PERSONAS PENDIENTES: '.trim($rowMSSQL01_1['persona_nombre_completo']);
