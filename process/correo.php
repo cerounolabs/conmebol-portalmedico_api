@@ -53,7 +53,7 @@
                 INNER JOIN [comet].[teams]d ON a.NOTMENEQC  = d.teamFifaId
                 INNER JOIN [adm].[PERFIC] e ON a.NOTMENMEC  = e.PERFICCOD
 
-                WHERE a.PERFICCOD IN (8)
+                WHERE a.NOTMENMEC IN (8)
 
                 ORDER BY a.NOTMENCOD DESC";
 
