@@ -407,8 +407,8 @@
                 }
 
                 echo "\n";
-                echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
-                echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
+                //echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
+                //echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
 
                 /*echo 'PERSONAS PENDIENTES => '."\n".$mensaje."\n";
                 echo 'PENDIENTES RESULTADO => '."\n".$mensaje_2."\n";*/
