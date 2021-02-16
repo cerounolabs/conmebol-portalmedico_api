@@ -50,7 +50,7 @@
                 FROM [adm].[NOTMEN] a
                 INNER JOIN [adm].[DOMFIC] b ON a.NOTMENEST  = b.DOMFICCOD
                 INNER JOIN [adm].[NOTFIC] c ON a.NOTMENNOC  = c.NOTFICCOD
-                INNER JOIN [comet].[teams]d ON a.NOTEQUEQC  = d.teamFifaId
+                INNER JOIN [comet].[teams]d ON a.NOTMENEQC  = d.teamFifaId
                 INNER JOIN [adm].[PERFIC] e ON a.NOTMENMEC  = e.PERFICCOD
 
                 WHERE a.PERFICCOD IN (8)
