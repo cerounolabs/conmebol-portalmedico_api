@@ -325,7 +325,7 @@
             global $NOTMENOBS;
             $DOMFICPAR  = 1;
 
-            echo 'equipo local => '.$codequipo.' encuentro => '.$codencuentro.' competicion => '.$codcompeticion.' notificacion codigo => '.$notficcod.' descripcion => '.$descripcion;
+            echo 'ENTRA PROCESO RESULTADO*********************************************************equipo local => '.$codequipo.' encuentro => '.$codencuentro.' competicion => '.$codcompeticion.' notificacion codigo => '.$notficcod.' descripcion => '.$descripcion;
 
             $sql01_1    =   "SELECT 
                 a.competitionFifaId        AS  competicion_codigo,
@@ -396,22 +396,24 @@
                 $mensaje_2       = '';
 
                 while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
-                    $persona_datos  = $persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
-                    $mensaje        = $descripcion."\n".$persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
+                    $persona_datos  = $persona_datos."\n".$descripcion."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
+                   // $persona_datos  = $persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']); original
+                   // $mensaje        = $descripcion."\n".$persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
                     
                 }
 
                 while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {         
                     $persona_datos_2    = $persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
-                    $mensaje_2          = $descripcion."\n".$persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
+                    //$mensaje_2          = $descripcion."\n".$persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
 
                 }
 
                 echo "\n";
-                /*echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
-                echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";*/
-                echo 'PERSONAS PENDIENTES => '."\n".$mensaje."\n";
-                echo 'PENDIENTES RESULTADO => '."\n".$mensaje_2."\n";
+                echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
+                echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
+
+                /*echo 'PERSONAS PENDIENTES => '."\n".$mensaje."\n";
+                echo 'PENDIENTES RESULTADO => '."\n".$mensaje_2."\n";*/
                 echo "\n";
                 //echo 'Mensaje => '.$mensaje;
 
