@@ -388,21 +388,22 @@
                 $stmtMSSQL03_3  = $connMSSQL->prepare($sql03_3);
                 $stmtMSSQL03_3->execute([$codequipo, $codcompeticion]);
 
-                $stmtMSSQL04_4  = $connMSSQL->prepare($sql04_4);
+                //$stmtMSSQL04_4  = $connMSSQL->prepare($sql04_4);
 
                 $persona_datos   = '';
                 $persona_datos_2 = '';
                 $mensaje         = '';
+                $mensaje_2       = '';
 
                 while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
                     $persona_datos  = $persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
-                    $mensaje        = $descripcion.' '.$persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
+                    $mensaje        = $descripcion."\n".$persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
                     
                 }
 
                 while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {         
                     $persona_datos_2    = $persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
-                    $mensaje            = $descripcion.' '.$persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
+                    $mensaje_2          = $descripcion."\n".$persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
 
                 }
 
@@ -410,14 +411,16 @@
                 /*echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
                 echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";*/
                 echo 'PERSONAS PENDIENTES => '."\n".$mensaje."\n";
-                echo 'PENDIENTES RESULTADO => '."\n".$mensaje."\n";
+                echo 'PENDIENTES RESULTADO => '."\n".$mensaje_2."\n";
                 echo "\n";
                 //echo 'Mensaje => '.$mensaje;
 
                 while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
                     $notmenmec  = $rowMSSQL03_3['persona_codigo'];
 
-                    
+                    if ($tipeq = 'L'){
+                        //$stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
+                    }
                     
                     
                     //$stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
