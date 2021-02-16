@@ -298,8 +298,8 @@
                         $codencuentro       = $rowMSSQL01['juego_codigo'];
                         $codcompeticion     = $rowMSSQL01['competicion_codigo_padre'];
                         
-                        getMensajeResultado($codequipol, $codencuentro, $codcompeticion, $notficcod, $descripcion, 'L');
-                        getMensajeResultado($codequipov, $codencuentro, $codcompeticion, $notficcod, $descripcion,'V');
+                        getMensajeResultado($codequipol, $codencuentro, $codcompeticion, $notficcod, $descripcion);
+                        getMensajeResultado($codequipov, $codencuentro, $codcompeticion, $notficcod, $descripcion);
                     }
                 }
 
@@ -318,7 +318,7 @@
 
         }
 
-        function getMensajeResultado($codequipo, $codencuentro, $codcompeticion, $notficcod, $descripcion, $tipeq){
+        function getMensajeResultado($codequipo, $codencuentro, $codcompeticion, $notficcod, $descripcion){
             
             global $DOMFICAUS;
             global $DOMFICAIP;
@@ -345,18 +345,19 @@
                                                                                                 INNER JOIN [adm].[DOMFIC]   d ON c.EXAFICEST  = d.DOMFICCOD
                                                                                                 INNER JOIN [adm].[DOMFIC]   e ON c.EXAFICTEC  = e.DOMFICCOD 
                                                                                                     
-                                                                                            WHERE c.EXAFICCOC = ? AND c.EXAFICEQC = ? AND c.EXAFICENC  = ? AND d.DOMFICPAR <> 3 AND e.DOMFICPAR = 1)";
+                                                                                            WHERE c.EXAFICCOC = ? AND c.EXAFICEQC = ? AND c.EXAFICENC  = ? AND d.DOMFICPAR NOT IN (3, 5) AND e.DOMFICPAR = 1)";
 
             $sql02_2    =   "SELECT 
                 RTRIM(CONVERT(CHAR, d.personFifaId))+' -    '+(d.internationalFirstName)+' '+(d.internationalLastName) AS persona_nombre_completo,
                 b.DOMFICCOD     AS      tipo_estado_codigo,
                 b.DOMFICNOC     AS      tipo_estado_nombre_castellano  
+
                 FROM exa.EXAFIC a
-                INNER JOIN adm.DOMFIC b ON a.EXAFICEST  = b.DOMFICCOD
-                INNER JOIN adm.DOMFIC c ON a.EXAFICTEC  = c.DOMFICCOD
-                INNER JOIN comet.persons d ON a.EXAFICPEC = d.personFifaId
+                INNER JOIN adm.DOMFIC b ON a.EXAFICEST      = b.DOMFICCOD
+                INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
+                INNER JOIN comet.persons d ON a.EXAFICPEC   = d.personFifaId
                 
-                WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND b.DOMFICPAR = 2 AND c.DOMFICPAR = 1";
+                WHERE a.EXAFICCOC = ? AND a.EXAFICEQC = ? AND a.EXAFICENC = ? AND b.DOMFICPAR = 2 AND c.DOMFICPAR = 1";
 
             $sql03_3    =   "SELECT 
                 a.PERFICCOD                         AS          persona_codigo,
@@ -383,7 +384,7 @@
                 $stmtMSSQL01_1->execute([$codcompeticion, $codequipo, $codcompeticion, $codequipo, $codencuentro]); 
 
                 $stmtMSSQL02_2  = $connMSSQL->prepare($sql02_2);
-                $stmtMSSQL02_2->execute([$codcompeticion, $codencuentro]);
+                $stmtMSSQL02_2->execute([$codcompeticion, $codequipo, $codencuentro]);
                 
                 $stmtMSSQL03_3  = $connMSSQL->prepare($sql03_3);
                 $stmtMSSQL03_3->execute([$codequipo, $codcompeticion]);
@@ -393,37 +394,36 @@
                 $persona_datos   = '';
                 $persona_datos_2 = '';
                 $mensaje         = '';
-                $mensaje_2       = '';
 
                 while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
-                    $persona_datos  = $persona_datos."\n".'PERSONA: '.trim($rowMSSQL01_1['persona_nombre_completo']);
+                    $persona_datos  = $persona_datos."\n".'PERSONA PENDIENTES: '.trim($rowMSSQL01_1['persona_nombre_completo']);
                     
                 }
 
                 while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {         
-                    $persona_datos_2    = $persona_datos_2."\n".'PERSONA: '.trim($rowMSSQL02_2['persona_nombre_completo']);
+                    $persona_datos_2    = $persona_datos_2."\n".'PERSONA PENDIENTE RESULTADO: '.trim($rowMSSQL02_2['persona_nombre_completo']);
 
                 }
 
-                /*echo "\n";
+                echo "\n";
                 echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
                 echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
-                echo "\n";*/
+                echo "\n";
 
 
                 while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
                     $notmenmec  = $rowMSSQL03_3['persona_codigo'];
 
-                    if ($tipeq = 'L'){
+                    //if ($tipeq = 'L'){
 
-                        $mensaje    = trim($descripcion)."\n".$persona_datos;
+                        $mensaje    = trim($descripcion)."\n".$persona_datos."\n".$persona_datos_2;
                         //echo 'mensaje_1 => '.$mensaje;
-                        $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
+                        //////////////$stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
                     
-                    }else{
+                    /*}else{
                         $mensaje_2    = trim($descripcion)."\n".$persona_datos_2;
                         $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje_2, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
-                    }
+                    }*/
 
                 }
 
