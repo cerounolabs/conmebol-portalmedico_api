@@ -396,19 +396,19 @@
                 $mensaje         = '';
 
                 while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
-                    $persona_datos  = $persona_datos."\n".'PERSONA PENDIENTES: '.trim($rowMSSQL01_1['persona_nombre_completo']);
+                    $persona_datos  = $persona_datos."\n".'PERSONAS PENDIENTES: '.trim($rowMSSQL01_1['persona_nombre_completo']);
                     
                 }
 
                 while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {         
-                    $persona_datos_2    = $persona_datos_2."\n".'PERSONA PENDIENTE RESULTADO: '.trim($rowMSSQL02_2['persona_nombre_completo']);
+                    $persona_datos_2    = $persona_datos_2."\n".'PERSONAS PENDIENTE RESULTADO: '.trim($rowMSSQL02_2['persona_nombre_completo']);
 
                 }
 
-                echo "\n";
+                /*echo "\n";
                 echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
                 echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
-                echo "\n";
+                echo "\n";*/
 
 
                 while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
@@ -418,7 +418,7 @@
 
                         $mensaje    = trim($descripcion)."\n".$persona_datos."\n".$persona_datos_2;
                         //echo 'mensaje_1 => '.$mensaje;
-                        //////////////$stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
+                        $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
                     
                     /*}else{
                         $mensaje_2    = trim($descripcion)."\n".$persona_datos_2;
