@@ -407,10 +407,10 @@
 
             }
 
-            echo "\n";
+            /*echo "\n";
             echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
             echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
-            echo "\n";
+            echo "\n";*/
 
 
             while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
