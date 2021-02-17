@@ -11,7 +11,7 @@
         $mensaje = wordwrap($mensaje, 70, "\r\n");
 
         // Enviarlo
-        mail('mgaona@cerouno.com.py', 'PRUEBA', $mensaje);
+        mail('vcardozo@cerouno.com.py', 'PRUEBA', $mensaje);
 
         /*function getMensajeEnvioCorreo(){
             $mail             = new PHPMailer();
