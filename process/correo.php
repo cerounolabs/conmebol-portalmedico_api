@@ -1,6 +1,6 @@
 <?php
         require __DIR__.'/../src/connect.php';
-        //require_once('../PHPMailer_v5.0.2/class.phpmailer.php');
+        require_once('../PHPMailer_v5.0.2/class.phpmailer.php');
         
 
         // El mensaje
