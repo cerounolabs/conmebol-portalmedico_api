@@ -1,9 +1,48 @@
 <?php
         require __DIR__.'/../src/connect.php';
+        require_once('../PHPMailer_v5.0.2/class.phpmailer.php');
+        
 
-        function getMensajeEnvioCorreo(){
+        // El mensaje
+        $mensaje = "Nota:
+        La implementación en Windows de mail() difiere bastante de la implementación en Unix. Primero, no usa un binario local para componer mensajes ya que sólo opera en sockets directos, lo que significa que es necesario un MTA escuchando en un socket de red (que puede estar tanto en localhost como en una máquina remota)";
 
-            $sql00  =   "SELECT 
+        // Si cualquier línea es más larga de 70 caracteres, se debería usar wordwrap()
+        $mensaje = wordwrap($mensaje, 70, "\r\n");
+
+        // Enviarlo
+        mail('mgaona@cerouno.com.py', 'PRUEBA', $mensaje);
+
+        /*function getMensajeEnvioCorreo(){
+            $mail             = new PHPMailer();
+
+            $body             = "Prueba de envio"; // Cuerpo del mensaje
+            $mail->IsSMTP(); // Usar SMTP para enviar
+            $mail->SMTPDebug  = 0; // habilita información de depuración SMTP (para pruebas)
+                                   // 1 = errores y mensajes
+                                   // 2 = sólo mensajes
+            $mail->SMTPAuth   = true; // habilitar autenticación SMTP
+            $mail->Host       = "smtp.ugr.es"; // establece el servidor SMTP
+            $mail->Port       = 587; // configura el puerto SMTP utilizado
+            $mail->SMTPSecure = "tls";
+            $mail->Username   = "usuario"; // nombre de usuario UGR
+            $mail->Password   = "contraseña"; // contraseña del usuario UGR
+         
+            $mail->SetFrom('usuario', 'Nombre y Apellidos, etc.');
+            $mail->Subject    = "Asunto del mensaje";
+            $mail->MsgHTML($body); // Fija el cuerpo del mensaje
+        
+            $address = "destinatario@dominio"; // Dirección del destinatario
+            $mail->AddAddress($address, "Nombre del destinatario");
+        
+            if(!$mail->Send()) {
+                echo "Error: " . $mail->ErrorInfo;
+            }
+            else {
+                echo "¡Mensaje enviado!";
+            }
+
+           /* $sql00  =   "SELECT 
                 a.NOTMENCOD             AS      notificacion_mensaje_codigo,	
                 a.NOTMENORD             AS      notificacion_mensaje_orden,
                 a.NOTMENFEP             AS      notificacion_mensaje_fecha_proceso,
@@ -65,7 +104,7 @@
 
                 while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
 
-                    $to = trim($rowMSSQL00['persona_email']);
+                    /*$to = trim($rowMSSQL00['persona_email']);
                     $subject = trim($rowMSSQL00['notificacion_titulo']);
                     $message = trim($rowMSSQL00['notificacion_mensaje_descripcion']); 
                      
@@ -85,14 +124,14 @@
             }
     
             $connMSSQL  = null;
-        }
+        }*/
 
         echo "\n";
         echo "++++++++++++++++++++++++++PROCESO DE ENVIO CORREO++++++++++++++++++++++++++";
         echo "\n";
     
         echo "INICIO getMensajeEnvioCorreo() => ".date('Y-m-d H:i:s');
-        getMensajeEnvioCorreo();
+        //getMensajeEnvioCorreo();
         echo "\n";
         echo "FIN getMensajeEnvioCorreo() => ".date('Y-m-d H:i:s');
         echo "\n";
