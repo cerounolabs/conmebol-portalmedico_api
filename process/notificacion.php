@@ -312,13 +312,16 @@
                 while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//recorre juego
 
                     $codequipol         = $rowMSSQL01['equipo_local_codigo'];
+                    $nomequipol         = $rowMSSQL01['equipo_local_nombre'];
                     $codequipov         = $rowMSSQL01['equipo_visitante_codigo']; 
+                    $nomequipov         = $rowMSSQL01['equipo_visitante_nombre'];
                     $codencuentro       = $rowMSSQL01['juego_codigo'];
                     $codcompeticion     = $rowMSSQL01['competicion_codigo_padre'];
+                    $juegohorario       = $rowMSSQL01['juego_horario'];      
 
                     echo "INICIO getMensajeResultado() => ".date('Y-m-d H:i:s');
-                    getMensajeResultado($codequipol, $codencuentro, $codcompeticion, $notficcod, $descripcion);
-                    getMensajeResultado($codequipov, $codencuentro, $codcompeticion, $notficcod, $descripcion);
+                    getMensajeResultado($codequipol, $codencuentro, $codcompeticion, $notficcod, $descripcion, $juegohorario, $nomequipol);
+                    getMensajeResultado($codequipov, $codencuentro, $codcompeticion, $notficcod, $descripcion, $juegohorario, $nomequipov);
                     echo "\n";
                     echo "FIN getMensajeResultado() => ".date('Y-m-d H:i:s');
                     echo "\n";
@@ -341,7 +344,7 @@
 
     }
 
-    function getMensajeResultado($codequipo, $codencuentro, $codcompeticion, $notficcod, $descripcion){
+    function getMensajeResultado($codequipo, $codencuentro, $codcompeticion, $notficcod, $descripcion, $juegohorario, $nomequipo){
         
         global $DOMFICAUS;
         global $DOMFICAIP;
@@ -434,7 +437,7 @@
 
             while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
                 $notmenmec  = $rowMSSQL03_3['persona_codigo'];
-                $mensaje    = trim($descripcion)."<br>".$persona_datos."<br>".$persona_datos_2;
+                $mensaje    = trim($descripcion)."<br>".'EQUIPO: '.trim($nomequipo).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.' FECHA DE JUEGO: '.$juegohorario."<br>".$persona_datos."<br>".$persona_datos_2;
                 $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
 
             }
