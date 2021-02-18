@@ -183,8 +183,7 @@
     }
 
     function getMensajeAutomatico(){
-        $persona_datos   = '';
-
+       
         $sql00  =   "SELECT 
             a.NOTFICCOD                     AS      notificacion_codigo,
             a.NOTFICORD                     AS      notificacion_orden,  	
@@ -331,7 +330,7 @@
 
         //echo 'ENTRA PROCESO RESULTADO*********************************************************equipo local => '.$codequipo.' encuentro => '.$codencuentro.' competicion => '.$codcompeticion.' notificacion codigo => '.$notficcod;
 
-        $sql01_1    =   " SELECT 
+        $sql01_1    =   "SELECT 
             a.competitionFifaId        AS  competicion_codigo,
             a.teamFifaId               AS  equipo_codigo,
             
