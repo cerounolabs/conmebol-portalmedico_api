@@ -545,7 +545,7 @@
                     break;
 
                     case 3:
-                        $stmtMSSQL00->execute([$val01, $aud01, $aud03, $val00]);
+                        $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
                     break;
                 }
                 
