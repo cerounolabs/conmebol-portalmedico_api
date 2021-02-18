@@ -5,6 +5,25 @@
     $DOMFICAIP      = '0.0.0.0';
     $NOTMENOBS      = '';
 
+    
+    function getProcesses($status, $errors){
+
+        $sql00  =   "INSERT INTO [comet].[processes] (status, lastUpdate, errors) VALUES (?, GETDATE(), ?)";
+
+        try {
+            $connMSSQL      = getConnectionMSSQLv2();
+
+            $stmtMSSQL00    = $connMSSQL->prepare($sql00);
+            $stmtMSSQL00->execute([$status, $errors]); 
+        } catch (PDOException $e) {
+            echo "\n";
+            echo 'Error getProcesses(): '.$e;
+        }
+
+        $connMSSQL  = null;
+
+    }
+
      function getMensajeManual(){
 
             global $DOMFICAUS;
@@ -156,7 +175,6 @@
                         while ($rowMSSQL02  = $stmtMSSQL02->fetch()) {//RECORRE PERFIC
                             $notmenmec      = $rowMSSQL02['persona_codigo'];
                             
-                            
                             $stmtMSSQL03->execute([$DOMFICPAR, $notficcod, $notequeqc, $notmenenc, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS,$DOMFICAIP]);
                         }  
 
@@ -177,6 +195,8 @@
             } catch (PDOException $e) {
                 echo "\n";
                 echo 'Error getMensajeManual(): '.$e;
+                getProcesses('ERROR PROCESO DE NOTIFICACION MANUAL', $e);
+                
             }
 
             $connMSSQL  = null;
@@ -315,6 +335,7 @@
         } catch (PDOException $e) {
             echo "\n";
             echo 'Error getMensajeAutomatico(): '.$e;
+            getProcesses('ERROR PROCESO DE NOTIFICACION AUTOMÁTICA', $e);
         }
 
         $connMSSQL  = null;
@@ -443,22 +464,22 @@
     echo "\n";
 
     echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
+    //llmar funcion nueva -inicu
+    getProcesses('INICIO PROCESO DE NOTIFICACION MANUAL', '-');
     getMensajeManual();
+    getProcesses('FIN PROCESO DE NOTIFICACION MANUAL', '-');
+    //llmar funcion nueva-fin
     echo "\n";
     echo "FIN getMensajeManual() => ".date('Y-m-d H:i:s');
     echo "\n";
 
     echo "INICIO getMensajeAutomatico() => ".date('Y-m-d H:i:s');
+    getProcesses('INICIO PROCESO DE NOTIFICACION AUTOMÁTICA', '-');
     getMensajeAutomatico();
+    getProcesses('FIN PROCESO DE NOTIFICACION AUTOMÁTICA', '-');
+
     echo "\n";
     echo "FIN getMensajeAutomatico() => ".date('Y-m-d H:i:s');
     echo "\n";
-
-    /*echo "INICIO getMensajeResultado() => ".date('Y-m-d H:i:s');
-    getMensajeResultado();
-    echo "\n";
-    echo "FIN getMensajeResultado() => ".date('Y-m-d H:i:s');
-    echo "\n";*/
-
 
 ?>
