@@ -699,7 +699,7 @@
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
-            $sql00  = "INSERT INTO [exa].[EXATES] (EXATESTTC, EXATESEXC, EXATESVAL, EXATESOBS, EXATESAUS, EXATESAFH, EXATESAIP) VALUES ((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = ? AND DOMFICPAR = ?), ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql00  = "INSERT INTO [exa].[EXATES] (EXATESTTC, EXATESEXC, EXATESVAL, EXATESOBS, EXATESAUS, EXATESAFH, EXATESAIP) VALUES ((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = ? AND DOMFICPAR = ?), ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
