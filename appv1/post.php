@@ -874,7 +874,7 @@
     });
 
 /*MODULO NOTIFICACIONES*/
-    $app->post('/v2/802/notificacion', function($request) {
+    $app->post('/v1/802/notificacion', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getParsedBody()['tipo_estado_parametro'];
@@ -903,7 +903,7 @@
             $sql01  = "SELECT MAX(NOTFICCOD) AS notificacion_codigo FROM [adm].[NOTFIC]";
             
             try {
-                $connMSSQL      =   getConnectionMSSQLv2();
+                $connMSSQL      =   getConnectionMSSQLv1();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $val13, $val14, $aud01, $aud03, $val04, $val07, $val08, $val05]); 
 
@@ -935,7 +935,7 @@
         return $json;
     });
 
-    $app->post('/v2/802/notificacionequipo', function($request) {
+    $app->post('/v1/802/notificacionequipo', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getParsedBody()['tipo_estado_parametro'];
@@ -955,7 +955,7 @@
             $sql01  = "SELECT MAX(NOTEQUCOD) AS notificacion_equipo_codigo FROM [adm].[NOTEQU]";
 
             try {
-                $connMSSQL      =   getConnectionMSSQLv2();
+                $connMSSQL      =   getConnectionMSSQLv1();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val06, $aud01, $aud03, $val01, $val03, $val04]); 
 
