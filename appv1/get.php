@@ -9232,11 +9232,11 @@
                         LEFT OUTER JOIN [comet].[persons] d ON c.personFifaId = d.personFifaId
                         LEFT OUTER JOIN [adm].[DOMFIC] e ON d.documentType = e.DOMFICCOD
 
-                        WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL AND NOT EXISTS (SELECT * FROM exa.EXAFIC a1 WHERE a1.EXAFICPEC = c.personFifaId AND a1.EXAFICTEC = ? AND a1.EXAFICENC = ?)
+                        WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL AND NOT EXISTS (SELECT * FROM exa.EXAFIC a1 WHERE a1.EXAFICPEC = c.personFifaId AND a1.EXAFICTEC = ? AND a1.EXAFICENC = ? AND a1.EXAFICEST <> 211)
 
                         ORDER BY d.personFifaId";
 
-                    $sql00  = "SELECT
+                    /*$sql00  = "SELECT
                         a.competitionFifaId                 AS          competicion_codigo,
                         d.personFifaId                      AS          jugador_codigo,
                         d.internationalLastName             AS          jugador_apellido,
@@ -9260,7 +9260,7 @@
 
                         WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL
 
-                        ORDER BY d.personFifaId";
+                        ORDER BY d.personFifaId";*/
                         
                 } else {
                     $val02  = $val04;
@@ -9325,6 +9325,7 @@
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $result     = [];
 
                 if ($val01 == 39393) {
                     $stmtMSSQL->execute([$val02, $val03, $val04]);
@@ -9404,7 +9405,7 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'competicion_codigo'            => '',
+                        'competicion_codigo'                => '',
 
                         'jugador_codigo'                    => '',
                         'jugador_apellido'                  => '',
