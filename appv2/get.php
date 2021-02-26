@@ -9137,7 +9137,7 @@
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $result     = '';
+                $result     = [];
 
                 if ($val01 == 39393) {
                     $stmtMSSQL->execute([$val02, $val03, $val04]);
