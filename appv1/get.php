@@ -10837,81 +10837,107 @@
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     if ($rowMSSQL['examen_fecha_1'] == NULL) {
-                        $examen_fecha_1 = '';
+                        $examen_fecha_1_1   = '';
+                        $examen_fecha_1_2   = '';   
                     } else {
-                        $examen_fecha_1 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
+                        $examen_fecha_1_1 = $rowMSSQL['examen_fecha_1'];
+                        $examen_fecha_1_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
                     }
-
+					
                     if ($rowMSSQL['examen_fecha_2'] == NULL) {
-                        $examen_fecha_2 = '';
+                        $examen_fecha_2_1   = '';
+                        $examen_fecha_2_2   = '';
                     } else {
-                        $examen_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_2']));
+                        $examen_fecha_2_1 = $rowMSSQL['examen_fecha_2'];
+                        $examen_fecha_2_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_2']));
                     }
 
                     if ($rowMSSQL['examen_fecha_3'] == NULL) {
-                        $examen_fecha_3 = '';
+                        $examen_fecha_3_1   = '';
+                        $examen_fecha_3_2   = '';
                     } else {
-                        $examen_fecha_3 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_3']));
+                        $examen_fecha_3_1 = $rowMSSQL['examen_fecha_3'];
+                        $examen_fecha_3_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_3']));
                     }
 
                     if ($rowMSSQL['examen_laboratorio_fecha_envio'] == NULL) {
-                        $examen_laboratorio_fecha_envio = '';
+                        $examen_laboratorio_fecha_envio_1 = '';
+                        $examen_laboratorio_fecha_envio_2 = '';
                     } else {
-                        $examen_laboratorio_fecha_envio = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_envio']));
+                        $examen_laboratorio_fecha_envio_1 = $rowMSSQL['examen_laboratorio_fecha_envio'];
+                        $examen_laboratorio_fecha_envio_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_envio']));
                     }
 
                     if ($rowMSSQL['examen_laboratorio_fecha_recepcion'] == NULL) {
-                        $examen_laboratorio_fecha_recepcion = '';
+                        $examen_laboratorio_fecha_recepcion_1 = '';
+                        $examen_laboratorio_fecha_recepcion_2 = '';
                     } else {
-                        $examen_laboratorio_fecha_recepcion = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_recepcion']));
+                        $examen_laboratorio_fecha_recepcion_1 = $rowMSSQL['examen_laboratorio_fecha_recepcion'];
+                        $examen_laboratorio_fecha_recepcion_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_recepcion']));
                     }
 
                     if ($rowMSSQL['examen_laboratorio_fecha_aislamiento'] == NULL) {
-                        $examen_laboratorio_fecha_aislamiento = '';
+                        $examen_laboratorio_fecha_aislamiento_1 = '';
+                        $examen_laboratorio_fecha_aislamiento_2 = '';
                     } else {
-                        $examen_laboratorio_fecha_aislamiento = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_aislamiento']));
+                        $examen_laboratorio_fecha_aislamiento_1 = $rowMSSQL['examen_laboratorio_fecha_aislamiento'];
+                        $examen_laboratorio_fecha_aislamiento_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_aislamiento']));
                     }
 
                     if ($rowMSSQL['examen_laboratorio_fecha_finaliza'] == NULL) {
-                        $examen_laboratorio_fecha_finaliza = '';
+                        $examen_laboratorio_fecha_finaliza_1 = '';
+                        $examen_laboratorio_fecha_finaliza_2 = '';
                     } else {
-                        $examen_laboratorio_fecha_finaliza = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_finaliza']));
+                        $examen_laboratorio_fecha_finaliza_1 = $rowMSSQL['examen_laboratorio_fecha_finaliza_1'];
+                        $examen_laboratorio_fecha_finaliza_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_finaliza']));
                     }
 
                     if ($rowMSSQL['examen_anterior_fecha_1'] == NULL) {
-                        $examen_anterior_fecha_1 = '';
+                        $examen_anterior_fecha_1_1 = '';
+                        $examen_anterior_fecha_1_2 = '';
                     } else {
-                        $examen_anterior_fecha_1 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_1']));
+                        $examen_anterior_fecha_1_1 = $rowMSSQL['examen_anterior_fecha_1'];
+                        $examen_anterior_fecha_1_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_1']));
                     }
 
                     if ($rowMSSQL['examen_anterior_fecha_2'] == NULL) {
-                        $examen_anterior_fecha_2 = '';
+                        $examen_anterior_fecha_2_1 = '';
+                        $examen_anterior_fecha_2_2 = '';
                     } else {
-                        $examen_anterior_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_2']));
+                        $examen_anterior_fecha_2_1 = $rowMSSQL['examen_anterior_fecha_2'];
+                        $examen_anterior_fecha_2_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_2']));
                     }
 
                     if ($rowMSSQL['examen_anterior_fecha_3'] == NULL) {
-                        $examen_anterior_fecha_3 = '';
+                        $examen_anterior_fecha_3_1 = '';
+                        $examen_anterior_fecha_3_2 = '';
                     } else {
-                        $examen_anterior_fecha_3 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_3']));
+                        $examen_anterior_fecha_3_1 = $rowMSSQL['examen_anterior_fecha_3'];
+                        $examen_anterior_fecha_3_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_3']));
                     }
 
                     if ($rowMSSQL['examen_anterior_laboratorio_fecha_envio'] == NULL) {
-                        $examen_anterior_laboratorio_fecha_envio = '';
+                        $examen_anterior_laboratorio_fecha_envio_1 = '';
+                        $examen_anterior_laboratorio_fecha_envio_2 = '';
                     } else {
-                        $examen_anterior_laboratorio_fecha_envio = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_envio']));
+                        $examen_anterior_laboratorio_fecha_envio_1 = $rowMSSQL['examen_anterior_laboratorio_fecha_envio'];
+                        $examen_anterior_laboratorio_fecha_envio_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_envio']));
                     }
 
                     if ($rowMSSQL['examen_anterior_laboratorio_fecha_recepcion'] == NULL) {
-                        $examen_anterior_laboratorio_fecha_recepcion = '';
+                        $examen_anterior_laboratorio_fecha_recepcion_1 = '';
+                        $examen_anterior_laboratorio_fecha_recepcion_2 = '';
                     } else {
-                        $examen_anterior_laboratorio_fecha_recepcion = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_recepcion']));
+                        $examen_anterior_laboratorio_fecha_recepcion_1 = $rowMSSQL['examen_anterior_laboratorio_fecha_recepcion'];
+                        $examen_anterior_laboratorio_fecha_recepcion_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_recepcion']));
                     }
 
                     if ($rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento'] == NULL) {
-                        $examen_anterior_laboratorio_fecha_aislamiento = '';
+                        $examen_anterior_laboratorio_fecha_aislamiento_1 = '';
+                        $examen_anterior_laboratorio_fecha_aislamiento_2 = '';
                     } else {
-                        $examen_anterior_laboratorio_fecha_aislamiento = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento']));
+                        $examen_anterior_laboratorio_fecha_aislamiento_1 = $rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento'];
+                        $examen_anterior_laboratorio_fecha_aislamiento_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento']));
                     }
 
                     if ($rowMSSQL['encuentro_codigo'] != NULL){
@@ -10922,19 +10948,26 @@
 
                     $detalle    = array(
                         'examen_codigo'                                 => $rowMSSQL['examen_codigo'],
-                        'examen_fecha_1'                                => $examen_fecha_1,
-                        'examen_fecha_2'                                => $examen_fecha_2,
-                        'examen_fecha_3'                                => $examen_fecha_3,
+                        'examen_fecha_1_1'                              => $examen_fecha_1_1,
+                        'examen_fecha_1_2'                              => $examen_fecha_1_2,
+                        'examen_fecha_2_1'                              => $examen_fecha_2_1,
+                        'examen_fecha_2_2'                              => $examen_fecha_2_2,
+                        'examen_fecha_3_1'                              => $examen_fecha_3_1,
+                        'examen_fecha_3_2'                              => $examen_fecha_3_2,
                         'examen_cantidad_adulto'                        => $rowMSSQL['examen_cantidad_adulto'],
                         'examen_cantidad_menor'                         => $rowMSSQL['examen_cantidad_menor'],
                         'examen_persona_convocado'                      => trim(strtoupper(strtolower($rowMSSQL['examen_persona_convocado']))),
                         'examen_persona_posicion'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_posicion']))),
                         'examen_persona_camiseta'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_camiseta']))),
                         'examen_laboratorio_nombre'                     => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_nombre']))),
-                        'examen_laboratorio_fecha_envio'                => $examen_laboratorio_fecha_envio,
-                        'examen_laboratorio_fecha_recepcion'            => $examen_laboratorio_fecha_recepcion,
-                        'examen_laboratorio_fecha_aislamiento'          => $examen_laboratorio_fecha_aislamiento,
-                        'examen_laboratorio_fecha_finaliza'             => $examen_laboratorio_fecha_finaliza,
+                        'examen_laboratorio_fecha_envio_1'              => $examen_laboratorio_fecha_envio_1,
+                        'examen_laboratorio_fecha_envio_2'              => $examen_laboratorio_fecha_envio_2,
+                        'examen_laboratorio_fecha_recepcion_1'          => $examen_laboratorio_fecha_recepcion_1,
+                        'examen_laboratorio_fecha_recepcion_2'          => $examen_laboratorio_fecha_recepcion_2,
+                        'examen_laboratorio_fecha_aislamiento_1'        => $examen_laboratorio_fecha_aislamiento_1,
+                        'examen_laboratorio_fecha_aislamiento_2'        => $examen_laboratorio_fecha_aislamiento_2,
+                        'examen_laboratorio_fecha_finaliza_1'           => $examen_laboratorio_fecha_finaliza_1,
+                        'examen_laboratorio_fecha_finaliza_2'           => $examen_laboratorio_fecha_finaliza_2,
                         'examen_laboratorio_resultado'                  => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_resultado']))),
                         'examen_laboratorio_cuarentena'                 => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_cuarentena']))),
                         'examen_laboratorio_test'                       => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_test']))),
@@ -10981,29 +11014,35 @@
                         'persona_codigo'                                => $rowMSSQL['persona_codigo'],
                         'persona_nombre'                                => trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))),
 
-                        'examen_anterior_codigo'                        => $rowMSSQL['examen_anterior_codigo'],
-                        'examen_anterior_fecha_1'                       => $examen_anterior_fecha_1,
-                        'examen_anterior_fecha_2'                       => $examen_anterior_fecha_2,
-                        'examen_anterior_fecha_3'                       => $examen_anterior_fecha_3,
-                        'examen_anterior_cantidad_adulto'               => $rowMSSQL['examen_anterior_cantidad_adulto'],
-                        'examen_anterior_cantidad_menor'                => $rowMSSQL['examen_anterior_cantidad_menor'],
-                        'examen_anterior_persona_convocado'             => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_convocado']))),
-                        'examen_anterior_persona_posicion'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_posicion']))),
-                        'examen_anterior_persona_camiseta'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_camiseta']))),
-                        'examen_anterior_laboratorio_nombre'            => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_nombre']))),
-                        'examen_anterior_laboratorio_fecha_envio'       => $examen_anterior_laboratorio_fecha_envio,
-                        'examen_anterior_laboratorio_fecha_recepcion'   => $examen_anterior_laboratorio_fecha_recepcion,
-                        'examen_anterior_laboratorio_fecha_aislamiento' => $examen_anterior_laboratorio_fecha_aislamiento,
-                        'examen_anterior_laboratorio_resultado'         => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_resultado']))),
-                        'examen_anterior_laboratorio_cuarentena'        => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_cuarentena']))),
-                        'examen_anterior_laboratorio_test'              => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_test']))),
-                        'examen_anterior_laboratorio_adjunto'           => trim(strtolower($rowMSSQL['examen_anterior_laboratorio_adjunto'])),
-                        'examen_anterior_laboratorio_observacion'       => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_observacion']))),
-                        'examen_anterior_observacion'                   => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_observacion']))),
+                        'examen_anterior_codigo'                            => $rowMSSQL['examen_anterior_codigo'],
+                        'examen_anterior_fecha_1_1'                         => $examen_anterior_fecha_1_1,
+                        'examen_anterior_fecha_1_2'                         => $examen_anterior_fecha_1_2,
+                        'examen_anterior_fecha_2_1'                         => $examen_anterior_fecha_2_1,
+                        'examen_anterior_fecha_2_2'                         => $examen_anterior_fecha_2_2,
+                        'examen_anterior_fecha_3_1'                         => $examen_anterior_fecha_3_1,
+                        'examen_anterior_fecha_3_2'                         => $examen_anterior_fecha_3_2,
+                        'examen_anterior_cantidad_adulto'                   => $rowMSSQL['examen_anterior_cantidad_adulto'],
+                        'examen_anterior_cantidad_menor'                    => $rowMSSQL['examen_anterior_cantidad_menor'],
+                        'examen_anterior_persona_convocado'                 => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_convocado']))),
+                        'examen_anterior_persona_posicion'                  => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_posicion']))),
+                        'examen_anterior_persona_camiseta'                  => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_camiseta']))),
+                        'examen_anterior_laboratorio_nombre'                => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_nombre']))),
+                        'examen_anterior_laboratorio_fecha_envio_1'         => $examen_anterior_laboratorio_fecha_envio_1,
+                        'examen_anterior_laboratorio_fecha_envio_2'         => $examen_anterior_laboratorio_fecha_envio_2,
+                        'examen_anterior_laboratorio_fecha_recepcion_1'     => $examen_anterior_laboratorio_fecha_recepcion_1,
+                        'examen_anterior_laboratorio_fecha_recepcion_2'     => $examen_anterior_laboratorio_fecha_recepcion_2,
+                        'examen_anterior_laboratorio_fecha_aislamiento_1'   => $examen_anterior_laboratorio_fecha_aislamiento_1,
+                        'examen_anterior_laboratorio_fecha_aislamiento_2'   => $examen_anterior_laboratorio_fecha_aislamiento_2,
+                        'examen_anterior_laboratorio_resultado'             => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_resultado']))),
+                        'examen_anterior_laboratorio_cuarentena'            => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_cuarentena']))),
+                        'examen_anterior_laboratorio_test'                  => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_test']))),
+                        'examen_anterior_laboratorio_adjunto'               => trim(strtolower($rowMSSQL['examen_anterior_laboratorio_adjunto'])),
+                        'examen_anterior_laboratorio_observacion'           => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_observacion']))),
+                        'examen_anterior_observacion'                       => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_observacion']))),
 
-                        'auditoria_usuario'                             => trim($rowMSSQL['auditoria_usuario']),
-                        'auditoria_fecha_hora'                          => date('d/m/Y', strtotime($rowMSSQL['auditoria_fecha_hora'])),
-                        'auditoria_ip'                                  => trim($rowMSSQL['auditoria_ip'])
+                        'auditoria_usuario'                                 => trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                              => date('d/m/Y', strtotime($rowMSSQL['auditoria_fecha_hora'])),
+                        'auditoria_ip'                                      => trim($rowMSSQL['auditoria_ip'])
                     );
 
                     $result[]   = $detalle;
@@ -11014,89 +11053,99 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'examen_codigo'                                 => '',
-                        'examen_fecha_1'                                => '',
-                        'examen_fecha_2'                                => '',
-                        'examen_fecha_3'                                => '',
-                        'examen_cantidad_adulto'                        => '',
-                        'examen_cantidad_menor'                         => '',
-                        'examen_persona_convocado'                      => '',
-                        'examen_persona_posicion'                       => '',
-                        'examen_persona_camiseta'                       => '',
-                        'examen_laboratorio_nombre'                     => '',
-                        'examen_laboratorio_fecha_envio'                => '',
-                        'examen_laboratorio_fecha_recepcion'            => '',
-                        'examen_laboratorio_fecha_aislamiento'          => '',
-                        'examen_laboratorio_resultado'                  => '',
-                        'examen_laboratorio_cuarentena'                 => '',
-                        'examen_laboratorio_fecha_finaliza'             => '',
-                        'examen_laboratorio_test'                       => '',
-                        'examen_laboratorio_adjunto'                    => '',
-                        'examen_laboratorio_observacion'                => '',
-                        'examen_bandera'                                => '',
-                        'examen_observacion'                            => '',
+                        'examen_codigo'                                     => '',
+                        'examen_fecha_1_1'                                  => '',
+                        'examen_fecha_1_2'                                  => '',
+                        'examen_fecha_2_1'                                  => '',
+                        'examen_fecha_2_2'                                  => '',
+                        'examen_fecha_3_1'                                  => '',
+                        'examen_fecha_3_2'                                  => '',
+                        'examen_cantidad_adulto'                            => '',
+                        'examen_cantidad_menor'                             => '',
+                        'examen_persona_convocado'                          => '',
+                        'examen_persona_posicion'                           => '',
+                        'examen_persona_camiseta'                           => '',
+                        'examen_laboratorio_nombre'                         => '',
+                        'examen_laboratorio_fecha_envio_1'                  => '',
+                        'examen_laboratorio_fecha_envio_2'                  => '',
+                        'examen_laboratorio_fecha_recepcion_1'              => '',
+                        'examen_laboratorio_fecha_recepcion_2'              => '',
+                        'examen_laboratorio_fecha_aislamiento_1'            => '',
+                        'examen_laboratorio_fecha_aislamiento_2'            => '',
+                        'examen_laboratorio_resultado'                      => '',
+                        'examen_laboratorio_cuarentena'                     => '',
+                        'examen_laboratorio_fecha_finaliza_1'               => '',
+                        'examen_laboratorio_fecha_finaliza_2'               => '',
+                        'examen_laboratorio_test'                           => '',
+                        'examen_laboratorio_adjunto'                        => '',
+                        'examen_laboratorio_observacion'                    => '',
+                        'examen_bandera'                                    => '',
+                        'examen_observacion'                                => '',
 
-                        'tipo_estado_codigo'                            => '',
-                        'tipo_estado_orden'                             => '',
-                        'tipo_estado_nombre_ingles'                     => '',
-                        'tipo_estado_nombre_castellano'                 => '',
-                        'tipo_estado_nombre_portugues'                  => '',
-                        'tipo_estado_path'                              => '',
-                        'tipo_estado_dominio'                           => '',
-                        'tipo_estado_parametro'                         => '',
-                        'tipo_estado_observacion'                       => '',
+                        'tipo_estado_codigo'                                => '',
+                        'tipo_estado_orden'                                 => '',
+                        'tipo_estado_nombre_ingles'                         => '',
+                        'tipo_estado_nombre_castellano'                     => '',
+                        'tipo_estado_nombre_portugues'                      => '',
+                        'tipo_estado_path'                                  => '',
+                        'tipo_estado_dominio'                               => '',
+                        'tipo_estado_parametro'                             => '',
+                        'tipo_estado_observacion'                           => '',
 
-                        'tipo_examen_codigo'                            => '',
-                        'tipo_examen_orden'                             => '',
-                        'tipo_examen_nombre_ingles'                     => '',
-                        'tipo_examen_nombre_castellano'                 => '',
-                        'tipo_examen_nombre_portugues'                  => '',
-                        'tipo_examen_path'                              => '',
-                        'tipo_examen_dominio'                           => '',
-                        'tipo_examen_parametro'                         => '',
-                        'tipo_examen_observacion'                       => '',
+                        'tipo_examen_codigo'                                => '',
+                        'tipo_examen_orden'                                 => '',
+                        'tipo_examen_nombre_ingles'                         => '',
+                        'tipo_examen_nombre_castellano'                     => '',
+                        'tipo_examen_nombre_portugues'                      => '',
+                        'tipo_examen_path'                                  => '',
+                        'tipo_examen_dominio'                               => '',
+                        'tipo_examen_parametro'                             => '',
+                        'tipo_examen_observacion'                           => '',
 
-                        'competicion_codigo'                            => '',
-                        'competicion_codigo_padre'                      => '',
-                        'competicion_estado'                            => '',
-                        'competicion_nombre'                            => '',
-                        'competicion_nombre_corto'                      => '',
-                        'competicion_anho'                              => '',
+                        'competicion_codigo'                                => '',
+                        'competicion_codigo_padre'                          => '',
+                        'competicion_estado'                                => '',
+                        'competicion_nombre'                                => '',
+                        'competicion_nombre_corto'                          => '',
+                        'competicion_anho'                                  => '',
 
-                        'encuentro_codigo'                              => '',
-                        'encuentro_local_codigo'                        => '',
-                        'encuentro_visitante_codigo'                    => '',
-                        'encuentro_nombre'                              => '',
+                        'encuentro_codigo'                                  => '',
+                        'encuentro_local_codigo'                            => '',
+                        'encuentro_visitante_codigo'                        => '',
+                        'encuentro_nombre'                                  => '',
 
-                        'equipo_codigo'                                 => '',
-                        'equipo_nombre'                                 => '',
+                        'equipo_codigo'                                     => '',
+                        'equipo_nombre'                                     => '',
 
-                        'persona_codigo'                                => '',
-                        'persona_nombre'                                => '',
+                        'persona_codigo'                                    => '',
+                        'persona_nombre'                                    => '',
 
-                        'examen_anterior_codigo'                        => '',
-                        'examen_anterior_fecha_1'                       => '',
-                        'examen_anterior_fecha_2'                       => '',
-                        'examen_anterior_fecha_3'                       => '',
-                        'examen_anterior_cantidad_adulto'               => '',
-                        'examen_anterior_cantidad_menor'                => '',
-                        'examen_anterior_persona_convocado'             => '',
-                        'examen_anterior_persona_posicion'              => '',
-                        'examen_anterior_persona_camiseta'              => '',
-                        'examen_anterior_laboratorio_nombre'            => '',
-                        'examen_anterior_laboratorio_fecha_envio'       => '',
-                        'examen_anterior_laboratorio_fecha_recepcion'   => '',
-                        'examen_anterior_laboratorio_fecha_aislamiento' => '',
-                        'examen_anterior_laboratorio_resultado'         => '',
-                        'examen_anterior_laboratorio_cuarentena'        => '',
-                        'examen_anterior_laboratorio_test'              => '',
-                        'examen_anterior_laboratorio_adjunto'           => '',
-                        'examen_anterior_laboratorio_observacion'       => '',
-                        'examen_anterior_observacion'                   => '',
+                        'examen_anterior_codigo'                            => '',
+                        'examen_anterior_fecha_1'                           => '',
+                        'examen_anterior_fecha_2'                           => '',
+                        'examen_anterior_fecha_3'                           => '',
+                        'examen_anterior_cantidad_adulto'                   => '',
+                        'examen_anterior_cantidad_menor'                    => '',
+                        'examen_anterior_persona_convocado'                 => '',
+                        'examen_anterior_persona_posicion'                  => '',
+                        'examen_anterior_persona_camiseta'                  => '',
+                        'examen_anterior_laboratorio_nombre'                => '',
+                        'examen_anterior_laboratorio_fecha_envio_1'         => '',
+                        'examen_anterior_laboratorio_fecha_envio_2'         => '',
+                        'examen_anterior_laboratorio_fecha_recepcion_1'     => '',
+                        'examen_anterior_laboratorio_fecha_recepcion_2'     => '',
+                        'examen_anterior_laboratorio_fecha_aislamiento_1'   => '',
+                        'examen_anterior_laboratorio_fecha_aislamiento_2'   => '',
+                        'examen_anterior_laboratorio_resultado'             => '',
+                        'examen_anterior_laboratorio_cuarentena'            => '',
+                        'examen_anterior_laboratorio_test'                  => '',
+                        'examen_anterior_laboratorio_adjunto'               => '',
+                        'examen_anterior_laboratorio_observacion'           => '',
+                        'examen_anterior_observacion'                       => '',
 
-                        'auditoria_usuario'                             => '',
-                        'auditoria_fecha_hora'                          => '',
-                        'auditoria_ip'                                  => ''
+                        'auditoria_usuario'                                 => '',
+                        'auditoria_fecha_hora'                              => '',
+                        'auditoria_ip'                                      => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
