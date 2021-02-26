@@ -360,7 +360,7 @@
         
         $val01      = $request->getParsedBody()['competicion_codigo'];
         $val02      = $request->getParsedBody()['persona_codigo'];
-        $val03      = $request->getParsedBody()['tipo_modulo_parametro'];
+        $val03      = $request->getParsedBody()['tipo_modulo_codigo'];
         $val04      = $request->getParsedBody()['competicion_persona_observacion'];
         $val05      = $request->getParsedBody()['competicion_persona_rts'];
         

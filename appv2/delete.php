@@ -183,7 +183,7 @@
 
         $val01      = $request->getAttribute('competicion');
         $val02      = $request->getAttribute('persona');
-        $val03      = $request->getParsedBody()['tipo_modulo_parametro'];
+        $val03      = $request->getParsedBody()['tipo_modulo_codigo'];
         $val04      = $request->getParsedBody()['competicion_persona_observacion'];
         $val05      = $request->getParsedBody()['competicion_persona_rts'];
         
