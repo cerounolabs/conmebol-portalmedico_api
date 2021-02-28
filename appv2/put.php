@@ -86,7 +86,6 @@
         return $json;
     });
 
-
     $app->put('/v2/200/persona/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 

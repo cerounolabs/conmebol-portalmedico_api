@@ -11167,7 +11167,7 @@
         
         return $json;
     });
-
+    
     $app->get('/v1/801/examen/competicion/chart01/{equipo}/{competicion}/{examen}/{encuentro}', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -11395,7 +11395,7 @@
         $connMSSQL  = null;
         
         return $json;
-    }); 
+    });  
 
 /*MODULO NOTIFICACIONES*/
     $app->get('/v1/802/notificacion/listado', function($request) {

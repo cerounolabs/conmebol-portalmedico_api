@@ -11108,8 +11108,7 @@
         $connMSSQL  = null;
         
         return $json;
-    }); 
-    
+    });  
 /*MODULO NOTIFICACIONES*/
 
     $app->get('/v2/802/notificacion/listado', function($request) {

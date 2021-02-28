@@ -620,8 +620,8 @@
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
         if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
-            $sql00  = "SELECT EXAFICCOD AS examen_codigo FROM exa.EXAFIC a WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICPEC = ? AND a.EXAFICEST <>  211 AND a.EXAFICTEC = ? AND EXAFICAEC = ?";
-            $sql01  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICPEC, EXAFICAEC, EXAFICFE1, EXAFICACA, EXAFICMCA, EXAFICJCO, EXAFICJPO, EXAFICJCA, EXAFICLNO, EXAFICLFE, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+            $sql00  = "SELECT EXAFICCOD AS examen_codigo FROM exa.EXAFIC a WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICPEC = ? AND a.EXAFICEST IN (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND DOMFICPAR <> 3) AND a.EXAFICTEC = (SELECT  DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?) AND EXAFICAEC = ?";
+            $sql01  = "INSERT INTO [exa].[EXAFIC] (EXAFICEST, EXAFICTEC, EXAFICCOC, EXAFICENC, EXAFICEQC, EXAFICPEC, EXAFICAEC, EXAFICFE1, EXAFICACA, EXAFICMCA, EXAFICJCO, EXAFICJPO, EXAFICJCA, EXAFICLNO, EXAFICLFE, EXAFICOBS, EXAFICAUS, EXAFICAFH, EXAFICAIP) VALUES ((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND DOMFICPAR = ?), (SELECT  DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
             $sql02  = "SELECT MAX(EXAFICCOD) AS examen_codigo FROM [exa].[EXAFIC]";
             $sql03  = "UPDATE [exa].[EXAFIC] SET EXAFICBAN = 'S' WHERE EXAFICCOD = ?";
 
@@ -688,21 +688,22 @@
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getParsedBody()['tipo_test_codigo'];
-        $val02      = $request->getParsedBody()['examen_codigo'];
-        $val03      = $request->getParsedBody()['examen_test_valor'];
-        $val04      = $request->getParsedBody()['examen_test_observacion'];
+        $val02      = trim(strtoupper(strtolower($request->getParsedBody()['tipo_test_dominio'])));
+        $val03      = $request->getParsedBody()['examen_codigo'];
+        $val04      = $request->getParsedBody()['examen_test_valor'];
+        $val05      = $request->getParsedBody()['examen_test_observacion'];
 
         $aud01      = $request->getParsedBody()['auditoria_usuario'];
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = $request->getParsedBody()['auditoria_ip'];
 
-        if (isset($val01) && isset($val02) && isset($val03)) {
-            $sql00  = "INSERT INTO [exa].[EXATES] (EXATESTTC, EXATESEXC, EXATESVAL, EXATESOBS, EXATESAUS, EXATESAFH, EXATESAIP) VALUES (?, ?, ?, ?, ?, GETDATE(), ?)";
+        if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
+            $sql00  = "INSERT INTO [exa].[EXATES] (EXATESTTC, EXATESEXC, EXATESVAL, EXATESOBS, EXATESAUS, EXATESAFH, EXATESAIP) VALUES ((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = ? AND DOMFICPAR = ?), ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $aud01, $aud03]); 
+                $stmtMSSQL->execute([$val02, $val01, $val03, $val04, $val05, $aud01, $aud03]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => 0), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
