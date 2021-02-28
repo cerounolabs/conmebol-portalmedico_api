@@ -290,7 +290,7 @@
                 }
 
                 try {
-                    $connMSSQL  = getConnectionMSSQLv2();
+                    $connMSSQL  = getConnectionMSSQLv1();
                     $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                     if ($val03 == 'SI'){
