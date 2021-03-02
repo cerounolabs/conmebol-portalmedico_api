@@ -12410,8 +12410,7 @@
         $val01      = $request->getAttribute('competicion');
         
         if (isset($val01)) {
-            $sql00  =   "SELECT 
-
+            $sql00  =   "SELECT
                 a.teamFifaId                        AS          equipo_codigo,
                 b.competitionFifaId                 AS          competicion_codigo,
                 b.superiorCompetitionFifaId         AS          competicion_codigo_padre,
@@ -12484,88 +12483,85 @@
 
                 $stmtMSSQL->execute([$val01]); 
 
-
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                       $equipo_codigo =  $rowMSSQL['equipo_codigo'];
+                    $equipo_codigo =  $rowMSSQL['equipo_codigo'];
 
-                       $stmtMSSQL01->execute([$equipo_codigo]);
-                        
-                       $result_equipo     = [];
-                       $result_persona    = [];
-                        while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
-                            $juego_horario = date_format(date_create($rowMSSQL01['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
+                    $stmtMSSQL01->execute([$equipo_codigo]);
+                    
+                    $result_equipo     = [];
+                    
+                    while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
+                        $result_persona = [];
+                        $juego_horario  = date_format(date_create($rowMSSQL01['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
 
-                            $stmtMSSQL02->execute([$val01, $equipo_codigo]);
+                        $stmtMSSQL02->execute([$val01, $equipo_codigo]);
 
-                            while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
+                        while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
+                            $detalle = array(
+                                'persona_codigo'            =>  $rowMSSQL02['persona_codigo'],
+                                'persona_tipo'              =>  trim($rowMSSQL02['persona_tipo']),
+                                'persona_nombre'            =>  trim($rowMSSQL02['persona_nombre']),
+                                'persona_apellido'          =>  trim($rowMSSQL02['persona_apellido']),
+                                'persona_genero'            =>  trim($rowMSSQL02['persona_genero']),
+                                'persona_fecha_nacimiento'  =>  $rowMSSQL02['persona_fecha_nacimiento'],
+                                'persona_funcion'           =>  trim($rowMSSQL02['persona_funcion'])                               
 
-                                $detalle = array(
-                            
-                                    'persona_codigo'            =>  $rowMSSQL02['persona_codigo'],
-                                    'persona_tipo'              =>  trim($rowMSSQL02['persona_tipo']),
-                                    'persona_nombre'            =>  trim($rowMSSQL02['persona_nombre']),
-                                    'persona_apellido'          =>  trim($rowMSSQL02['persona_apellido']),
-                                    'persona_genero'            =>  trim($rowMSSQL02['persona_genero']),
-                                    'persona_fecha_nacimiento'  =>  $rowMSSQL02['persona_fecha_nacimiento'],
-                                    'persona_funcion'           =>  trim($rowMSSQL02['persona_funcion'])                               
-
-                                );
-                            
-                                $result_persona[]   = $detalle;
-                            }
-
-                            $detalle   = array(
-                                'equipo_codigo'                         => $rowMSSQL01['equipo_codigo'],
-                                'equipo_estado'                         => trim($rowMSSQL01['equipo_estado']),
-                                'equipo_nombre'                         => trim($rowMSSQL01['equipo_nombre']),
-                                'equipo_nombre_corto'                   => trim($rowMSSQL01['equipo_nombre_corto']),
-                                'equipo_naturaleza'                     => trim($rowMSSQL01['equipo_naturaleza']),
-                                'equipo_pais'                           => trim($rowMSSQL01['equipo_pais']),
-                                'equipo_region'                         => trim($rowMSSQL01['equipo_region']),
-                                'equipo_ciudad'                         => trim($rowMSSQL01['equipo_ciudad']),
-                                'equipo_postal_codigo'                  => $rowMSSQL01['equipo_postal_codigo'],
-                                'equipo_ultima_actualizacion'           => $juego_horario,
-                                'persona_detalle'                       => $result_persona
-                            
                             );
+                        
+                            $result_persona[]   = $detalle;
+                        }
 
-                            $result_equipo[]    = $detalle;
+                        $detalle   = array(
+                            'equipo_codigo'                         => $rowMSSQL01['equipo_codigo'],
+                            'equipo_estado'                         => trim($rowMSSQL01['equipo_estado']),
+                            'equipo_nombre'                         => trim($rowMSSQL01['equipo_nombre']),
+                            'equipo_nombre_corto'                   => trim($rowMSSQL01['equipo_nombre_corto']),
+                            'equipo_naturaleza'                     => trim($rowMSSQL01['equipo_naturaleza']),
+                            'equipo_pais'                           => trim($rowMSSQL01['equipo_pais']),
+                            'equipo_region'                         => trim($rowMSSQL01['equipo_region']),
+                            'equipo_ciudad'                         => trim($rowMSSQL01['equipo_ciudad']),
+                            'equipo_postal_codigo'                  => $rowMSSQL01['equipo_postal_codigo'],
+                            'equipo_ultima_actualizacion'           => $juego_horario,
+                            'persona_detalle'                       => $result_persona
+                        
+                        );
 
-                        $detalle    = array(
-                           
-                            'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
-                            'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
-                            'competicion_estado'                    => trim($rowMSSQL['competicion_estado']),
-                            'competicion_nombre'                    => $competicion_nombre,
-                            'competicion_nombre_corto'              => $competicion_nombre_corto,
-                            'competicion_anho'                      => $rowMSSQL['competicion_anho'],
-                            'competicion_categoria_codigo'          => trim($rowMSSQL['competicion_categoria_codigo']),
-                            'competicion_categoria_nombre'          => trim($rowMSSQL['competicion_categoria_nombre']),
-                            'competicion_desde'                     => $rowMSSQL['competicion_desde'],
-                            'competicion_hasta'                     => $rowMSSQL['competicion_hasta'],
-                            'competicion_disciplina'                => trim($rowMSSQL['competicion_disciplina']),
-                            'competicion_genero'                    => trim($rowMSSQL['competicion_genero']),
-                            'competicion_imagen_codigo'             => $rowMSSQL['competicion_imagen_codigo'],
-                            'competicion_multiplicador'             => $rowMSSQL['competicion_multiplicador'],
-                            'competicion_naturaleza'                => trim($rowMSSQL['competicion_naturaleza']),
-                            'competicion_numero_participante'       => $rowMSSQL['competicion_numero_participante'],
-                            'competicion_numero_orden'              => $rowMSSQL['competicion_numero_orden'],
-                            'competicion_equipo_tipo'               => trim($rowMSSQL['competicion_equipo_tipo']),
-                            'competicion_sustitucion'               => $rowMSSQL['competicion_sustitucion'],
-                            'competicion_penal'                     => $rowMSSQL['competicion_penal'],
-                            'competicion_tipo'                      => trim($rowMSSQL['competicion_tipo']),
-                            'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
-                            'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
+                        $result_equipo[]    = $detalle;
+                    }
 
-                            'equipo_detalle'                        =>  $result_equipo
-                            
-                        ); 
-                    }  
-                   
+                    $detalle    = array(
+                        
+                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                    => trim($rowMSSQL['competicion_estado']),
+                        'competicion_nombre'                    => $competicion_nombre,
+                        'competicion_nombre_corto'              => $competicion_nombre_corto,
+                        'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+                        'competicion_categoria_codigo'          => trim($rowMSSQL['competicion_categoria_codigo']),
+                        'competicion_categoria_nombre'          => trim($rowMSSQL['competicion_categoria_nombre']),
+                        'competicion_desde'                     => $rowMSSQL['competicion_desde'],
+                        'competicion_hasta'                     => $rowMSSQL['competicion_hasta'],
+                        'competicion_disciplina'                => trim($rowMSSQL['competicion_disciplina']),
+                        'competicion_genero'                    => trim($rowMSSQL['competicion_genero']),
+                        'competicion_imagen_codigo'             => $rowMSSQL['competicion_imagen_codigo'],
+                        'competicion_multiplicador'             => $rowMSSQL['competicion_multiplicador'],
+                        'competicion_naturaleza'                => trim($rowMSSQL['competicion_naturaleza']),
+                        'competicion_numero_participante'       => $rowMSSQL['competicion_numero_participante'],
+                        'competicion_numero_orden'              => $rowMSSQL['competicion_numero_orden'],
+                        'competicion_equipo_tipo'               => trim($rowMSSQL['competicion_equipo_tipo']),
+                        'competicion_sustitucion'               => $rowMSSQL['competicion_sustitucion'],
+                        'competicion_penal'                     => $rowMSSQL['competicion_penal'],
+                        'competicion_tipo'                      => trim($rowMSSQL['competicion_tipo']),
+                        'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
+                        'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
+
+                        'equipo_detalle'                        =>  $result_equipo
+                        
+                    );
+
+                    $result_competicion[]  = $detalle;
                 }
-
-                $result_competicion[]  = $detalle;
-
+                
                 if (isset($result_competicion)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result_competicion), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
