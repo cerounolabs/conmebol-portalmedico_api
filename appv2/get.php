@@ -12446,7 +12446,7 @@
                 INNER JOIN comet.persons b ON a.playerFifaId = b.personFifaId 
                 WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
 
-                ORDER BY a.personFifaId DESC";
+                ORDER BY b.personFifaId DESC";
 
             try {
 
