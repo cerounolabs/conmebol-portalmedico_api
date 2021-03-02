@@ -12468,21 +12468,15 @@
 
                          $stmtMSSQL02->execute([$persona_codigo]);
 
-                        /*$detalle = array(
-                        'equipo_codigo'             => $rowMSSQL01['equipo_codigo'],
-                        'equipo_nombre'             => trim($rowMSSQL01['equipo_nombre']),
-                        'persona_codigo'            => $rowMSSQL01['persona_codigo'],
-                        'persona_tipo'              => trim($rowMSSQL01['persona_tipo']),
-                        'persona_nombre'            => trim($rowMSSQL01['persona_nombre']),
-                        'persona_apellido'          => trim($rowMSSQL01['persona_apellido']),
-                        'persona_genero'            => trim($rowMSSQL01['persona_genero']),
-                        'persona_fecha_nacimiento'  => $rowMSSQL01['persona_fecha_nacimiento'],
-                        'persona_funcion'           =>trim($rowMSSQL01['persona_funcion'])
-                        );*/
-                        $result_equipo[]   = $detalle;
+                         $detalle2   = array(
+                            'equipo_codigo'             => $rowMSSQL01['equipo_codigo'],
+                            'equipo_nombre'             => trim($rowMSSQL01['equipo_nombre'])
+                            );
+
+                            $result_equipo[]   = $detalle2;
 
                         //$result_persona = [];
-                        while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
+                            while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
 
                             $detalle3 = array(
                         
@@ -12500,10 +12494,7 @@
                         $result_persona[]   = $detalle3;
                     }
                     
-                    $detalle2   = array(
-                        'equipo_codigo'             => $rowMSSQL01['equipo_codigo'],
-                        'equipo_nombre'             => trim($rowMSSQL01['equipo_nombre'])
-                    );
+                   
 
                     $result_competicion[]  = $detalle2;
                 }
