@@ -9232,35 +9232,9 @@
                         LEFT OUTER JOIN [comet].[persons] d ON c.personFifaId = d.personFifaId
                         LEFT OUTER JOIN [adm].[DOMFIC] e ON d.documentType = e.DOMFICCOD
 
-                        WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL AND NOT EXISTS (SELECT * FROM exa.EXAFIC a1 WHERE a1.EXAFICPEC = c.personFifaId AND a1.EXAFICTEC = ? AND a1.EXAFICENC = ? AND a1.EXAFICEST <> 211)
+                        WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL AND NOT EXISTS (SELECT * FROM exa.EXAFIC a1 WHERE a1.EXAFICPEC = c.personFifaId AND a1.EXAFICTEC = ? AND a1.EXAFICENC = ? AND a1.EXAFICEST <> (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND DOMFICPAR = 3) AND a1.EXAFICEST <> (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND DOMFICPAR = 5))
 
                         ORDER BY d.personFifaId";
-
-                    /*$sql00  = "SELECT
-                        a.competitionFifaId                 AS          competicion_codigo,
-                        d.personFifaId                      AS          jugador_codigo,
-                        d.internationalLastName             AS          jugador_apellido,
-                        d.internationalFirstName            AS          jugador_nombre,
-                        c.roleDescription                   AS          jugador_posicion,
-                        d.pictureContentType                AS          jugador_imagen_tipo,
-                        d.pictureLink                       AS          jugador_imagen_link,
-                        d.pictureValue                      AS          jugador_imagen_valor,
-
-                        e.DOMFICCOD                         AS          tipo_documento_codigo,
-                        e.DOMFICNOI                         AS          tipo_documento_nombre_ingles,
-                        e.DOMFICNOC                         AS          tipo_documento_nombre_castellano,
-                        e.DOMFICNOP                         AS          tipo_documento_nombre_portugues,
-                        d.documentNumber                    AS          tipo_documento_numero
-
-                        FROM [comet].[competitions] a
-                        LEFT OUTER JOIN [comet].[matches] b ON a.competitionFifaId = b.competitionFifaId
-                        LEFT OUTER JOIN [comet].[matches_officials] c ON b.matchFifaId = c.matchFifaId
-                        LEFT OUTER JOIN [comet].[persons] d ON c.personFifaId = d.personFifaId
-                        LEFT OUTER JOIN [adm].[DOMFIC] e ON d.documentType = e.DOMFICCOD
-
-                        WHERE a.superiorCompetitionFifaId = ? AND d.personFifaId IS NOT NULL
-
-                        ORDER BY d.personFifaId";*/
                         
                 } else {
                     $val02  = $val04;
@@ -9286,7 +9260,7 @@
                         LEFT OUTER JOIN [comet].[persons] c ON b.personFifaId = c.personFifaId
                         LEFT OUTER JOIN [adm].[DOMFIC] d ON c.documentType = d.DOMFICCOD
                         
-                        WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
+                        WHERE a.matchFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = b.personFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND DOMFICPAR = 3) AND c.EXAFICEST <> (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND DOMFICPAR = 5))
 
                         ORDER BY c.personFifaId";
                 }
@@ -9317,7 +9291,7 @@
                     INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
                     LEFT OUTER JOIN [adm].[DOMFIC] c ON b.documentType = c.DOMFICCOD
                     
-                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = a.playerFifaId AND c.EXAFICEQC = a.teamFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> 211)
+                    WHERE a.teamFifaId = ? AND a.competitionFifaId = ? AND NOT EXISTS (SELECT * FROM exa.EXAFIC c WHERE c.EXAFICPEC = a.playerFifaId AND c.EXAFICEQC = a.teamFifaId AND c.EXAFICTEC = ? AND c.EXAFICENC = ? AND c.EXAFICEST <> (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND DOMFICPAR = 3) AND c.EXAFICEST <> (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19ESTADO' AND DOMFICPAR = 5))
 
                     ORDER BY b.playerPosition, a.shirtNumber";
             }
