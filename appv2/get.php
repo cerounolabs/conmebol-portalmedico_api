@@ -12489,7 +12489,7 @@
 
                        $stmtMSSQL01->execute([$equipo_codigo]);
 
-                       $result_equipo =[];
+                       //$result_equipo =[];
                         while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
                             $juego_horario = date_format(date_create($rowMSSQL01['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
 
@@ -12512,8 +12512,8 @@
                             $result_equipo[]    = $detalle;
                         
 
-                            //$result_persona = [];
-                            /*while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
+                           /* $result_persona = [];
+                            while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
 
                             $detalle3 = array(
                         
