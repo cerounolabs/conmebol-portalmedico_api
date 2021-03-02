@@ -12411,52 +12411,51 @@
         
         if (isset($val01)) {
             $sql00  =   "SELECT
-                a.teamFifaId                        AS          equipo_codigo,
-                b.competitionFifaId                 AS          competicion_codigo,
-                b.superiorCompetitionFifaId         AS          competicion_codigo_padre,
-                b.status                            AS          competicion_estado,
-                b.internationalName                 AS          competicion_nombre,
-                b.internationalShortName            AS          competicion_nombre_corto,
-                b.season                            AS          competicion_anho,
-                b.ageCategory                       AS          competicion_categoria_codigo,
-                b.ageCategoryName                   AS          competicion_categoria_nombre,
-                b.dateFrom                          AS          competicion_desde,
-                b.dateTo                            AS          competicion_hasta,
-                b.discipline                        AS          competicion_disciplina,
-                b.gender                            AS          competicion_genero,
-                b.imageId                           AS          competicion_imagen_codigo,
-                b.multiplier                        AS          competicion_multiplicador,
-                b.nature                            AS          competicion_naturaleza,
-                b.numberOfParticipants              AS          competicion_numero_participante,
-                b.orderNumber                       AS          competicion_numero_orden,
-                b.teamCharacter                     AS          competicion_equipo_tipo,
-                b.flyingSubstitutions               AS          competicion_sustitucion,
-                b.penaltyShootout                   AS          competicion_penal,
-                b.matchType                         AS          competicion_tipo,
-                b.pictureContentType                AS          competicion_imagen_tipo,
-                b.pictureLink                       AS          competicion_image_link,
-                b.pictureValue                      AS          competicion_imagen_valor,
-                b.lastUpdate                        AS          competicion_ultima_actualizacion
+                a.competitionFifaId                 AS          competicion_codigo,
+                a.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                a.status                            AS          competicion_estado,
+                a.internationalName                 AS          competicion_nombre,
+                a.internationalShortName            AS          competicion_nombre_corto,
+                a.season                            AS          competicion_anho,
+                a.ageCategory                       AS          competicion_categoria_codigo,
+                a.ageCategoryName                   AS          competicion_categoria_nombre,
+                a.dateFrom                          AS          competicion_desde,
+                a.dateTo                            AS          competicion_hasta,
+                a.discipline                        AS          competicion_disciplina,
+                a.gender                            AS          competicion_genero,
+                a.imageId                           AS          competicion_imagen_codigo,
+                a.multiplier                        AS          competicion_multiplicador,
+                a.nature                            AS          competicion_naturaleza,
+                a.numberOfParticipants              AS          competicion_numero_participante,
+                a.orderNumber                       AS          competicion_numero_orden,
+                a.teamCharacter                     AS          competicion_equipo_tipo,
+                a.flyingSubstitutions               AS          competicion_sustitucion,
+                a.penaltyShootout                   AS          competicion_penal,
+                a.matchType                         AS          competicion_tipo,
+                a.pictureContentType                AS          competicion_imagen_tipo,
+                a.pictureLink                       AS          competicion_image_link,
+                a.pictureValue                      AS          competicion_imagen_valor,
+                a.lastUpdate                        AS          competicion_ultima_actualizacion
                     
-                FROM comet.competitions_teams a
-                INNER JOIN comet.competitions b ON a.competitionFifaId = b.competitionFifaId
+                FROM comet.competitions a
                 WHERE a.competitionFifaId = ?";
 
             $sql01 =    "SELECT
-                a.teamFifaId                        AS          equipo_codigo,
-                a.status                            AS          equipo_estado,
-                a.internationalName                 AS          equipo_nombre,
-                a.internationalShortName            AS          equipo_nombre_corto,
-                a.organisationNature                AS          equipo_naturaleza,
-                a.country                           AS          equipo_pais,
-                a.region                            AS          equipo_region,
-                a.town                              AS          equipo_ciudad,
-                a.postalCode                        AS          equipo_postal_codigo,
-                a.lastUpdate                        AS          equipo_ultima_actualizacion
+                b.teamFifaId                        AS          equipo_codigo,
+                b.status                            AS          equipo_estado,
+                b.internationalName                 AS          equipo_nombre,
+                b.internationalShortName            AS          equipo_nombre_corto,
+                b.organisationNature                AS          equipo_naturaleza,
+                b.country                           AS          equipo_pais,
+                b.region                            AS          equipo_region,
+                b.town                              AS          equipo_ciudad,
+                b.postalCode                        AS          equipo_postal_codigo,
+                b.lastUpdate                        AS          equipo_ultima_actualizacion
             
-                FROM [comet].[teams] a
+                FROM FROM comet.competitions_teams a
+                INNER JOIN [comet].[teams] b
 
-                WHERE a.teamFifaId = ?";
+                WHERE a.competitionFifaId = ? ";
 
             $sql02 =    "SELECT 
                 b.personFifaId                  AS          persona_codigo,
@@ -12484,14 +12483,14 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    $equipo_codigo =  $rowMSSQL['equipo_codigo'];
 
-                    $stmtMSSQL01->execute([$equipo_codigo]);
+                    $stmtMSSQL01->execute([$val01]);
                     
                     $result_equipo     = [];
                     
                     while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
                         $result_persona = [];
+                        $equipo_codigo =  $rowMSSQL01['equipo_codigo'];
                         $juego_horario  = date_format(date_create($rowMSSQL01['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
 
                         $stmtMSSQL02->execute([$val01, $equipo_codigo]);
@@ -12561,7 +12560,7 @@
 
                     $result_competicion[]  = $detalle;
                 }
-                
+
                 if (isset($result_competicion)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result_competicion), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
