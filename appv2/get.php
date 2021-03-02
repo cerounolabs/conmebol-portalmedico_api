@@ -12481,10 +12481,10 @@
                         );*/
                         $result_equipo[]   = $detalle;
 
-                        $result_persona = [];
+                        //$result_persona = [];
                         while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
 
-                            $detalle = array(
+                            $detalle3 = array(
                         
                             'persona_codigo'            => $rowMSSQL02['persona_codigo'],
                             'persona_tipo'              => trim($rowMSSQL02['persona_tipo']),
@@ -12497,17 +12497,22 @@
 
                         }
 
-                        $result_persona[]   = $detalle;
+                        $result_persona[]   = $detalle3;
                     }
                     
-                    $detalle    = array(
-                        'competicion_codigo'    =>     $rowMSSQL['competicion_codigo'],
-                        'equipo_detalle'        =>     $result_equipo,
-                        'persona_detalle'       =>     $result_persona 
+                    $detalle2   = array(
+                        'equipo_codigo'             => $rowMSSQL01['equipo_codigo'],
+                        'equipo_nombre'             => trim($rowMSSQL01['equipo_nombre'])
                     );
 
-                    $result_competicion[]  = $detalle;
+                    $result_competicion[]  = $detalle2;
                 }
+
+                $detalle    = array(
+                    'competicion_codigo'    =>     $rowMSSQL['competicion_codigo'],
+                    'equipo_detalle'        =>     $result_equipo,
+                    'persona_detalle'       =>     $result_persona 
+                );
 
                 if (isset($result_competicion)){
                     header("Content-Type: application/json; charset=utf-8");
