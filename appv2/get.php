@@ -12486,12 +12486,12 @@
                        $equipo_codigo =  $rowMSSQL['equipo_codigo'];
 
                        $stmtMSSQL01->execute([$equipo_codigo]);
-                       
+
                        $result_equipo =[];
                         while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
-                            $juego_horario = date_format(date_create($rowMSSQL['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
+                            $juego_horario = date_format(date_create($rowMSSQL01['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
 
-                            $stmtMSSQL02->execute([$val01, $equipo_codigo]);
+                           // $stmtMSSQL02->execute([$val01, $equipo_codigo]);
 
                             $detalle   = array(
                                 'equipo_codigo'                         => $rowMSSQL01['equipo_codigo'],
@@ -12506,6 +12506,7 @@
                                 'equipo_ultima_actualizacion'           => $juego_horario,
                             
                             );
+
                             $result_equipo[]    = $detalle;
                         
 
@@ -12524,8 +12525,6 @@
                             );
                             $result_persona[]   = $detalle3;*/
                         }
-                        
-                       // $result_equipo[]    = $detalle2;
 
                         $detalle    = array(
                            
@@ -12553,18 +12552,12 @@
                             'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
                             'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
-                            'equipo_detalle'        =>     $result_equipo
+                            'equipo_detalle'                        =>  $result_equipo
                             //'persona_detalle'       =>     $result_persona, 
                             
                         );   
                    
-                    }
-
-                /*$detalle    = array(
-                    'competicion_codigo'    =>     $rowMSSQL['competicion_codigo'],
-                    'equipo_detalle'        =>     $result_equipo,
-                    'persona_detalle'       =>     $result_persona 
-                );*/
+                }
 
                 $result_competicion[]  = $detalle;
 
