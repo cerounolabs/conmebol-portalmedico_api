@@ -12463,7 +12463,7 @@
 
                        $stmtMSSQL01->execute([$equipo_codigo]);
 
-                    while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
+                        while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
                          $persona_codigo = $rowMSSQL01['persona_codigo'];
 
                          $stmtMSSQL02->execute([$val01, $persona_codigo]);
@@ -12475,7 +12475,7 @@
 
                             $result_equipo[]   = $detalle2;
 
-                        //$result_persona = [];
+                            //$result_persona = [];
                             while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
 
                             $detalle3 = array(
@@ -12494,7 +12494,7 @@
                         $result_persona[]   = $detalle3;
                     }
                     
-                    $result_competicion[]  = $detalle2;
+                    $result_competicion[]  = $detalle;
                 }
 
                 $detalle    = array(
