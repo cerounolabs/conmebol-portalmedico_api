@@ -21,7 +21,8 @@
 	$app->add(new Tuupola\Middleware\HttpBasicAuthentication([
 		"secure"=> false,
 		"users" => [
-			"user_sfholox" => "ns3r_5fh0!0x"
+			"user_sfholox" => "ns3r_5fh0!0x",
+			"user_acreditacion" => "4cr3d1t4c10n2o2i"
 		],
 		"error" => function($response, $args) {
 			header("Content-Type: application/json; charset=utf-8");
