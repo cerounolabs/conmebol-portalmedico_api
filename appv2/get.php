@@ -12483,14 +12483,15 @@
                 $stmtMSSQL02    = $connMSSQL->prepare($sql02);
 
                 $stmtMSSQL->execute([$val01]); 
-                
-                $result_equipo     = [];
-                $result_persona    = [];
+
+
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                        $equipo_codigo =  $rowMSSQL['equipo_codigo'];
 
                        $stmtMSSQL01->execute([$equipo_codigo]);
-
+                        
+                       $result_equipo     = [];
+                       $result_persona    = [];
                         while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
                             $juego_horario = date_format(date_create($rowMSSQL01['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
 
