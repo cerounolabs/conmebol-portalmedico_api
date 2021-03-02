@@ -12452,8 +12452,8 @@
                 b.postalCode                        AS          equipo_postal_codigo,
                 b.lastUpdate                        AS          equipo_ultima_actualizacion
             
-                FROM FROM comet.competitions_teams a
-                INNER JOIN [comet].[teams] b
+                FROM comet.competitions_teams a
+                INNER JOIN [comet].[teams] b ON a.teamFifaId = b.teamFifaId
 
                 WHERE a.competitionFifaId = ? ";
 
