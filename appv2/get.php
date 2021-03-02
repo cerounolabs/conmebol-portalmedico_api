@@ -12411,6 +12411,8 @@
         
         if (isset($val01)) {
             $sql00  =   "SELECT 
+
+                a.teamFifaId                        AS          equipo_codigo,
                 b.competitionFifaId                 AS          competicion_codigo,
                 b.superiorCompetitionFifaId         AS          competicion_codigo_padre,
                 b.status                            AS          competicion_estado,
