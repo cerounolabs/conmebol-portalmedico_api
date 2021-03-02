@@ -12491,15 +12491,20 @@
                         }
                         $result_equipo[]    = $detalle2;
                         
-                    }    
+                    } 
+                    $detalle    = array(
+                        'competicion_codigo'    =>     $rowMSSQL['competicion_codigo'],
+                        'equipo_detalle'        =>     $result_equipo,
+                        'persona_detalle'       =>     $result_persona 
+                    );   
                    
                 }
 
-                $detalle    = array(
+                /*$detalle    = array(
                     'competicion_codigo'    =>     $rowMSSQL['competicion_codigo'],
                     'equipo_detalle'        =>     $result_equipo,
                     'persona_detalle'       =>     $result_persona 
-                );
+                );*/
 
                 $result_competicion[]  = $detalle;
 
