@@ -12521,9 +12521,12 @@
                                 'persona_apellido'          => trim($rowMSSQL02['persona_apellido']),
                                 'persona_genero'            => trim($rowMSSQL02['persona_genero']),
                                 'persona_fecha_nacimiento'  => $rowMSSQL02['persona_fecha_nacimiento'],
-                                'persona_funcion'           =>trim($rowMSSQL02['persona_funcion'])
+                                'persona_funcion'           =>trim($rowMSSQL02['persona_funcion']),
+                                'equipo_detalle'                        =>  $result_equipo,
+                                'persona_detalle'       =>              $result_persona
 
                             );
+                        
                             $result_persona[]   = $detalle;
                         }
 
@@ -12553,8 +12556,8 @@
                             'competicion_imagen_tipo'               => trim($rowMSSQL['competicion_imagen_tipo']),
                             'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
-                            'equipo_detalle'                        =>  $result_equipo,
-                            'persona_detalle'       =>              $result_persona
+                            //'equipo_detalle'                        =>  $result_equipo,
+                            //'persona_detalle'       =>              $result_persona
                             
                         ); 
                     }  
