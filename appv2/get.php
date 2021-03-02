@@ -12402,6 +12402,115 @@
         return $json;
     });
 
+/*MODULO ACREDITACION*/
+
+    $app->get('/v2/400/acreditacion/{competicion}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val01      = $request->getAttribute('competicion');
+        
+        if (isset($val01)) {
+            $sql00  =   "SELECT 
+                a.competitionFifaId                 AS          competicion_codigo,
+                a.teamFifaId                        AS          equipo_codigo
+                FROM comet.competitions_teams a 
+
+                WHERE competitionFifaId = ?";
+
+            $sql01 =    "SELECT  
+                b.teamFifaId                    AS          equipo_codigo,
+                b.internationalName             AS          equipo_nombre,
+                c.personFifaId                  AS          persona_codigo,
+                c.personType                    AS          persona_tipo,
+                c.internationalFirstName        AS          persona_nombre,
+                c.internationalLastName         AS          persona_apellido,
+                c.gender                        AS          persona_genero,
+                c.dateOfBirth                   AS          persona_fecha_nacimiento,
+                c.playerPosition                AS          persona_funcion
+                
+                FROM comet.competitions_teams_players a  
+                
+                INNER JOIN comet.teams b ON a.teamFifaId = b.teamFifaId
+                INNER JOIN comet.persons c ON a.playerFifaId = c.personFifaId
+                
+                WHERE a.competitionFifaId = ? and a.teamFifaId = ?";
+
+            try {
+
+                $result_equipo  = [];
+                $connMSSQL      = getConnectionMSSQLv2();
+                $stmtMSSQL      = $connMSSQL->prepare($sql00);
+                $stmtMSSQL01    = $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL->execute([$val01]); 
+
+                
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    
+                       $equipo_codigo =  $rowMSSQL['equipo_codigo'];
+
+                       $stmtMSSQL01->execute([$val01, $equipo_codigo]);
+
+                    $result_persona  = [];
+                    while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
+                        $detalle = array(
+                        'equipo_codigo'             => $rowMSSQL01['equipo_codigo'],
+                        'equipo_nombre'             => trim($rowMSSQL01['equipo_nombre']),
+                        'persona_codigo'            => $rowMSSQL01['persona_codigo'],
+                        'persona_tipo'              => trim($rowMSSQL01['persona_tipo']),
+                        'persona_nombre'            => trim($rowMSSQL01['persona_nombre']),
+                        'persona_apellido'          => trim($rowMSSQL01['persona_apellido']),
+                        'persona_genero'            => trim($rowMSSQL01['persona_genero']),
+                        'persona_fecha_nacimiento'  => $rowMSSQL01['persona_fecha_nacimiento'],
+                        'persona_funcion'           =>trim($rowMSSQL01['persona_funcion'])
+                        );
+
+                    }
+
+                    $result_persona[]   = $detalle;
+
+                    $detalle    = array(
+                        'competicion_codigo'    =>     $rowMSSQL['competicion_codigo'],
+                        'equipo_detalle'        =>     $result_persona
+                    );
+
+                    $result_equipo[]  = $detalle;
+                }
+
+                if (isset($result_equipo)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result_equipo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'    => '',
+                        'equipo_detalle'        => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL = null;
+                $stmtMSSQL01 = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+
 
 
 
