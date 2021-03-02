@@ -12404,7 +12404,7 @@
 
 /*MODULO ACREDITACION*/
 
-    $app->get('/v2/400/acreditacion/{competicion}', function($request) {
+    /*$app->get('/v2/400/acreditacion/{competicion}', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $val01      = $request->getAttribute('competicion');
@@ -12504,14 +12504,13 @@
                                 'equipo_region'                         => trim($rowMSSQL01['equipo_region']),
                                 'equipo_ciudad'                         => trim($rowMSSQL01['equipo_ciudad']),
                                 'equipo_postal_codigo'                  => $rowMSSQL01['equipo_postal_codigo'],
-                                'equipo_ultima_actualizacion'           => $juego_horario,
+                                'equipo_ultima_actualizacion'           => $juego_horario
                             
                             );
 
                             $result_equipo[]    = $detalle;
                         
-
-                           /* $result_persona = [];*/
+                           /*$result_persona = [];
                             while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
 
                             $detalle = array(
@@ -12555,7 +12554,7 @@
                             'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
                             'equipo_detalle'                        =>  $result_equipo,
-                            'persona_detalle'       =>              $result_persona, 
+                            'persona_detalle'       =>              $result_persona
                             
                         );   
                    
@@ -12597,10 +12596,5 @@
         $connMSSQL  = null;
         
         return $json;
-    });
-
-
-
-
-
+    });*/
 
