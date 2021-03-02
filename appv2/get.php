@@ -12505,6 +12505,8 @@
                                 'equipo_ultima_actualizacion'           => $juego_horario,
                             
                             );
+                            $result_equipo[]    = $detalle2;
+                        
 
                             //$result_persona = [];
                             /*while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
@@ -12521,9 +12523,8 @@
                             );
                             $result_persona[]   = $detalle3;*/
                         }
-                        //$result_equipo[]    = $detalle2;
                         
-                        $result_equipo[]    = $detalle2;
+                       // $result_equipo[]    = $detalle2;
 
                         $detalle    = array(
                            
