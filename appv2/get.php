@@ -12473,7 +12473,6 @@
                             'equipo_nombre'             => trim($rowMSSQL01['equipo_nombre'])
                             );
 
-                           
                             //$result_persona = [];
                             while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
 
@@ -12489,9 +12488,11 @@
                             );
                             $result_persona[]   = $detalle3;
                         }
-                        $result_equipo[]    = $detalle2;
+                        //$result_equipo[]    = $detalle2;
                         
                     } 
+                    $result_equipo[]    = $detalle2;
+
                     $detalle    = array(
                         'competicion_codigo'    =>     $rowMSSQL['competicion_codigo'],
                         'equipo_detalle'        =>     $result_equipo,
