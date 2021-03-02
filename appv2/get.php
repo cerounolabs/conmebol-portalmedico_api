@@ -12495,8 +12495,9 @@
 
                     $detalle    = array(
                         'competicion_codigo'    =>     $rowMSSQL['competicion_codigo'],
-                        'equipo_detalle'        =>     $result_equipo,
-                        'persona_detalle'       =>     $result_persona 
+                        'persona_detalle'       =>     $result_persona, 
+                        'equipo_detalle'        =>     $result_equipo
+                        
                     );   
                    
                 }
