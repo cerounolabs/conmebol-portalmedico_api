@@ -12477,8 +12477,6 @@
             try {
 
                 $result_competicion = [];
-                $result_persona     = [];   
-                $result_equipo      = [];
                 $connMSSQL      = getConnectionMSSQLv2();
                 $stmtMSSQL      = $connMSSQL->prepare($sql00);
                 $stmtMSSQL01    = $connMSSQL->prepare($sql01);
@@ -12491,11 +12489,13 @@
 
                        $stmtMSSQL01->execute([$equipo_codigo]);
 
+                       $result_equipo      = [];
                         while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
                             $juego_horario = date_format(date_create($rowMSSQL01['equipo_ultima_actualizacion']), 'd/m/Y H:i:s');
 
                             $stmtMSSQL02->execute([$val01, $equipo_codigo]);
 
+                            $result_persona    = [];
                             while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
 
                                 $detalle = array(
