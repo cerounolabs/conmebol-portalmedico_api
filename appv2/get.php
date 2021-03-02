@@ -12488,13 +12488,11 @@
                             'persona_fecha_nacimiento'  => $rowMSSQL02['persona_fecha_nacimiento'],
                             'persona_funcion'           =>trim($rowMSSQL02['persona_funcion'])
                             );
-
+                            $result_persona[]   = $detalle3;
                         }
-
-                        $result_persona[]   = $detalle3;
-                    }
-                    
-                    $result_competicion[]  = $detalle;
+                        
+                    }    
+                   
                 }
 
                 $detalle    = array(
@@ -12502,6 +12500,8 @@
                     'equipo_detalle'        =>     $result_equipo,
                     'persona_detalle'       =>     $result_persona 
                 );
+                
+                $result_competicion[]  = $detalle;
 
                 if (isset($result_competicion)){
                     header("Content-Type: application/json; charset=utf-8");
