@@ -12476,7 +12476,9 @@
 
             try {
 
-                $result_competicion  = [];
+                $result_competicion = [];
+                $result_persona     = [];   
+                $result_equipo      = [];
                 $connMSSQL      = getConnectionMSSQLv2();
                 $stmtMSSQL      = $connMSSQL->prepare($sql00);
                 $stmtMSSQL01    = $connMSSQL->prepare($sql01);
@@ -12527,8 +12529,6 @@
                             );
 
                             $result_equipo[]    = $detalle;
-
-
 
                         $detalle    = array(
                            
