@@ -12474,7 +12474,7 @@
                             );
 
                            
-                            $result_persona = [];
+                            //$result_persona = [];
                             while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
 
                             $detalle3 = array(
@@ -12487,10 +12487,10 @@
                             'persona_fecha_nacimiento'  => $rowMSSQL02['persona_fecha_nacimiento'],
                             'persona_funcion'           =>trim($rowMSSQL02['persona_funcion'])
                             );
-                           
+                            $result_persona[]   = $detalle3;
                         }
                         $result_equipo[]    = $detalle2;
-                        $result_persona[]   = $detalle3;
+                        
                     }    
                    
                 }
