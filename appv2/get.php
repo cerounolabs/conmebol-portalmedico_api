@@ -12494,6 +12494,23 @@
 
                             $stmtMSSQL02->execute([$val01, $equipo_codigo]);
 
+                            while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
+
+                                $detalle = array(
+                            
+                                    'persona_codigo'            =>  $rowMSSQL02['persona_codigo'],
+                                    'persona_tipo'              =>  trim($rowMSSQL02['persona_tipo']),
+                                    'persona_nombre'            =>  trim($rowMSSQL02['persona_nombre']),
+                                    'persona_apellido'          =>  trim($rowMSSQL02['persona_apellido']),
+                                    'persona_genero'            =>  trim($rowMSSQL02['persona_genero']),
+                                    'persona_fecha_nacimiento'  =>  $rowMSSQL02['persona_fecha_nacimiento'],
+                                    'persona_funcion'           =>  trim($rowMSSQL02['persona_funcion'])                               
+
+                                );
+                            
+                                $result_persona[]   = $detalle;
+                            }
+
                             $detalle   = array(
                                 'equipo_codigo'                         => $rowMSSQL01['equipo_codigo'],
                                 'equipo_estado'                         => trim($rowMSSQL01['equipo_estado']),
@@ -12504,29 +12521,14 @@
                                 'equipo_region'                         => trim($rowMSSQL01['equipo_region']),
                                 'equipo_ciudad'                         => trim($rowMSSQL01['equipo_ciudad']),
                                 'equipo_postal_codigo'                  => $rowMSSQL01['equipo_postal_codigo'],
-                                'equipo_ultima_actualizacion'           => $juego_horario
+                                'equipo_ultima_actualizacion'           => $juego_horario,
+                                'persona_detalle'                       => $result_persona
                             
                             );
 
                             $result_equipo[]    = $detalle;
-                        
-                           //$result_persona = [];
-                            while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
 
-                            $detalle = array(
-                        
-                                'persona_codigo'            => $rowMSSQL02['persona_codigo'],
-                                'persona_tipo'              => trim($rowMSSQL02['persona_tipo']),
-                                'persona_nombre'            => trim($rowMSSQL02['persona_nombre']),
-                                'persona_apellido'          => trim($rowMSSQL02['persona_apellido']),
-                                'persona_genero'            => trim($rowMSSQL02['persona_genero']),
-                                'persona_fecha_nacimiento'  => $rowMSSQL02['persona_fecha_nacimiento'],
-                                'persona_funcion'           =>trim($rowMSSQL02['persona_funcion'])                               
 
-                            );
-                        
-                            $result_persona[]   = $detalle;
-                        }
 
                         $detalle    = array(
                            
@@ -12555,7 +12557,6 @@
                             'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
                             'equipo_detalle'                        =>  $result_equipo
-                            //'persona_detalle'       =>              $result_persona
                             
                         ); 
                     }  
