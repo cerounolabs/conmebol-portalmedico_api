@@ -12415,45 +12415,60 @@
                 a.teamFifaId                        AS          equipo_codigo
                 FROM comet.competitions_teams a 
 
-                WHERE competitionFifaId = ?";
+                WHERE a.competitionFifaId = ?";
 
-            $sql01 =    "SELECT  
-                b.teamFifaId                    AS          equipo_codigo,
-                b.internationalName             AS          equipo_nombre,
-                c.personFifaId                  AS          persona_codigo,
-                c.personType                    AS          persona_tipo,
-                c.internationalFirstName        AS          persona_nombre,
-                c.internationalLastName         AS          persona_apellido,
-                c.gender                        AS          persona_genero,
-                c.dateOfBirth                   AS          persona_fecha_nacimiento,
-                c.playerPosition                AS          persona_funcion
-                
-                FROM comet.competitions_teams_players a  
-                
-                INNER JOIN comet.teams b ON a.teamFifaId = b.teamFifaId
-                INNER JOIN comet.persons c ON a.playerFifaId = c.personFifaId
-                
-                WHERE a.competitionFifaId = ? and a.teamFifaId = ?";
+            $sql01 =    "SELECT
+                a.teamFifaId                        AS          equipo_codigo,
+                a.status                            AS          equipo_estado,
+                a.internationalName                 AS          equipo_nombre,
+                a.internationalShortName            AS          equipo_nombre_corto,
+                a.organisationNature                AS          equipo_naturaleza,
+                a.country                           AS          equipo_pais,
+                a.region                            AS          equipo_region,
+                a.town                              AS          equipo_ciudad,
+                a.postalCode                        AS          equipo_postal_codigo,
+                a.lastUpdate                        AS          equipo_ultima_actualizacion
+            
+                FROM [comet].[teams] a
+
+                WHERE a.teamFifaId = ?";
+
+            $sql02 =    "SELECT 
+                b.personFifaId                  AS          persona_codigo,
+                b.personType                    AS          persona_tipo,
+                b.internationalFirstName        AS          persona_nombre,
+                b.internationalLastName         AS          persona_apellido,
+                b.gender                        AS          persona_genero,
+                b.dateOfBirth                   AS          persona_fecha_nacimiento,
+                b.playerPosition                AS          persona_funcion
+
+                FROM comet.competitions_teams_players a 
+                INNER JOIN comet.persons b ON a.playerFifaId = b.personFifaId 
+                WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
+
+                ORDER BY a.personFifaId DESC";
 
             try {
 
-                $result_equipo  = [];
+                $result_competicion  = [];
                 $connMSSQL      = getConnectionMSSQLv2();
                 $stmtMSSQL      = $connMSSQL->prepare($sql00);
                 $stmtMSSQL01    = $connMSSQL->prepare($sql01);
+                $stmtMSSQL02    = $connMSSQL->prepare($sql02);
 
                 $stmtMSSQL->execute([$val01]); 
 
-                
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-                    
                        $equipo_codigo =  $rowMSSQL['equipo_codigo'];
 
                        $stmtMSSQL01->execute([$val01, $equipo_codigo]);
 
-                    $result_persona  = [];
                     while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {
-                        $detalle = array(
+                         $persona_codigo = $rowMSSQL01['persona_codigo'];
+
+                         $stmtMSSQL02->execute([$persona_codigo]);
+
+                        /*$detalle = array(
                         'equipo_codigo'             => $rowMSSQL01['equipo_codigo'],
                         'equipo_nombre'             => trim($rowMSSQL01['equipo_nombre']),
                         'persona_codigo'            => $rowMSSQL01['persona_codigo'],
@@ -12463,27 +12478,45 @@
                         'persona_genero'            => trim($rowMSSQL01['persona_genero']),
                         'persona_fecha_nacimiento'  => $rowMSSQL01['persona_fecha_nacimiento'],
                         'persona_funcion'           =>trim($rowMSSQL01['persona_funcion'])
-                        );
+                        );*/
+                        $result_equipo[]   = $detalle;
 
+                        $result_persona = [];
+                        while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
+
+                            $detalle = array(
+                        
+                            'persona_codigo'            => $rowMSSQL02['persona_codigo'],
+                            'persona_tipo'              => trim($rowMSSQL02['persona_tipo']),
+                            'persona_nombre'            => trim($rowMSSQL02['persona_nombre']),
+                            'persona_apellido'          => trim($rowMSSQL02['persona_apellido']),
+                            'persona_genero'            => trim($rowMSSQL02['persona_genero']),
+                            'persona_fecha_nacimiento'  => $rowMSSQL02['persona_fecha_nacimiento'],
+                            'persona_funcion'           =>trim($rowMSSQL02['persona_funcion'])
+                            );
+
+                        }
+
+                        $result_persona[]   = $detalle;
                     }
-
-                    $result_persona[]   = $detalle;
-
+                    
                     $detalle    = array(
                         'competicion_codigo'    =>     $rowMSSQL['competicion_codigo'],
-                        'equipo_detalle'        =>     $result_persona
+                        'equipo_detalle'        =>     $result_equipo,
+                        'persona_detalle'       =>     $result_persona 
                     );
 
-                    $result_equipo[]  = $detalle;
+                    $result_competicion[]  = $detalle;
                 }
 
-                if (isset($result_equipo)){
+                if (isset($result_competicion)){
                     header("Content-Type: application/json; charset=utf-8");
-                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result_equipo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result_competicion), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
                         'competicion_codigo'    => '',
-                        'equipo_detalle'        => ''
+                        'equipo_detalle'        => '',
+                        'persona_detalle'       => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
