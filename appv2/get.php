@@ -12535,14 +12535,36 @@
                     $result_competicion[]  = $detalle;
                 }
 
-                if (isset($result_competicion)){
+                if (!empty($result_competicion)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result_competicion), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'competicion_codigo'    => '',
-                        'equipo_detalle'        => '',
-                        'persona_detalle'       => ''
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo_padre'              => '',
+                        'competicion_estado'                    => '',
+                        'competicion_nombre'                    => '',
+                        'competicion_nombre_corto'              => '',
+                        'competicion_anho'                      => '',
+                        'competicion_categoria_codigo'          => '',
+                        'competicion_categoria_nombre'          => '',
+                        'competicion_desde'                     => '',
+                        'competicion_hasta'                     => '',
+                        'competicion_disciplina'                => '',
+                        'competicion_genero'                    => '',
+                        'competicion_imagen_codigo'             => '',
+                        'competicion_multiplicador'             => '',
+                        'competicion_naturaleza'                => '',
+                        'competicion_numero_participante'       => '',
+                        'competicion_numero_orden'              => '',
+                        'competicion_equipo_tipo'               => '',
+                        'competicion_sustitucion'               => '',
+                        'competicion_penal'                     => '',
+                        'competicion_tipo'                      => '',
+                        'competicion_imagen_tipo'               => '',
+                        'competicion_ultima_actualizacion'      => '',
+                        'equipo_detalle'                        => '',
+                        'persona_detalle'                       => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
