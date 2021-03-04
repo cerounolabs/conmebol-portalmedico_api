@@ -12744,6 +12744,22 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
+  
+                    if ($rowMSSQL['competicion_desde'] == '1900-01-01' || $rowMSSQL['competicion_desde'] == null){
+                        $competicion_desde_1 = '';
+                        $competicion_desde_2 = '';
+                    } else {
+                        $competicion_desde_1 = $rowMSSQL['competicion_desde'];
+                        $competicion_desde_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_desde']));
+                    }
+
+                    if ($rowMSSQL['competicion_hasta'] == '1900-01-01' || $rowMSSQL['competicion_hasta'] == null){
+                        $competicion_hasta_1 = '';
+                        $competicion_hasta_2 = '';
+                    } else {
+                        $competicion_hasta_1 = $rowMSSQL['competicion_hasta'];
+                        $competicion_hasta_2 = date('d/m/Y', strtotime($rowMSSQL['competicion_hasta']));
+                    }
 
                     $stmtMSSQL01->execute([$val01]);
                     
@@ -12757,14 +12773,24 @@
                         $stmtMSSQL02->execute([$val01, $equipo_codigo]);
 
                         while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
+
+                            if ($rowMSSQL02['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL02['persona_fecha_nacimiento'] == null){
+                                $persona_fecha_nacimiento_1 = '';
+                                $persona_fecha_nacimiento_2 = '';
+                            } else {
+                                $persona_fecha_nacimiento_1 = $rowMSSQL02['persona_fecha_nacimiento'];
+                                $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL02['persona_fecha_nacimiento']));
+                            }
+
                             $detalle = array(
-                                'persona_codigo'            =>  $rowMSSQL02['persona_codigo'],
-                                'persona_tipo'              =>  trim($rowMSSQL02['persona_tipo']),
-                                'persona_nombre'            =>  trim($rowMSSQL02['persona_nombre']),
-                                'persona_apellido'          =>  trim($rowMSSQL02['persona_apellido']),
-                                'persona_genero'            =>  trim($rowMSSQL02['persona_genero']),
-                                'persona_fecha_nacimiento'  =>  $rowMSSQL02['persona_fecha_nacimiento'],
-                                'persona_funcion'           =>  trim($rowMSSQL02['persona_funcion'])                               
+                                'persona_codigo'                =>  $rowMSSQL02['persona_codigo'],
+                                'persona_tipo'                  =>  trim($rowMSSQL02['persona_tipo']),
+                                'persona_nombre'                =>  trim($rowMSSQL02['persona_nombre']),
+                                'persona_apellido'              =>  trim($rowMSSQL02['persona_apellido']),
+                                'persona_genero'                =>  trim($rowMSSQL02['persona_genero']),
+                                'persona_fecha_nacimiento_1'    =>  $persona_fecha_nacimiento_1,
+                                'persona_fecha_nacimiento_2'    =>  $persona_fecha_nacimiento_2,
+                                'persona_funcion'               =>  trim($rowMSSQL02['persona_funcion'])                               
 
                             );
                         
@@ -12799,8 +12825,10 @@
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
                         'competicion_categoria_codigo'          => trim($rowMSSQL['competicion_categoria_codigo']),
                         'competicion_categoria_nombre'          => trim($rowMSSQL['competicion_categoria_nombre']),
-                        'competicion_desde'                     => $rowMSSQL['competicion_desde'],
-                        'competicion_hasta'                     => $rowMSSQL['competicion_hasta'],
+                        'competicion_desde_1'                   => $competicion_desde_1,
+                        'competicion_desde_2'                   => $competicion_desde_2,
+                        'competicion_hasta_1'                   => $competicion_hasta_1,
+                        'competicion_hasta_2'                   => $competicion_hasta_2,
                         'competicion_disciplina'                => trim($rowMSSQL['competicion_disciplina']),
                         'competicion_genero'                    => trim($rowMSSQL['competicion_genero']),
                         'competicion_imagen_codigo'             => $rowMSSQL['competicion_imagen_codigo'],
@@ -12835,8 +12863,10 @@
                         'competicion_anho'                      => '',
                         'competicion_categoria_codigo'          => '',
                         'competicion_categoria_nombre'          => '',
-                        'competicion_desde'                     => '',
-                        'competicion_hasta'                     => '',
+                        'competicion_desde_1'                   => '',
+                        'competicion_desde_2'                   => '',
+                        'competicion_hasta_1'                   => '',
+                        'competicion_hasta_2'                   => '',
                         'competicion_disciplina'                => '',
                         'competicion_genero'                    => '',
                         'competicion_imagen_codigo'             => '',
