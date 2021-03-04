@@ -12376,7 +12376,7 @@
     });
 
 /*MODULO ACREDITACION*/
-    $app->get('/v2/200/acreditacion/competicion/listado', function($request) {
+    $app->get('/v2/400/acreditacion/competicion/listado', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $sql00  = "SELECT
