@@ -12470,14 +12470,24 @@
                         $stmtMSSQL02->execute([$val01, $equipo_codigo]);
 
                         while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
+
+                            if ($rowMSSQL02['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                                $persona_fecha_nacimiento_1 = '';
+                                $persona_fecha_nacimiento_2 = '';
+                            } else {
+                                $persona_fecha_nacimiento_1 = $rowMSSQL02['persona_fecha_nacimiento'];
+                                $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                            }
+
                             $detalle = array(
-                                'persona_codigo'            =>  $rowMSSQL02['persona_codigo'],
-                                'persona_tipo'              =>  trim($rowMSSQL02['persona_tipo']),
-                                'persona_nombre'            =>  trim($rowMSSQL02['persona_nombre']),
-                                'persona_apellido'          =>  trim($rowMSSQL02['persona_apellido']),
-                                'persona_genero'            =>  trim($rowMSSQL02['persona_genero']),
-                                'persona_fecha_nacimiento'  =>  $rowMSSQL02['persona_fecha_nacimiento'],
-                                'persona_funcion'           =>  trim($rowMSSQL02['persona_funcion'])                               
+                                'persona_codigo'                =>  $rowMSSQL02['persona_codigo'],
+                                'persona_tipo'                  =>  trim($rowMSSQL02['persona_tipo']),
+                                'persona_nombre'                =>  trim($rowMSSQL02['persona_nombre']),
+                                'persona_apellido'              =>  trim($rowMSSQL02['persona_apellido']),
+                                'persona_genero'                =>  trim($rowMSSQL02['persona_genero']),
+                                'persona_fecha_nacimiento_1'    =>  $persona_fecha_nacimiento_1,
+                                'persona_fecha_nacimiento_2'    =>  $persona_fecha_nacimiento_2,
+                                'persona_funcion'               =>  trim($rowMSSQL02['persona_funcion'])                               
 
                             );
                         
@@ -12507,8 +12517,8 @@
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
                         'competicion_estado'                    => trim($rowMSSQL['competicion_estado']),
-                        'competicion_nombre'                    => $competicion_nombre,
-                        'competicion_nombre_corto'              => $competicion_nombre_corto,
+                        'competicion_nombre'                    => trim($rowMSSQL['competicion_nombre']),
+                        'competicion_nombre_corto'              => trim($rowMSSQL['competicion_nombre_corto']),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
                         'competicion_categoria_codigo'          => trim($rowMSSQL['competicion_categoria_codigo']),
                         'competicion_categoria_nombre'          => trim($rowMSSQL['competicion_categoria_nombre']),
