@@ -11544,7 +11544,7 @@
     $app->get('/v1/802/notificacion/codigo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
-        $val01      = $request->getAttribute('codigo');
+		$val01      = $request->getAttribute('codigo');
         
         if (isset($val01)) {
             $sql00  = "SELECT 
@@ -11604,6 +11604,7 @@
                 INNER JOIN [adm].[DOMFIC] b ON a.NOTFICEST = b.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
+                INNER JOIN [comet].[competitions] e ON a.NOTFICCOC = e.competitionFifaId
 
                 WHERE a.NOTFICCOD = ?
                 
@@ -11638,7 +11639,7 @@
                         $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
                         $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
                     }
-
+    
                     $detalle    = array(
 
                         'notificacion_codigo'           =>  $rowMSSQL['notificacion_codigo'],
@@ -11690,16 +11691,16 @@
                         'tipo_test_dominio'             => trim(strtoupper(strtolower($rowMSSQL['tipo_test_dominio']))), 
                         'tipo_test_observacion'         => trim(strtoupper(strtolower($rowMSSQL['tipo_test_observacion']))),
 
-                        'competicion_codigo'            =>  $rowMSSQL['notificacion_codigo'],
+                        'competicion_codigo'            =>  $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'      =>  $rowMSSQL['competicion_codigo_padre'],
                         'competicion_estado'            =>  trim($rowMSSQL['competicion_estado']),
                         'competicion_nombre'            =>  trim($rowMSSQL['competicion_nombre'])
                         
                     );
-
+    
                     $result[]   = $detalle;
                 }
-
+    
                 if (isset($result)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
@@ -11759,7 +11760,7 @@
                         'competicion_estado'            =>  '',
                         'competicion_nombre'            =>  ''
                     );
-
+    
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 }
