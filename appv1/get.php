@@ -9804,75 +9804,136 @@
         return $json;
     });
 
-    $app->get('/v1/200/competicion/examen/{competicion}/{encuentro}/{tipo}', function($request) {
+    $app->get('/v1/200/competicion/examen/{competicion}/{encuentro}/{tipo}/{estado}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('competicion');
         $val02      = $request->getAttribute('encuentro');
         $val03      = $request->getAttribute('tipo');
+        $val04      = $request->getAttribute('estado');
 
-        if (isset($val01) && isset($val02) && isset($val03)) {
-            $sql00  = "SELECT
-                a.EXAFICCOD                 AS TEST_CODIGO,
-                b.DOMFICCOD                 AS TIPO_ESTADO_CODIGO,
-                b.DOMFICNOC                 AS TIPO_ESTADO_NOMBRE,
-                f.DOMFICCOD                 AS TIPO_EXAMEN_CODIGO,
-                f.DOMFICNOC                 AS TIPO_EXAMEN_NOMBRE,
-                c.JUEGO_CODIGO,
-                a.EXAFICEQC                 AS EQUIPO_CODIGO,
+        if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
+            if ($val02 == 0){
+                $val02  = $val03;
+                $sql00  = "SELECT
+                    a.EXAFICCOD                 AS TEST_CODIGO,
+                    b.DOMFICCOD                 AS TIPO_ESTADO_CODIGO,
+                    b.DOMFICNOC                 AS TIPO_ESTADO_NOMBRE,
+                    f.DOMFICCOD                 AS TIPO_EXAMEN_CODIGO,
+                    f.DOMFICNOC                 AS TIPO_EXAMEN_NOMBRE,
+                    c.JUEGO_CODIGO,
+                    a.EXAFICEQC                 AS EQUIPO_CODIGO,
 
-                CASE 
-                    WHEN a.EXAFICEQC = 39393 THEN 'CONMEBOL'
-                    WHEN a.EXAFICEQC <> 39393 THEN e.internationalName
-                END AS EQUIPO_NOMBRE,
+                    CASE 
+                        WHEN a.EXAFICEQC = 39393 THEN 'CONMEBOL'
+                        WHEN a.EXAFICEQC <> 39393 THEN e.internationalName
+                    END AS EQUIPO_NOMBRE,
 
-                c.EQUIPO_LOCAL_CODIGO,
-                c.EQUIPO_LOCAL_NOMBRE,
-                c.EQUIPO_VISITANTE_CODIGO,
-                c.EQUIPO_VISITANTE_NOMBRE,
+                    c.EQUIPO_LOCAL_CODIGO,
+                    c.EQUIPO_LOCAL_NOMBRE,
+                    c.EQUIPO_VISITANTE_CODIGO,
+                    c.EQUIPO_VISITANTE_NOMBRE,
 
-                d.personFifaId              AS PERSONA_CODIGO,
-                d.internationalFirstName    AS PERSONA_NOMBRE,
-                d.internationalLastName     AS PERSONA_APELLIDO,
-                (SELECT g.playerType FROM comet.competitions_teams_players g where g.competitionFifaId = ? and g.teamfifaid = a.EXAFICEQC and g.playerfifaid = a.EXAFICPEC) AS PERSONA_TIPO,
+                    d.personFifaId              AS PERSONA_CODIGO,
+                    d.internationalFirstName    AS PERSONA_NOMBRE,
+                    d.internationalLastName     AS PERSONA_APELLIDO,
+                    (SELECT g.playerType FROM comet.competitions_teams_players g where g.competitionFifaId = ? and g.teamfifaid = a.EXAFICEQC and g.playerfifaid = a.EXAFICPEC) AS PERSONA_TIPO,
 
-                a.EXAFICFE1                 AS TEST_FECHA,
-                a.EXAFICJCO                 AS PERSONA_CONVOCADO,
-                a.EXAFICJPO                 AS PERSONA_POSICION_CARGO,
-                a.EXAFICJCA                 AS PERSONA_CAMISETA_DOCUMENTO,
-                a.EXAFICLNO                 AS LABORATORIO_NOMBRE,
-                a.EXAFICLFE                 AS LABORATORIO_FECHA_ENVIO,
-                a.EXAFICLFR                 AS LABORATORIO_FECHA_RECIBIDO,
+                    a.EXAFICFE1                 AS TEST_FECHA,
+                    a.EXAFICJCO                 AS PERSONA_CONVOCADO,
+                    a.EXAFICJPO                 AS PERSONA_POSICION_CARGO,
+                    a.EXAFICJCA                 AS PERSONA_CAMISETA_DOCUMENTO,
+                    a.EXAFICLNO                 AS LABORATORIO_NOMBRE,
+                    a.EXAFICLFE                 AS LABORATORIO_FECHA_ENVIO,
+                    a.EXAFICLFR                 AS LABORATORIO_FECHA_RECIBIDO,
 
-                CASE 
-                    WHEN a.EXAFICLRE IS NULL THEN 'PENDIENTE'
-                    WHEN a.EXAFICLRE = 'NO' THEN 'NEGATIVO'
-                    WHEN a.EXAFICLRE = 'SI' THEN 'POSITIVO'
-                END AS LABORATORIO_RESULTADO,
+                    CASE 
+                        WHEN a.EXAFICLRE IS NULL THEN 'PENDIENTE'
+                        WHEN a.EXAFICLRE = 'NO' THEN 'NEGATIVO'
+                        WHEN a.EXAFICLRE = 'SI' THEN 'POSITIVO'
+                    END AS LABORATORIO_RESULTADO,
 
-                a.EXAFICLIC                 AS LABORATORIO_CUARENTENA,
+                    a.EXAFICLIC                 AS LABORATORIO_CUARENTENA,
 
-                CASE 
-                    WHEN a.EXAFICLRE IS NULL THEN ''
-                    ELSE 'http://portalmedico.conmebol.com/' + a.EXAFICLAD
-                END AS LABORATORIO_ADJUNTO
+                    CASE 
+                        WHEN a.EXAFICLRE IS NULL THEN ''
+                        ELSE 'http://portalmedico.conmebol.com/' + a.EXAFICLAD
+                    END AS LABORATORIO_ADJUNTO
 
-                FROM exa.EXAFIC a 
-                
-                LEFT OUTER JOIN adm.DOMFIC b ON a.EXAFICEST = b.DOMFICCOD
-                LEFT OUTER JOIN [view].juego c ON (a.EXAFICCOC = c.COMPETICION_ID OR a.EXAFICCOC = c.COMPETICION_PADRE_ID) AND a.EXAFICENC = c.JUEGO_CODIGO
-                LEFT OUTER JOIN comet.persons d ON a.EXAFICPEC = d.personFifaId
-                LEFT OUTER JOIN comet.teams e ON a.EXAFICEQC = e.teamfifaid
-                LEFT OUTER JOIN adm.DOMFIC f ON a.EXAFICTEC = f.DOMFICCOD
+                    FROM exa.EXAFIC a 
+                    
+                    LEFT OUTER JOIN adm.DOMFIC b ON a.EXAFICEST = b.DOMFICCOD
+                    LEFT OUTER JOIN [view].juego c ON (a.EXAFICCOC = c.COMPETICION_ID OR a.EXAFICCOC = c.COMPETICION_PADRE_ID) AND a.EXAFICENC = c.JUEGO_CODIGO
+                    LEFT OUTER JOIN comet.persons d ON a.EXAFICPEC = d.personFifaId
+                    LEFT OUTER JOIN comet.teams e ON a.EXAFICEQC = e.teamfifaid
+                    LEFT OUTER JOIN adm.DOMFIC f ON a.EXAFICTEC = f.DOMFICCOD
 
-                WHERE (c.COMPETICION_ID = ? OR c.COMPETICION_PADRE_ID = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?)
+                    WHERE (c.COMPETICION_ID = ? OR c.COMPETICION_PADRE_ID = ?) AND a.EXAFICTEC = ? AND a.EXAFICTEC = ? AND a.EXAFICEST = ?
 
-                ORDER BY a.EXAFICCOD ASC";
+                    ORDER BY a.EXAFICCOD ASC";
+            } else {
+                $sql00  = "SELECT
+                    a.EXAFICCOD                 AS TEST_CODIGO,
+                    b.DOMFICCOD                 AS TIPO_ESTADO_CODIGO,
+                    b.DOMFICNOC                 AS TIPO_ESTADO_NOMBRE,
+                    f.DOMFICCOD                 AS TIPO_EXAMEN_CODIGO,
+                    f.DOMFICNOC                 AS TIPO_EXAMEN_NOMBRE,
+                    c.JUEGO_CODIGO,
+                    a.EXAFICEQC                 AS EQUIPO_CODIGO,
+
+                    CASE 
+                        WHEN a.EXAFICEQC = 39393 THEN 'CONMEBOL'
+                        WHEN a.EXAFICEQC <> 39393 THEN e.internationalName
+                    END AS EQUIPO_NOMBRE,
+
+                    c.EQUIPO_LOCAL_CODIGO,
+                    c.EQUIPO_LOCAL_NOMBRE,
+                    c.EQUIPO_VISITANTE_CODIGO,
+                    c.EQUIPO_VISITANTE_NOMBRE,
+
+                    d.personFifaId              AS PERSONA_CODIGO,
+                    d.internationalFirstName    AS PERSONA_NOMBRE,
+                    d.internationalLastName     AS PERSONA_APELLIDO,
+                    (SELECT g.playerType FROM comet.competitions_teams_players g where g.competitionFifaId = ? and g.teamfifaid = a.EXAFICEQC and g.playerfifaid = a.EXAFICPEC) AS PERSONA_TIPO,
+
+                    a.EXAFICFE1                 AS TEST_FECHA,
+                    a.EXAFICJCO                 AS PERSONA_CONVOCADO,
+                    a.EXAFICJPO                 AS PERSONA_POSICION_CARGO,
+                    a.EXAFICJCA                 AS PERSONA_CAMISETA_DOCUMENTO,
+                    a.EXAFICLNO                 AS LABORATORIO_NOMBRE,
+                    a.EXAFICLFE                 AS LABORATORIO_FECHA_ENVIO,
+                    a.EXAFICLFR                 AS LABORATORIO_FECHA_RECIBIDO,
+
+                    CASE 
+                        WHEN a.EXAFICLRE IS NULL THEN 'PENDIENTE'
+                        WHEN a.EXAFICLRE = 'NO' THEN 'NEGATIVO'
+                        WHEN a.EXAFICLRE = 'SI' THEN 'POSITIVO'
+                    END AS LABORATORIO_RESULTADO,
+
+                    a.EXAFICLIC                 AS LABORATORIO_CUARENTENA,
+
+                    CASE 
+                        WHEN a.EXAFICLRE IS NULL THEN ''
+                        ELSE 'http://portalmedico.conmebol.com/' + a.EXAFICLAD
+                    END AS LABORATORIO_ADJUNTO
+
+                    FROM exa.EXAFIC a 
+                    
+                    LEFT OUTER JOIN adm.DOMFIC b ON a.EXAFICEST = b.DOMFICCOD
+                    LEFT OUTER JOIN [view].juego c ON (a.EXAFICCOC = c.COMPETICION_ID OR a.EXAFICCOC = c.COMPETICION_PADRE_ID) AND a.EXAFICENC = c.JUEGO_CODIGO
+                    LEFT OUTER JOIN comet.persons d ON a.EXAFICPEC = d.personFifaId
+                    LEFT OUTER JOIN comet.teams e ON a.EXAFICEQC = e.teamfifaid
+                    LEFT OUTER JOIN adm.DOMFIC f ON a.EXAFICTEC = f.DOMFICCOD
+
+                    WHERE (c.COMPETICION_ID = ? OR c.COMPETICION_PADRE_ID = ?) AND a.EXAFICENC = ? AND a.EXAFICTEC = ? AND a.EXAFICEST = ?
+
+                    ORDER BY a.EXAFICCOD ASC";
+            }
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val01, $val01, $val02, $val03]);
+                $stmtMSSQL->execute([$val01, $val01, $val01, $val02, $val03, $val04]);
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     if ($rowMSSQL['TEST_FECHA'] == NULL) {
@@ -11544,7 +11605,7 @@
     $app->get('/v1/802/notificacion/codigo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
-        $val01      = $request->getAttribute('codigo');
+		$val01      = $request->getAttribute('codigo');
         
         if (isset($val01)) {
             $sql00  = "SELECT 
@@ -11604,6 +11665,7 @@
                 INNER JOIN [adm].[DOMFIC] b ON a.NOTFICEST = b.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
+                INNER JOIN [comet].[competitions] e ON a.NOTFICCOC = e.competitionFifaId
 
                 WHERE a.NOTFICCOD = ?
                 
@@ -11638,7 +11700,7 @@
                         $notificacion_fecha_carga_1 = $rowMSSQL['notificacion_fecha_carga'];
                         $notificacion_fecha_carga_2 = date('d/m/Y', strtotime($rowMSSQL['notificacion_fecha_carga']));
                     }
-
+    
                     $detalle    = array(
 
                         'notificacion_codigo'           =>  $rowMSSQL['notificacion_codigo'],
@@ -11690,16 +11752,16 @@
                         'tipo_test_dominio'             => trim(strtoupper(strtolower($rowMSSQL['tipo_test_dominio']))), 
                         'tipo_test_observacion'         => trim(strtoupper(strtolower($rowMSSQL['tipo_test_observacion']))),
 
-                        'competicion_codigo'            =>  $rowMSSQL['notificacion_codigo'],
+                        'competicion_codigo'            =>  $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'      =>  $rowMSSQL['competicion_codigo_padre'],
                         'competicion_estado'            =>  trim($rowMSSQL['competicion_estado']),
                         'competicion_nombre'            =>  trim($rowMSSQL['competicion_nombre'])
                         
                     );
-
+    
                     $result[]   = $detalle;
                 }
-
+    
                 if (isset($result)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
@@ -11759,7 +11821,7 @@
                         'competicion_estado'            =>  '',
                         'competicion_nombre'            =>  ''
                     );
-
+    
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 }

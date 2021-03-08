@@ -11563,6 +11563,7 @@
                 INNER JOIN [adm].[DOMFIC] b ON a.NOTFICEST = b.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
                 INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
+                INNER JOIN [comet].[competitions] e ON a.NOTFICCOC = e.competitionFifaId
 
                 WHERE a.NOTFICCOD = ?
                 
@@ -11649,7 +11650,7 @@
                         'tipo_test_dominio'             => trim(strtoupper(strtolower($rowMSSQL['tipo_test_dominio']))), 
                         'tipo_test_observacion'         => trim(strtoupper(strtolower($rowMSSQL['tipo_test_observacion']))),
 
-                        'competicion_codigo'            =>  $rowMSSQL['notificacion_codigo'],
+                        'competicion_codigo'            =>  $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'      =>  $rowMSSQL['competicion_codigo_padre'],
                         'competicion_estado'            =>  trim($rowMSSQL['competicion_estado']),
                         'competicion_nombre'            =>  trim($rowMSSQL['competicion_nombre'])
