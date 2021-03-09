@@ -522,7 +522,7 @@
                 break;
 
                 case 2;
-                    $sql00  =   "UPDATE adm.NOTFIC SET NOTFICTIT = ?, NOTFICDES = ?, NOTFICAUS = ?, NOTFICAFH = GETDATE(), NOTFICAIP = ? WHERE NOTFICTNC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONTIPO' AND DOMFICPAR = ?) AND NOTFICCOD = ?";
+                    $sql00  =   "UPDATE adm.NOTFIC SET NOTFICTIT = ?, NOTFICDES = ?, NOTFICAUS = ?, NOTFICAFH = GETDATE(), NOTFICAIP = ? WHERE  NOTFICCOD = ?";
                 break;
 
                 case 3;
@@ -540,7 +540,7 @@
                     break;
 
                     case 2:
-                        $stmtMSSQL->execute([$val07, $val08, $aud01, $aud03, $val01, $val00]);
+                        $stmtMSSQL->execute([$val07, $val08, $aud01, $aud03, $val00]);
                     break;
 
                     case 3:
