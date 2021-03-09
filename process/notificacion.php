@@ -40,7 +40,9 @@
                 a.NOTFICFED                     AS      notificacion_fecha_desde,	
                 a.NOTFICFEH                     AS      notificacion_fecha_hasta,	
                 a.NOTFICFCA                     AS      notificacion_fecha_carga,
-                a.NOTFICCOC                     AS      competicion_codigo,
+                a.NOTFICDIN                     AS      notificacion_dia_inicio,
+                a.NOTFICDFI                     AS      notificacion_dia_fin,
+                a.NOTFICCOC                     AS      notificacion_competicion_codigo,
                 a.NOTFICOBS                     AS      notificacion_observacion,
                     
                 a.NOTFICAUS                     AS      auditoria_usuario,
@@ -351,8 +353,6 @@
         global $NOTMENOBS;
         $DOMFICPAR  = 1;
 
-        //echo 'ENTRA PROCESO RESULTADO*********************************************************equipo local => '.$codequipo.' encuentro => '.$codencuentro.' competicion => '.$codcompeticion.' notificacion codigo => '.$notficcod;
-
         $sql01_1    =   "SELECT 
             a.competitionFifaId        AS  competicion_codigo,
             a.teamFifaId               AS  equipo_codigo,
@@ -429,12 +429,6 @@
 
             }
 
-            /*echo "\n";
-            echo 'PERSONAS PENDIENTES => '."\n".$persona_datos."\n";
-            echo 'PENDIENTES RESULTADO => '."\n".$persona_datos_2."\n";
-            echo "\n";*/
-
-
             while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
                 $notmenmec  = $rowMSSQL03_3['persona_codigo'];
                 $mensaje    = trim($descripcion)."<br>".'EQUIPO: '.trim($nomequipo).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.' FECHA DE JUEGO: '.$juegohorario."<br>".$persona_datos."<br>".$persona_datos_2;
@@ -466,11 +460,9 @@
     echo "\n";
 
     echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
-    //llmar funcion nueva -inicu
     getProcesses('INICIO PROCESO DE NOTIFICACION MANUAL', '-');
     getMensajeManual();
     getProcesses('FIN PROCESO DE NOTIFICACION MANUAL', '-');
-    //llmar funcion nueva-fin
     echo "\n";
     echo "FIN getMensajeManual() => ".date('Y-m-d H:i:s');
     echo "\n";
