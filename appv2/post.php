@@ -981,15 +981,15 @@
         $aud03      = trim($request->getParsedBody()['auditoria_ip']);
 
         if (isset($val01) && isset($val03)  && isset($val05)) {
-            $sql00  = "INSERT INTO [adm].[NOTFIC](                                                                                NOTFICEST,  NOTFICORD,                                                                                NOTFICTNC,                                                                                 NOTFICTTC, NOTFICCOC, NOTFICPAC, NOTFICTIT,   NOTFICDES, NOTFICFED, NOTFICFEH,                           NOTFICFCA, NOTFICDIN, NOTFICDFI, NOTFICOBS, NOTFICAUS, NOTFICAFH, NOTFICAIP) 
-                                        SELECT  (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?),         ?, (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONTIPO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?),        ?,         ?,          ?,           ?,          ?,        ?, CONVERT(varchar(10), GETDATE(), 23),         ?,         ?,        ?,         ?, GETDATE(),         ?                                                                                                  
+            $sql00  = "INSERT INTO [adm].[NOTFIC](                                                                                NOTFICEST,                                                                                NOTFICTNC,                                                                                 NOTFICTTC, NOTFICCOC, NOTFICPAC, NOTFICTIT,   NOTFICDES, NOTFICFED, NOTFICFEH,                           NOTFICFCA, NOTFICDIN, NOTFICDFI, NOTFICOBS, NOTFICAUS, NOTFICAFH, NOTFICAIP) 
+                                        SELECT  (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONTIPO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?),        ?,         ?,          ?,           ?,          ?,        ?, CONVERT(varchar(10), GETDATE(), 23),         ?,         ?,        ?,         ?, GETDATE(),         ?                                                                                                  
                             WHERE NOT EXISTS(SELECT * FROM [adm].[NOTFIC] WHERE NOTFICTTC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOTIPO' AND DOMFICPAR = ?) AND NOTFICFCA = CONVERT(varchar(10), GETDATE(), 23) AND NOTFICTIT = ? AND NOTFICDES = ? AND NOTFICCOC = ?)";
             $sql01  = "SELECT MAX(NOTFICCOD) AS notificacion_codigo FROM [adm].[NOTFIC]";
             
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $val13, $val14, $aud01, $aud03, $val04, $val07, $val08, $val05]); 
+                $stmtMSSQL->execute([$val01, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $val13, $val14, $aud01, $aud03, $val04, $val07, $val08, $val05]); 
 
                 $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
                 $stmtMSSQL01->execute();
@@ -1034,14 +1034,14 @@
         $aud03      = trim($request->getParsedBody()['auditoria_ip']);
 
         if (isset($val01) && isset($val03) && isset($val04)) {
-            $sql00  = "INSERT INTO [adm].[NOTEQU](                                                       NOTEQUEST, NOTEQUORD, NOTEQUNOC, NOTEQUEQC,                          NOTEQUFCA, NOTEQUOBS, NOTEQUAUS, NOTEQUAFH, NOTEQUAIP) 
-            SELECT (SELECT DOMFICCOD FROM [adm].[DOMFIC] WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?),         ?,         ?,         ?, CONVERT(varchar(10), GETDATE(), 23),        ?,         ?,  GETDATE(),       ? WHERE NOT EXISTS (SELECT * FROM [adm].[NOTEQU] WHERE NOTEQUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?) AND NOTEQUNOC = ? AND NOTEQUEQC = ?)";
+            $sql00  = "INSERT INTO [adm].[NOTEQU](                                                       NOTEQUEST, NOTEQUNOC, NOTEQUEQC,                          NOTEQUFCA, NOTEQUOBS, NOTEQUAUS, NOTEQUAFH, NOTEQUAIP) 
+            SELECT (SELECT DOMFICCOD FROM [adm].[DOMFIC] WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?),         ?,         ?, CONVERT(varchar(10), GETDATE(), 23),        ?,         ?,  GETDATE(),       ? WHERE NOT EXISTS (SELECT * FROM [adm].[NOTEQU] WHERE NOTEQUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR = ?) AND NOTEQUNOC = ? AND NOTEQUEQC = ?)";
             $sql01  = "SELECT MAX(NOTEQUCOD) AS notificacion_equipo_codigo FROM [adm].[NOTEQU]";
 
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val06, $aud01, $aud03, $val01, $val03, $val04]); 
+                $stmtMSSQL->execute([$val01, $val03, $val04, $val06, $aud01, $aud03, $val01, $val03, $val04]); 
 
                 $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
                 $stmtMSSQL01->execute();
