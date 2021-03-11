@@ -653,11 +653,11 @@
             switch ($val00_1) {
                 case 1:
                     $sql00  = "UPDATE [adm].[NOTMEN] SET NOTMENEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONMENSAJEESTADO' AND DOMFICPAR = ?), NOTMENORD = ?, NOTMENENC = ?, NOTMENMEC = ?, NOTMENNOC = ?, NOTEQUEQC = ?, NOTMENMEN = ?, NOTMENOBS = ?, NOTMENAUS = ?, NOTMENAFH = GETDATE(), NOTMENAIP = ? WHERE NOTMENCOD = ?";
-                break;
+                    break;
 
-                /*case 2;
-                    
-                break;*/
+                case 2;
+                    $sql00  = "UPDATE [adm].[NOTMEN] SET NOTMENEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONMENSAJEESTADO' AND DOMFICPAR = ?), NOTMENAUS = ?, NOTMENAFH = GETDATE(), NOTMENAIP = ? WHERE NOTMENCOD = ?";
+                    break;
             }   
             
             try {
@@ -669,9 +669,9 @@
                         $stmtMSSQL->execute([$val01, $val02, $val06, $val05, $val03, $val04, $val07, $val08, $aud01, $aud03, $val00]);
                     break;
 
-                    /*case 2:
-                        
-                    break;*/
+                    case 2:
+                        $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
+                        break;
                 }
                 
                 header("Content-Type: application/json; charset=utf-8");
