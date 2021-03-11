@@ -10,7 +10,7 @@
         $sql00  =   "INSERT INTO [comet].[processes] (status, lastUpdate, errors) VALUES (?, GETDATE(), ?)";
 
         try {
-            $connMSSQL      = getConnectionMSSQLv2();
+            $connMSSQL      = getConnectionMSSQLv1();
 
             $stmtMSSQL00    = $connMSSQL->prepare($sql00);
             $stmtMSSQL00->execute([$status, $errors]); 
