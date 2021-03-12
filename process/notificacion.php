@@ -6,7 +6,7 @@
     $NOTMENOBS      = '';
     
     function getProcesses($status, $errors){
-        echo 'PROCESO => status '.$status.' errors => '.$errors;
+        
         $sql00  =   "INSERT INTO [comet].[processes] (status, lastUpdate, errors) VALUES (?, GETDATE(), ?)";
 
         try {
