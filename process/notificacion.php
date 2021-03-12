@@ -10,7 +10,7 @@
         $sql00  =   "INSERT INTO [comet].[processes] (status, lastUpdate, errors) VALUES (?, GETDATE(), ?)";
 
         try {
-            $connMSSQL      = getConnectionMSSQLv1();
+            $connMSSQL      = getConnectionMSSQLv2();
 
             $stmtMSSQL00    = $connMSSQL->prepare($sql00);
             $stmtMSSQL00->execute([$status, $errors]); 
@@ -151,7 +151,7 @@
                         VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,        ?,        ?,           ?, GETDATE(),       ?)";  
 
             try {
-                $connMSSQL  = getConnectionMSSQLv1();
+                $connMSSQL  = getConnectionMSSQLv2();
 
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
@@ -259,7 +259,7 @@
             INNER JOIN [adm].[DOMFIC] c ON a.NOTFICTNC = c.DOMFICCOD
             INNER JOIN [adm].[DOMFIC] d ON a.NOTFICTTC = d.DOMFICCOD
 
-            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 1 AND a.NOTFICFED <= CONVERT(varchar(10), GETDATE(), 23) AND a.NOTFICFEH >= CONVERT(varchar(10), GETDATE(), 23)";
+            WHERE b.DOMFICPAR = 1 AND c.DOMFICPAR = 1";
 
         $sql01  =   "SELECT
             a.COMPETICION_ID                        AS      competicion_codigo,
@@ -298,7 +298,7 @@
 
         
         try {
-            $connMSSQL  = getConnectionMSSQLv1();
+            $connMSSQL  = getConnectionMSSQLv2();
             $stmtMSSQL00= $connMSSQL->prepare($sql00);
             $stmtMSSQL00->execute();
 
@@ -404,7 +404,7 @@
             
 
         try {
-            $connMSSQL      = getConnectionMSSQLv1();
+            $connMSSQL      = getConnectionMSSQLv2();
             $stmtMSSQL01_1  = $connMSSQL->prepare($sql01_1);
             $stmtMSSQL01_1->execute([$codcompeticion, $codequipo, $codcompeticion, $codequipo, $codencuentro]); 
 
