@@ -151,7 +151,7 @@
                         VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,        ?,        ?,           ?, GETDATE(),       ?)";  
 
             try {
-                $connMSSQL  = getConnectionMSSQLv2();
+                $connMSSQL  = getConnectionMSSQLv1();
 
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
@@ -298,7 +298,7 @@
 
         
         try {
-            $connMSSQL  = getConnectionMSSQLv2();
+            $connMSSQL  = getConnectionMSSQLv1();
             $stmtMSSQL00= $connMSSQL->prepare($sql00);
             $stmtMSSQL00->execute();
 
@@ -404,7 +404,7 @@
             
 
         try {
-            $connMSSQL      = getConnectionMSSQLv2();
+            $connMSSQL      = getConnectionMSSQLv1();
             $stmtMSSQL01_1  = $connMSSQL->prepare($sql01_1);
             $stmtMSSQL01_1->execute([$codcompeticion, $codequipo, $codcompeticion, $codequipo, $codencuentro]); 
 
