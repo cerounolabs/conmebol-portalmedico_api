@@ -148,7 +148,7 @@
                 WHERE a.PERFICEQU = ? AND b.PERCOMCOC = ? AND c.DOMFICPAR = 2";
 
             $sql03  =   "INSERT INTO [adm].[NOTMEN](                                                               NOTMENEST, NOTMENNOC, NOTMENEQC, NOTMENENC, NOTMENMEC, NOTMENMEN, NOTMENOBS, NOTMENAUS, NOTMENAFH, NOTMENAIP) 
-                        VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,        ?,        ?,           ?, GETDATE(),       ?)";  
+                        VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONMENSAJEESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,        ?,        ?,           ?, GETDATE(),       ?)";  
 
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
@@ -400,7 +400,7 @@
             WHERE a.PERFICEQU = ? AND b.PERCOMCOC = ? AND c.DOMFICPAR = 2";
 
         $sql04_4     =   "INSERT INTO [adm].[NOTMEN](                                                               NOTMENEST, NOTMENNOC, NOTMENEQC, NOTMENENC, NOTMENMEC, NOTMENMEN, NOTMENOBS, NOTMENAUS, NOTMENAFH, NOTMENAIP) 
-        VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,        ?,        ?,           ?, GETDATE(),       ?)";
+        VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONMENSAJEESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,        ?,        ?,           ?, GETDATE(),       ?)";
             
 
         try {
@@ -459,13 +459,13 @@
     echo "++++++++++++++++++++++++++PROCESO DE NOTIFICACIÓN++++++++++++++++++++++++++";
     echo "\n";
 
-    echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
+    /*echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
     getProcesses('INICIO PROCESO DE NOTIFICACION MANUAL', '-');
     getMensajeManual();
     getProcesses('FIN PROCESO DE NOTIFICACION MANUAL', '-');
     echo "\n";
     echo "FIN getMensajeManual() => ".date('Y-m-d H:i:s');
-    echo "\n";
+    echo "\n";*/
 
     echo "INICIO getMensajeAutomatico() => ".date('Y-m-d H:i:s');
     getProcesses('INICIO PROCESO DE NOTIFICACION AUTOMÁTICA', '-');
