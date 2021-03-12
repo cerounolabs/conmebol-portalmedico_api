@@ -163,7 +163,7 @@
                 while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {//recorre NOTFIC
 
                     $notficcod  = $rowMSSQL00['notificacion_codigo'];
-                    $notficcoc  = $rowMSSQL00['competicion_codigo'];
+                    $notficcoc  = $rowMSSQL00['notificacion_competicion_codigo'];
                     $mensaje    = trim($rowMSSQL00['notificacion_titulo']).' '.trim($rowMSSQL00['notificacion_descripcion']);
 
                     $stmtMSSQL01->execute([$notficcod]);
