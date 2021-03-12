@@ -23,7 +23,7 @@
 
     }
 
-     function getMensajeManual(){
+  /*   function getMensajeManual(){
 
             global $DOMFICAUS;
             global $DOMFICAIP;
@@ -201,7 +201,7 @@
             }
 
             $connMSSQL  = null;
-    }
+    }*/
 
     function getMensajeAutomatico(){
        
