@@ -12974,10 +12974,18 @@
                 b.internationalLastName         AS          persona_apellido,
                 b.gender                        AS          persona_genero,
                 b.dateOfBirth                   AS          persona_fecha_nacimiento,
-                b.playerPosition                AS          persona_funcion
+                b.playerPosition                AS          persona_funcion,
+
+                c.DOMFICCOD                     AS          tipo_documento_codigo,
+                c.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+                c.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+                c.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+                b.documentNumber                AS          tipo_documento_numero
 
                 FROM comet.competitions_teams_players a 
                 INNER JOIN comet.persons b ON a.playerFifaId = b.personFifaId 
+                LEFT OUTER JOIN adm.DOMFIC c ON b.documentType = c.DOMFICCOD
+
                 WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
 
                 ORDER BY b.personFifaId DESC";
@@ -12993,7 +13001,7 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
-  
+
                     if ($rowMSSQL['competicion_desde'] == '1900-01-01' || $rowMSSQL['competicion_desde'] == null){
                         $competicion_desde_1 = '';
                         $competicion_desde_2 = '';
@@ -13022,7 +13030,6 @@
                         $stmtMSSQL02->execute([$val01, $equipo_codigo]);
 
                         while ($rowMSSQL02 = $stmtMSSQL02->fetch()) {
-
                             if ($rowMSSQL02['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL02['persona_fecha_nacimiento'] == null){
                                 $persona_fecha_nacimiento_1 = '';
                                 $persona_fecha_nacimiento_2 = '';
@@ -13032,15 +13039,24 @@
                             }
 
                             $detalle = array(
-                                'persona_codigo'                =>  $rowMSSQL02['persona_codigo'],
-                                'persona_tipo'                  =>  trim($rowMSSQL02['persona_tipo']),
-                                'persona_nombre'                =>  trim($rowMSSQL02['persona_nombre']),
-                                'persona_apellido'              =>  trim($rowMSSQL02['persona_apellido']),
-                                'persona_genero'                =>  trim($rowMSSQL02['persona_genero']),
-                                'persona_fecha_nacimiento_1'    =>  $persona_fecha_nacimiento_1,
-                                'persona_fecha_nacimiento_2'    =>  $persona_fecha_nacimiento_2,
-                                'persona_funcion'               =>  trim($rowMSSQL02['persona_funcion'])                               
-
+                                'persona_codigo'                        => $rowMSSQL02['persona_codigo'],
+                                'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL02['persona_tipo']))),
+                                'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL02['persona_nombre']))),
+                                'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL02['persona_apellido']))),
+                                'persona_completo'                      => trim(strtoupper(strtolower($rowMSSQL02['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL02['persona_nombre']))),
+                                'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL02['persona_genero']))),
+                                'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
+                                'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
+                                'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL02['persona_funcion']))),
+                                'persona_rol_1'                         => trim(strtoupper(strtolower($rowMSSQL02['persona_rol_1']))),
+                                'persona_rol_2'                         => trim(strtoupper(strtolower($rowMSSQL02['persona_rol_2']))),
+                                'persona_rol_3'                         => trim(strtoupper(strtolower($rowMSSQL02['persona_rol_3']))),
+                                
+                                'tipo_documento_codigo'                 => $rowMSSQL02['tipo_documento_codigo'],
+                                'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL02['tipo_documento_nombre_ingles']))),
+                                'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL02['tipo_documento_nombre_castellano']))),
+                                'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL02['tipo_documento_nombre_portugues']))),
+                                'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL02['tipo_documento_numero'])))
                             );
                         
                             $result_persona[]   = $detalle;
@@ -13057,8 +13073,8 @@
                             'equipo_ciudad'                         => trim($rowMSSQL01['equipo_ciudad']),
                             'equipo_postal_codigo'                  => $rowMSSQL01['equipo_postal_codigo'],
                             'equipo_ultima_actualizacion'           => $juego_horario,
+
                             'persona_detalle'                       => $result_persona
-                        
                         );
 
                         $result_equipo[]    = $detalle;
@@ -13093,7 +13109,6 @@
                         'competicion_ultima_actualizacion'      => $rowMSSQL['competicion_ultima_actualizacion'],
 
                         'equipo_detalle'                        =>  $result_equipo
-                        
                     );
 
                     $result_competicion[]  = $detalle;
@@ -13186,7 +13201,7 @@
                 FROM [view].[juego] a
                 
                 WHERE a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?
-    
+
                 ORDER BY a.COMPETICION_PADRE_ID DESC";
 
             try {
@@ -13283,24 +13298,29 @@
         
         if (isset($val01) && isset($val02)) {
             $sql00  = "SELECT
-                a.competitionFifaId                 AS          competicion_codigo,
-                
-                b.personFifaId                      AS          persona_codigo,
-                b.internationalLastName             AS          persona_apellido,
-                b.internationalFirstName            AS          persona_nombre,
-                b.playerPosition                    AS          persona_posicion,
-                b.role                              AS          persona_rol_1,
-                b.cometRoleName                     AS          persona_rol_2,
-                b.cometRoleNameKey                  AS          persona_rol_3,
-                b.pictureContentType                AS          persona_imagen_tipo,
-                b.pictureLink                       AS          persona_imagen_link,
-                b.pictureValue                      AS          persona_imagen_valor,
-                a.playerType                        AS          persona_tipo,
-                a.shirtNumber                       AS          persona_numero
+                a.competitionFifaId             AS          competicion_codigo,
+
+                b.personFifaId                  AS          persona_codigo,
+                b.personType                    AS          persona_tipo,
+                b.internationalFirstName        AS          persona_nombre,
+                b.internationalLastName         AS          persona_apellido,
+                b.gender                        AS          persona_genero,
+                b.dateOfBirth                   AS          persona_fecha_nacimiento,
+                b.playerPosition                AS          persona_funcion,
+                b.role                          AS          persona_rol_1,
+                b.cometRoleName                 AS          persona_rol_2,
+                b.cometRoleNameKey              AS          persona_rol_3,
+
+                c.DOMFICCOD                     AS          tipo_documento_codigo,
+                c.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+                c.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+                c.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+                b.documentNumber                AS          tipo_documento_numero
                 
                 FROM [comet].[competitions_teams_players] a
                 INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
-                
+                LEFT OUTER JOIN adm.DOMFIC c ON b.documentType = c.DOMFICCOD
+
                 WHERE a.competitionFifaId = ? AND a.teamFifaId = ?
 
                 ORDER BY b.playerPosition, a.shirtNumber";
@@ -13311,20 +13331,33 @@
                 $stmtMSSQL->execute([$val01, $val02]);
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
                     $detalle    = array(
-                        'persona_codigo'                => $rowMSSQL['persona_codigo'],
-                        'persona_apellido'              => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))),
-                        'persona_nombre'                => trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
-                        'persona_completo'              => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
-                        'persona_posicion'              => trim(strtoupper(strtolower($rowMSSQL['persona_posicion']))),
-                        'persona_rol_1'                 => trim(strtoupper(strtolower($rowMSSQL['persona_rol_1']))),
-                        'persona_rol_2'                 => trim(strtoupper(strtolower($rowMSSQL['persona_rol_2']))),
-                        'persona_rol_3'                 => trim(strtoupper(strtolower($rowMSSQL['persona_rol_3']))),
-                        'persona_imagen_tipo'           => trim(strtolower($rowMSSQL['persona_imagen_tipo'])),
-                        'persona_imagen_link'           => trim($rowMSSQL['persona_imagen_link']),
-                        'persona_imagen_valor'          => '',
-                        'persona_tipo'                  => trim(strtoupper(strtolower($rowMSSQL['persona_tipo']))),
-                        'persona_numero'                => $rowMSSQL['persona_numero']
+                        'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
+                        'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                        'persona_completo'                      => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
+                        'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                        'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
+                        'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+                        'persona_rol_1'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_1']))),
+                        'persona_rol_2'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_2']))),
+                        'persona_rol_3'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_3']))),
+                        
+                        'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
+                        'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                        'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                        'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                        'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
                     );
 
                     $result[]   = $detalle;
@@ -13335,19 +13368,24 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'persona_codigo'                => '',
-                        'persona_apellido'              => '',
-                        'persona_nombre'                => '',
-                        'persona_completo'              => '',
-                        'persona_posicion'              => '',
-                        'persona_rol_1'                 => '',
-                        'persona_rol_2'                 => '',
-                        'persona_rol_3'                 => '',
-                        'persona_imagen_tipo'           => '',
-                        'persona_imagen_link'           => '',
-                        'persona_imagen_valor'          => '',
-                        'persona_tipo'                  => '',
-                        'persona_numero'                => ''
+                        'persona_codigo'                        => '',
+                        'persona_tipo'                          => '',
+                        'persona_nombre'                        => '',
+                        'persona_apellido'                      => '',
+                        'persona_completo'                      => '',
+                        'persona_genero'                        => '',
+                        'persona_fecha_nacimiento_1'            => '',
+                        'persona_fecha_nacimiento_2'            => '',
+                        'persona_funcion'                       => '',
+                        'persona_rol_1'                         => '',
+                        'persona_rol_2'                         => '',
+                        'persona_rol_3'                         => '',
+                        
+                        'tipo_documento_codigo'                 => '',
+                        'tipo_documento_nombre_ingles'          => '',
+                        'tipo_documento_nombre_castellano'      => '',
+                        'tipo_documento_nombre_portugues'       => '',
+                        'tipo_documento_numero'                 => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
@@ -13381,6 +13419,9 @@
             a.gender                        AS          persona_genero,
             a.dateOfBirth                   AS          persona_fecha_nacimiento,
             a.playerPosition                AS          persona_funcion,
+            a.role                          AS          persona_rol_1,
+            a.cometRoleName                 AS          persona_rol_2,
+            a.cometRoleNameKey              AS          persona_rol_3,
 
             b.DOMFICCOD                     AS          tipo_documento_codigo,
             b.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
@@ -13414,10 +13455,14 @@
                     'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
                     'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
                     'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                    'persona_completo'                      => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
                     'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
                     'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
                     'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
                     'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+                    'persona_rol_1'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_1']))),
+                    'persona_rol_2'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_2']))),
+                    'persona_rol_3'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_3']))),
                     
                     'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
                     'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
@@ -13438,10 +13483,14 @@
                     'persona_tipo'                          => '',
                     'persona_nombre'                        => '',
                     'persona_apellido'                      => '',
+                    'persona_completo'                      => '',
                     'persona_genero'                        => '',
                     'persona_fecha_nacimiento_1'            => '',
                     'persona_fecha_nacimiento_2'            => '',
                     'persona_funcion'                       => '',
+                    'persona_rol_1'                         => '',
+                    'persona_rol_2'                         => '',
+                    'persona_rol_3'                         => '',
                     
                     'tipo_documento_codigo'                 => '',
                     'tipo_documento_nombre_ingles'          => '',
