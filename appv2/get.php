@@ -7999,17 +7999,8 @@
                     'competicion_codigo'                    => $val01,
                     'jugador_codigo'                        => $rowMSSQL['jugador_codigo'],
                     'jugador_completo'                      => strtoupper(strtolower(trim($rowMSSQL['jugador_nombre']))).' '.strtoupper(strtolower(trim($rowMSSQL['jugador_apellido']))),
-//                    'jugador_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['jugador_apellido']))),
-//                    'jugador_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['jugador_nombre']))),
                     'jugador_posicion'                      => strtoupper(strtolower(trim($rowMSSQL['jugador_posicion']))),
-//                    'jugador_imagen_tipo'                   => strtoupper(strtolower(trim($rowMSSQL['jugador_imagen_tipo']))),
-//                    'jugador_imagen_link'                   => strtoupper(strtolower(trim($rowMSSQL['jugador_imagen_link']))),
-//                    'jugador_imagen_valor'                  => strtoupper(strtolower(trim($rowMSSQL['jugador_imagen_valor']))),
-                    
-//                    'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
-//                    'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
                     'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
-//                    'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
                     'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
                 );
 
@@ -8725,6 +8716,29 @@
         }
 
         $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/200/competicion/equipo/procesar/competicion/{competicion}/equipo/{equipo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('competicion');
+        $val02      = $request->getAttribute('equipo');
+        
+        if (isset($val01) && isset($val02)) {
+            try {
+                exec('python3.7 /home/conmebol/ITConsulting/comet_migraciones/migrar.py --competitionFifaId '.$val01.' --teamFifaId '.$val02);
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success PROCESO CONCLUIDO CON ÉXITO', 'data' => null), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
         
         return $json;
     });
