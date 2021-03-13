@@ -8731,6 +8731,29 @@
         return $json;
     });
 
+    $app->get('/v1/200/competicion/equipo/procesar/competicion/{competicion}/equipo/{equipo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('competicion');
+        $val02      = $request->getAttribute('equipo');
+        
+        if (isset($val01) && isset($val02)) {
+            try {
+                exec('python3.7 /home/conmebol/ITConsulting/comet_migraciones/migrar.py --competitionFifaId '.$val01.' --teamFifaId '.$val02);
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success PROCESO CONCLUIDO CON ÉXITO', 'data' => null), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+        
+        return $json;
+    });
+
     $app->get('/v1/200/competicion/equipo/participante/{competicion}', function($request) {
         require __DIR__.'/../src/connect.php';
 
