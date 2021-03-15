@@ -420,22 +420,25 @@
 
             $stmtMSSQL04_4  = $connMSSQL->prepare($sql04_4);
 
-            $persona_datos   = '';
-            $persona_datos_2 = '';
+            $persona_datos      = '';
+            $contador           = 0;        
+            $persona_datos_2    = '';
+            $contador2          = 0;
 
             while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
-                $persona_datos  = $persona_datos."<br>".'PERSONAS PENDIENTES: '.trim($rowMSSQL01_1['persona_nombre_completo']);
-                echo 'entra en personas pendientes => '.$persona_datos;
+                $contador = $contador + 1;
+                $persona_datos  = $contador.')- '.$persona_datos."<br>".'PERSONAS PENDIENTES: '.trim($rowMSSQL01_1['persona_nombre_completo']);
                 
             }
 
-            while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {         
-                $persona_datos_2    = $persona_datos_2."<br>".'PERSONAS PENDIENTE RESULTADO: '.trim($rowMSSQL02_2['persona_nombre_completo']);
-                echo 'entra en personas pendientes de resultado => '.$persona_datos_2;
+            while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {  
+                $contador2          = $contador2 + 1;       
+                $persona_datos_2    = $contador2.')- '.$persona_datos_2."<br>".'PERSONAS PENDIENTE RESULTADO: '.trim($rowMSSQL02_2['persona_nombre_completo']);
+            
             }
 
             while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
-                echo 'ENTRA PARA LA CARGA DE PERSONAS';
+
                 $notmenmec  = $rowMSSQL03_3['persona_codigo'];
                 $mensaje    = trim($descripcion)."<br>".'EQUIPO: '.trim($nomequipo).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.' FECHA DE JUEGO: '.$juegohorario."<br>".$persona_datos."<br>".$persona_datos_2;
                 $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
