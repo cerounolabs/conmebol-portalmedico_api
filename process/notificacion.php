@@ -170,6 +170,8 @@
 
                     while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//RECORRE NOTEQU
                         $notequeqc      = $rowMSSQL01['equipo_codigo'];
+
+                        echo 'Manual entra en codigo equipo------> '.$notequeqc.' notificacion-----> '.$notficcoc;
                         
                         $stmtMSSQL02->execute([$notequeqc, $notficcoc]);
 
