@@ -360,6 +360,7 @@
         global $NOTMENOBS;
         $DOMFICPAR  = 1;
 
+        echo 'equipo=> '.$codequipo.' encuentro=> '.$codencuentro.' competicion=> '.$codcompeticion.' notificacion=> '.$notficcod.' descripcion=> '.$descripcion.' juego horario=> '.$juegohorario.' nombre equipo=> '.$nomequipo;
         $sql01_1    =   "SELECT 
             a.competitionFifaId        AS  competicion_codigo,
             a.teamFifaId               AS  equipo_codigo,
