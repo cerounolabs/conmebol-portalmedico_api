@@ -170,10 +170,8 @@
 
                     while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//RECORRE NOTEQU
                         $notequeqc      = $rowMSSQL01['equipo_codigo'];
-
-                        echo 'Manual entra en codigo equipo------> '.$notequeqc.' notificacion-----> '.$notficcod;
                         
-                        $stmtMSSQL02->execute([$notequeqc, $notficcod]);
+                        $stmtMSSQL02->execute([$notequeqc, $notficcoc]);
 
                         while ($rowMSSQL02  = $stmtMSSQL02->fetch()) {//RECORRE PERFIC
                             $notmenmec      = $rowMSSQL02['persona_codigo'];
