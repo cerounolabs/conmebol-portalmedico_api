@@ -23,7 +23,7 @@
 
     }
 
-  /*   function getMensajeManual(){
+     function getMensajeManual(){
 
             global $DOMFICAUS;
             global $DOMFICAIP;
@@ -201,7 +201,7 @@
             }
 
             $connMSSQL  = null;
-    }*/
+    }
 
     function getMensajeAutomatico(){
        
@@ -292,11 +292,10 @@
             b.NOTFICOBS                             AS      notificacion_observacion
 
             FROM [view].[juego] a
-            INNER JOIN [adm].[NOTFIC] b ON a.COMPETICION_PADRE_ID = b.NOTFICCOC
+            INNER JOIN [adm].[NOTFIC] b ON a.COMPETICION_PADRE_ID = b.NOTFICCOC OR a.COMPETICION_ID = b.NOTFICCOC
 
-            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND  a.COMPETICION_PADRE_ID = ? AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDIN, a.JUEGO_HORARIO), 103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDFI, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
+            WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND (a.COMPETICION_PADRE_ID = ? OR a.COMPETICION_ID = ?)  AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDIN, a.JUEGO_HORARIO), 103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY, + b.NOTFICDFI, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
 
-        
         try {
             $connMSSQL  = getConnectionMSSQLv2();
             $stmtMSSQL00= $connMSSQL->prepare($sql00);
@@ -309,7 +308,7 @@
                 $notficcod      = $rowMSSQL00['notificacion_codigo'];
                 $notficcoc      = $rowMSSQL00['notificacion_competicion_codigo'];
                 $descripcion    = trim($rowMSSQL00['notificacion_descripcion']);
-                $stmtMSSQL01->execute([$notficcoc]);
+                $stmtMSSQL01->execute([$notficcoc, $notficcoc]);
 
                 while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//recorre juego
 
@@ -459,13 +458,13 @@
     echo "++++++++++++++++++++++++++PROCESO DE NOTIFICACIÓN++++++++++++++++++++++++++";
     echo "\n";
 
-    /*echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
+    echo "INICIO getMensajeManual() => ".date('Y-m-d H:i:s');
     getProcesses('INICIO PROCESO DE NOTIFICACION MANUAL', '-');
     getMensajeManual();
     getProcesses('FIN PROCESO DE NOTIFICACION MANUAL', '-');
     echo "\n";
     echo "FIN getMensajeManual() => ".date('Y-m-d H:i:s');
-    echo "\n";*/
+    echo "\n";
 
     echo "INICIO getMensajeAutomatico() => ".date('Y-m-d H:i:s');
     getProcesses('INICIO PROCESO DE NOTIFICACION AUTOMÁTICA', '-');
