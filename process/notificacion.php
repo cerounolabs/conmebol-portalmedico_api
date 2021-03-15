@@ -319,6 +319,12 @@
                     $codequipov         = $rowMSSQL01['equipo_visitante_codigo']; 
                     $nomequipov         = $rowMSSQL01['equipo_visitante_nombre'];
                     $codencuentro       = $rowMSSQL01['juego_codigo'];
+
+                    /*if ($rowMSSQL01['competicion_codigo_padre'] == null || $rowMSSQL01['competicion_codigo_padre'] == 0){
+                        $codcompeticion     = $rowMSSQL01['competicion_codigo'];
+                    }else{
+                        
+                    }*/
                     $codcompeticion     = $rowMSSQL01['competicion_codigo_padre'];
                     $juegohorario       = $rowMSSQL01['juego_horario'];      
 
@@ -422,15 +428,17 @@
 
             while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
                 $persona_datos  = $persona_datos."<br>".'PERSONAS PENDIENTES: '.trim($rowMSSQL01_1['persona_nombre_completo']);
+                echo 'entra en personas pendientes => '.$persona_datos;
                 
             }
 
             while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {         
                 $persona_datos_2    = $persona_datos_2."<br>".'PERSONAS PENDIENTE RESULTADO: '.trim($rowMSSQL02_2['persona_nombre_completo']);
-
+                echo 'entra en personas pendientes de resultado => '.$persona_datos_2;
             }
 
             while ($rowMSSQL03_3 = $stmtMSSQL03_3->fetch()) {
+                echo 'ENTRA PARA LA CARGA DE PERSONAS';
                 $notmenmec  = $rowMSSQL03_3['persona_codigo'];
                 $mensaje    = trim($descripcion)."<br>".'EQUIPO: '.trim($nomequipo).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.' FECHA DE JUEGO: '.$juegohorario."<br>".$persona_datos."<br>".$persona_datos_2;
                 $stmtMSSQL04_4->execute([$DOMFICPAR, $notficcod, $codequipo, $codencuentro, $notmenmec, $mensaje, $NOTMENOBS, $DOMFICAUS, $DOMFICAIP]);
