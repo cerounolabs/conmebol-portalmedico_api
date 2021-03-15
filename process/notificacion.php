@@ -314,23 +314,19 @@
 
                 while ($rowMSSQL01  = $stmtMSSQL01->fetch()) {//recorre juego
 
-                    $codequipol         = $rowMSSQL01['equipo_local_codigo'];
-                    $nomequipol         = $rowMSSQL01['equipo_local_nombre'];
-                    $codequipov         = $rowMSSQL01['equipo_visitante_codigo']; 
-                    $nomequipov         = $rowMSSQL01['equipo_visitante_nombre'];
-                    $codencuentro       = $rowMSSQL01['juego_codigo'];
+                    $codequipol             = $rowMSSQL01['equipo_local_codigo'];
+                    $nomequipol             = $rowMSSQL01['equipo_local_nombre'];
+                    $codequipov             = $rowMSSQL01['equipo_visitante_codigo']; 
+                    $nomequipov             = $rowMSSQL01['equipo_visitante_nombre'];
+                    $codencuentro           = $rowMSSQL01['juego_codigo'];
+                    $codcompeticion         = $rowMSSQL01['competicion_codigo'];
+                    $codcompeticionpadre   = $rowMSSQL01['competicion_codigo_padre'];
+                    $juegohorario           = $rowMSSQL01['juego_horario'];      
 
-                    /*if ($rowMSSQL01['competicion_codigo_padre'] == null || $rowMSSQL01['competicion_codigo_padre'] == 0){
-                        $codcompeticion     = $rowMSSQL01['competicion_codigo'];
-                    }else{
-                        
-                    }*/
-                    $codcompeticion     = $rowMSSQL01['competicion_codigo_padre'];
-                    $juegohorario       = $rowMSSQL01['juego_horario'];      
-
+                    echo "\n";
                     echo "INICIO getMensajeResultado() => ".date('Y-m-d H:i:s');
-                    getMensajeResultado($codequipol, $codencuentro, $codcompeticion, $notficcod, $descripcion, $juegohorario, $nomequipol);
-                    getMensajeResultado($codequipov, $codencuentro, $codcompeticion, $notficcod, $descripcion, $juegohorario, $nomequipov);
+                    getMensajeResultado($codequipol, $codencuentro, $codcompeticionpadre, $codcompeticion, $notficcod, $descripcion, $juegohorario, $nomequipol);
+                    getMensajeResultado($codequipov, $codencuentro, $codcompeticionpadre, $codcompeticion, $notficcod, $descripcion, $juegohorario, $nomequipov);
                     echo "\n";
                     echo "FIN getMensajeResultado() => ".date('Y-m-d H:i:s');
                     echo "\n";
@@ -353,14 +349,14 @@
 
     }
 
-    function getMensajeResultado($codequipo, $codencuentro, $codcompeticion, $notficcod, $descripcion, $juegohorario, $nomequipo){
+    function getMensajeResultado($codequipo, $codencuentro, $codcompeticionpadre, $codcompeticion, $notficcod, $descripcion, $juegohorario, $nomequipo){
         
         global $DOMFICAUS;
         global $DOMFICAIP;
         global $NOTMENOBS;
         $DOMFICPAR  = 1;
 
-        echo 'equipo=> '.$codequipo.' encuentro=> '.$codencuentro.' competicion=> '.$codcompeticion.' notificacion=> '.$notficcod.' descripcion=> '.$descripcion.' juego horario=> '.$juegohorario.' nombre equipo=> '.$nomequipo;
+        echo ' equipo=> '.$codequipo.' encuentro=> '.$codencuentro.' competicionpadre=> '.$codcompeticionpadre.' competicion=> '.$codcompeticion.' notificacion=> '.$notficcod.' descripcion=> '.$descripcion.' juego horario=> '.$juegohorario.' nombre equipo=> '.$nomequipo;
         $sql01_1    =   "SELECT 
             a.competitionFifaId        AS  competicion_codigo,
             a.teamFifaId               AS  equipo_codigo,
@@ -374,11 +370,11 @@
             FROM comet.competitions_teams_players a 
             INNER JOIN comet.persons   b ON a.playerFifaId  = b.personFifaId
             
-            WHERE a.competitionFifaId = ? and a.teamFifaId = ? AND b.personType <> 'Z' AND b.personType <> 'O' AND NOT EXISTS (SELECT * FROM exa.EXAFIC c 
+            WHERE (a.competitionFifaId = ? OR a.competitionFifaId = ?) and a.teamFifaId = ? AND b.personType <> 'Z' AND b.personType <> 'O' AND NOT EXISTS (SELECT * FROM exa.EXAFIC c 
                                                                                                                                         INNER JOIN adm.DOMFIC      d ON c.EXAFICEST  = d.DOMFICCOD
                                                                                                                                         INNER JOIN adm.DOMFIC      e ON c.EXAFICTEC  = e.DOMFICCOD 
                                                                                                                                             
-                                                                                                                                        WHERE c.EXAFICCOC = ? AND c.EXAFICEQC = ? AND c.EXAFICENC  = ? AND d.DOMFICPAR NOT IN (3,5) AND e.DOMFICPAR = 1 AND c.EXAFICPEC = a.playerFifaId)";
+                                                                                                                                        WHERE (c.EXAFICCOC = ? OR c.EXAFICCOC = ?) AND c.EXAFICEQC = ? AND c.EXAFICENC  = ? AND d.DOMFICPAR NOT IN (3,5) AND e.DOMFICPAR = 1 AND c.EXAFICPEC = a.playerFifaId)";
 
         $sql02_2    =   "SELECT 
             RTRIM(CONVERT(CHAR, d.personFifaId))+' -    '+(d.internationalFirstName)+' '+(d.internationalLastName) AS persona_nombre_completo,
@@ -390,7 +386,7 @@
             INNER JOIN adm.DOMFIC c ON a.EXAFICTEC      = c.DOMFICCOD
             INNER JOIN comet.persons d ON a.EXAFICPEC   = d.personFifaId
             
-            WHERE a.EXAFICCOC = ? AND a.EXAFICEQC = ? AND a.EXAFICENC = ? AND b.DOMFICPAR = 2 AND c.DOMFICPAR = 1";
+            WHERE (a.EXAFICCOC = ? OR a.EXAFICCOC = ?) AND a.EXAFICEQC = ? AND a.EXAFICENC = ? AND b.DOMFICPAR = 2 AND c.DOMFICPAR = 1";
 
         $sql03_3    =   "SELECT 
             a.PERFICCOD                         AS          persona_codigo,
@@ -405,7 +401,7 @@
             INNER JOIN adm.PERCOM b ON a.PERFICCOD = b.PERCOMPEC
             INNER JOIN adm.DOMFIC c ON b.PERCOMTMC = c.DOMFICCOD
             
-            WHERE a.PERFICEQU = ? AND b.PERCOMCOC = ? AND c.DOMFICPAR = 2";
+            WHERE a.PERFICEQU = ? AND (b.PERCOMCOC = ? OR b.PERCOMCOC = ?) AND c.DOMFICPAR = 2";
 
         $sql04_4     =   "INSERT INTO [adm].[NOTMEN](                                                               NOTMENEST, NOTMENNOC, NOTMENEQC, NOTMENENC, NOTMENMEC, NOTMENMEN, NOTMENOBS, NOTMENAUS, NOTMENAFH, NOTMENAIP) 
         VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONMENSAJEESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,        ?,        ?,           ?, GETDATE(),       ?)";
@@ -414,13 +410,13 @@
         try {
             $connMSSQL      = getConnectionMSSQLv2();
             $stmtMSSQL01_1  = $connMSSQL->prepare($sql01_1);
-            $stmtMSSQL01_1->execute([$codcompeticion, $codequipo, $codcompeticion, $codequipo, $codencuentro]); 
+            $stmtMSSQL01_1->execute([$codcompeticion, $codcompeticionpadre, $codequipo, $codcompeticion, $codcompeticionpadre, $codequipo, $codencuentro]); 
 
             $stmtMSSQL02_2  = $connMSSQL->prepare($sql02_2);
-            $stmtMSSQL02_2->execute([$codcompeticion, $codequipo, $codencuentro]);
+            $stmtMSSQL02_2->execute([$codcompeticion, $codcompeticionpadre, $codequipo, $codencuentro]);
             
             $stmtMSSQL03_3  = $connMSSQL->prepare($sql03_3);
-            $stmtMSSQL03_3->execute([$codequipo, $codcompeticion]);
+            $stmtMSSQL03_3->execute([$codequipo, $codcompeticion, $codcompeticionpadre]);
 
             $stmtMSSQL04_4  = $connMSSQL->prepare($sql04_4);
 
