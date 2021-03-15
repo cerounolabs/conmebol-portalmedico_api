@@ -10,7 +10,7 @@
         $sql00  =   "INSERT INTO [comet].[processes] (status, lastUpdate, errors) VALUES (?, GETDATE(), ?)";
 
         try {
-            $connMSSQL      = getConnectionMSSQLv2();
+            $connMSSQL      = getConnectionMSSQLv1();
 
             $stmtMSSQL00    = $connMSSQL->prepare($sql00);
             $stmtMSSQL00->execute([$status, $errors]); 
@@ -151,7 +151,7 @@
                         VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONMENSAJEESTADO' AND DOMFICPAR  = ?),         ?,          ?,        ?,         ?,        ?,        ?,           ?, GETDATE(),       ?)";  
 
             try {
-                $connMSSQL  = getConnectionMSSQLv2();
+                $connMSSQL  = getConnectionMSSQLv1();
 
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL01= $connMSSQL->prepare($sql01);
@@ -297,7 +297,7 @@
             WHERE a.COMPETICION_ESTADO = 'ACTIVE' AND a.JUEGO_ESTADO <> 'PLAYED' AND (a.COMPETICION_PADRE_ID = ? OR a.COMPETICION_ID = ?)  AND  a.JUEGO_HORARIO IS NOT NULL AND (CONVERT(varchar(10), DATEADD(DAY, - b.NOTFICDIN, a.JUEGO_HORARIO), 103) <=  CONVERT(varchar(10), GETDATE(), 103)) AND (CONVERT(varchar(10), DATEADD(DAY, + b.NOTFICDFI, a.JUEGO_HORARIO),103) >=  CONVERT(varchar(10), GETDATE(), 103))";
 
         try {
-            $connMSSQL  = getConnectionMSSQLv2();
+            $connMSSQL  = getConnectionMSSQLv1();
             $stmtMSSQL00= $connMSSQL->prepare($sql00);
             $stmtMSSQL00->execute();
 
@@ -405,7 +405,7 @@
             
 
         try {
-            $connMSSQL      = getConnectionMSSQLv2();
+            $connMSSQL      = getConnectionMSSQLv1();
             $stmtMSSQL01_1  = $connMSSQL->prepare($sql01_1);
             $stmtMSSQL01_1->execute([$codcompeticion, $codcompeticionpadre, $codequipo, $codcompeticion, $codcompeticionpadre, $codequipo, $codencuentro]); 
 
