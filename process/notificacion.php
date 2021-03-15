@@ -356,7 +356,6 @@
         global $NOTMENOBS;
         $DOMFICPAR  = 1;
 
-        echo ' equipo=> '.$codequipo.' encuentro=> '.$codencuentro.' competicionpadre=> '.$codcompeticionpadre.' competicion=> '.$codcompeticion.' notificacion=> '.$notficcod.' descripcion=> '.$descripcion.' juego horario=> '.$juegohorario.' nombre equipo=> '.$nomequipo;
         $sql01_1    =   "SELECT 
             a.competitionFifaId        AS  competicion_codigo,
             a.teamFifaId               AS  equipo_codigo,
@@ -420,20 +419,16 @@
 
             $stmtMSSQL04_4  = $connMSSQL->prepare($sql04_4);
 
-            $persona_datos      = '';
-            $contador           = 0;        
+            $persona_datos      = '';       
             $persona_datos_2    = '';
-            $contador2          = 0;
 
             while ($rowMSSQL01_1 = $stmtMSSQL01_1->fetch()) {
-                $contador = $contador + 1;
-                $persona_datos  = $contador.')- '.$persona_datos."<br>".'PERSONAS PENDIENTES: '.trim($rowMSSQL01_1['persona_nombre_completo']);
+                $persona_datos  = $persona_datos."<br>".'PERSONAS PENDIENTES: '.trim($rowMSSQL01_1['persona_nombre_completo']);
                 
             }
 
-            while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {  
-                $contador2          = $contador2 + 1;       
-                $persona_datos_2    = $contador2.')- '.$persona_datos_2."<br>".'PERSONAS PENDIENTE RESULTADO: '.trim($rowMSSQL02_2['persona_nombre_completo']);
+            while ($rowMSSQL02_2 = $stmtMSSQL02_2->fetch()) {        
+                $persona_datos_2    = $persona_datos_2."<br>".'PERSONAS PENDIENTE RESULTADO: '.trim($rowMSSQL02_2['persona_nombre_completo']);
             
             }
 
