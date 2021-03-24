@@ -13379,7 +13379,8 @@
                 c.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
                 c.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
                 c.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
-                b.documentNumber                AS          tipo_documento_numero
+                b.documentNumber                AS          tipo_documento_numero,
+                b.passportNumber                AS          tipo_pasaporte_numero
                 
                 FROM [comet].[competitions_teams_players] a
                 INNER JOIN [comet].[persons] b ON a.playerFifaId = b.personFifaId
@@ -13421,7 +13422,13 @@
                         'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
                         'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
                         'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
-                        'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
+                        'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                        'tipo_pasaporte_codigo'                 => 213,
+                        'tipo_pasaporte_nombre_ingles'          => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_castellano'      => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_portugues'       => 'PASAPORTE',
+                        'tipo_pasaporte_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_pasaporte_numero'])))
                     );
 
                     $result[]   = $detalle;
@@ -13449,7 +13456,13 @@
                         'tipo_documento_nombre_ingles'          => '',
                         'tipo_documento_nombre_castellano'      => '',
                         'tipo_documento_nombre_portugues'       => '',
-                        'tipo_documento_numero'                 => ''
+                        'tipo_documento_numero'                 => '',
+
+                        'tipo_pasaporte_codigo'                 => '',
+                        'tipo_pasaporte_nombre_ingles'          => '',
+                        'tipo_pasaporte_nombre_castellano'      => '',
+                        'tipo_pasaporte_nombre_portugues'       => '',
+                        'tipo_pasaporte_numero'                 => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
@@ -13491,7 +13504,8 @@
             b.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
             b.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
             b.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
-            a.documentNumber                AS          tipo_documento_numero
+            a.documentNumber                AS          tipo_documento_numero,
+            a.passportNumber                AS          tipo_pasaporte_numero
             
             FROM comet.persons a
             LEFT OUTER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
@@ -13532,7 +13546,13 @@
                     'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
                     'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
                     'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
-                    'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero'])))
+                    'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                    'tipo_pasaporte_codigo'                 => 213,
+                    'tipo_pasaporte_nombre_ingles'          => 'PASAPORTE',
+                    'tipo_pasaporte_nombre_castellano'      => 'PASAPORTE',
+                    'tipo_pasaporte_nombre_portugues'       => 'PASAPORTE',
+                    'tipo_pasaporte_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_pasaporte_numero'])))
                 );
 
                 $result[]   = $detalle;
@@ -13560,7 +13580,13 @@
                     'tipo_documento_nombre_ingles'          => '',
                     'tipo_documento_nombre_castellano'      => '',
                     'tipo_documento_nombre_portugues'       => '',
-                    'tipo_documento_numero'                 => ''
+                    'tipo_documento_numero'                 => '',
+
+                    'tipo_pasaporte_codigo'                 => '',
+                    'tipo_pasaporte_nombre_ingles'          => '',
+                    'tipo_pasaporte_nombre_castellano'      => '',
+                    'tipo_pasaporte_nombre_portugues'       => '',
+                    'tipo_pasaporte_numero'                 => ''
                 );
 
                 header("Content-Type: application/json; charset=utf-8");
