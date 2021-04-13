@@ -8711,7 +8711,7 @@
         $val04      = $request->getAttribute('tipo');
 
         if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
-            if ($val01 == 0) {
+            if ($val03 == 0) {
                 $val03  = $val02;
                 $sql00  = "SELECT
                     a.EXAFICCOD                         AS          examen_codigo,
