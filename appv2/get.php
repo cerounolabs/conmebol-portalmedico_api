@@ -8485,9 +8485,9 @@
                 
                 FROM [view].[juego] a
 
-                WHERE a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID
+                WHERE a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?
 
-                ORDER BY a.JUEGO_CODIGO DESC";
+                ORDER BY a.JUEGO_CODIGO ASC";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
