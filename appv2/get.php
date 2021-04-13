@@ -8485,14 +8485,14 @@
                 
                 FROM [view].[juego] a
 
-                WHERE a.COMPETICION_ID = ?
+                WHERE a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID
 
                 ORDER BY a.JUEGO_CODIGO DESC";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val02]); 
+                $stmtMSSQL->execute([$val01, $val01]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
