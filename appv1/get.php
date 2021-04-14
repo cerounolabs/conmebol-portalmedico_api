@@ -8214,6 +8214,1079 @@
         return $json;
     });
 
+    $app->get('/v1/200/competicion/listado/padre/{competicion}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01  = $request->getAttribute('competicion');
+
+        if (isset($val01)) {
+            $sql00  = "SELECT
+                a.competitionFifaId                 AS          competicion_codigo,
+                a.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                a.status                            AS          competicion_estado,
+                a.internationalName                 AS          competicion_nombre,
+                a.internationalShortName            AS          competicion_nombre_corto,
+                a.season                            AS          competicion_anho,
+                a.ageCategory                       AS          competicion_categoria_codigo,
+                a.ageCategoryName                   AS          competicion_categoria_nombre,
+                a.dateFrom                          AS          competicion_desde,
+                a.dateTo                            AS          competicion_hasta,
+                a.discipline                        AS          competicion_disciplina,
+                a.gender                            AS          competicion_genero,
+                a.imageId                           AS          competicion_imagen_codigo,
+                a.multiplier                        AS          competicion_multiplicador,
+                a.nature                            AS          competicion_naturaleza,
+                a.numberOfParticipants              AS          competicion_numero_participante,
+                a.orderNumber                       AS          competicion_numero_orden,
+                a.teamCharacter                     AS          competicion_equipo_tipo,
+                a.flyingSubstitutions               AS          competicion_sustitucion,
+                a.penaltyShootout                   AS          competicion_penal,
+                a.matchType                         AS          competicion_tipo,
+                a.pictureContentType                AS          competicion_imagen_tipo,
+                a.pictureLink                       AS          competicion_image_link,
+                a.pictureValue                      AS          competicion_imagen_valor,
+                a.lastUpdate                        AS          competicion_ultima_actualizacion,
+
+                b.organisationFifaId                AS          organizacion_codigo,
+                b.organisationName                  AS          organizacion_nombre,
+
+                c.competitionFifaId                 AS          competicion_padre_codigo,
+                c.status                            AS          competicion_padre_estado,
+                c.internationalName                 AS          competicion_padre_nombre,
+                c.internationalShortName            AS          competicion_padre_nombre_corto,
+                c.season                            AS          competicion_padre_anho,
+                c.ageCategory                       AS          competicion_padre_categoria_codigo,
+                c.ageCategoryName                   AS          competicion_padre_categoria_nombre,
+                c.dateFrom                          AS          competicion_padre_desde,
+                c.dateTo                            AS          competicion_padre_hasta,
+                c.discipline                        AS          competicion_padre_disciplina,
+                c.gender                            AS          competicion_padre_genero,
+                c.imageId                           AS          competicion_padre_imagen_codigo,
+                c.multiplier                        AS          competicion_padre_multiplicador,
+                c.nature                            AS          competicion_padre_naturaleza,
+                c.numberOfParticipants              AS          competicion_padre_numero_participante,
+                c.orderNumber                       AS          competicion_padre_numero_orden,
+                c.teamCharacter                     AS          competicion_padre_equipo_tipo,
+                c.flyingSubstitutions               AS          competicion_padre_sustitucion,
+                c.penaltyShootout                   AS          competicion_padre_penal,
+                c.matchType                         AS          competicion_padre_tipo,
+                c.pictureContentType                AS          competicion_padre_imagen_tipo,
+                c.pictureLink                       AS          competicion_padre_image_link,
+                c.pictureValue                      AS          competicion_padre_imagen_valor,
+                c.lastUpdate                        AS          competicion_padre_ultima_actualizacion
+
+                FROM [comet].[competitions] a
+                LEFT JOIN [comet].[organisations] b ON a.organisationFifaId = b.organisationFifaId
+                INNER JOIN [comet].[competitions] c ON a.superiorCompetitionFifaId = c.competitionFifaId
+
+                WHERE a.superiorCompetitionFifaId = ?
+
+                ORDER BY a.season DESC, a.competitionFifaId DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]);
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    switch ($rowMSSQL['competicion_imagen_tipo']) {
+                        case 'image/jpeg':
+                            $ext = 'jpeg';
+                            break;
+                        
+                        case 'image/jpg':
+                            $ext = 'jpg';
+                            break;
+
+                        case 'image/png':
+                            $ext = 'png';
+                            break;
+
+                        case 'image/gif':
+                            $ext = 'gif';
+                            break;
+                    }
+
+                    $competicion_nombre                 = trim($rowMSSQL['competicion_nombre']);
+                    $competicion_nombre                 = str_replace('\u00da', 'Ú', $competicion_nombre);
+                    $competicion_nombre                 = str_replace('\u00d3', 'Ó', $competicion_nombre);
+                    $competicion_nombre                 = str_replace('\u00c9', 'É', $competicion_nombre);
+                    $competicion_nombre                 = str_replace('"', '', $competicion_nombre);
+
+                    $competicion_nombre_corto           = trim($rowMSSQL['competicion_nombre_corto']);
+                    $competicion_nombre_corto           = str_replace('\u00da', 'Ú', $competicion_nombre_corto);
+                    $competicion_nombre_corto           = str_replace('\u00d3', 'Ó', $competicion_nombre_corto);
+                    $competicion_nombre_corto           = str_replace('\u00c9', 'É', $competicion_nombre_corto);
+                    $competicion_nombre_corto           = str_replace('"', '', $competicion_nombre_corto);
+
+                    $competicion_padre_nombre           = trim($rowMSSQL['competicion_padre_nombre']);
+                    $competicion_padre_nombre           = str_replace('\u00da', 'Ú', $competicion_padre_nombre);
+                    $competicion_padre_nombre           = str_replace('\u00d3', 'Ó', $competicion_padre_nombre);
+                    $competicion_padre_nombre           = str_replace('\u00c9', 'É', $competicion_padre_nombre);
+                    $competicion_padre_nombre           = str_replace('"', '', $competicion_padre_nombre);
+
+                    $competicion_padre_nombre_corto     = trim($rowMSSQL['competicion_padre_nombre_corto']);
+                    $competicion_padre_nombre_corto     = str_replace('\u00da', 'Ú', $competicion_padre_nombre_corto);
+                    $competicion_padre_nombre_corto     = str_replace('\u00d3', 'Ó', $competicion_padre_nombre_corto);
+                    $competicion_padre_nombre_corto     = str_replace('\u00c9', 'É', $competicion_padre_nombre_corto);
+                    $competicion_padre_nombre_corto     = str_replace('"', '', $competicion_padre_nombre_corto);
+
+                    $detalle    = array(
+                        'competicion_codigo'                        => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'                  => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                        => trim($rowMSSQL['competicion_estado']),
+                        'competicion_nombre'                        => $competicion_nombre,
+                        'competicion_nombre_corto'                  => $competicion_nombre_corto,
+                        'competicion_anho'                          => $rowMSSQL['competicion_anho'],
+                        'competicion_categoria_codigo'              => trim($rowMSSQL['competicion_categoria_codigo']),
+                        'competicion_categoria_nombre'              => trim($rowMSSQL['competicion_categoria_nombre']),
+                        'competicion_desde'                         => $rowMSSQL['competicion_desde'],
+                        'competicion_hasta'                         => $rowMSSQL['competicion_hasta'],
+                        'competicion_disciplina'                    => trim($rowMSSQL['competicion_disciplina']),
+                        'competicion_genero'                        => trim($rowMSSQL['competicion_genero']),
+                        'competicion_imagen_codigo'                 => $rowMSSQL['competicion_imagen_codigo'],
+                        'competicion_multiplicador'                 => $rowMSSQL['competicion_multiplicador'],
+                        'competicion_naturaleza'                    => trim($rowMSSQL['competicion_naturaleza']),
+                        'competicion_numero_participante'           => $rowMSSQL['competicion_numero_participante'],
+                        'competicion_numero_orden'                  => $rowMSSQL['competicion_numero_orden'],
+                        'competicion_equipo_tipo'                   => trim($rowMSSQL['competicion_equipo_tipo']),
+                        'competicion_sustitucion'                   => $rowMSSQL['competicion_sustitucion'],
+                        'competicion_penal'                         => $rowMSSQL['competicion_penal'],
+                        'competicion_tipo'                          => trim($rowMSSQL['competicion_tipo']),
+                        'competicion_imagen_tipo'                   => trim($rowMSSQL['competicion_imagen_tipo']),
+                        'competicion_ultima_actualizacion'          => $rowMSSQL['competicion_ultima_actualizacion'],
+
+                        'organizacion_codigo'                       => $rowMSSQL['organizacion_codigo'],
+                        'organizacion_nombre'                       => trim($rowMSSQL['organizacion_nombre']),
+
+                        'competicion_padre_codigo'                  => $rowMSSQL['competicion_padre_codigo'],
+                        'competicion_padre_estado'                  => trim($rowMSSQL['competicion_padre_estado']),
+                        'competicion_padre_nombre'                  => $competicion_padre_nombre,
+                        'competicion_padre_nombre_corto'            => $competicion_padre_nombre_corto,
+                        'competicion_padre_anho'                    => $rowMSSQL['competicion_padre_anho'],
+                        'competicion_padre_categoria_codigo'        => trim($rowMSSQL['competicion_padre_categoria_codigo']),
+                        'competicion_padre_categoria_nombre'        => trim($rowMSSQL['competicion_padre_categoria_nombre']),
+                        'competicion_padre_desde'                   => $rowMSSQL['competicion_padre_desde'],
+                        'competicion_padre_hasta'                   => $rowMSSQL['competicion_padre_hasta'],
+                        'competicion_padre_disciplina'              => trim($rowMSSQL['competicion_padre_disciplina']),
+                        'competicion_padre_genero'                  => trim($rowMSSQL['competicion_padre_genero']),
+                        'competicion_padre_imagen_codigo'           => $rowMSSQL['competicion_padre_imagen_codigo'],
+                        'competicion_padre_multiplicador'           => $rowMSSQL['competicion_padre_multiplicador'],
+                        'competicion_padre_naturaleza'              => trim($rowMSSQL['competicion_padre_naturaleza']),
+                        'competicion_padre_numero_participante'     => $rowMSSQL['competicion_padre_numero_participante'],
+                        'competicion_padre_numero_orden'            => $rowMSSQL['competicion_padre_numero_orden'],
+                        'competicion_padre_equipo_tipo'             => trim($rowMSSQL['competicion_padre_equipo_tipo']),
+                        'competicion_padre_sustitucion'             => $rowMSSQL['competicion_padre_sustitucion'],
+                        'competicion_padre_penal'                   => $rowMSSQL['competicion_padre_penal'],
+                        'competicion_padre_tipo'                    => trim($rowMSSQL['competicion_padre_tipo']),
+                        'competicion_padre_imagen_tipo'             => trim($rowMSSQL['competicion_padre_imagen_tipo']),
+                        'competicion_padre_ultima_actualizacion'    => $rowMSSQL['competicion_padre_ultima_actualizacion']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'                        => '',
+                        'competicion_codigo_padre'                  => '',
+                        'competicion_estado'                        => '',
+                        'competicion_nombre'                        => '',
+                        'competicion_nombre_corto'                  => '',
+                        'competicion_anho'                          => '',
+                        'competicion_categoria_codigo'              => '',
+                        'competicion_categoria_nombre'              => '',
+                        'competicion_desde'                         => '',
+                        'competicion_hasta'                         => '',
+                        'competicion_disciplina'                    => '',
+                        'competicion_genero'                        => '',
+                        'competicion_imagen_codigo'                 => '',
+                        'competicion_multiplicador'                 => '',
+                        'competicion_naturaleza'                    => '',
+                        'competicion_numero_participante'           => '',
+                        'competicion_numero_orden'                  => '',
+                        'competicion_equipo_tipo'                   => '',
+                        'competicion_sustitucion'                   => '',
+                        'competicion_penal'                         => '',
+                        'competicion_tipo'                          => '',
+                        'competicion_imagen_tipo'                   => '',
+                        'competicion_image_link'                    => '',
+                        'competicion_imagen_valor'                  => '',
+                        'competicion_imagen_path'                   => '',
+                        'competicion_ultima_actualizacion'          => '',
+
+                        'organizacion_codigo'                       => '',
+                        'organizacion_nombre'                       => '',
+
+                        'competicion_padre_codigo'                  => '',
+                        'competicion_padre_estado'                  => '',
+                        'competicion_padre_nombre'                  => '',
+                        'competicion_padre_nombre_corto'            => '',
+                        'competicion_padre_anho'                    => '',
+                        'competicion_padre_categoria_codigo'        => '',
+                        'competicion_padre_categoria_nombre'        => '',
+                        'competicion_padre_desde'                   => '',
+                        'competicion_padre_hasta'                   => '',
+                        'competicion_padre_disciplina'              => '',
+                        'competicion_padre_genero'                  => '',
+                        'competicion_padre_imagen_codigo'           => '',
+                        'competicion_padre_multiplicador'           => '',
+                        'competicion_padre_naturaleza'              => '',
+                        'competicion_padre_numero_participante'     => '',
+                        'competicion_padre_numero_orden'            => '',
+                        'competicion_padre_equipo_tipo'             => '',
+                        'competicion_padre_sustitucion'             => '',
+                        'competicion_padre_penal'                   => '',
+                        'competicion_padre_tipo'                    => '',
+                        'competicion_padre_imagen_tipo'             => '',
+                        'competicion_padre_image_link'              => '',
+                        'competicion_padre_imagen_valor'            => '',
+                        'competicion_padre_imagen_path'             => '',
+                        'competicion_padre_ultima_actualizacion'    => '',
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/200/competicion/{competicion}/encuentro', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('competicion');
+
+        if (isset($val01)) {
+            $sql00  = "SELECT
+                a.COMPETICION_ID                                AS          competicion_codigo,
+                a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
+                a.COMPETICION_ESTADO                            AS          competicion_estado,
+                a.COMPETICION_ANHO                              AS          competicion_anho,
+                a.JUEGO_CODIGO                                  AS          juego_codigo,
+                a.JUEGO_NOMBRE                                  AS          juego_fase,
+                a.JUEGO_ESTADO                                  AS          juego_estado,
+                a.JUEGO_HORARIO                                 AS          juego_horario,
+                a.JUEGO_ESTADIO                                 AS          juego_estadio,
+                a.JUEGO_CIUDAD                                 AS           juego_ciudad,
+                a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
+                a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
+                a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
+                a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
+                a.EQUIPO_VISITANTE_CODIGO                       AS          equipo_visitante_codigo,
+                a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
+                a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
+                a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
+                
+                FROM [view].[juego] a
+
+                WHERE a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?
+
+                ORDER BY a.JUEGO_CODIGO ASC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01, $val01]); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
+                    $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
+
+                    $detalle    = array(
+                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
+                        'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+
+                        'juego_codigo'                          => $rowMSSQL['juego_codigo'],
+                        'juego_fase'                            => trim(strtoupper(strtolower($rowMSSQL['juego_fase']))),
+                        'juego_estado'                          => trim(strtoupper(strtolower($rowMSSQL['juego_estado']))),
+                        'juego_horario'                         => $juego_horario,
+                        'juego_cierra'                          => $juego_cierra,
+                        'juego_estadio'                         => trim(strtoupper(strtolower($rowMSSQL['juego_estadio']))),
+                        'juego_ciudad'                          => trim(strtoupper(strtolower($rowMSSQL['juego_ciudad']))),
+
+                        'equipo_local_codigo'                   => $rowMSSQL['equipo_local_codigo'],
+                        'equipo_local_nombre'                   => trim(strtoupper(strtolower($rowMSSQL['equipo_local_nombre']))),
+                        'equipo_local_resultado_primer'         => $rowMSSQL['equipo_local_resultado_primer'],
+                        'equipo_local_resultado_segundo'        => $rowMSSQL['equipo_local_resultado_segundo'],
+                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_segundo'],
+
+                        'equipo_visitante_codigo'               => $rowMSSQL['equipo_visitante_codigo'],
+                        'equipo_visitante_nombre'               => trim(strtoupper(strtolower($rowMSSQL['equipo_visitante_nombre']))),
+                        'equipo_visitante_resultado_primer'     => $rowMSSQL['equipo_visitante_resultado_primer'],
+                        'equipo_visitante_resultado_segundo'    => $rowMSSQL['equipo_visitante_resultado_segundo'],
+                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_segundo']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo_padre'              => '',
+                        'competicion_estado'                    => '',
+                        'competicion_anho'                      => '',
+
+                        'juego_fase'                            => '',
+                        'juego_estado'                          => '',
+                        'juego_horario'                         => '',
+                        'juego_cierra'                          => '',
+                        'juego_estadio'                         => '',
+                        'juego_ciudad'                          => '',
+
+                        'equipo_local_codigo'                   => '',
+                        'equipo_local_nombre'                   => '',
+                        'equipo_local_resultado_primer'         => '',
+                        'equipo_local_resultado_segundo'        => '',
+                        'equipo_local_resultado_final'          => '',
+                        
+                        'equipo_visitante_codigo'               => '',
+                        'equipo_visitante_nombre'               => '',
+                        'equipo_visitante_resultado_primer'     => '',
+                        'equipo_visitante_resultado_segundo'    => '',
+                        'equipo_visitante_resultado_final'      => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/200/competicion/{competicion}/encuentro/{encuentro}/equipo', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('competicion');
+        $val02      = $request->getAttribute('encuentro');
+
+        if (isset($val01, $val02)) {
+            $sql00  = "SELECT
+                a.COMPETICION_ID                                AS          competicion_codigo,
+                a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
+                a.COMPETICION_ESTADO                            AS          competicion_estado,
+                a.COMPETICION_ANHO                              AS          competicion_anho,
+                a.JUEGO_CODIGO                                  AS          juego_codigo,
+                a.JUEGO_NOMBRE                                  AS          juego_fase,
+                a.JUEGO_ESTADO                                  AS          juego_estado,
+                a.JUEGO_HORARIO                                 AS          juego_horario,
+                a.JUEGO_ESTADIO                                 AS          juego_estadio,
+                a.JUEGO_CIUDAD                                 AS           juego_ciudad,
+                a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
+                a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
+                a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
+                a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
+                a.EQUIPO_VISITANTE_CODIGO                       AS          equipo_visitante_codigo,
+                a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
+                a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
+                a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
+                
+                FROM [view].[juego] a
+
+                WHERE (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?) AND a.JUEGO_CODIGO = ?
+
+                ORDER BY a.JUEGO_CODIGO ASC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01, $val01, $val02]); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
+                    $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
+
+                    $detalle    = array(
+                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
+                        'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+
+                        'juego_codigo'                          => $rowMSSQL['juego_codigo'],
+                        'juego_fase'                            => trim(strtoupper(strtolower($rowMSSQL['juego_fase']))),
+                        'juego_estado'                          => trim(strtoupper(strtolower($rowMSSQL['juego_estado']))),
+                        'juego_horario'                         => $juego_horario,
+                        'juego_cierra'                          => $juego_cierra,
+                        'juego_estadio'                         => trim(strtoupper(strtolower($rowMSSQL['juego_estadio']))),
+                        'juego_ciudad'                          => trim(strtoupper(strtolower($rowMSSQL['juego_ciudad']))),
+
+                        'equipo_local_codigo'                   => $rowMSSQL['equipo_local_codigo'],
+                        'equipo_local_nombre'                   => trim(strtoupper(strtolower($rowMSSQL['equipo_local_nombre']))),
+                        'equipo_local_resultado_primer'         => $rowMSSQL['equipo_local_resultado_primer'],
+                        'equipo_local_resultado_segundo'        => $rowMSSQL['equipo_local_resultado_segundo'],
+                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_segundo'],
+
+                        'equipo_visitante_codigo'               => $rowMSSQL['equipo_visitante_codigo'],
+                        'equipo_visitante_nombre'               => trim(strtoupper(strtolower($rowMSSQL['equipo_visitante_nombre']))),
+                        'equipo_visitante_resultado_primer'     => $rowMSSQL['equipo_visitante_resultado_primer'],
+                        'equipo_visitante_resultado_segundo'    => $rowMSSQL['equipo_visitante_resultado_segundo'],
+                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_segundo']
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo_padre'              => '',
+                        'competicion_estado'                    => '',
+                        'competicion_anho'                      => '',
+
+                        'juego_fase'                            => '',
+                        'juego_estado'                          => '',
+                        'juego_horario'                         => '',
+                        'juego_cierra'                          => '',
+                        'juego_estadio'                         => '',
+                        'juego_ciudad'                          => '',
+
+                        'equipo_local_codigo'                   => '',
+                        'equipo_local_nombre'                   => '',
+                        'equipo_local_resultado_primer'         => '',
+                        'equipo_local_resultado_segundo'        => '',
+                        'equipo_local_resultado_final'          => '',
+                        
+                        'equipo_visitante_codigo'               => '',
+                        'equipo_visitante_nombre'               => '',
+                        'equipo_visitante_resultado_primer'     => '',
+                        'equipo_visitante_resultado_segundo'    => '',
+                        'equipo_visitante_resultado_final'      => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/200/competicion/{competicion}/encuentro/{encuentro}/equipo/{equipo}/tipo/{tipo}/examen', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('competicion');
+        $val02      = $request->getAttribute('encuentro');
+        $val03      = $request->getAttribute('equipo');
+        $val04      = $request->getAttribute('tipo');
+
+        if (isset($val01) && isset($val02) && isset($val03) && isset($val04)) {
+            if ($val03 == 0) {
+                $val03  = $val02;
+                $sql00  = "SELECT
+                    a.EXAFICCOD                         AS          examen_codigo,
+                    a.EXAFICFE1                         AS          examen_fecha_1,
+                    a.EXAFICFE2                         AS          examen_fecha_2,
+                    a.EXAFICFE3                         AS          examen_fecha_3,
+                    a.EXAFICACA                         AS          examen_cantidad_adulto,
+                    a.EXAFICMCA                         AS          examen_cantidad_menor,
+                    a.EXAFICJCO                         AS          examen_persona_convocado,
+                    a.EXAFICJPO                         AS          examen_persona_posicion,
+                    a.EXAFICJCA                         AS          examen_persona_camiseta,
+                    a.EXAFICLNO                         AS          examen_laboratorio_nombre,
+                    a.EXAFICLFE                         AS          examen_laboratorio_fecha_envio,
+                    a.EXAFICLFR                         AS          examen_laboratorio_fecha_recepcion,
+                    a.EXAFICLFA                         AS          examen_laboratorio_fecha_aislamiento,
+                    a.EXAFICLFF                         AS          examen_laboratorio_fecha_finaliza,
+                    a.EXAFICLRE                         AS          examen_laboratorio_resultado,
+                    a.EXAFICLIC                         AS          examen_laboratorio_cuarentena,
+                    a.EXAFICLNT                         AS          examen_laboratorio_test,
+                    a.EXAFICLAD                         AS          examen_laboratorio_adjunto,
+                    a.EXAFICLOB                         AS          examen_laboratorio_observacion,
+                    a.EXAFICBAN                         AS          examen_bandera,
+                    a.EXAFICOBS                         AS          examen_observacion,
+                    
+                    a.EXAFICAUS                         AS          auditoria_usuario,
+                    a.EXAFICAFH                         AS          auditoria_fecha_hora,
+                    a.EXAFICAIP                         AS          auditoria_ip,
+
+                    b.DOMFICCOD                         AS          tipo_estado_codigo,
+                    b.DOMFICORD                         AS          tipo_estado_orden,
+                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+                    b.DOMFICPAT                         AS          tipo_estado_path,
+                    b.DOMFICVAL                         AS          tipo_estado_dominio,
+                    b.DOMFICPAR                         AS          tipo_estado_parametro,
+                    b.DOMFICOBS                         AS          tipo_estado_observacion,
+
+                    c.DOMFICCOD                         AS          tipo_examen_codigo,
+                    c.DOMFICORD                         AS          tipo_examen_orden,
+                    c.DOMFICNOI                         AS          tipo_examen_nombre_ingles,
+                    c.DOMFICNOC                         AS          tipo_examen_nombre_castellano,
+                    c.DOMFICNOP                         AS          tipo_examen_nombre_portugues,
+                    b.DOMFICPAT                         AS          tipo_examen_path,
+                    b.DOMFICVAL                         AS          tipo_examen_dominio,
+                    b.DOMFICPAR                         AS          tipo_examen_parametro,
+                    b.DOMFICOBS                         AS          tipo_examen_observacion,
+
+                    d.competitionFifaId                 AS          competicion_codigo,
+                    d.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                    d.status                            AS          competicion_estado,
+                    d.internationalName                 AS          competicion_nombre,
+                    d.internationalShortName            AS          competicion_nombre_corto,
+                    d.season                            AS          competicion_anho,
+
+                    e.JUEGO_CODIGO                      AS          encuentro_codigo,
+                    e.EQUIPO_LOCAL_CODIGO               AS          encuentro_local_codigo,
+                    e.EQUIPO_LOCAL_NOMBRE               AS          encuentro_local_equipo,
+                    e.EQUIPO_VISITANTE_CODIGO           AS          encuentro_visitante_codigo,
+                    e.EQUIPO_VISITANTE_NOMBRE           AS          encuentro_visitante_equipo,
+
+                    f.teamFifaId                        AS          equipo_codigo,
+                    f.internationalName                 AS          equipo_nombre,
+
+                    g.personFifaId                      AS          persona_codigo,
+                    g.internationalFirstName            AS          persona_nombre,
+                    g.internationalLastName             AS          persona_apellido,
+                    g.personType                        AS          persona_tipo_codigo,
+
+                    h.EXAFICCOD                         AS          examen_anterior_codigo,
+                    h.EXAFICFE1                         AS          examen_anterior_fecha_1,
+                    h.EXAFICFE2                         AS          examen_anterior_fecha_2,
+                    h.EXAFICFE3                         AS          examen_anterior_fecha_3,
+                    h.EXAFICACA                         AS          examen_anterior_cantidad_adulto,
+                    h.EXAFICMCA                         AS          examen_anterior_cantidad_menor,
+                    h.EXAFICJCO                         AS          examen_anterior_persona_convocado,
+                    h.EXAFICJPO                         AS          examen_anterior_persona_posicion,
+                    h.EXAFICJCA                         AS          examen_anterior_persona_camiseta,
+                    h.EXAFICLNO                         AS          examen_anterior_laboratorio_nombre,
+                    h.EXAFICLFE                         AS          examen_anterior_laboratorio_fecha_envio,
+                    h.EXAFICLFR                         AS          examen_anterior_laboratorio_fecha_recepcion,
+                    h.EXAFICLFA                         AS          examen_anterior_laboratorio_fecha_aislamiento,
+                    h.EXAFICLRE                         AS          examen_anterior_laboratorio_resultado,
+                    h.EXAFICLIC                         AS          examen_anterior_laboratorio_cuarentena,
+                    h.EXAFICLNT                         AS          examen_anterior_laboratorio_test,
+                    h.EXAFICLAD                         AS          examen_anterior_laboratorio_adjunto,
+                    h.EXAFICLOB                         AS          examen_anterior_laboratorio_observacion,
+                    h.EXAFICOBS                         AS          examen_anterior_observacion
+
+                    FROM [exa].[EXAFIC] a
+                    LEFT OUTER JOIN [adm].[DOMFIC] b ON a.EXAFICEST = b.DOMFICCOD
+                    LEFT OUTER JOIN [adm].[DOMFIC] c ON a.EXAFICTEC = c.DOMFICCOD
+                    LEFT OUTER JOIN [comet].[competitions] d ON a.EXAFICCOC = d.competitionFifaId
+                    LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
+                    LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
+                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
+                    LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
+
+                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICENC = ? AND a.EXAFICTEC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICPAR = ? AND DOMFICVAL = 'EXAMENMEDICOTIPO')
+
+                    ORDER BY a.EXAFICCOD ASC";
+            } else {
+                $sql00  = "SELECT
+                    a.EXAFICCOD                         AS          examen_codigo,
+                    a.EXAFICFE1                         AS          examen_fecha_1,
+                    a.EXAFICFE2                         AS          examen_fecha_2,
+                    a.EXAFICFE3                         AS          examen_fecha_3,
+                    a.EXAFICACA                         AS          examen_cantidad_adulto,
+                    a.EXAFICMCA                         AS          examen_cantidad_menor,
+                    a.EXAFICJCO                         AS          examen_persona_convocado,
+                    a.EXAFICJPO                         AS          examen_persona_posicion,
+                    a.EXAFICJCA                         AS          examen_persona_camiseta,
+                    a.EXAFICLNO                         AS          examen_laboratorio_nombre,
+                    a.EXAFICLFE                         AS          examen_laboratorio_fecha_envio,
+                    a.EXAFICLFR                         AS          examen_laboratorio_fecha_recepcion,
+                    a.EXAFICLFA                         AS          examen_laboratorio_fecha_aislamiento,
+                    a.EXAFICLFF                         AS          examen_laboratorio_fecha_finaliza,
+                    a.EXAFICLRE                         AS          examen_laboratorio_resultado,
+                    a.EXAFICLIC                         AS          examen_laboratorio_cuarentena,
+                    a.EXAFICLNT                         AS          examen_laboratorio_test,
+                    a.EXAFICLAD                         AS          examen_laboratorio_adjunto,
+                    a.EXAFICLOB                         AS          examen_laboratorio_observacion,
+                    a.EXAFICBAN                         AS          examen_bandera,
+                    a.EXAFICOBS                         AS          examen_observacion,
+                    
+                    a.EXAFICAUS                         AS          auditoria_usuario,
+                    a.EXAFICAFH                         AS          auditoria_fecha_hora,
+                    a.EXAFICAIP                         AS          auditoria_ip,
+
+                    b.DOMFICCOD                         AS          tipo_estado_codigo,
+                    b.DOMFICORD                         AS          tipo_estado_orden,
+                    b.DOMFICNOI                         AS          tipo_estado_nombre_ingles,
+                    b.DOMFICNOC                         AS          tipo_estado_nombre_castellano,
+                    b.DOMFICNOP                         AS          tipo_estado_nombre_portugues,
+                    b.DOMFICPAT                         AS          tipo_estado_path,
+                    b.DOMFICVAL                         AS          tipo_estado_dominio,
+                    b.DOMFICPAR                         AS          tipo_estado_parametro,
+                    b.DOMFICOBS                         AS          tipo_estado_observacion,
+
+                    c.DOMFICCOD                         AS          tipo_examen_codigo,
+                    c.DOMFICORD                         AS          tipo_examen_orden,
+                    c.DOMFICNOI                         AS          tipo_examen_nombre_ingles,
+                    c.DOMFICNOC                         AS          tipo_examen_nombre_castellano,
+                    c.DOMFICNOP                         AS          tipo_examen_nombre_portugues,
+                    b.DOMFICPAT                         AS          tipo_examen_path,
+                    b.DOMFICVAL                         AS          tipo_examen_dominio,
+                    b.DOMFICPAR                         AS          tipo_examen_parametro,
+                    b.DOMFICOBS                         AS          tipo_examen_observacion,
+
+                    d.competitionFifaId                 AS          competicion_codigo,
+                    d.superiorCompetitionFifaId         AS          competicion_codigo_padre,
+                    d.status                            AS          competicion_estado,
+                    d.internationalName                 AS          competicion_nombre,
+                    d.internationalShortName            AS          competicion_nombre_corto,
+                    d.season                            AS          competicion_anho,
+
+                    e.JUEGO_CODIGO                      AS          encuentro_codigo,
+                    e.EQUIPO_LOCAL_CODIGO               AS          encuentro_local_codigo,
+                    e.EQUIPO_LOCAL_NOMBRE               AS          encuentro_local_equipo,
+                    e.EQUIPO_VISITANTE_CODIGO           AS          encuentro_visitante_codigo,
+                    e.EQUIPO_VISITANTE_NOMBRE           AS          encuentro_visitante_equipo,
+
+                    f.teamFifaId                        AS          equipo_codigo,
+                    f.internationalName                 AS          equipo_nombre,
+
+                    g.personFifaId                      AS          persona_codigo,
+                    g.internationalFirstName            AS          persona_nombre,
+                    g.internationalLastName             AS          persona_apellido,
+                    g.personType                        AS          persona_tipo_codigo,
+
+                    h.EXAFICCOD                         AS          examen_anterior_codigo,
+                    h.EXAFICFE1                         AS          examen_anterior_fecha_1,
+                    h.EXAFICFE2                         AS          examen_anterior_fecha_2,
+                    h.EXAFICFE3                         AS          examen_anterior_fecha_3,
+                    h.EXAFICACA                         AS          examen_anterior_cantidad_adulto,
+                    h.EXAFICMCA                         AS          examen_anterior_cantidad_menor,
+                    h.EXAFICJCO                         AS          examen_anterior_persona_convocado,
+                    h.EXAFICJPO                         AS          examen_anterior_persona_posicion,
+                    h.EXAFICJCA                         AS          examen_anterior_persona_camiseta,
+                    h.EXAFICLNO                         AS          examen_anterior_laboratorio_nombre,
+                    h.EXAFICLFE                         AS          examen_anterior_laboratorio_fecha_envio,
+                    h.EXAFICLFR                         AS          examen_anterior_laboratorio_fecha_recepcion,
+                    h.EXAFICLFA                         AS          examen_anterior_laboratorio_fecha_aislamiento,
+                    h.EXAFICLRE                         AS          examen_anterior_laboratorio_resultado,
+                    h.EXAFICLIC                         AS          examen_anterior_laboratorio_cuarentena,
+                    h.EXAFICLNT                         AS          examen_anterior_laboratorio_test,
+                    h.EXAFICLAD                         AS          examen_anterior_laboratorio_adjunto,
+                    h.EXAFICLOB                         AS          examen_anterior_laboratorio_observacion,
+                    h.EXAFICOBS                         AS          examen_anterior_observacion
+
+                    FROM [exa].[EXAFIC] a
+                    LEFT OUTER JOIN [adm].[DOMFIC] b ON a.EXAFICEST = b.DOMFICCOD
+                    LEFT OUTER JOIN [adm].[DOMFIC] c ON a.EXAFICTEC = c.DOMFICCOD
+                    LEFT OUTER JOIN [comet].[competitions] d ON a.EXAFICCOC = d.competitionFifaId
+                    LEFT OUTER JOIN [view].[juego] e ON a.EXAFICENC = e.JUEGO_CODIGO
+                    LEFT OUTER JOIN [comet].[teams] f ON a.EXAFICEQC = f.teamFifaId
+                    LEFT OUTER JOIN [comet].[persons] g ON a.EXAFICPEC = g.personFifaId
+                    LEFT OUTER JOIN [exa].[EXAFIC] h ON a.EXAFICAEC = h.EXAFICCOD
+
+                    WHERE a.EXAFICCOC = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICPAR = ? AND DOMFICVAL = 'EXAMENMEDICOTIPO')
+
+                    ORDER BY a.EXAFICCOD ASC";
+            }
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04]);
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['examen_fecha_1'] == NULL) {
+                        $examen_fecha_1_1   = '';
+                        $examen_fecha_1_2   = '';   
+                    } else {
+                        $examen_fecha_1_1 = $rowMSSQL['examen_fecha_1'];
+                        $examen_fecha_1_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_1']));
+                    }
+					
+                    if ($rowMSSQL['examen_fecha_2'] == NULL) {
+                        $examen_fecha_2_1   = '';
+                        $examen_fecha_2_2   = '';
+                    } else {
+                        $examen_fecha_2_1 = $rowMSSQL['examen_fecha_2'];
+                        $examen_fecha_2_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_2']));
+                    }
+
+                    if ($rowMSSQL['examen_fecha_3'] == NULL) {
+                        $examen_fecha_3_1   = '';
+                        $examen_fecha_3_2   = '';
+                    } else {
+                        $examen_fecha_3_1 = $rowMSSQL['examen_fecha_3'];
+                        $examen_fecha_3_2 = date('d/m/Y', strtotime($rowMSSQL['examen_fecha_3']));
+                    }
+
+                    if ($rowMSSQL['examen_laboratorio_fecha_envio'] == NULL) {
+                        $examen_laboratorio_fecha_envio_1 = '';
+                        $examen_laboratorio_fecha_envio_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_envio_1 = $rowMSSQL['examen_laboratorio_fecha_envio'];
+                        $examen_laboratorio_fecha_envio_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_envio']));
+                    }
+
+                    if ($rowMSSQL['examen_laboratorio_fecha_recepcion'] == NULL) {
+                        $examen_laboratorio_fecha_recepcion_1 = '';
+                        $examen_laboratorio_fecha_recepcion_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_recepcion_1 = $rowMSSQL['examen_laboratorio_fecha_recepcion'];
+                        $examen_laboratorio_fecha_recepcion_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_recepcion']));
+                    }
+
+                    if ($rowMSSQL['examen_laboratorio_fecha_aislamiento'] == NULL) {
+                        $examen_laboratorio_fecha_aislamiento_1 = '';
+                        $examen_laboratorio_fecha_aislamiento_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_aislamiento_1 = $rowMSSQL['examen_laboratorio_fecha_aislamiento'];
+                        $examen_laboratorio_fecha_aislamiento_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_aislamiento']));
+                    }
+
+                    if ($rowMSSQL['examen_laboratorio_fecha_finaliza'] == NULL) {
+                        $examen_laboratorio_fecha_finaliza_1 = '';
+                        $examen_laboratorio_fecha_finaliza_2 = '';
+                    } else {
+                        $examen_laboratorio_fecha_finaliza_1 = $rowMSSQL['examen_laboratorio_fecha_finaliza_1'];
+                        $examen_laboratorio_fecha_finaliza_2 = date('d/m/Y', strtotime($rowMSSQL['examen_laboratorio_fecha_finaliza']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_fecha_1'] == NULL) {
+                        $examen_anterior_fecha_1_1 = '';
+                        $examen_anterior_fecha_1_2 = '';
+                    } else {
+                        $examen_anterior_fecha_1_1 = $rowMSSQL['examen_anterior_fecha_1'];
+                        $examen_anterior_fecha_1_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_1']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_fecha_2'] == NULL) {
+                        $examen_anterior_fecha_2_1 = '';
+                        $examen_anterior_fecha_2_2 = '';
+                    } else {
+                        $examen_anterior_fecha_2_1 = $rowMSSQL['examen_anterior_fecha_2'];
+                        $examen_anterior_fecha_2_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_2']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_fecha_3'] == NULL) {
+                        $examen_anterior_fecha_3_1 = '';
+                        $examen_anterior_fecha_3_2 = '';
+                    } else {
+                        $examen_anterior_fecha_3_1 = $rowMSSQL['examen_anterior_fecha_3'];
+                        $examen_anterior_fecha_3_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_fecha_3']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_laboratorio_fecha_envio'] == NULL) {
+                        $examen_anterior_laboratorio_fecha_envio_1 = '';
+                        $examen_anterior_laboratorio_fecha_envio_2 = '';
+                    } else {
+                        $examen_anterior_laboratorio_fecha_envio_1 = $rowMSSQL['examen_anterior_laboratorio_fecha_envio'];
+                        $examen_anterior_laboratorio_fecha_envio_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_envio']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_laboratorio_fecha_recepcion'] == NULL) {
+                        $examen_anterior_laboratorio_fecha_recepcion_1 = '';
+                        $examen_anterior_laboratorio_fecha_recepcion_2 = '';
+                    } else {
+                        $examen_anterior_laboratorio_fecha_recepcion_1 = $rowMSSQL['examen_anterior_laboratorio_fecha_recepcion'];
+                        $examen_anterior_laboratorio_fecha_recepcion_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_recepcion']));
+                    }
+
+                    if ($rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento'] == NULL) {
+                        $examen_anterior_laboratorio_fecha_aislamiento_1 = '';
+                        $examen_anterior_laboratorio_fecha_aislamiento_2 = '';
+                    } else {
+                        $examen_anterior_laboratorio_fecha_aislamiento_1 = $rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento'];
+                        $examen_anterior_laboratorio_fecha_aislamiento_2 = date('d/m/Y', strtotime($rowMSSQL['examen_anterior_laboratorio_fecha_aislamiento']));
+                    }
+
+                    if ($rowMSSQL['encuentro_codigo'] != NULL){
+                        $encuentro_codigo = $rowMSSQL['encuentro_codigo'];
+                    } else {
+                        $encuentro_codigo = 0;
+                    }
+
+                    switch ($rowMSSQL['persona_tipo_codigo']) {
+                        case 'P':
+                            $persona_tipo_nombre = 'JUGADOR';
+                            break;
+                        
+                        case 'T':
+                            $persona_tipo_nombre = 'CUERPO TECNICO';
+                            break;
+
+                        case 'O':
+                            $persona_tipo_nombre = 'OFICIAL';
+                            break;
+
+                        case 'Z':
+                            $persona_tipo_nombre = 'ZONA 1';
+                            break;
+                    }
+
+                    $detalle    = array(
+                        'examen_codigo'                                 => $rowMSSQL['examen_codigo'],
+                        'examen_fecha_1_1'                              => $examen_fecha_1_1,
+                        'examen_fecha_1_2'                              => $examen_fecha_1_2,
+                        'examen_fecha_2_1'                              => $examen_fecha_2_1,
+                        'examen_fecha_2_2'                              => $examen_fecha_2_2,
+                        'examen_fecha_3_1'                              => $examen_fecha_3_1,
+                        'examen_fecha_3_2'                              => $examen_fecha_3_2,
+                        'examen_cantidad_adulto'                        => $rowMSSQL['examen_cantidad_adulto'],
+                        'examen_cantidad_menor'                         => $rowMSSQL['examen_cantidad_menor'],
+                        'examen_persona_convocado'                      => trim(strtoupper(strtolower($rowMSSQL['examen_persona_convocado']))),
+                        'examen_persona_posicion'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_posicion']))),
+                        'examen_persona_camiseta'                       => trim(strtoupper(strtolower($rowMSSQL['examen_persona_camiseta']))),
+                        'examen_laboratorio_nombre'                     => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_nombre']))),
+                        'examen_laboratorio_fecha_envio_1'              => $examen_laboratorio_fecha_envio_1,
+                        'examen_laboratorio_fecha_envio_2'              => $examen_laboratorio_fecha_envio_2,
+                        'examen_laboratorio_fecha_recepcion_1'          => $examen_laboratorio_fecha_recepcion_1,
+                        'examen_laboratorio_fecha_recepcion_2'          => $examen_laboratorio_fecha_recepcion_2,
+                        'examen_laboratorio_fecha_aislamiento_1'        => $examen_laboratorio_fecha_aislamiento_1,
+                        'examen_laboratorio_fecha_aislamiento_2'        => $examen_laboratorio_fecha_aislamiento_2,
+                        'examen_laboratorio_fecha_finaliza_1'           => $examen_laboratorio_fecha_finaliza_1,
+                        'examen_laboratorio_fecha_finaliza_2'           => $examen_laboratorio_fecha_finaliza_2,
+                        'examen_laboratorio_resultado'                  => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_resultado']))),
+                        'examen_laboratorio_cuarentena'                 => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_cuarentena']))),
+                        'examen_laboratorio_test'                       => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_test']))),
+                        'examen_laboratorio_adjunto'                    => trim(strtolower($rowMSSQL['examen_laboratorio_adjunto'])),
+                        'examen_laboratorio_observacion'                => trim(strtoupper(strtolower($rowMSSQL['examen_laboratorio_observacion']))),
+                        'examen_bandera'                                => trim(strtoupper(strtolower($rowMSSQL['examen_bandera']))),
+                        'examen_observacion'                            => trim(strtoupper(strtolower($rowMSSQL['examen_observacion']))),
+
+                        'tipo_estado_codigo'                            => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_orden'                             => $rowMSSQL['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'                     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'                 => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'                  => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                              => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'                           => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))),
+                        'tipo_estado_parametro'                         => $rowMSSQL['tipo_estado_parametro'],
+                        'tipo_estado_observacion'                       => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+
+                        'tipo_examen_codigo'                            => $rowMSSQL['tipo_examen_codigo'],
+                        'tipo_examen_orden'                             => $rowMSSQL['tipo_examen_orden'],
+                        'tipo_examen_nombre_ingles'                     => trim(strtoupper(strtolower($rowMSSQL['tipo_examen_nombre_ingles']))),
+                        'tipo_examen_nombre_castellano'                 => trim(strtoupper(strtolower($rowMSSQL['tipo_examen_nombre_castellano']))),
+                        'tipo_examen_nombre_portugues'                  => trim(strtoupper(strtolower($rowMSSQL['tipo_examen_nombre_portugues']))),
+                        'tipo_examen_path'                              => trim(strtolower($rowMSSQL['tipo_examen_path'])),
+                        'tipo_examen_dominio'                           => trim(strtoupper(strtolower($rowMSSQL['tipo_examen_dominio']))),
+                        'tipo_examen_parametro'                         => $rowMSSQL['tipo_examen_parametro'],
+                        'tipo_examen_observacion'                       => trim(strtoupper(strtolower($rowMSSQL['tipo_examen_observacion']))),
+
+                        'competicion_codigo'                            => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'                      => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                            => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
+                        'competicion_nombre'                            => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre']))),
+                        'competicion_nombre_corto'                      => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre_corto']))),
+                        'competicion_anho'                              => $rowMSSQL['competicion_anho'],
+
+                        'encuentro_codigo'                              => $encuentro_codigo,
+                        'encuentro_local_codigo'                        => $rowMSSQL['encuentro_local_codigo'],
+                        'encuentro_visitante_codigo'                    => $rowMSSQL['encuentro_visitante_codigo'],
+                        'encuentro_nombre'                              => trim(strtoupper(strtolower($rowMSSQL['encuentro_local_equipo']))).' vs '.trim(strtoupper(strtolower($rowMSSQL['encuentro_visitante_equipo']))),
+
+                        'equipo_codigo'                                 => $rowMSSQL['equipo_codigo'],
+                        'equipo_nombre'                                 => trim(strtoupper(strtolower($rowMSSQL['equipo_nombre']))),
+
+                        'persona_codigo'                                => $rowMSSQL['persona_codigo'],
+                        'persona_nombre'                                => trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))),
+                        'persona_tipo_codigo'                           => $rowMSSQL['persona_tipo_codigo'],
+                        'persona_tipo_nombre'                           => $persona_tipo_nombre,
+
+                        'examen_anterior_codigo'                            => $rowMSSQL['examen_anterior_codigo'],
+                        'examen_anterior_fecha_1_1'                         => $examen_anterior_fecha_1_1,
+                        'examen_anterior_fecha_1_2'                         => $examen_anterior_fecha_1_2,
+                        'examen_anterior_fecha_2_1'                         => $examen_anterior_fecha_2_1,
+                        'examen_anterior_fecha_2_2'                         => $examen_anterior_fecha_2_2,
+                        'examen_anterior_fecha_3_1'                         => $examen_anterior_fecha_3_1,
+                        'examen_anterior_fecha_3_2'                         => $examen_anterior_fecha_3_2,
+                        'examen_anterior_cantidad_adulto'                   => $rowMSSQL['examen_anterior_cantidad_adulto'],
+                        'examen_anterior_cantidad_menor'                    => $rowMSSQL['examen_anterior_cantidad_menor'],
+                        'examen_anterior_persona_convocado'                 => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_convocado']))),
+                        'examen_anterior_persona_posicion'                  => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_posicion']))),
+                        'examen_anterior_persona_camiseta'                  => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_persona_camiseta']))),
+                        'examen_anterior_laboratorio_nombre'                => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_nombre']))),
+                        'examen_anterior_laboratorio_fecha_envio_1'         => $examen_anterior_laboratorio_fecha_envio_1,
+                        'examen_anterior_laboratorio_fecha_envio_2'         => $examen_anterior_laboratorio_fecha_envio_2,
+                        'examen_anterior_laboratorio_fecha_recepcion_1'     => $examen_anterior_laboratorio_fecha_recepcion_1,
+                        'examen_anterior_laboratorio_fecha_recepcion_2'     => $examen_anterior_laboratorio_fecha_recepcion_2,
+                        'examen_anterior_laboratorio_fecha_aislamiento_1'   => $examen_anterior_laboratorio_fecha_aislamiento_1,
+                        'examen_anterior_laboratorio_fecha_aislamiento_2'   => $examen_anterior_laboratorio_fecha_aislamiento_2,
+                        'examen_anterior_laboratorio_resultado'             => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_resultado']))),
+                        'examen_anterior_laboratorio_cuarentena'            => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_cuarentena']))),
+                        'examen_anterior_laboratorio_test'                  => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_test']))),
+                        'examen_anterior_laboratorio_adjunto'               => trim(strtolower($rowMSSQL['examen_anterior_laboratorio_adjunto'])),
+                        'examen_anterior_laboratorio_observacion'           => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_laboratorio_observacion']))),
+                        'examen_anterior_observacion'                       => trim(strtoupper(strtolower($rowMSSQL['examen_anterior_observacion']))),
+
+                        'auditoria_usuario'                                 => trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'                              => date('d/m/Y', strtotime($rowMSSQL['auditoria_fecha_hora'])),
+                        'auditoria_ip'                                      => trim($rowMSSQL['auditoria_ip'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'examen_codigo'                                     => '',
+                        'examen_fecha_1_1'                                  => '',
+                        'examen_fecha_1_2'                                  => '',
+                        'examen_fecha_2_1'                                  => '',
+                        'examen_fecha_2_2'                                  => '',
+                        'examen_fecha_3_1'                                  => '',
+                        'examen_fecha_3_2'                                  => '',
+                        'examen_cantidad_adulto'                            => '',
+                        'examen_cantidad_menor'                             => '',
+                        'examen_persona_convocado'                          => '',
+                        'examen_persona_posicion'                           => '',
+                        'examen_persona_camiseta'                           => '',
+                        'examen_laboratorio_nombre'                         => '',
+                        'examen_laboratorio_fecha_envio_1'                  => '',
+                        'examen_laboratorio_fecha_envio_2'                  => '',
+                        'examen_laboratorio_fecha_recepcion_1'              => '',
+                        'examen_laboratorio_fecha_recepcion_2'              => '',
+                        'examen_laboratorio_fecha_aislamiento_1'            => '',
+                        'examen_laboratorio_fecha_aislamiento_2'            => '',
+                        'examen_laboratorio_resultado'                      => '',
+                        'examen_laboratorio_cuarentena'                     => '',
+                        'examen_laboratorio_fecha_finaliza_1'               => '',
+                        'examen_laboratorio_fecha_finaliza_2'               => '',
+                        'examen_laboratorio_test'                           => '',
+                        'examen_laboratorio_adjunto'                        => '',
+                        'examen_laboratorio_observacion'                    => '',
+                        'examen_bandera'                                    => '',
+                        'examen_observacion'                                => '',
+
+                        'tipo_estado_codigo'                                => '',
+                        'tipo_estado_orden'                                 => '',
+                        'tipo_estado_nombre_ingles'                         => '',
+                        'tipo_estado_nombre_castellano'                     => '',
+                        'tipo_estado_nombre_portugues'                      => '',
+                        'tipo_estado_path'                                  => '',
+                        'tipo_estado_dominio'                               => '',
+                        'tipo_estado_parametro'                             => '',
+                        'tipo_estado_observacion'                           => '',
+
+                        'tipo_examen_codigo'                                => '',
+                        'tipo_examen_orden'                                 => '',
+                        'tipo_examen_nombre_ingles'                         => '',
+                        'tipo_examen_nombre_castellano'                     => '',
+                        'tipo_examen_nombre_portugues'                      => '',
+                        'tipo_examen_path'                                  => '',
+                        'tipo_examen_dominio'                               => '',
+                        'tipo_examen_parametro'                             => '',
+                        'tipo_examen_observacion'                           => '',
+
+                        'competicion_codigo'                                => '',
+                        'competicion_codigo_padre'                          => '',
+                        'competicion_estado'                                => '',
+                        'competicion_nombre'                                => '',
+                        'competicion_nombre_corto'                          => '',
+                        'competicion_anho'                                  => '',
+
+                        'encuentro_codigo'                                  => '',
+                        'encuentro_local_codigo'                            => '',
+                        'encuentro_visitante_codigo'                        => '',
+                        'encuentro_nombre'                                  => '',
+
+                        'equipo_codigo'                                     => '',
+                        'equipo_nombre'                                     => '',
+
+                        'persona_codigo'                                    => '',
+                        'persona_nombre'                                    => '',
+                        'persona_tipo_codigo'                               => '',
+                        'persona_tipo_nombre'                               => '',
+
+                        'examen_anterior_codigo'                            => '',
+                        'examen_anterior_fecha_1'                           => '',
+                        'examen_anterior_fecha_2'                           => '',
+                        'examen_anterior_fecha_3'                           => '',
+                        'examen_anterior_cantidad_adulto'                   => '',
+                        'examen_anterior_cantidad_menor'                    => '',
+                        'examen_anterior_persona_convocado'                 => '',
+                        'examen_anterior_persona_posicion'                  => '',
+                        'examen_anterior_persona_camiseta'                  => '',
+                        'examen_anterior_laboratorio_nombre'                => '',
+                        'examen_anterior_laboratorio_fecha_envio_1'         => '',
+                        'examen_anterior_laboratorio_fecha_envio_2'         => '',
+                        'examen_anterior_laboratorio_fecha_recepcion_1'     => '',
+                        'examen_anterior_laboratorio_fecha_recepcion_2'     => '',
+                        'examen_anterior_laboratorio_fecha_aislamiento_1'   => '',
+                        'examen_anterior_laboratorio_fecha_aislamiento_2'   => '',
+                        'examen_anterior_laboratorio_resultado'             => '',
+                        'examen_anterior_laboratorio_cuarentena'            => '',
+                        'examen_anterior_laboratorio_test'                  => '',
+                        'examen_anterior_laboratorio_adjunto'               => '',
+                        'examen_anterior_laboratorio_observacion'           => '',
+                        'examen_anterior_observacion'                       => '',
+
+                        'auditoria_usuario'                                 => '',
+                        'auditoria_fecha_hora'                              => '',
+                        'auditoria_ip'                                      => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->get('/v1/200/competicion/medico/{equipo}/{persona}', function($request) {//20201117
         require __DIR__.'/../src/connect.php';
 
