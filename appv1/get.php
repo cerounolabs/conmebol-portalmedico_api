@@ -10517,43 +10517,43 @@
         return $json;
     });
 
-    $app->get('/v1/200/competicion/home/ultimoencuentro/{equipo}', function($request) {
+    $app->get('/v1/200/competicion/home/ultimoencuentro/{equipo}/{usuario}/{examen}', function($request) {
         require __DIR__.'/../src/connect.php';
 
-        $val00      = $request->getAttribute('equipo');
+        $val01      = $request->getAttribute('equipo');
+        $val02      = $request->getAttribute('usuario');
+        $val03      = $request->getAttribute('examen');
 
-        if (isset($val00)) {
+        if (isset($val01) && isset($val02) && isset($val03)) {
                 $sql00  = "SELECT TOP 4
-                a.COMPETICION_ID                                AS          competicion_codigo,
-                a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
-                a.COMPETICION_ESTADO                            AS          competicion_estado,
-                a.COMPETICION_ANHO                              AS          competicion_anho,
-                a.JUEGO_CODIGO                                  AS          juego_codigo,
-                a.JUEGO_NOMBRE                                  AS          juego_fase,
-                a.JUEGO_ESTADO                                  AS          juego_estado,
-                a.JUEGO_HORARIO                                 AS          juego_horario,
-                a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
-                a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
-                a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
-                a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
-                a.EQUIPO_VISITANTE_CODIGO                       AS          equipo_visitante_codigo,
-                a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
-                a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
-                a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
-                
-                FROM [view].[juego] a
-                
-                
-                WHERE (a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?) AND a.JUEGO_NOMBRE IS NOT NULL
-                
-                ORDER BY a.JUEGO_CODIGO DESC";
-           
+                    a.COMPETICION_ID                                AS          competicion_codigo,
+                    a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
+                    a.COMPETICION_ESTADO                            AS          competicion_estado,
+                    a.COMPETICION_ANHO                              AS          competicion_anho,
+                    a.JUEGO_CODIGO                                  AS          juego_codigo,
+                    a.JUEGO_NOMBRE                                  AS          juego_fase,
+                    a.JUEGO_ESTADO                                  AS          juego_estado,
+                    a.JUEGO_HORARIO                                 AS          juego_horario,
+                    a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
+                    a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
+                    a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
+                    a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
+                    a.EQUIPO_VISITANTE_CODIGO                       AS          equipo_visitante_codigo,
+                    a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
+                    a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
+                    a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
+                    
+                    FROM [view].[juego] a
+                    
+                    WHERE (a.EQUIPO_LOCAL_CODIGO = ? OR a.EQUIPO_VISITANTE_CODIGO = ?) AND a.JUEGO_NOMBRE IS NOT NULL AND EXISTS(SELECT * FROM adm.PERCOM WHERE (PERCOMCOC = a.COMPETICION_ID OR PERCOMCOC = a.COMPETICION_PADRE_ID) AND PERCOMPEC = ? AND PERCOMTMC = ?)
+                    
+                    ORDER BY a.JUEGO_CODIGO DESC";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
-                    $stmtMSSQL->execute([$val00, $val00]); 
+                $stmtMSSQL->execute([$val01, $val01, $val02, $val03]); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     if ($rowMSSQL['juego_horario'] == '1900-01-01' || $rowMSSQL['juego_horario'] == null){
@@ -10586,13 +10586,13 @@
                         'equipo_local_nombre'                   => trim(strtoupper(strtolower($rowMSSQL['equipo_local_nombre']))),
                         'equipo_local_resultado_primer'         => $rowMSSQL['equipo_local_resultado_primer'],
                         'equipo_local_resultado_segundo'        => $rowMSSQL['equipo_local_resultado_segundo'],
-                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_segundo'],
+                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_final'],
 
                         'equipo_visitante_codigo'               => $rowMSSQL['equipo_visitante_codigo'],
                         'equipo_visitante_nombre'               => trim(strtoupper(strtolower($rowMSSQL['equipo_visitante_nombre']))),
                         'equipo_visitante_resultado_primer'     => $rowMSSQL['equipo_visitante_resultado_primer'],
                         'equipo_visitante_resultado_segundo'    => $rowMSSQL['equipo_visitante_resultado_segundo'],
-                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_segundo']
+                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_final']
                     );
 
                     $result[]   = $detalle;
@@ -10603,7 +10603,6 @@
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 } else {
                     $detalle = array(
-                        'competicion_codigo'                    => '',
                         'competicion_codigo'                    => '',
                         'competicion_codigo_padre'              => '',
                         'competicion_estado'                    => '',
