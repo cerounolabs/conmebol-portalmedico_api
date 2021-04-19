@@ -8600,6 +8600,7 @@
             $sql00  = "SELECT
                 a.COMPETICION_ID                                AS          competicion_codigo,
                 a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
+                b.internationalName								AS			competicion_nombre,
                 a.COMPETICION_ESTADO                            AS          competicion_estado,
                 a.COMPETICION_ANHO                              AS          competicion_anho,
                 a.JUEGO_CODIGO                                  AS          juego_codigo,
@@ -8607,7 +8608,7 @@
                 a.JUEGO_ESTADO                                  AS          juego_estado,
                 a.JUEGO_HORARIO                                 AS          juego_horario,
                 a.JUEGO_ESTADIO                                 AS          juego_estadio,
-                a.JUEGO_CIUDAD                                 AS           juego_ciudad,
+                a.JUEGO_CIUDAD                                  AS          juego_ciudad,
                 a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
                 a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
                 a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
@@ -8618,6 +8619,7 @@
                 a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
                 
                 FROM [view].[juego] a
+                LEFT OUTER JOIN comet.competitions b ON a.COMPETICION_PADRE_ID = b.competitionFifaId
 
                 WHERE (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?) AND a.JUEGO_CODIGO = ?
 
@@ -8636,6 +8638,7 @@
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
                         'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
+                        'competicion_nombre'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_nombre']))),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
 
                         'juego_codigo'                          => $rowMSSQL['juego_codigo'],
@@ -8671,6 +8674,7 @@
                         'competicion_codigo'                    => '',
                         'competicion_codigo_padre'              => '',
                         'competicion_estado'                    => '',
+                        'competicion_nombre'                    => '',
                         'competicion_anho'                      => '',
 
                         'juego_fase'                            => '',
