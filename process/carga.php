@@ -41,7 +41,7 @@
 
                 echo ('codigos a insertar => '.$examenCodigo);
 
-                while ($rowMSSQL01 = $stmtMSSQL01->fetch()) {//recorre NOTFIC
+               // while ($rowMSSQL00 = $stmtMSSQL01->fetch()) {//recorre NOTFIC
 
                     echo (' INSERTADO => '.$examenCodigo);
 
@@ -49,7 +49,7 @@
 
                    $stmtMSSQL01->execute([$DOMFICPAR, $examenCodigo, $EXATESVAL, $EXATESOBS, $DOMFICAUS, $DOMFICAIP]);
                    
-                }
+                //}
 
             }
 
