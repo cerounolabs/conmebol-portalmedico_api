@@ -10,7 +10,7 @@
     $EXAFICENC  = 59414586;
     $EXAFICEQC  = 55445;
     $EXAFICTEC  = 174;
-    $EXAFICCOD  = 64236;
+    //$EXAFICCOD  = 64236;
 
 
     function getCargaTest(){
@@ -22,10 +22,9 @@
         global $EXAFICAUS;
         global $EXAFICENC;
         global $EXAFICEQC;
-        global $EXAFICCOD;
         global $EXAFICTEC;
 
-        $sql00  =   "SELECT a.EXAFICCOD AS examen_codigo FROM exa.EXAFIC a WHERE a.EXAFICAUS = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND a.EXAFICCOD = ? AND NOT EXISTS (SELECT * FROM exa.EXATES b WHERE b.EXATESEXC = a.EXAFICCOD )";
+        $sql00  =   "SELECT a.EXAFICCOD AS examen_codigo FROM exa.EXAFIC a WHERE a.EXAFICAUS = ? AND a.EXAFICENC = ? AND a.EXAFICEQC = ? AND a.EXAFICTEC = ? AND NOT EXISTS (SELECT * FROM exa.EXATES b WHERE b.EXATESEXC = a.EXAFICCOD )";
         $sql01  =   "INSERT INTO [exa].[EXATES](                                                           EXATESTTC,   EXATESEXC,  EXATESVAL,  EXATESOBS,  EXATESAUS, EXATESAFH, EXATESAIP) 
         VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19SEROLOGIA' AND DOMFICPAR = ?),           ?,          ?,           ?,         ?,GETDATE(), ?)";
 
@@ -34,7 +33,7 @@
 
             $stmtMSSQL00    =   $connMSSQL->prepare($sql00);
             $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
-            $stmtMSSQL00->execute([$EXAFICAUS, $EXAFICENC, $EXAFICEQC, $EXAFICTEC, $EXAFICCOD]);
+            $stmtMSSQL00->execute([$EXAFICAUS, $EXAFICENC, $EXAFICEQC, $EXAFICTEC]);
 
             while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {//recorre NOTFIC
                 $examenCodigo   =    $rowMSSQL00['examen_codigo'];
