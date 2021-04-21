@@ -30,7 +30,7 @@
         VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'EXAMENMEDICOCOVID19SEROLOGIA' AND DOMFICPAR = ?),           ?,          ?,           ?,         ?,GETDATE(), ?)";
 
         try {
-            $connMSSQL  = getConnectionMSSQLv2();
+            $connMSSQL  = getConnectionMSSQLv1();
 
             $stmtMSSQL00    =   $connMSSQL->prepare($sql00);
             $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
