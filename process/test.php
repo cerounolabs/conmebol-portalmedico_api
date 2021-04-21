@@ -10,8 +10,6 @@
     $EXAFICENC  = 59414586;
     $EXAFICEQC  = 55445;
     $EXAFICTEC  = 174;
-    //$EXAFICCOD  = 64236;
-
 
     function getCargaTest(){
         global $DOMFICPAR;
@@ -35,20 +33,10 @@
             $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
             $stmtMSSQL00->execute([$EXAFICAUS, $EXAFICENC, $EXAFICEQC, $EXAFICTEC]);
 
-            while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {//recorre NOTFIC
+            while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
                 $examenCodigo   =    $rowMSSQL00['examen_codigo'];
 
-                echo ('codigos a insertar => '.$examenCodigo);
-
-               // while ($rowMSSQL00 = $stmtMSSQL01->fetch()) {//recorre NOTFIC
-
-                    echo (' INSERTADO => '.$examenCodigo);
-
-
-
-                   $stmtMSSQL01->execute([$DOMFICPAR, $examenCodigo, $EXATESVAL, $EXATESOBS, $DOMFICAUS, $DOMFICAIP]);
-                   
-                //}
+                $stmtMSSQL01->execute([$DOMFICPAR, $examenCodigo, $EXATESVAL, $EXATESOBS, $DOMFICAUS, $DOMFICAIP]);
 
             }
 
