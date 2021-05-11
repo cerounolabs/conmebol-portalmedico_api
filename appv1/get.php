@@ -14461,31 +14461,7 @@
     
                 ORDER BY a.COMPETICION_PADRE_ID DESC";
 
-            $sql01  = "SELECT
-                b.personFifaId                  AS          persona_codigo,
-                b.personType                    AS          persona_tipo,
-                b.internationalFirstName        AS          persona_nombre,
-                b.internationalLastName         AS          persona_apellido,
-                b.gender                        AS          persona_genero,
-                b.dateOfBirth                   AS          persona_fecha_nacimiento,
-                a.roleDescription               AS          persona_funcion,
-                a.role                          AS          persona_rol_1,
-                a.cometRoleName                 AS          persona_rol_2,
-                a.cometRoleNameKey              AS          persona_rol_3,
-
-                c.DOMFICCOD                     AS          tipo_documento_codigo,
-                c.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
-                c.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
-                c.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
-                b.documentNumber                AS          tipo_documento_numero,
-                b.passportNumber                AS          tipo_pasaporte_numero
-
-                FROM comet.matches_officials a
-                INNER JOIN comet.persons b ON a.personFifaId = b.personFifaId
-                LEFT OUTER JOIN adm.DOMFIC c ON b.documentType = c.DOMFICCOD
-                WHERE a.matchFifaId = ?";
-
-            $sql02 = "SELECT
+            $sql01 = "SELECT
                 c.personFifaId                  AS          persona_codigo,
                 c.personType                    AS          persona_tipo,
                 c.internationalFirstName        AS          persona_nombre,
@@ -14513,7 +14489,7 @@
 
                 ORDER BY a.COMPETICION_PADRE_ID DESC";
 
-            $sql03 = "SELECT
+            $sql02 = "SELECT
                 c.personFifaId                  AS          persona_codigo,
                 c.personType                    AS          persona_tipo,
                 c.internationalFirstName        AS          persona_nombre,
@@ -14541,18 +14517,42 @@
 
                 ORDER BY a.COMPETICION_PADRE_ID DESC";
 
+            $sql03  = "SELECT
+                b.personFifaId                  AS          persona_codigo,
+                b.personType                    AS          persona_tipo,
+                b.internationalFirstName        AS          persona_nombre,
+                b.internationalLastName         AS          persona_apellido,
+                b.gender                        AS          persona_genero,
+                b.dateOfBirth                   AS          persona_fecha_nacimiento,
+                a.roleDescription               AS          persona_funcion,
+                a.role                          AS          persona_rol_1,
+                a.cometRoleName                 AS          persona_rol_2,
+                a.cometRoleNameKey              AS          persona_rol_3,
+
+                c.DOMFICCOD                     AS          tipo_documento_codigo,
+                c.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+                c.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+                c.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+                b.documentNumber                AS          tipo_documento_numero,
+                b.passportNumber                AS          tipo_pasaporte_numero
+
+                FROM comet.matches_officials a
+                INNER JOIN comet.persons b ON a.personFifaId = b.personFifaId
+                LEFT OUTER JOIN adm.DOMFIC c ON b.documentType = c.DOMFICCOD
+                WHERE a.matchFifaId = ?";
+
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
                 $stmtMSSQL00->execute([$val01, $val01, $val02]);
 
-                $stmtMSSQL01= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
                 $stmtMSSQL01->execute([$val01, $val01, $val02]);
 
-                $stmtMSSQL02= $connMSSQL->prepare($sql00);
+                $stmtMSSQL02= $connMSSQL->prepare($sql02);
                 $stmtMSSQL02->execute([$val01, $val01, $val02]);
 
-                $stmtMSSQL03= $connMSSQL->prepare($sql00);
+                $stmtMSSQL03= $connMSSQL->prepare($sql03);
                 $stmtMSSQL03->execute([$val02]);
 
                 $result_equipo_local    = [];
