@@ -15018,3 +15018,123 @@
         
         return $json;
     });
+
+    $app->get('/v1/400/acreditacion/persona/oficial', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $sql00  = "SELECT
+            a.personFifaId                  AS          persona_codigo,
+            a.personType                    AS          persona_tipo,
+            a.internationalFirstName        AS          persona_nombre,
+            a.internationalLastName         AS          persona_apellido,
+            a.gender                        AS          persona_genero,
+            a.dateOfBirth                   AS          persona_fecha_nacimiento,
+            a.playerPosition                AS          persona_funcion,
+            a.role                          AS          persona_rol_1,
+            a.cometRoleName                 AS          persona_rol_2,
+            a.cometRoleNameKey              AS          persona_rol_3,
+
+            b.DOMFICCOD                     AS          tipo_documento_codigo,
+            b.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+            b.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+            b.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+            a.documentNumber                AS          tipo_documento_numero,
+            a.passportNumber                AS          tipo_pasaporte_numero
+            
+            FROM comet.persons a
+            LEFT OUTER JOIN adm.DOMFIC b ON a.documentType = b.DOMFICCOD
+            
+            WHERE a.personType = 'O'
+            
+            ORDER BY a.documentNumber";
+
+        try {
+            $connMSSQL  = getConnectionMSSQLv1();
+            $stmtMSSQL  = $connMSSQL->prepare($sql00);
+            $stmtMSSQL->execute();
+
+            while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                    $persona_fecha_nacimiento_1 = '';
+                    $persona_fecha_nacimiento_2 = '';
+                } else {
+                    $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                    $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                }
+
+                $detalle    = array(
+                    'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                    'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                    'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
+                    'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                    'persona_completo'                      => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
+                    'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                    'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
+                    'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
+                    'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+                    'persona_rol_1'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_1']))),
+                    'persona_rol_2'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_2']))),
+                    'persona_rol_3'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_3']))),
+                    
+                    'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
+                    'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                    'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                    'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                    'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                    'tipo_pasaporte_codigo'                 => 213,
+                    'tipo_pasaporte_nombre_ingles'          => 'PASAPORTE',
+                    'tipo_pasaporte_nombre_castellano'      => 'PASAPORTE',
+                    'tipo_pasaporte_nombre_portugues'       => 'PASAPORTE',
+                    'tipo_pasaporte_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_pasaporte_numero'])))
+                );
+
+                $result[]   = $detalle;
+            }
+
+            if (isset($result)){
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } else {
+                $detalle = array(
+                    'persona_codigo'                        => '',
+                    'persona_tipo'                          => '',
+                    'persona_nombre'                        => '',
+                    'persona_apellido'                      => '',
+                    'persona_completo'                      => '',
+                    'persona_genero'                        => '',
+                    'persona_fecha_nacimiento_1'            => '',
+                    'persona_fecha_nacimiento_2'            => '',
+                    'persona_funcion'                       => '',
+                    'persona_rol_1'                         => '',
+                    'persona_rol_2'                         => '',
+                    'persona_rol_3'                         => '',
+                    
+                    'tipo_documento_codigo'                 => '',
+                    'tipo_documento_nombre_ingles'          => '',
+                    'tipo_documento_nombre_castellano'      => '',
+                    'tipo_documento_nombre_portugues'       => '',
+                    'tipo_documento_numero'                 => '',
+
+                    'tipo_pasaporte_codigo'                 => '',
+                    'tipo_pasaporte_nombre_ingles'          => '',
+                    'tipo_pasaporte_nombre_castellano'      => '',
+                    'tipo_pasaporte_nombre_portugues'       => '',
+                    'tipo_pasaporte_numero'                 => ''
+                );
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
