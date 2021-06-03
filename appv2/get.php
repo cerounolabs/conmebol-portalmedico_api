@@ -14381,6 +14381,344 @@
         return $json;
     });
 
+    $app->get('/v2/400/acreditacion/competicion/{competicion}/encuentro/{encuentro}/detalle', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('competicion');
+        $val02      = $request->getAttribute('encuentro');
+
+        if (isset($val01) && isset($val02)) {
+            $sql00  = "SELECT
+                a.COMPETICION_ID                                AS          competicion_codigo,
+                a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
+                a.COMPETICION_ESTADO                            AS          competicion_estado,
+                a.COMPETICION_ANHO                              AS          competicion_anho,
+                a.JUEGO_CODIGO                                  AS          juego_codigo,
+                a.JUEGO_NOMBRE                                  AS          juego_fase,
+                a.JUEGO_ESTADO                                  AS          juego_estado,
+                a.JUEGO_HORARIO                                 AS          juego_horario,
+                a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
+                a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
+                a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
+                a.EQUIPO_LOCAL_RESULTADO_SEGUNDO                AS          equipo_local_resultado_segundo,
+                a.EQUIPO_VISITANTE_CODIGO                       AS          equipo_visitante_codigo,
+                a.EQUIPO_VISITANTE_NOMBRE                       AS          equipo_visitante_nombre,
+                a.EQUIPO_VISITANTE_RESULTADO_PRIMER             AS          equipo_visitante_resultado_primer,
+                a.EQUIPO_VISITANTE_RESULTADO_SEGUNDO            AS          equipo_visitante_resultado_segundo
+                
+                FROM [view].[juego] a
+                
+                WHERE (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?) AND a.JUEGO_CODIGO = ?
+
+                ORDER BY a.COMPETICION_PADRE_ID DESC";
+
+            $sql01 = "SELECT
+                c.personFifaId                  AS          persona_codigo,
+                c.personType                    AS          persona_tipo,
+                c.internationalFirstName        AS          persona_nombre,
+                c.internationalLastName         AS          persona_apellido,
+                c.gender                        AS          persona_genero,
+                c.dateOfBirth                   AS          persona_fecha_nacimiento,
+                c.playerPosition                AS          persona_funcion,
+                c.role                          AS          persona_rol_1,
+                c.cometRoleName                 AS          persona_rol_2,
+                c.cometRoleNameKey              AS          persona_rol_3,
+
+                d.DOMFICCOD                     AS          tipo_documento_codigo,
+                d.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+                d.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+                d.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+                c.documentNumber                AS          tipo_documento_numero,
+                c.passportNumber                AS          tipo_pasaporte_numero
+                
+                FROM [view].[juego] a
+                INNER JOIN comet.competitions_teams_players b ON (a.COMPETICION_ID = B.competitionFifaId or a.COMPETICION_PADRE_ID = b.competitionFifaId) AND a.EQUIPO_LOCAL_CODIGO = b.teamFifaId
+                INNER JOIN comet.persons c ON b.playerFifaId = c.personFifaId
+                LEFT OUTER JOIN adm.DOMFIC d ON c.documentType = d.DOMFICCOD
+
+                WHERE (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?) AND a.JUEGO_CODIGO = ?
+
+                ORDER BY a.COMPETICION_PADRE_ID DESC";
+
+            $sql02 = "SELECT
+                c.personFifaId                  AS          persona_codigo,
+                c.personType                    AS          persona_tipo,
+                c.internationalFirstName        AS          persona_nombre,
+                c.internationalLastName         AS          persona_apellido,
+                c.gender                        AS          persona_genero,
+                c.dateOfBirth                   AS          persona_fecha_nacimiento,
+                c.playerPosition                AS          persona_funcion,
+                c.role                          AS          persona_rol_1,
+                c.cometRoleName                 AS          persona_rol_2,
+                c.cometRoleNameKey              AS          persona_rol_3,
+
+                d.DOMFICCOD                     AS          tipo_documento_codigo,
+                d.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+                d.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+                d.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+                c.documentNumber                AS          tipo_documento_numero,
+                c.passportNumber                AS          tipo_pasaporte_numero
+
+                FROM [view].[juego] a
+                INNER JOIN comet.competitions_teams_players b ON (a.COMPETICION_ID = B.competitionFifaId or a.COMPETICION_PADRE_ID = b.competitionFifaId) AND a.EQUIPO_VISITANTE_CODIGO = b.teamFifaId
+                INNER JOIN comet.persons c ON b.playerFifaId = c.personFifaId
+                LEFT OUTER JOIN adm.DOMFIC d ON c.documentType = d.DOMFICCOD
+
+                WHERE (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?) AND a.JUEGO_CODIGO = ?
+
+                ORDER BY a.COMPETICION_PADRE_ID DESC";
+
+            $sql03  = "SELECT
+                b.personFifaId                  AS          persona_codigo,
+                b.personType                    AS          persona_tipo,
+                b.internationalFirstName        AS          persona_nombre,
+                b.internationalLastName         AS          persona_apellido,
+                b.gender                        AS          persona_genero,
+                b.dateOfBirth                   AS          persona_fecha_nacimiento,
+                a.roleDescription               AS          persona_funcion,
+                a.role                          AS          persona_rol_1,
+                a.cometRoleName                 AS          persona_rol_2,
+                a.cometRoleNameKey              AS          persona_rol_3,
+
+                c.DOMFICCOD                     AS          tipo_documento_codigo,
+                c.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+                c.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+                c.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+                b.documentNumber                AS          tipo_documento_numero,
+                b.passportNumber                AS          tipo_pasaporte_numero
+
+                FROM comet.matches_officials a
+                INNER JOIN comet.persons b ON a.personFifaId = b.personFifaId
+                LEFT OUTER JOIN adm.DOMFIC c ON b.documentType = c.DOMFICCOD
+                WHERE a.matchFifaId = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL00->execute([$val01, $val01, $val02]);
+
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+                $stmtMSSQL01->execute([$val01, $val01, $val02]);
+
+                $stmtMSSQL02= $connMSSQL->prepare($sql02);
+                $stmtMSSQL02->execute([$val01, $val01, $val02]);
+
+                $stmtMSSQL03= $connMSSQL->prepare($sql03);
+                $stmtMSSQL03->execute([$val02]);
+
+                $result_equipo_local    = [];
+                $result_equipo_visitante= [];
+                $result_official        = [];
+
+                while ($rowMSSQL = $stmtMSSQL01->fetch()){
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
+                    $detalle    = array(
+                        'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
+                        'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                        'persona_completo'                      => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
+                        'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                        'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
+                        'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+                        'persona_rol_1'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_1']))),
+                        'persona_rol_2'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_2']))),
+                        'persona_rol_3'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_3']))),
+                        
+                        'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
+                        'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                        'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                        'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                        'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                        'tipo_pasaporte_codigo'                 => 213,
+                        'tipo_pasaporte_nombre_ingles'          => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_castellano'      => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_portugues'       => 'PASAPORTE',
+                        'tipo_pasaporte_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_pasaporte_numero'])))
+                    );
+
+                    $result_equipo_local[]   = $detalle;
+                }
+
+                while ($rowMSSQL = $stmtMSSQL02->fetch()){
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
+                    $detalle    = array(
+                        'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
+                        'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                        'persona_completo'                      => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
+                        'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                        'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
+                        'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+                        'persona_rol_1'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_1']))),
+                        'persona_rol_2'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_2']))),
+                        'persona_rol_3'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_3']))),
+                        
+                        'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
+                        'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                        'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                        'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                        'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                        'tipo_pasaporte_codigo'                 => 213,
+                        'tipo_pasaporte_nombre_ingles'          => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_castellano'      => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_portugues'       => 'PASAPORTE',
+                        'tipo_pasaporte_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_pasaporte_numero'])))
+                    );
+
+                    $result_equipo_visitante[]   = $detalle;
+                }
+
+                while ($rowMSSQL = $stmtMSSQL03->fetch()){
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
+                    $detalle    = array(
+                        'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
+                        'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                        'persona_completo'                      => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
+                        'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                        'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
+                        'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+                        'persona_rol_1'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_1']))),
+                        'persona_rol_2'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_2']))),
+                        'persona_rol_3'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_3']))),
+                        
+                        'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
+                        'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                        'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                        'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                        'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                        'tipo_pasaporte_codigo'                 => 213,
+                        'tipo_pasaporte_nombre_ingles'          => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_castellano'      => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_portugues'       => 'PASAPORTE',
+                        'tipo_pasaporte_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_pasaporte_numero'])))
+                    );
+
+                    $result_official[]   = $detalle;
+                }
+
+                while ($rowMSSQL = $stmtMSSQL00->fetch()) {
+                    $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
+                    $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
+
+                    $detalle    = array(
+                        'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
+                        'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+
+                        'juego_codigo'                          => $rowMSSQL['juego_codigo'],
+                        'juego_fase'                            => trim(strtoupper(strtolower($rowMSSQL['juego_fase']))),
+                        'juego_estado'                          => trim(strtoupper(strtolower($rowMSSQL['juego_estado']))),
+                        'juego_horario'                         => $juego_horario,
+                        'juego_cierra'                          => $juego_cierra,
+
+                        'equipo_local_codigo'                   => $rowMSSQL['equipo_local_codigo'],
+                        'equipo_local_nombre'                   => trim(strtoupper(strtolower($rowMSSQL['equipo_local_nombre']))),
+                        'equipo_local_resultado_primer'         => $rowMSSQL['equipo_local_resultado_primer'],
+                        'equipo_local_resultado_segundo'        => $rowMSSQL['equipo_local_resultado_segundo'],
+                        'equipo_local_resultado_final'          => $rowMSSQL['equipo_local_resultado_segundo'],
+                        'equipo_local_detalle'                  => $result_equipo_local,
+
+                        'equipo_visitante_codigo'               => $rowMSSQL['equipo_visitante_codigo'],
+                        'equipo_visitante_nombre'               => trim(strtoupper(strtolower($rowMSSQL['equipo_visitante_nombre']))),
+                        'equipo_visitante_resultado_primer'     => $rowMSSQL['equipo_visitante_resultado_primer'],
+                        'equipo_visitante_resultado_segundo'    => $rowMSSQL['equipo_visitante_resultado_segundo'],
+                        'equipo_visitante_resultado_final'      => $rowMSSQL['equipo_visitante_resultado_segundo'],
+                        'equipo_visitante_detalle'              => $result_equipo_visitante,
+
+                        'juego_oficiales'                       => $result_official
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo'                    => '',
+                        'competicion_codigo_padre'              => '',
+                        'competicion_estado'                    => '',
+                        'competicion_anho'                      => '',
+
+                        'juego_fase'                            => '',
+                        'juego_estado'                          => '',
+                        'juego_horario'                         => '',
+                        'juego_cierra'                          => '',
+
+                        'equipo_local_codigo'                   => '',
+                        'equipo_local_nombre'                   => '',
+                        'equipo_local_resultado_primer'         => '',
+                        'equipo_local_resultado_segundo'        => '',
+                        'equipo_local_resultado_final'          => '',
+                        
+                        'equipo_visitante_codigo'               => '',
+                        'equipo_visitante_nombre'               => '',
+                        'equipo_visitante_resultado_primer'     => '',
+                        'equipo_visitante_resultado_segundo'    => '',
+                        'equipo_visitante_resultado_final'      => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+                $stmtMSSQL02->closeCursor();
+                $stmtMSSQL03->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+                $stmtMSSQL02 = null;
+                $stmtMSSQL03 = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->get('/v2/400/acreditacion/competicion/{competicion}/equipo/{equipo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -14421,6 +14759,136 @@
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute([$val01, $val02]);
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+
+                    $detalle    = array(
+                        'persona_codigo'                        => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                          => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                        => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
+                        'persona_apellido'                      => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                        'persona_completo'                      => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
+                        'persona_genero'                        => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                        'persona_fecha_nacimiento_1'            => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'            => $persona_fecha_nacimiento_2,
+                        'persona_funcion'                       => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+                        'persona_rol_1'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_1']))),
+                        'persona_rol_2'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_2']))),
+                        'persona_rol_3'                         => trim(strtoupper(strtolower($rowMSSQL['persona_rol_3']))),
+                        
+                        'tipo_documento_codigo'                 => $rowMSSQL['tipo_documento_codigo'],
+                        'tipo_documento_nombre_ingles'          => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_ingles']))),
+                        'tipo_documento_nombre_castellano'      => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_castellano']))),
+                        'tipo_documento_nombre_portugues'       => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_nombre_portugues']))),
+                        'tipo_documento_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_documento_numero']))),
+
+                        'tipo_pasaporte_codigo'                 => 213,
+                        'tipo_pasaporte_nombre_ingles'          => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_castellano'      => 'PASAPORTE',
+                        'tipo_pasaporte_nombre_portugues'       => 'PASAPORTE',
+                        'tipo_pasaporte_numero'                 => strtoupper(strtolower(trim($rowMSSQL['tipo_pasaporte_numero'])))
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'persona_codigo'                        => '',
+                        'persona_tipo'                          => '',
+                        'persona_nombre'                        => '',
+                        'persona_apellido'                      => '',
+                        'persona_completo'                      => '',
+                        'persona_genero'                        => '',
+                        'persona_fecha_nacimiento_1'            => '',
+                        'persona_fecha_nacimiento_2'            => '',
+                        'persona_funcion'                       => '',
+                        'persona_rol_1'                         => '',
+                        'persona_rol_2'                         => '',
+                        'persona_rol_3'                         => '',
+                        
+                        'tipo_documento_codigo'                 => '',
+                        'tipo_documento_nombre_ingles'          => '',
+                        'tipo_documento_nombre_castellano'      => '',
+                        'tipo_documento_nombre_portugues'       => '',
+                        'tipo_documento_numero'                 => '',
+
+                        'tipo_pasaporte_codigo'                 => '',
+                        'tipo_pasaporte_nombre_ingles'          => '',
+                        'tipo_pasaporte_nombre_castellano'      => '',
+                        'tipo_pasaporte_nombre_portugues'       => '',
+                        'tipo_pasaporte_numero'                 => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/400/acreditacion/competicion/{competicion}/oficial', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('competicion');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT
+                d.personFifaId                  AS          persona_codigo,
+                d.personType                    AS          persona_tipo,
+                d.internationalFirstName        AS          persona_nombre,
+                d.internationalLastName         AS          persona_apellido,
+                d.gender                        AS          persona_genero,
+                d.dateOfBirth                   AS          persona_fecha_nacimiento,
+                c.roleDescription               AS          persona_funcion,
+                c.role                          AS          persona_rol_1,
+                c.cometRoleName                 AS          persona_rol_2,
+                c.cometRoleNameKey              AS          persona_rol_3,
+                
+                e.DOMFICCOD                     AS          tipo_documento_codigo,
+                e.DOMFICNOI                     AS          tipo_documento_nombre_ingles,
+                e.DOMFICNOC                     AS          tipo_documento_nombre_castellano,
+                e.DOMFICNOP                     AS          tipo_documento_nombre_portugues,
+                d.documentNumber                AS          tipo_documento_numero,
+                d.passportNumber                AS          tipo_pasaporte_numero
+                
+                FROM comet.competitions a
+                INNER JOIN comet.matches b ON a.competitionFifaId = b.competitionFifaId
+                INNER JOIN comet.matches_officials c ON b.matchFifaId = c.matchFifaId
+                INNER JOIN comet.persons d ON c.personFifaId = d.personFifaId
+                LEFT OUTER JOIN adm.DOMFIC e ON d.documentType = e.DOMFICCOD
+
+                WHERE a.competitionFifaId = ? AND a.superiorCompetitionFifaId = ?
+
+                ORDER BY c.roleDescription";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01, $val01]);
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
                     if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
