@@ -14930,7 +14930,7 @@
                 INNER JOIN comet.persons d ON c.personFifaId = d.personFifaId
                 LEFT OUTER JOIN adm.DOMFIC e ON d.documentType = e.DOMFICCOD
 
-                WHERE a.competitionFifaId = ? AND a.superiorCompetitionFifaId = ?
+                WHERE a.competitionFifaId = ? OR a.superiorCompetitionFifaId = ?
 
                 ORDER BY c.roleDescription";
 
