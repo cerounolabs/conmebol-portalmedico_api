@@ -231,93 +231,6 @@
         return $json;
     });
 
-    $app->put('/v2/601/{codigo}', function($request) {
-        require __DIR__.'/../src/connect.php';
-        
-        $val00      = $request->getAttribute('codigo');
-        $val01      = $request->getParsedBody()['lesion_codigo'];
-        $val02      = $request->getParsedBody()['tipo_lesion_examen1_codigo'];
-        $val03      = $request->getParsedBody()['tipo_lesion_examen2_codigo'];
-        $val04      = $request->getParsedBody()['tipo_lesion_examen3_codigo'];
-        $val05      = $request->getParsedBody()['tipo_lesion_examen4_codigo'];
-        $val06      = $request->getParsedBody()['tipo_lesion_examen5_codigo'];
-        $val07      = $request->getParsedBody()['lesion_fecha_retorno'];
-        $val08      = $request->getParsedBody()['lesion_cirugia'];
-        $val09      = $request->getParsedBody()['tipo_diagnostico_retorno_codigo'];
-        $val10      = $request->getParsedBody()['diagnostico_retorno_observacion'];
-        $val11      = $request->getParsedBody()['tipo_estado_codigo'];
-        $val12      = $request->getParsedBody()['diagnostico_retorno_tratamiento'];
-
-        $aud01      = $request->getParsedBody()['auditoria_usuario'];
-        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
-        $aud03      = $request->getParsedBody()['auditoria_ip'];
-
-        if (isset($val00) && isset($val01)) {
-            $sql00  = "UPDATE [lesion].[LESFIC] SET LESFICESC = ?, LESFICEX1 = ?, LESFICEX2 = ?, LESFICEX3 = ?,  LESFICEX4 = ?, LESFICEX5 = ?, LESFICFER = ?, LESFICCIR = ?, LESFICDIR = ?, LESFICOBR = ?, LESFICTRR = ?, LESFICAUS = ?, LESFICAFH = GETDATE(), LESFICAIP = ? WHERE LESFICCOD = ?";
-
-            try {
-                $connMSSQL  = getConnectionMSSQLv2();
-                $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val11, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03, $val00]); 
-                
-                header("Content-Type: application/json; charset=utf-8");
-                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
-            } catch (PDOException $e) {
-                header("Content-Type: application/json; charset=utf-8");
-                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-            }
-        } else {
-            header("Content-Type: application/json; charset=utf-8");
-            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-        }
-
-        $connMSSQL  = null;
-        
-        return $json;
-    });
-
-    $app->put('/v2/602/{codigo}', function($request) {
-        require __DIR__.'/../src/connect.php';
-        
-        $val00      = $request->getAttribute('codigo');
-        $val01      = $request->getParsedBody()['lesion_codigo'];
-        $val02      = $request->getParsedBody()['tipo_estado_codigo'];
-        $val03      = $request->getParsedBody()['lesion_observacion'];
-
-        $aud01      = $request->getParsedBody()['auditoria_usuario'];
-        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
-        $aud03      = $request->getParsedBody()['auditoria_ip'];
-
-        if (isset($val00) && isset($val01)) {
-            $sql00  = "UPDATE [lesion].[LESFIC] SET LESFICESC = ?, LESFICOBS = ?, LESFICAUS = ?, LESFICAFH = GETDATE(), LESFICAIP = ? WHERE LESFICCOD = ?";
-
-            try {
-                $connMSSQL  = getConnectionMSSQLv2();
-                $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val02, $val03, $aud01, $aud03, $val00]); 
-                
-                header("Content-Type: application/json; charset=utf-8");
-                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-
-                $stmtMSSQL->closeCursor();
-                $stmtMSSQL = null;
-            } catch (PDOException $e) {
-                header("Content-Type: application/json; charset=utf-8");
-                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-            }
-        } else {
-            header("Content-Type: application/json; charset=utf-8");
-            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-        }
-
-        $connMSSQL  = null;
-        
-        return $json;
-    });
-
     $app->put('/v2/801/examen/prueba/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
         
@@ -501,6 +414,116 @@
         
         return $json;
     });
+
+/*MODULO LESION*/
+    $app->put('/v2/600/lesion/retorno/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val00      = $request->getAttribute('codigo');
+        $val01      = $request->getParsedBody()['lesion_codigo'];
+        $val02      = $request->getParsedBody()['tipo_lesion_examen1_codigo'];
+        $val03      = $request->getParsedBody()['tipo_lesion_examen2_codigo'];
+        $val04      = $request->getParsedBody()['tipo_lesion_examen3_codigo'];
+        $val05      = $request->getParsedBody()['tipo_lesion_examen4_codigo'];
+        $val06      = $request->getParsedBody()['tipo_lesion_examen5_codigo'];
+        $val07      = $request->getParsedBody()['lesion_fecha_retorno'];
+        $val08      = $request->getParsedBody()['lesion_cirugia'];
+        $val09      = $request->getParsedBody()['tipo_diagnostico_retorno_codigo'];
+        $val10      = $request->getParsedBody()['diagnostico_retorno_observacion'];
+        $val11      = $request->getParsedBody()['tipo_estado_codigo'];
+        $val12      = $request->getParsedBody()['diagnostico_retorno_tratamiento'];
+
+        $aud01      = $request->getParsedBody()['auditoria_usuario'];
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = $request->getParsedBody()['auditoria_ip'];
+
+        if (isset($val00) && isset($val01)) {
+            $sql00  = "UPDATE [lesion].[LESFIC] SET 
+                LESFICESC = ?,
+                LESFICEX1 = ?,
+                LESFICEX2 = ?,
+                LESFICEX3 = ?,
+                LESFICEX4 = ?,
+                LESFICEX5 = ?,
+                LESFICFER = ?,
+                LESFICCIR = ?,
+                LESFICDIR = ?,
+                LESFICOBR = ?,
+                LESFICTRR = ?,
+                LESFICAUS = ?,
+                LESFICAFH = GETDATE(),
+                LESFICAIP = ?
+                WHERE LESFICCOD = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val11, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03, $val00]); 
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->put('/v2/600/lesion/estado/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val00      = $request->getAttribute('codigo');
+        $val01      = $request->getParsedBody()['lesion_codigo'];
+        $val02      = $request->getParsedBody()['tipo_estado_codigo'];
+        $val03      = $request->getParsedBody()['lesion_observacion'];
+
+        $aud01      = $request->getParsedBody()['auditoria_usuario'];
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = $request->getParsedBody()['auditoria_ip'];
+
+        if (isset($val00) && isset($val01)) {
+            $sql00  = "UPDATE [lesion].[LESFIC] SET
+                LESFICESC = ?,
+                LESFICOBS = ?,
+                LESFICAUS = ?,
+                LESFICAFH = GETDATE(),
+                LESFICAIP = ?
+                WHERE LESFICCOD = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val02, $val03, $aud01, $aud03, $val00]); 
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+/*MODULO LESION*/
 
 /*MODULO NOTIFICACION*/
     $app->put('/v2/802/notificacion/{codigo}', function($request) {
