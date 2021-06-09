@@ -396,11 +396,7 @@
         
         return $json;
     });
-
     
-
-    
-
     $app->post('/v1/800/covid19/prueba', function($request) {
         require __DIR__.'/../src/connect.php';
 

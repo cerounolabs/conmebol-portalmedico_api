@@ -502,7 +502,6 @@
         return $json;
 });
 
-
 /*MODULO NOTIFICACION*/
     $app->put('/v1/802/notificacion/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
