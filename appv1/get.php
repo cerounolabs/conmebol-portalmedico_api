@@ -11698,7 +11698,7 @@
         if (isset($val01) && isset($val02) && isset($val03)) {
             $sql00  = "";
 
-            if ($val01 == 39393) {
+            if ($val03 == 39393) {
                 $sql00  = "SELECT
                     a.LESFICCOD                 AS          lesion_codigo,
                     a.LESFICFEC                 AS          lesion_fecha_alta,
