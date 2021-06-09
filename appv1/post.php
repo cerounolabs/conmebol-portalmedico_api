@@ -229,26 +229,28 @@
 
         $val01      = $request->getParsedBody()['tipo_estado_codigo'];
         $val02      = $request->getParsedBody()['tipo_orden'];
-        $val03      = $request->getParsedBody()['tipo_nombre_ingles'];
-        $val04      = $request->getParsedBody()['tipo_nombre_castellano'];
-        $val05      = $request->getParsedBody()['tipo_nombre_portugues'];
-        $val06      = $request->getParsedBody()['tipo_path'];
-        $val07      = $request->getParsedBody()['tipo_dominio'];
-        $val08      = $request->getParsedBody()['tipo_observacion'];
-        $val09      = $request->getParsedBody()['tipo_usuario'];
-        $val10      = $request->getParsedBody()['tipo_fecha_hora'];
-        $val11      = $request->getParsedBody()['tipo_ip'];
+        $val03      = $request->getParsedBody()['tipo_parametro'];
+        $val04      = $request->getParsedBody()['tipo_nombre_ingles'];
+        $val05      = $request->getParsedBody()['tipo_nombre_castellano'];
+        $val06      = $request->getParsedBody()['tipo_nombre_portugues'];
+        $val07      = $request->getParsedBody()['tipo_path'];
+        $val08      = $request->getParsedBody()['tipo_dominio'];
+        $val09      = $request->getParsedBody()['tipo_observacion'];
 
-        if (isset($val01) && isset($val03) && isset($val04) && isset($val05) && isset($val07) && isset($val09) && isset($val10) && isset($val11)) {
-            $sql00  = "INSERT INTO [adm].[DOMFIC] (DOMFICEST, DOMFICORD, DOMFICNOI, DOMFICNOC, DOMFICNOP, DOMFICPAT, DOMFICVAL, DOMFICOBS, DOMFICAUS, DOMFICAFH, DOMFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+        $aud01      = $request->getParsedBody()['auditoria_usuario'];
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = $request->getParsedBody()['auditoria_ip'];
+
+        if (isset($val01) && isset($val04) && isset($val05) && isset($val06) && isset($val08) && isset($aud01) && isset($aud02) && isset($aud03)) {
+            $sql00  = "INSERT INTO [adm].[DOMFIC] (DOMFICEST, DOMFICORD, DOMFICPAR, DOMFICNOI, DOMFICNOC, DOMFICNOP, DOMFICPAT, DOMFICVAL, DOMFICOBS, DOMFICAUS, DOMFICAFH, DOMFICAIP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val11]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $aud01, $aud03]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
-                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $connMSSQL->lastInsertId()), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => 0), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
 
                 $stmtMSSQL->closeCursor();
                 $stmtMSSQL = null;

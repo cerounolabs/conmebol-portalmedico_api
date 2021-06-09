@@ -5,17 +5,19 @@
         $val00      = $request->getAttribute('codigo');
         $val01      = $request->getParsedBody()['tipo_estado_codigo'];
         $val02      = $request->getParsedBody()['tipo_orden'];
-        $val03      = $request->getParsedBody()['tipo_nombre_ingles'];
-        $val04      = $request->getParsedBody()['tipo_nombre_castellano'];
-        $val05      = $request->getParsedBody()['tipo_nombre_portugues'];
-        $val06      = $request->getParsedBody()['tipo_path'];
-        $val07      = $request->getParsedBody()['tipo_dominio'];
-        $val08      = $request->getParsedBody()['tipo_observacion'];
-        $val09      = $request->getParsedBody()['tipo_usuario'];
-        $val10      = $request->getParsedBody()['tipo_fecha_hora'];
-        $val11      = $request->getParsedBody()['tipo_ip'];
+        $val03      = $request->getParsedBody()['tipo_parametro'];
+        $val04      = $request->getParsedBody()['tipo_nombre_ingles'];
+        $val05      = $request->getParsedBody()['tipo_nombre_castellano'];
+        $val06      = $request->getParsedBody()['tipo_nombre_portugues'];
+        $val07      = $request->getParsedBody()['tipo_path'];
+        $val08      = $request->getParsedBody()['tipo_dominio'];
+        $val09      = $request->getParsedBody()['tipo_observacion'];
 
-        if (isset($val00)) {
+        $aud01      = $request->getParsedBody()['auditoria_usuario'];
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = $request->getParsedBody()['auditoria_ip'];
+
+        if (isset($val00) && isset($val01) && isset($val04) && isset($val05) && isset($val06) && isset($val08) && isset($aud01) && isset($aud02) && isset($aud03)) {
             $sql00  = "DELETE FROM [adm].[DOMFIC] WHERE DOMFICCOD = ?";
 
             try {
