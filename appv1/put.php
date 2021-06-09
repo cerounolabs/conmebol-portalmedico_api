@@ -19,24 +19,24 @@
 
         if (isset($val00) && isset($val01) && isset($val04) && isset($val05) && isset($val06) && isset($val08) && isset($aud01) && isset($aud02) && isset($aud03)) {
             $sql00  = "UPDATE [adm].[DOMFIC] SET 
-                DOMFICEST = ?, 
+                DOMFICEST = ?,
                 DOMFICORD = ?,
-                DOMFICPAR = ?, 
-                DOMFICNOI = ?, 
-                DOMFICNOC = ?, 
-                DOMFICNOP = ?, 
-                DOMFICPAT = ?, 
-                DOMFICOBS = ?, 
-                DOMFICAUS = ?, 
-                DOMFICAFH = GETDATE(), 
-                DOMFICAIP = ? 
+                DOMFICPAR = ?,
+                DOMFICNOI = ?,
+                DOMFICNOC = ?,
+                DOMFICNOP = ?,
+                DOMFICPAT = ?,
+                DOMFICOBS = ?,
+                DOMFICAUS = ?,
+                DOMFICAFH = GETDATE(),
+                DOMFICAIP = ?
                 
                 WHERE DOMFICCOD = ?";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv1();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val09, $aud01, $aud03]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val09, $aud01, $aud03, $val00]); 
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
