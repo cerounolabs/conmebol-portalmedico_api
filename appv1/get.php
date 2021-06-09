@@ -11699,6 +11699,7 @@
             $sql00  = "";
 
             if ($val03 == 39393) {
+                $val03  = $val01;
                 $sql00  = "SELECT
                     a.LESFICCOD                 AS          lesion_codigo,
                     a.LESFICFEC                 AS          lesion_fecha_alta,
