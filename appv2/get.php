@@ -16532,7 +16532,7 @@
         $sql00  = "SELECT 
             a.VACVCACOD                     AS          vacuna_cabecera_codigo, 
             a.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
-            a.VACVCAPOS                     AS          vacuna_cabecera_positivo, 
+            a.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
             a.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
             a.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
             a.VACVCAOBS                     AS          vacuna_cabecera_obervacion, 
@@ -16613,7 +16613,7 @@
 
                         'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
                         'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
-                        'vacuna_cabecera_positivo'          =>  trim($rowMSSQL['vacuna_cabecera_positivo']),  
+                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
                         'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
                         'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
                         'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
@@ -16673,7 +16673,7 @@
                     $detalle = array(
                         'vacuna_cabecera_codigo'            =>  '',    
                         'vacuna_cabecera_encuentro_codigo'  =>  '',      	
-                        'vacuna_cabecera_positivo'          =>  '',    
+                        'vacuna_cabecera_adquirio_covid'          =>  '',    
                         'vacuna_cabecera_fecha_1'           =>  '', 
                         'vacuna_cabecera_fecha_2'           =>  '', 	
                         'vacuna_cabecera_dosis_aplicada'    =>  '',  
@@ -16749,7 +16749,7 @@
             $sql00  = "SELECT 
                 a.VACVCACOD                     AS          vacuna_cabecera_codigo, 
                 a.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
-                a.VACVCAPOS                     AS          vacuna_cabecera_positivo, 
+                a.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
                 a.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
                 a.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
                 a.VACVCAOBS                     AS          vacuna_cabecera_obervacion, 
@@ -16832,7 +16832,7 @@
 
                         'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
                         'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
-                        'vacuna_cabecera_positivo'          =>  trim($rowMSSQL['vacuna_cabecera_positivo']),  
+                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
                         'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
                         'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
                         'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
@@ -16892,7 +16892,7 @@
                     $detalle = array(
                         'vacuna_cabecera_codigo'            =>  '',    
                         'vacuna_cabecera_encuentro_codigo'  =>  '',      	
-                        'vacuna_cabecera_positivo'          =>  '',    
+                        'vacuna_cabecera_adquirio_covid'          =>  '',    
                         'vacuna_cabecera_fecha_1'           =>  '', 
                         'vacuna_cabecera_fecha_2'           =>  '', 	
                         'vacuna_cabecera_dosis_aplicada'    =>  '',  
@@ -17016,7 +17016,7 @@
             
             f.VACVCACOD                     AS          vacuna_cabecera_codigo, 
             f.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
-            f.VACVCAPOS                     AS          vacuna_cabecera_positivo, 
+            f.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
             f.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
             f.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
             f.VACVCAOBS                     AS          vacuna_cabecera_obervacion 
@@ -17089,7 +17089,7 @@
                         
                         'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
                         'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
-                        'vacuna_cabecera_positivo'          =>  trim($rowMSSQL['vacuna_cabecera_positivo']),  
+                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
                         'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
                         'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
                         'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
@@ -17156,7 +17156,7 @@
                         
                         'vacuna_cabecera_codigo'            =>  '',
                         'vacuna_cabecera_encuentro_codigo'  =>  '',    	
-                        'vacuna_cabecera_positivo'          =>  '',  
+                        'vacuna_cabecera_adquirio_covid'          =>  '',  
                         'vacuna_cabecera_fecha_1'           =>  '',
                         'vacuna_cabecera_fecha_2'           =>  '',	
                         'vacuna_cabecera_dosis_aplicada'    =>  '',
@@ -17238,7 +17238,7 @@
                 
                 f.VACVCACOD                     AS          vacuna_cabecera_codigo, 
                 f.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
-                f.VACVCAPOS                     AS          vacuna_cabecera_positivo, 
+                f.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
                 f.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
                 f.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
                 f.VACVCAOBS                     AS          vacuna_cabecera_obervacion 
@@ -17311,7 +17311,7 @@
                         
                         'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
                         'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
-                        'vacuna_cabecera_positivo'          =>  trim($rowMSSQL['vacuna_cabecera_positivo']),  
+                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
                         'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
                         'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
                         'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
@@ -17378,7 +17378,7 @@
                         
                         'vacuna_cabecera_codigo'            =>  '',
                         'vacuna_cabecera_encuentro_codigo'  =>  '',    	
-                        'vacuna_cabecera_positivo'          =>  '',  
+                        'vacuna_cabecera_adquirio_covid'          =>  '',  
                         'vacuna_cabecera_fecha_1'           =>  '',
                         'vacuna_cabecera_fecha_2'           =>  '',	
                         'vacuna_cabecera_dosis_aplicada'    =>  '',

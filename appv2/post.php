@@ -1074,3 +1074,153 @@
     });
 
 /*MODULO VACUNACION*/
+$app->post('/v2/803/vacuna', function($request) {
+    require __DIR__.'/../src/connect.php';
+
+    $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+    $val02      = $request->getParsedBody()['localidad_pais_codigo'];
+    $val03      = $request->getParsedBody()['vacuna_orden'];
+    $val04      = trim($request->getParsedBody()['vacuna_nombre']);
+    $val05      = $request->getParsedBody()['vacuna_cantidad_dosis'];
+    $val06      = trim($request->getParsedBody()['vacuna_observacion']);
+    $val07      = trim($request->getParsedBody()['vacuna_alta_usuario']);
+    $val08      = $request->getParsedBody()['vacuna_alta_fecha_hora'];
+    $val09      = trim($request->getParsedBody()['vacuna_alta_ip']);     
+
+    $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+    $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+    $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+    if (isset($val01) && isset($val02)  && isset($val04) && isset($val05)) {
+        $sql00  = "INSERT INTO [vac].[VACFIC](                                                       VACFICEST, VACFICPAC, VACFICORD, VACFICNOM, VACFICDOS, VACFICOBS, VACFICCUS, VACFICCFH, VACFICCIP, VACFICAUS, VACFICAFH, VACFICAIP) 
+                       VALUES((SELECT DOMFIC adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?),         ?,         ?,        ?,          ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(), ?)";
+               
+        $sql01  = "SELECT MAX(VACFICCOD) AS vacuna_codigo FROM [vac].[VACFIC]";
+        
+        try {
+            $connMSSQL      =   getConnectionMSSQLv2();
+            $stmtMSSQL      =   $connMSSQL->prepare($sql00);
+            $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val09, $aud01, $aud03]); 
+
+            $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
+            $stmtMSSQL01->execute();
+            
+            $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+            $codigo         =   $row_mssql01['vacuna_codigo'];
+
+            header("Content-Type: application/json; charset=utf-8");
+            $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL01->closeCursor();
+            
+            $stmtMSSQL  = null;
+            $stmtMSSQL01= null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+    } else {
+        header("Content-Type: application/json; charset=utf-8");
+        $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    }
+
+    $connMSSQL  = null;
+    
+    return $json;
+});
+
+$app->post('/v2/803/vacunacabecera', function($request) {
+    require __DIR__.'/../src/connect.php';
+
+    $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+    $val02      = $request->getParsedBody()['competicion_codigo'];
+    $val03      = $request->getParsedBody()['equipo_codigo'];
+    $val04      = $request->getParsedBody()['persona_codigo'];
+    $val05      = $request->getParsedBody()['vacuna_codigo'];
+    $val06      = $request->getParsedBody()['vacuna_cabecera_encuentro_codigo'];
+    $val07      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_adquirio_covid'])));
+    $val08      = $request->getParsedBody()['vacuna_cabecera_fecha'];
+    $val09      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_dosis_aplicada'])));
+    $val10      = trim($request->getParsedBody()['vacuna_cabecera_obervacion']);
+    $val11      = trim($request->getParsedBody()['vacuna_cabecera_alta_usuario']);
+    $val12      = $request->getParsedBody()['vacuna_cabecera_alta_fecha_hora'];
+    $val13      = trim($request->getParsedBody()['vacuna_cabecera_alta_ip']);     
+
+    $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+    $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+    $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+    if ($val07 == '' || $val07 != 'SI') {
+        $val07 = 'NO';
+    }
+
+    if ($val09 == '' || $val09 != 'SI') {
+        $val09 = 'NO';
+    }
+
+    if (isset($val01) && isset($val02)  && isset($val03) && isset($val04) && isset($val05) && isset($val06) && isset($val07) && isset($val09)) {
+        
+        $sql00  = "SELECT 
+            VACFICCOD             AS          vacuna_codigo, 
+            VACFICORD             AS          vacuna_orden, 
+            VACFICNOM             AS          vacuna_nombre, 
+            VACFICDOS             AS          vacuna_cantidad_dosis, 
+            VACFICOBS             AS          vacuna_observacion
+            
+            FROM [vac].[VACFIC] 
+            WHERE VACFICCOD = ?";
+        
+        $sql01  = "INSERT INTO [vac].[VACVCA](                                                      VACVCAEST, VACVCACOC, VACVCAENC, VACVCAEQC, VACVCAPEC, VACVCAVAC, VACVCAPOS, VACVCAFEC, VACVCADAP, VACVCAOBS, VACVCACUS, VACVCACFH, VACVCACIP, VACVCAAUS, VACVCAAFH, VACVCAAIP) 
+        VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR =  ?),         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(),         ?)";
+
+        $sql02  = "INSERT INTO [vac].[VACVDE](                                                     VACVDEEST,                                                                                    VACVDETDC, VACVDECIC, VACVDECAC, VACVDEORD,                                                VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
+        VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ? ), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ? ),         ?,          ?,  (SELECT   
+                                                                                                                                                                                                                                            CASE   
+                                                                                                                                                                                                                                                WHEN MAX(VACVDEORD) IS NULL THEN 1   
+                                                                                                                                                                                                                                                WHEN MAX(VACVDEORD) >= 0 THEN  MAX(VACVDEORD)+1   
+                                                                                                                                                                                                                                            END 
+                                                                                                                                                                                                                                     FROM [vac].[VACVDE] WHERE VACVDECAC = ?),                      ?,  GETDATE(),        ?,         ?, GETDATE(),      ?)";
+               
+        $sql03  = "SELECT MAX(VACVCACOD) AS vacuna_codigo FROM [vac].[VACVCA]";
+        
+        try {
+            $connMSSQL      =   getConnectionMSSQLv2();
+            $stmtMSSQL      =   $connMSSQL->prepare($sql00);
+            $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
+            $stmtMSSQL02    =   $connMSSQL->prepare($sql02);
+            $stmtMSSQL03    =   $connMSSQL->prepare($sql03);
+
+            $stmtMSSQL->execute([$val05]); 
+            $stmtMSSQL01->execute([]);
+
+            while ($rowMSSQL    = $stmtMSSQL->fetch()) {//recorre ANIFIC
+                    $cantDosis  =  $rowMSSQL['vacuna_cantidad_dosis']; 
+
+                    $stmtMSSQL02->execute([]);
+            }
+            
+            $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+            $codigo         =   $row_mssql01['vacuna_cabecera_codigo'];
+
+            header("Content-Type: application/json; charset=utf-8");
+            $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL01->closeCursor();
+            
+            $stmtMSSQL  = null;
+            $stmtMSSQL01= null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+    } else {
+        header("Content-Type: application/json; charset=utf-8");
+        $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    }
+
+    $connMSSQL  = null;
+    
+    return $json;
+});
