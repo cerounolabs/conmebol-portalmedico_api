@@ -268,6 +268,128 @@
         return $json;
     });
 
+    $app->post('/v2/000/localidadpais', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_orden'];
+        $val03      = trim($request->getParsedBody()['localidad_pais_nombre']);
+        $val04      = trim($request->getParsedBody()['localidad_pais_path']);
+        $val05      = trim($request->getParsedBody()['localidad_pais_iso_char2']);
+        $val06      = trim($request->getParsedBody()['localidad_pais_iso_char3']);
+        $val07      = trim($request->getParsedBody()['localidad_pais_iso_num3']);
+        $val08      = trim($request->getParsedBody()['localidad_pais_observacion']);
+        $val09      = trim($request->getParsedBody()['localidad_pais_alta_usuario']);
+        $val10      = $request->getParsedBody()['localidad_pais_alta_fecha_hora'];
+        $val11      = trim($request->getParsedBody()['localidad_pais_alta_ip']);
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if ($val02  == 0 && $val02 == null){
+            $val02  = 999;
+        }
+
+        if (isset($val01) && isset($val03)) {
+            $sql00  = "INSERT INTO [adm].[LOCPAI] (                                                       LOCPAIEST,  LOCPAIORD, LOCPAINOM, LOCPAIPAT, LOCPAIIC2, LOCPAIIC3, LOCPAIIN3, LOCPAIOBS, LOCPAICUS, LOCPAICFH, LOCPAICIP, LOCPAIAUS, LOCPAIAFH, LOCPAIAIP) 
+            VALUES ((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADPAISESTADO' AND DOMFICPAR = ?),          ?,         ?,         ?,         ?,        ?,         ?,          ?,         ?,  GETDATE(),        ?,         ?, GETDATE(),         ?)";
+
+            $sql01  = "SELECT MAX(LOCPAICOD) AS localidad_pais_codigo FROM [adm].[LOCPAI]";
+
+            try {
+                $connMSSQL      = getConnectionMSSQLv2();
+                $stmtMSSQL      = $connMSSQL->prepare($sql00);
+                $stmtMSSQL01    = $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $aud01, $aud03]); 
+                $stmtMSSQL01->execute();
+
+                $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+                $codigo         =   $row_mssql01['localidad_pais_codigo'];
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL      = null;
+                $stmtMSSQL01    = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->post('/v2/000/localidadciudad', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_codigo'];
+        $val03      = $request->getParsedBody()['localidad_ciudad_orden'];
+        $val04      = $request->getParsedBody()['localidad_ciudad_parametro'];
+        $val05      = trim($request->getParsedBody()['localidad_ciudad_nombre']);
+        $val06      = trim($request->getParsedBody()['localidad_ciudad_observacion']);
+        $val07      = trim($request->getParsedBody()['localidad_ciudad_alta_usuario']);
+        $val08      = $request->getParsedBody()['localidad_ciudad_alta_fecha_hora'];
+        $val09      = trim($request->getParsedBody()['localidad_ciudad_alta_ip']);
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if ($val02  == 0 && $val02 == null){
+            $val02  = 999;
+        }
+
+        if (isset($val01) && isset($val03)) {
+            $sql00  = "INSERT INTO [adm].[LOCCIU](                                                         LOCCIUEST, LOCCIUPAC,  LOCCIUORD  LOCCIUPAR, LOCCIUNOM, LOCCIUOBS, LOCCIUCUS, LOCCIUCFH, LOCCIUCIP, LOCCIUAUS, LOCCIUAFH, LOCCIUAIP) 
+            VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADCIUDADESTADO' AND DOMFICPAR = ?),         ?,          ?,         ?,         ?,         ?,         ?,  GETDATE(),       ?,          ?, GETDATE(),        ?)";
+
+            $sql01  = "SELECT MAX(LOCCIUCOD) AS localidad_ciudad_codigo FROM [adm].[LOCCIU]";
+
+            try {
+                $connMSSQL      = getConnectionMSSQLv2();
+                $stmtMSSQL      = $connMSSQL->prepare($sql00);
+                $stmtMSSQL01    = $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $aud01, $aud03]); 
+                $stmtMSSQL01->execute();
+
+                $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+                $codigo         =   $row_mssql01['localidad_ciudad_codigo'];
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL      = null;
+                $stmtMSSQL01    = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->post('/v2/100', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -1091,9 +1213,13 @@ $app->post('/v2/803/vacuna', function($request) {
     $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
     $aud03      = trim($request->getParsedBody()['auditoria_ip']);
 
+    if($val03    == 0 || $val03  == null){
+        $val03   = 999;
+    }
+
     if (isset($val01) && isset($val02)  && isset($val04) && isset($val05)) {
         $sql00  = "INSERT INTO [vac].[VACFIC](                                                       VACFICEST, VACFICPAC, VACFICORD, VACFICNOM, VACFICDOS, VACFICOBS, VACFICCUS, VACFICCFH, VACFICCIP, VACFICAUS, VACFICAFH, VACFICAIP) 
-                       VALUES((SELECT DOMFIC adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?),         ?,         ?,        ?,          ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(), ?)";
+                       VALUES((SELECT DOMFICCOD adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?),         ?,         ?,        ?,          ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(), ?)";
                
         $sql01  = "SELECT MAX(VACFICCOD) AS vacuna_codigo FROM [vac].[VACFIC]";
         
@@ -1142,7 +1268,7 @@ $app->post('/v2/803/vacunacabecera', function($request) {
     $val07      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_adquirio_covid'])));
     $val08      = $request->getParsedBody()['vacuna_cabecera_fecha'];
     $val09      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_dosis_aplicada'])));
-    $val10      = trim($request->getParsedBody()['vacuna_cabecera_obervacion']);
+    $val10      = trim($request->getParsedBody()['vacuna_cabecera_observacion']);
     $val11      = trim($request->getParsedBody()['vacuna_cabecera_alta_usuario']);
     $val12      = $request->getParsedBody()['vacuna_cabecera_alta_fecha_hora'];
     $val13      = trim($request->getParsedBody()['vacuna_cabecera_alta_ip']);     
@@ -1174,14 +1300,10 @@ $app->post('/v2/803/vacunacabecera', function($request) {
         $sql01  = "INSERT INTO [vac].[VACVCA](                                                      VACVCAEST, VACVCACOC, VACVCAENC, VACVCAEQC, VACVCAPEC, VACVCAVAC, VACVCAPOS, VACVCAFEC, VACVCADAP, VACVCAOBS, VACVCACUS, VACVCACFH, VACVCACIP, VACVCAAUS, VACVCAAFH, VACVCAAIP) 
         VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR =  ?),         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(),         ?)";
 
-        $sql02  = "INSERT INTO [vac].[VACVDE](                                                     VACVDEEST,                                                                                    VACVDETDC, VACVDECIC, VACVDECAC, VACVDEORD,                                                VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
-        VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ? ), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ? ),         ?,          ?,  (SELECT   
-                                                                                                                                                                                                                                            CASE   
-                                                                                                                                                                                                                                                WHEN MAX(VACVDEORD) IS NULL THEN 1   
-                                                                                                                                                                                                                                                WHEN MAX(VACVDEORD) >= 0 THEN  MAX(VACVDEORD)+1   
-                                                                                                                                                                                                                                            END 
-                                                                                                                                                                                                                                     FROM [vac].[VACVDE] WHERE VACVDECAC = ?),                      ?,  GETDATE(),        ?,         ?, GETDATE(),      ?)";
-               
+                                                                                                        
+        $sql02  = "INSERT INTO [vac].[VACVDE](                                                     VACVDEEST,                                                                                    VACVDETDC,                                               VACVDECIC, VACVDECAC, VACVDEORD,  VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
+        VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ? ), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ? ), (SELECT LOCCIUCOD FROM adm.LOCCIU WHERE LOCCIUPAR = 0),          ?,        ?,      ''    ,         ?,  GETDATE(),        ?,         ?, GETDATE(),      ?)";
+                                         
         $sql03  = "SELECT MAX(VACVCACOD) AS vacuna_codigo FROM [vac].[VACVCA]";
         
         try {
@@ -1191,26 +1313,115 @@ $app->post('/v2/803/vacunacabecera', function($request) {
             $stmtMSSQL02    =   $connMSSQL->prepare($sql02);
             $stmtMSSQL03    =   $connMSSQL->prepare($sql03);
 
-            $stmtMSSQL->execute([$val05]); 
-            $stmtMSSQL01->execute([]);
+            $stmtMSSQL->execute([$val05]);
+            $row_mssql00    =   $stmtMSSQL->fetch(PDO::FETCH_ASSOC);
+            $VACFICDOS      =   $row_mssql00['vacuna_cantidad_dosis'] + 1;
 
-            while ($rowMSSQL    = $stmtMSSQL->fetch()) {//recorre ANIFIC
-                    $cantDosis  =  $rowMSSQL['vacuna_cantidad_dosis']; 
-
-                    $stmtMSSQL02->execute([]);
-            }
-            
+            $stmtMSSQL01->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $val11, $val12, $val13]);
             $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
             $codigo         =   $row_mssql01['vacuna_cabecera_codigo'];
+
+            for ($i=0; $i < $VACFICDOS; $i++) { 
+                $stmtMSSQL02->execute([$val01, ($i+1), $val05, ($i+1), $val11, $val13, $aud01, $aud03]);
+            }
+            
+            header("Content-Type: application/json; charset=utf-8");
+            $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL01->closeCursor();
+            $stmtMSSQL02->closeCursor();
+            $stmtMSSQL03->closeCursor();
+            
+            $stmtMSSQL  = null;
+            $stmtMSSQL01= null;
+            $stmtMSSQL02= null;
+            $stmtMSSQL03= null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+    } else {
+        header("Content-Type: application/json; charset=utf-8");
+        $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    }
+
+    $connMSSQL  = null;
+    
+    return $json;
+});
+
+$app->post('/v2/803/vacunadetalle', function($request) {
+    require __DIR__.'/../src/connect.php';
+
+    $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+    $val02      = $request->getParsedBody()['tipo_dosis_parametro'];
+    $val03      = $request->getParsedBody()['localidad_ciudad_codigo'];
+    $val04      = $request->getParsedBody()['vacuna_cabecera_codigo'];
+    $val05      = $request->getParsedBody()['vacuna_detalle_orden'];
+    $val06      = trim($request->getParsedBody()['vacuna_detalle_nombre']);
+    $val07      = trim($request->getParsedBody()['vacuna_detalle_lugar']);
+    $val08      = trim($request->getParsedBody()['vacuna_detalle_adjunto']);
+    $val09      = trim($request->getParsedBody()['vacuna_detalle_observacion']);
+    $val10      = trim($request->getParsedBody()['vacuna_detalle_alta_usuario']);
+    $val11      = $request->getParsedBody()['vacuna_detalle_alta_fecha_hora'];
+    $val12      = trim($request->getParsedBody()['vacuna_detalle_alta_ip']);     
+
+    $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+    $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+    $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+    if($val05    == 0 || $val05  == null){
+        $val05   = 999;
+    }
+
+    if (isset($val01) && isset($val02)  && isset($val03) && isset($val04)) {
+
+        $sql00  = "SELECT VACVCAVAC AS vacuna_codigo FROM [vac].[VACVCA] WHERE VACVCACOD = ?";
+
+        $sql01  = "SELECT VACFICDOS AS vacuna_cantidad_dosis FROM [vac].[VACFIC] WHERE VACFICCOD = ?";
+
+        $sql02  = "INSERT INTO [vac].[VACVDE](                                                    VACVDEEST,                                                                                   VACVDETDC, VACVDECIC, VACVDECAC, VACVDEORD,  VACVDENOM, VACVDELUG, VACVDEADJ, VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
+        SELECT (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?),         ?,         ?,         ?,          ?,         ?,         ?,         ?,          ?, GETDATE(),        ?,         ?, GETDATE(),        ?
+        WHERE NOT EXISTS (SELECT *FROM [vac].[VACVDE] WHERE VACVDETDC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?) AND VACVDECAC = ?)";                                                                            
+
+        $sql03  = "SELECT MAX(VACVDECOD) AS vacuna_codigo FROM [vac].[VACVDE]";
+
+        
+        try {
+            $connMSSQL      =   getConnectionMSSQLv2();
+            $stmtMSSQL      =   $connMSSQL->prepare($sql00);
+            $row_mssql      =   $stmtMSSQL->fetch(PDO::FETCH_ASSOC);
+            $VACVCAVAC      =   $row_mssql['vacuna_codigo'];
+            $stmtMSSQL->execute([$val04]);
+            //$stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03]); 
+
+            $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
+            $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+            $VACFICDOS      =   $row_mssql01['vacuna_cantidad_dosis']+1;
+            $stmtMSSQL01->execute([$VACVCAVAC]);
+
+            $stmtMSSQL03    =   $connMSSQL->prepare($sql03);
+            $stmtMSSQL03->execute();
+            $row_mssql03    =   $stmtMSSQL03->fetch(PDO::FETCH_ASSOC);
+            $codigo         =   $row_mssql03['vacuna_detalle_codigo'];
+
+            for ($i=0; $i < $VACFICDOS; $i++) { 
+                $stmtMSSQL02->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $val02, $val04, $aud01, $aud03]);
+            }
 
             header("Content-Type: application/json; charset=utf-8");
             $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
 
             $stmtMSSQL->closeCursor();
             $stmtMSSQL01->closeCursor();
+            $stmtMSSQL02->closeCursor();
+            $stmtMSSQL03->closeCursor();
             
             $stmtMSSQL  = null;
             $stmtMSSQL01= null;
+            $stmtMSSQL02= null;
+            $stmtMSSQL03= null;
         } catch (PDOException $e) {
             header("Content-Type: application/json; charset=utf-8");
             $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
