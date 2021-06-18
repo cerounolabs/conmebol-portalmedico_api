@@ -863,7 +863,7 @@
     });
 
 /*MODULO VACUNACION*/
-    /*$app->put('/v2/700/vacuna/{codigo}', function($request) {
+    $app->put('/v2/700/vacuna/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $val00      = $request->getAttribute('codigo'); 
@@ -876,7 +876,7 @@
         $val06      = trim($request->getParsedBody()['vacuna_observacion']);
         $val07      = trim($request->getParsedBody()['vacuna_alta_usuario']);
         $val08      = $request->getParsedBody()['vacuna_alta_fecha_hora'];
-        $val09      = trim($request->getParsedBody()['vacuna_alta_ip']);     
+        $val09      = trim($request->getParsedBody()['vacuna_alta_ip']);    
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -887,7 +887,17 @@
 
             switch ($val00_1) {
                 case 1:
-                    $sql00  = "UPDATE [vac].[VACFIC] SET VACFICEST = (SELECT DOMFICCOD adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?), VACFICPAC = ?, VACFICORD = ?, VACFICNOM = ?, VACFICDOS = ?, VACFICOBS = ?, VACFICAUS = ?, VACFICAFH = GETDATE(), VACFICAIP = ? WHERE VACFICCOD = ?' AND DOMFICPAR = ?), NOTMENORD = ?, NOTMENENC = ?, NOTMENMEC = ?, NOTMENNOC = ?, NOTEQUEQC = ?, NOTMENMEN = ?, NOTMENOBS = ?, NOTMENAUS = ?, NOTMENAFH = GETDATE(), NOTMENAIP = ? WHERE NOTMENCOD = ?";
+                    $sql00  = "UPDATE [vac].[VACFIC] SET 
+                    VACFICEST = (SELECT DOMFICCOD adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?), 
+                    VACFICPAC = ?, 
+                    VACFICORD = ?, 
+                    VACFICNOM = ?, 
+                    VACFICDOS = ?, 
+                    VACFICOBS = ?, 
+                    VACFICAUS = ?, 
+                    VACFICAFH = GETDATE(), 
+                    VACFICAIP = ? 
+                    WHERE VACFICCOD = ?"; 
                     break;
 
                 case 2;
@@ -918,16 +928,17 @@
                 header("Content-Type: application/json; charset=utf-8");
                 $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
             }
+            
         } else {
             header("Content-Type: application/json; charset=utf-8");
             $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
         }
-
+        
         $connMSSQL  = null;
         
         return $json;
     });
-
+/*
     $app->put('/v2/700/vacunacabecera/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
         
