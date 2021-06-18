@@ -863,7 +863,7 @@
     });
 
 /*MODULO VACUNACION*/
-    /*$app->put('/v2/700/vacuna/{codigo}', function($request) {
+    $app->put('/v2/700/vacuna/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $val00      = $request->getAttribute('codigo'); 
@@ -938,7 +938,7 @@
         
         return $json;
     });
-
+/*
     $app->put('/v2/700/vacunacabecera/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
         
