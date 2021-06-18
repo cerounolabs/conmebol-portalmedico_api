@@ -347,11 +347,11 @@
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = trim($request->getParsedBody()['auditoria_ip']);
 
-        if ($val02  == 0 && $val02 == null){
-            $val02  = 999;
+        if ($val03  == 0 && $val03 == null){
+            $val03  = 999;
         }
 
-        if (isset($val01) && isset($val03)) {
+        if (isset($val01) && isset($val02) && isset($val04) && isset($val05)) {
             $sql00  = "INSERT INTO [adm].[LOCCIU](                                                         LOCCIUEST, LOCCIUPAC,  LOCCIUORD  LOCCIUPAR, LOCCIUNOM, LOCCIUOBS, LOCCIUCUS, LOCCIUCFH, LOCCIUCIP, LOCCIUAUS, LOCCIUAFH, LOCCIUAIP) 
             VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADCIUDADESTADO' AND DOMFICPAR = ?),         ?,          ?,         ?,         ?,         ?,         ?,  GETDATE(),       ?,          ?, GETDATE(),        ?)";
 
