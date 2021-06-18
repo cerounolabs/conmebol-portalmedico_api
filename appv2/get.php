@@ -17102,7 +17102,7 @@
         return $json;
     });
 
-    $app->get('/v2/700/vacunacabecera/listado', function($request) {
+   /* $app->get('/v2/700/vacunacabecera/listado', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT 
@@ -17314,7 +17314,7 @@
         $connMSSQL  = null;
         
         return $json;
-    });
+    });*/
 
     $app->get('/v2/700/vacunacabecera/codigo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
@@ -17538,7 +17538,7 @@
         return $json;
     });
 
-    $app->get('/v2/700/vacunadetalle/listado', function($request) {
+   /* $app->get('/v2/700/vacunadetalle/listado', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT 
@@ -17754,7 +17754,7 @@
         $connMSSQL  = null;
         
         return $json;
-    });
+    });*/
 
     $app->get('/v2/700/vacunadetalle/codigo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
