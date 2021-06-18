@@ -452,6 +452,8 @@
                 FROM [adm].[LOCPAI] a
                 INNER JOIN [adm].[DOMFIC] b ON a.LOCPAIEST = b.DOMFICCOD
 
+                WHERE a.LOCPAICOD = ?
+
                 ORDER BY a.LOCPAICOD DESC";
 
             try {
@@ -717,6 +719,8 @@
                 FROM [adm].[LOCCIU] a
                 INNER JOIN [adm].[DOMFIC] b ON a.LOCCIUEST = b.DOMFICCOD
                 INNER JOIN [adm].[LOCPAI] c ON a.LOCCIUPAC = c.LOCPAICOD
+                
+                WHERE LOCCIUCOD = ?
 
                 ORDER BY a.LOCCIUCOD DESC";
 
@@ -724,7 +728,7 @@
                 $connMSSQL  = getConnectionMSSQLv2();
 
                 $stmtMSSQL00= $connMSSQL->prepare($sql00);
-                $stmtMSSQL00->execute();
+                $stmtMSSQL00->execute([$val01]);
                 
                 while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
                     $detalle    = array(
@@ -16803,7 +16807,7 @@
 
 /*MODULO VACUNACION*/
 
-    /*$app->get('/v2/700/vacuna/listado', function($request) {
+    $app->get('/v2/700/vacuna/listado', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT 
@@ -16884,7 +16888,7 @@
                         'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char2']))),
                         'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char3']))),
                         'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_num3'])))),
-                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion']))),
+                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion'])))
 
                     );
 

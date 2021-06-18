@@ -302,7 +302,7 @@
                 $stmtMSSQL      = $connMSSQL->prepare($sql00);
                 $stmtMSSQL01    = $connMSSQL->prepare($sql01);
 
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $aud01, $aud03]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val11, $aud01, $aud03]); 
                 $stmtMSSQL01->execute();
 
                 $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
@@ -355,6 +355,13 @@
             $sql00  = "INSERT INTO [adm].[LOCCIU](                                                         LOCCIUEST, LOCCIUPAC,  LOCCIUORD  LOCCIUPAR, LOCCIUNOM, LOCCIUOBS, LOCCIUCUS, LOCCIUCFH, LOCCIUCIP, LOCCIUAUS, LOCCIUAFH, LOCCIUAIP) 
             VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADCIUDADESTADO' AND DOMFICPAR = ?),         ?,          ?,         ?,         ?,         ?,         ?,  GETDATE(),       ?,          ?, GETDATE(),        ?)";
 
+                                                                                                                
+
+
+
+
+                                                                                                             
+
             $sql01  = "SELECT MAX(LOCCIUCOD) AS localidad_ciudad_codigo FROM [adm].[LOCCIU]";
 
             try {
@@ -362,7 +369,7 @@
                 $stmtMSSQL      = $connMSSQL->prepare($sql00);
                 $stmtMSSQL01    = $connMSSQL->prepare($sql01);
 
-                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $aud01, $aud03]); 
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val09, $aud01, $aud03]); 
                 $stmtMSSQL01->execute();
 
                 $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
