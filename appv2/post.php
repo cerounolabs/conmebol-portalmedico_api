@@ -1197,7 +1197,7 @@
 
 /*MODULO VACUNACION*/
 
-    $app->post('/v2/700/vacuna', function($request) {
+    /*$app->post('/v2/700/vacuna', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getParsedBody()['tipo_estado_parametro'];
