@@ -16751,7 +16751,7 @@
     });
 
 /*MODULO VACUNACION*/
-    $app->get('/v2/803/vacuna/listado', function($request) {
+    $app->get('/v2/700/vacuna/listado', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT 
@@ -16894,7 +16894,7 @@
         return $json;
     });
 
-    $app->get('/v2/803/vacuna/codigo/{codigo}', function($request) {
+    $app->get('/v2/700/vacuna/codigo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('codigo');
@@ -17046,7 +17046,7 @@
         return $json;
     });
 
-    $app->get('/v2/803/vacunacabecera/listado', function($request) {
+    $app->get('/v2/700/vacunacabecera/listado', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT 
@@ -17260,7 +17260,7 @@
         return $json;
     });
 
-    $app->get('/v2/803/vacunacabecera/codigo/{codigo}', function($request) {
+    $app->get('/v2/700/vacunacabecera/codigo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('codigo');
@@ -17482,7 +17482,7 @@
         return $json;
     });
 
-    $app->get('/v2/803/vacunadetalle/listado', function($request) {
+    $app->get('/v2/700/vacunadetalle/listado', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT 
@@ -17700,7 +17700,7 @@
         return $json;
     });
 
-    $app->get('/v2/803/vacunadetalle/codigo/{codigo}', function($request) {
+    $app->get('/v2/700/vacunadetalle/codigo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('codigo');
