@@ -15923,10 +15923,15 @@
                 a.COMPETICION_PADRE_ID                          AS          competicion_codigo_padre,
                 a.COMPETICION_ESTADO                            AS          competicion_estado,
                 a.COMPETICION_ANHO                              AS          competicion_anho,
+                a.COMPETICION_IMAGEN_TIPO                       AS          competicion_imagen_tipo,
                 a.JUEGO_CODIGO                                  AS          juego_codigo,
                 a.JUEGO_NOMBRE                                  AS          juego_fase,
                 a.JUEGO_ESTADO                                  AS          juego_estado,
                 a.JUEGO_HORARIO                                 AS          juego_horario,
+                a.JUEGO_CIUDAD                                  AS          juego_ciudad,
+                a.ESTADIO_CODIGO                                AS          estadio_codigo,
+                a.ESTADIO_NOMBRE                                AS          estadio_nombre,
+                a.ESTADIO_CIUDAD                                AS          estadio_ciudad,
                 a.EQUIPO_LOCAL_CODIGO                           AS          equipo_local_codigo,
                 a.EQUIPO_LOCAL_NOMBRE                           AS          equipo_local_nombre,
                 a.EQUIPO_LOCAL_RESULTADO_PRIMER                 AS          equipo_local_resultado_primer,
@@ -15939,7 +15944,8 @@
                 FROM [view].[juego] a
                 
                 WHERE (a.COMPETICION_ID = ? OR a.COMPETICION_PADRE_ID = ?) AND a.JUEGO_CODIGO = ?
-
+                LEFT OUTER JOIN 
+    
                 ORDER BY a.COMPETICION_PADRE_ID DESC";
 
             $sql01 = "SELECT
@@ -16158,20 +16164,55 @@
                 }
 
                 while ($rowMSSQL = $stmtMSSQL00->fetch()) {
-                    $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
-                    $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
+                    if ($rowMSSQL['juego_horario'] == '1900-01-01' || $rowMSSQL['juego_horario'] == null){
+                        $juego_horario  = '';
+                        $juego_cierra   = '';
+                    } else {
+                        $juego_horario  = date_format(date_create($rowMSSQL['juego_horario']), 'd/m/Y H:i:s');
+                        $juego_cierra   = date("Y-m-d", strtotime($rowMSSQL['juego_horario']."+ 10 days"));
+                    }
+                    
+                    switch ($rowMSSQL['competicion_imagen_tipo']) {
+                        case 'image/jpeg':
+                            $ext = 'jpeg';
+                            break;
+                        
+                        case 'image/jpg':
+                            $ext = 'jpg';
+                            break;
+
+                        case 'image/png':
+                            $ext = 'png';
+                            break;
+
+                        case 'image/gif':
+                            $ext = 'gif';
+                            break;
+                    }
+
+                    if ($rowMSSQL['competicion_codigo_padre'] != null) {
+                        $competicion_imagen_path = 'https://portalmedico.conmebol.com/imagen/competicion/img_'.$rowMSSQL['competicion_codigo_padre'].'.'.$ext;
+                    } else {
+                        $competicion_imagen_path = 'https://portalmedico.conmebol.com/imagen/competicion/img_'.$rowMSSQL['competicion_codigo'].'.'.$ext;
+                    }
 
                     $detalle    = array(
                         'competicion_codigo'                    => $rowMSSQL['competicion_codigo'],
                         'competicion_codigo_padre'              => $rowMSSQL['competicion_codigo_padre'],
                         'competicion_estado'                    => trim(strtoupper(strtolower($rowMSSQL['competicion_estado']))),
                         'competicion_anho'                      => $rowMSSQL['competicion_anho'],
+                        'competicion_imagen_tipo'               => trim(strtolower($rowMSSQL['competicion_imagen_tipo'])),
+                        'competicion_imagen_path'               => $competicion_imagen_path,
 
                         'juego_codigo'                          => $rowMSSQL['juego_codigo'],
                         'juego_fase'                            => trim(strtoupper(strtolower($rowMSSQL['juego_fase']))),
                         'juego_estado'                          => trim(strtoupper(strtolower($rowMSSQL['juego_estado']))),
                         'juego_horario'                         => $juego_horario,
                         'juego_cierra'                          => $juego_cierra,
+
+                        'estadio_codigo'                        => $rowMSSQL['estadio_codigo'],
+                        'estadio_nombre'                        => trim(strtoupper(strtolower($rowMSSQL['estadio_nombre']))),
+                        'estadio_ciudad'                        => trim(strtoupper(strtolower($rowMSSQL['estadio_ciudad']))),
 
                         'equipo_local_codigo'                   => $rowMSSQL['equipo_local_codigo'],
                         'equipo_local_nombre'                   => trim(strtoupper(strtolower($rowMSSQL['equipo_local_nombre']))),
@@ -16199,27 +16240,37 @@
                 } else {
                     $detalle = array(
                         'competicion_codigo'                    => '',
-                        'competicion_codigo'                    => '',
                         'competicion_codigo_padre'              => '',
                         'competicion_estado'                    => '',
                         'competicion_anho'                      => '',
+                        'competicion_imagen_tipo'               => '',
+                        'competicion_imagen_path'               => '',
 
+                        'juego_codigo'                          => '',
                         'juego_fase'                            => '',
                         'juego_estado'                          => '',
                         'juego_horario'                         => '',
                         'juego_cierra'                          => '',
+
+                        'estadio_codigo'                        => '',
+                        'estadio_nombre'                        => '',
+                        'estadio_ciudad'                        => '',
 
                         'equipo_local_codigo'                   => '',
                         'equipo_local_nombre'                   => '',
                         'equipo_local_resultado_primer'         => '',
                         'equipo_local_resultado_segundo'        => '',
                         'equipo_local_resultado_final'          => '',
-                        
+                        'equipo_local_detalle'                  => '',
+
                         'equipo_visitante_codigo'               => '',
                         'equipo_visitante_nombre'               => '',
                         'equipo_visitante_resultado_primer'     => '',
                         'equipo_visitante_resultado_segundo'    => '',
-                        'equipo_visitante_resultado_final'      => ''
+                        'equipo_visitante_resultado_final'      => '',
+                        'equipo_visitante_detalle'              => '',
+
+                        'juego_oficiales'                       => ''
                     );
 
                     header("Content-Type: application/json; charset=utf-8");
