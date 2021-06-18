@@ -64,11 +64,11 @@
         $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
         $val01      = $request->getParsedBody()['tipo_estado_parametro'];
         $val02      = $request->getParsedBody()['localidad_pais_orden'];
-        $val03      = trim($request->getParsedBody()['localidad_pais_nombre']);
-        $val04      = trim($request->getParsedBody()['localidad_pais_path']);
-        $val05      = trim($request->getParsedBody()['localidad_pais_iso_char2']);
-        $val06      = trim($request->getParsedBody()['localidad_pais_iso_char3']);
-        $val07      = trim($request->getParsedBody()['localidad_pais_iso_num3']);
+        $val03      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_nombre'])));
+        $val04      = trim(strtolower($request->getParsedBody()['localidad_pais_path']));
+        $val05      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_iso_char2'])));
+        $val06      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_iso_char3'])));
+        $val07      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_iso_num3'])));
         $val08      = trim($request->getParsedBody()['localidad_pais_observacion']);
         $val09      = trim($request->getParsedBody()['localidad_pais_alta_usuario']);
         $val10      = $request->getParsedBody()['localidad_pais_alta_fecha_hora'];
@@ -133,7 +133,7 @@
         $val02      = $request->getParsedBody()['localidad_pais_codigo'];
         $val03      = $request->getParsedBody()['localidad_ciudad_orden'];
         $val04      = $request->getParsedBody()['localidad_ciudad_parametro'];
-        $val05      = trim($request->getParsedBody()['localidad_ciudad_nombre']);
+        $val05      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_ciudad_nombre'])));
         $val06      = trim($request->getParsedBody()['localidad_ciudad_observacion']);
         $val07      = trim($request->getParsedBody()['localidad_ciudad_alta_usuario']);
         $val08      = $request->getParsedBody()['localidad_ciudad_alta_fecha_hora'];
@@ -148,7 +148,16 @@
     
             switch ($val00_1) {
                 case 1:
-                    $sql00  = "UPDATE [adm].[LOCCIU] SET LOCCIUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADCIUDADESTADO' AND DOMFICPAR = ?), LOCCIUPAC= ?, LOCCIUORD = ?, LOCCIUPAR = ?, LOCCIUNOM = ?, LOCCIUOBS = ?, LOCCIUAUS = ?, LOCCIUAFH = GETDATE(), LOCCIUAIP = ? WHERE LOCCIUCOD = ?";
+                    $sql00  = "UPDATE [adm].[LOCCIU] SET LOCCIUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADCIUDADESTADO' AND DOMFICPAR = ?), 
+                    LOCCIUPAC = ?, 
+                    LOCCIUORD = ?, 
+                    LOCCIUPAR = ?, 
+                    LOCCIUNOM = ?, 
+                    LOCCIUOBS = ?, 
+                    LOCCIUAUS = ?, 
+                    LOCCIUAFH = GETDATE(),
+                    LOCCIUAIP = ? 
+                    WHERE LOCCIUCOD = ?";
                     break;
     
                 case 2;
