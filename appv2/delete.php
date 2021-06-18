@@ -501,6 +501,7 @@
     });
 
     /*MODULO VACUNACION*/
+/*
     $app->delete('/v2/803/vacuna/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -667,5 +668,4 @@
         
         return $json;
     });
-    
-    
+*/

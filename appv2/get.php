@@ -16802,6 +16802,7 @@
     });
 
 /*MODULO VACUNACION*/
+/*
     $app->get('/v2/700/vacuna/listado', function($request) {
         require __DIR__.'/../src/connect.php';
         
@@ -17975,5 +17976,5 @@
         
         return $json;
     });
-
+*/
 
