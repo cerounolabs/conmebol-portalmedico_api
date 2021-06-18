@@ -318,7 +318,7 @@
                     $nomequipov             = $rowMSSQL01['equipo_visitante_nombre'];
                     $codencuentro           = $rowMSSQL01['juego_codigo'];
                     $codcompeticion         = $rowMSSQL01['competicion_codigo'];
-                    $codcompeticionpadre   = $rowMSSQL01['competicion_codigo_padre'];
+                    $codcompeticionpadre    = $rowMSSQL01['competicion_codigo_padre'];
                     $juegohorario           = $rowMSSQL01['juego_horario'];      
 
                     echo "\n";

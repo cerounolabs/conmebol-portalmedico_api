@@ -57,6 +57,138 @@
         return $json;
     });
 
+    $app->put('/v2/000/localidadpais/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val00      = $request->getAttribute('codigo'); 
+        $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_orden'];
+        $val03      = trim($request->getParsedBody()['localidad_pais_nombre']);
+        $val04      = trim($request->getParsedBody()['localidad_pais_path']);
+        $val05      = trim($request->getParsedBody()['localidad_pais_iso_char2']);
+        $val06      = trim($request->getParsedBody()['localidad_pais_iso_char3']);
+        $val07      = trim($request->getParsedBody()['localidad_pais_iso_num3']);
+        $val08      = trim($request->getParsedBody()['localidad_pais_observacion']);
+        $val09      = trim($request->getParsedBody()['localidad_pais_alta_usuario']);
+        $val10      = $request->getParsedBody()['localidad_pais_alta_fecha_hora'];
+        $val11      = trim($request->getParsedBody()['localidad_pais_alta_ip']);
+    
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+    
+        if (isset($val00) && isset($val00_1)) {
+            $sql00  = "";
+    
+            switch ($val00_1) {
+                case 1:
+                    $sql00  = "UPDATE [adm].[LOCPAI] SET LOCPAIEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADPAISESTADO' AND DOMFICPAR = ?), LOCPAIORD = ?, LOCPAINOM = ?, LOCPAIPAT = ?, LOCPAIIC2 = ?, LOCPAIIC3 = ?, LOCPAIIN3 = ?, LOCPAIOBS = ?, LOCPAIAUS  = ?, LOCPAIAFH = GETDATE(), LOCPAIAIP  = ? WHERE LOCPAICOD = ?";
+                    break;
+    
+                case 2;
+                    $sql00  = "UPDATE [adm].[LOCPAI] SET LOCPAIEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADPAISESTADO' AND DOMFICPAR = ?), LOCPAIAUS = ?, LOCPAIAFH = GETDATE(), LOCPAIAIP = ? WHERE LOCPAICOD = ?";
+                    break;
+            }   
+            
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+    
+                switch ($val00_1) {
+                    case 1:
+                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $aud01, $aud03, $val00]);
+                    break;
+    
+                    case 2:
+                        $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
+                        break;
+                }
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+    
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->put('/v2/000/localidadciudad/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val00      = $request->getAttribute('codigo'); 
+        $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_codigo'];
+        $val03      = $request->getParsedBody()['localidad_ciudad_orden'];
+        $val04      = $request->getParsedBody()['localidad_ciudad_parametro'];
+        $val05      = trim($request->getParsedBody()['localidad_ciudad_nombre']);
+        $val06      = trim($request->getParsedBody()['localidad_ciudad_observacion']);
+        $val07      = trim($request->getParsedBody()['localidad_ciudad_alta_usuario']);
+        $val08      = $request->getParsedBody()['localidad_ciudad_alta_fecha_hora'];
+        $val09      = trim($request->getParsedBody()['localidad_ciudad_alta_ip']);
+    
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+    
+        if (isset($val00) && isset($val00_1)) {
+            $sql00  = "";
+    
+            switch ($val00_1) {
+                case 1:
+                    $sql00  = "UPDATE [adm].[LOCCIU] SET LOCCIUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADCIUDADESTADO' AND DOMFICPAR = ?), LOCCIUPAC= ?, LOCCIUORD = ?, LOCCIUPAR = ?, LOCCIUNOM = ?, LOCCIUOBS = ?, LOCCIUAUS = ?, LOCCIUAFH = GETDATE(), LOCCIUAIP = ? WHERE LOCCIUCOD = ?";
+                    break;
+    
+                case 2;
+                    $sql00  = "UPDATE [adm].[LOCCIU] SET LOCCIUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADPAISESTADO' AND DOMFICPAR = ?), LOCCIUAUS = ?, LOCCIUAFH = GETDATE(), LOCCIUAIP = ? WHERE LOCCIUCOD = ?";
+                    break;
+            }   
+            
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+    
+                switch ($val00_1) {
+                    case 1:
+                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $aud01, $aud03, $val00]);
+                    break;
+    
+                    case 2:
+                        $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
+                        break;
+                }
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+    
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->put('/v2/100/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -729,3 +861,139 @@
         
         return $json;
     });
+
+/*MODULO VACUNACION*/
+    /*$app->put('/v2/700/vacuna/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val00      = $request->getAttribute('codigo'); 
+        $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_codigo'];
+        $val03      = $request->getParsedBody()['vacuna_orden'];
+        $val04      = trim($request->getParsedBody()['vacuna_nombre']);
+        $val05      = $request->getParsedBody()['vacuna_cantidad_dosis'];
+        $val06      = trim($request->getParsedBody()['vacuna_observacion']);
+        $val07      = trim($request->getParsedBody()['vacuna_alta_usuario']);
+        $val08      = $request->getParsedBody()['vacuna_alta_fecha_hora'];
+        $val09      = trim($request->getParsedBody()['vacuna_alta_ip']);     
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if (isset($val00) && isset($val00_1)) {
+            $sql00  = "";
+
+            switch ($val00_1) {
+                case 1:
+                    $sql00  = "UPDATE [vac].[VACFIC] SET VACFICEST = (SELECT DOMFICCOD adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?), VACFICPAC = ?, VACFICORD = ?, VACFICNOM = ?, VACFICDOS = ?, VACFICOBS = ?, VACFICAUS = ?, VACFICAFH = GETDATE(), VACFICAIP = ? WHERE VACFICCOD = ?' AND DOMFICPAR = ?), NOTMENORD = ?, NOTMENENC = ?, NOTMENMEC = ?, NOTMENNOC = ?, NOTEQUEQC = ?, NOTMENMEN = ?, NOTMENOBS = ?, NOTMENAUS = ?, NOTMENAFH = GETDATE(), NOTMENAIP = ? WHERE NOTMENCOD = ?";
+                    break;
+
+                case 2;
+                    $sql00  = "UPDATE [adm].[VACFIC] SET VACFICEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'NOTIFICACIONMENSAJEESTADO' AND DOMFICPAR = ?), VACFICAUS = ?, VACFICAFH = GETDATE(), VACFICAIP = ? WHERE VACFICCOD = ?";
+                    break;
+            }   
+            
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                switch ($val00_1) {
+                    case 1:
+                        $stmtMSSQL->execute([$val01, $val02, $val06, $val05, $val03, $val04, $val07, $val08, $aud01, $aud03, $val00]);
+                    break;
+
+                    case 2:
+                        $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
+                        break;
+                }
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->put('/v2/700/vacunacabecera/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val00      = $request->getAttribute('codigo'); 
+        $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['competicion_codigo'];
+        $val03      = $request->getParsedBody()['equipo_codigo'];
+        $val04      = $request->getParsedBody()['persona_codigo'];
+        $val05      = $request->getParsedBody()['vacuna_codigo'];
+        $val06      = $request->getParsedBody()['vacuna_cabecera_encuentro_codigo'];
+        $val07      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_adquirio_covid'])));
+        $val08      = $request->getParsedBody()['vacuna_cabecera_fecha'];
+        $val09      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_dosis_aplicada'])));
+        $val10      = trim($request->getParsedBody()['vacuna_cabecera_observacion']);
+        $val11      = trim($request->getParsedBody()['vacuna_cabecera_alta_usuario']);
+        $val12      = $request->getParsedBody()['vacuna_cabecera_alta_fecha_hora'];
+        $val13      = trim($request->getParsedBody()['vacuna_cabecera_alta_ip']);     
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if (isset($val00) && isset($val00_1)) {
+            $sql00  = "";
+
+            switch ($val00_1) {
+                case 1:
+                    $sql00  = "UPDATE [vac].[VACVCA] SET VACVCAEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR = ?), VACVCACOC = ?, VACVCAENC = ?, VACVCAEQC = ?, VACVCAPEC = ?, VACVCAVAC = ?, VACVCAPOS = ?, VACVCAFEC = ?, VACVCADAP = ?, VACVCAOBS = ?, VACVCAAUS = ?, VACVCAAFH = GETDATE(), VACVCAAIP = ? WHERE VACVCACOD = ?";                                                                                                                                        
+                    break;
+
+                case 2;
+                    $sql00  = "UPDATE [vac].[VACVCA] SET VACVCAEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR = ?), VACVCAAUS = ?, VACVCAAFH = GETDATE(), VACVCAAIP = ? WHERE VACVCACOD = ?";
+                    break;
+            }   
+            
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                switch ($val00_1) {
+                    case 1:
+                        $stmtMSSQL->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $aud01, $aud03, $val00]);
+                    break;
+
+                    case 2:
+                        $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
+                        break;
+                }
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });*/
+

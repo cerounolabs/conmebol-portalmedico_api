@@ -296,6 +296,526 @@
         return $json;
     });
 
+    $app->get('/v2/000/localidadpais/listado', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $sql00  = "SELECT
+            a.LOCPAICOD         AS          localidad_pais_codigo,
+            a.LOCPAIORD         AS          localidad_pais_orden,
+            a.LOCPAINOM         AS          localidad_pais_nombre,
+            a.LOCPAIPAT         AS          localidad_pais_path,
+            a.LOCPAIIC2         AS          localidad_pais_iso_char2,
+            a.LOCPAIIC3         AS          localidad_pais_iso_char3,
+            a.LOCPAIIN3         AS          localidad_pais_iso_num3,
+            a.LOCPAIOBS         AS          localidad_pais_observacion,
+            a.LOCPAICUS         AS          localidad_pais_alta_usuario,
+            a.LOCPAICFH         AS          localidad_pais_alta_fecha_hora,
+            a.LOCPAICIP         AS          localidad_pais_alta_ip,
+
+            a.LOCPAIAUS         AS          auditoria_usuario,
+            a.LOCPAIAFH         AS          auditoria_fecha_hora,
+            a.LOCPAIAIP         AS          auditoria_ip,
+
+            b.DOMFICCOD         AS          tipo_estado_codigo,
+            b.DOMFICORD         AS          tipo_estado_orden,
+            b.DOMFICNOI         AS          tipo_estado_nombre_ingles,
+            b.DOMFICNOC         AS          tipo_estado_nombre_castellano,
+            b.DOMFICNOP         AS          tipo_estado_nombre_portugues,
+            b.DOMFICPAT         AS          tipo_estado_path,
+            b.DOMFICPAR         AS          tipo_estado_parametro,
+            b.DOMFICVAL         AS          tipo_estado_dominio,
+            b.DOMFICOBS         AS          tipo_estado_observacion
+            
+            FROM [adm].[LOCPAI] a
+            INNER JOIN [adm].[DOMFIC] b ON a.LOCPAIEST = b.DOMFICCOD
+
+            ORDER BY a.LOCPAICOD DESC";
+
+        try {
+            $connMSSQL  = getConnectionMSSQLv2();
+
+            $stmtMSSQL00= $connMSSQL->prepare($sql00);
+            $stmtMSSQL00->execute();
+            
+            while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
+                $detalle    = array(
+                    'localidad_pais_codigo'             => $rowMSSQL00['localidad_pais_codigo'],
+                    'localidad_pais_orden'              => $rowMSSQL00['localidad_pais_orden'],
+                    'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_nombre']))),
+                    'localidad_pais_path'               => trim(strtolower($rowMSSQL00['localidad_pais_path'])),
+                    'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char2']))),
+                    'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char3']))),
+                    'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_num3'])))),
+                    'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion']))),
+                    'localidad_pais_alta_usuario'       => trim(strtoupper($rowMSSQL00['localidad_pais_alta_usuario'])),
+                    'localidad_pais_alta_fecha_hora'    => $rowMSSQL00['localidad_pais_alta_fecha_hora'],
+                    'localidad_pais_alta_auditoria_ip'  => trim(strtoupper($rowMSSQL00['localidad_pais_alta_auditoria_ip'])),
+
+                    'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
+                    'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
+                    'auditoria_ip'                      => trim(strtoupper($rowMSSQL00['auditoria_ip'])),
+
+                    'tipo_estado_codigo'                => $rowMSSQL00['tipo_estado_codigo'],
+                    'tipo_estado_orden'                 => $rowMSSQL00['tipo_estado_orden'],
+                    'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_ingles']))),
+                    'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_castellano']))),
+                    'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_portugues']))),
+                    'tipo_estado_path'                  => trim(strtolower($rowMSSQL00['tipo_estado_path'])),
+                    'tipo_estado_parametro'             => $rowMSSQL00['tipo_estado_parametro'],
+                    'tipo_estado_icono'                 => trim(strtolower($rowMSSQL00['tipo_estado_icono'])),
+                    'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_dominio']))),
+                    'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_observacion'])))
+
+                );
+
+                $result[]   = $detalle;
+            }
+
+            if (isset($result)){
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } else {
+                $detalle = array(
+                    'localidad_pais_codigo'             => '',
+                    'localidad_pais_orden'              => '',
+                    'localidad_pais_nombre'             => '',
+                    'localidad_pais_path'               => '',
+                    'localidad_pais_iso_char2'          => '',
+                    'localidad_pais_iso_char3'          => '',
+                    'localidad_pais_iso_num3'           => '',
+                    'localidad_pais_observacion'        => '',
+
+                    'auditoria_usuario'                 => '',
+                    'auditoria_fecha_hora'              => '',
+                    'auditoria_ip'                      => '',
+
+                    'tipo_estado_codigo'                => '',
+                    'tipo_estado_orden'                 => '',
+                    'tipo_estado_nombre_ingles'         => '',
+                    'tipo_estado_nombre_castellano'     => '',
+                    'tipo_estado_nombre_portugues'      => '',
+                    'tipo_estado_path'                  => '',
+                    'tipo_estado_parametro'             => '',
+                    'tipo_estado_dominio'               => '',
+                    'tipo_estado_observacion'           => ''
+                );
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+            $stmtMSSQL00->closeCursor();
+            $stmtMSSQL00 = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/000/localidadpais/codigo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT
+                a.LOCPAICOD         AS          localidad_pais_codigo,
+                a.LOCPAIORD         AS          localidad_pais_orden,
+                a.LOCPAINOM         AS          localidad_pais_nombre,
+                a.LOCPAIPAT         AS          localidad_pais_path,
+                a.LOCPAIIC2         AS          localidad_pais_iso_char2,
+                a.LOCPAIIC3         AS          localidad_pais_iso_char3,
+                a.LOCPAIIN3         AS          localidad_pais_iso_num3,
+                a.LOCPAIOBS         AS          localidad_pais_observacion,
+                a.LOCPAICUS         AS          localidad_pais_alta_usuario,
+                a.LOCPAICFH         AS          localidad_pais_alta_fecha_hora,
+                a.LOCPAICIP         AS          localidad_pais_alta_ip,
+
+                a.LOCPAIAUS         AS          auditoria_usuario,
+                a.LOCPAIAFH         AS          auditoria_fecha_hora,
+                a.LOCPAIAIP         AS          auditoria_ip,
+
+                b.DOMFICCOD         AS          tipo_estado_codigo,
+                b.DOMFICORD         AS          tipo_estado_orden,
+                b.DOMFICNOI         AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC         AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP         AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT         AS          tipo_estado_path,
+                b.DOMFICPAR         AS          tipo_estado_parametro,
+                b.DOMFICVAL         AS          tipo_estado_dominio,
+                b.DOMFICOBS         AS          tipo_estado_observacion
+                
+                FROM [adm].[LOCPAI] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LOCPAIEST = b.DOMFICCOD
+
+                ORDER BY a.LOCPAICOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL00->execute([$val01]);
+                
+                while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
+                    $detalle    = array(
+                        'localidad_pais_codigo'             => $rowMSSQL00['localidad_pais_codigo'],
+                        'localidad_pais_orden'              => $rowMSSQL00['localidad_pais_orden'],
+                        'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_nombre']))),
+                        'localidad_pais_path'               => trim(strtolower($rowMSSQL00['localidad_pais_path'])),
+                        'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char2']))),
+                        'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char3']))),
+                        'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_num3'])))),
+                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion']))),
+                        'localidad_pais_alta_usuario'       => trim(strtoupper($rowMSSQL00['localidad_pais_alta_usuario'])),
+                        'localidad_pais_alta_fecha_hora'    => $rowMSSQL00['localidad_pais_alta_fecha_hora'],
+                        'localidad_pais_alta_auditoria_ip'  => trim(strtoupper($rowMSSQL00['localidad_pais_alta_auditoria_ip'])),
+
+                        'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
+                        'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
+                        'auditoria_ip'                      => trim(strtoupper($rowMSSQL00['auditoria_ip'])),
+
+                        'tipo_estado_codigo'                => $rowMSSQL00['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL00['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL00['tipo_estado_path'])),
+                        'tipo_estado_parametro'             => $rowMSSQL00['tipo_estado_parametro'],
+                        'tipo_estado_icono'                 => trim(strtolower($rowMSSQL00['tipo_estado_icono'])),
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_dominio']))),
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_observacion'])))
+
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'localidad_pais_codigo'             => '',
+                        'localidad_pais_orden'              => '',
+                        'localidad_pais_nombre'             => '',
+                        'localidad_pais_path'               => '',
+                        'localidad_pais_iso_char2'          => '',
+                        'localidad_pais_iso_char3'          => '',
+                        'localidad_pais_iso_num3'           => '',
+                        'localidad_pais_observacion'        => '',
+
+                        'auditoria_usuario'                 => '',
+                        'auditoria_fecha_hora'              => '',
+                        'auditoria_ip'                      => '',
+
+                        'tipo_estado_codigo'                => '',
+                        'tipo_estado_orden'                 => '',
+                        'tipo_estado_nombre_ingles'         => '',
+                        'tipo_estado_nombre_castellano'     => '',
+                        'tipo_estado_nombre_portugues'      => '',
+                        'tipo_estado_path'                  => '',
+                        'tipo_estado_parametro'             => '',
+                        'tipo_estado_dominio'               => '',
+                        'tipo_estado_observacion'           => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL00 = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        }else{
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }  
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/000/localidadciudad/listado', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $sql00  = "SELECT
+            a.LOCCIUCOD         AS          localidad_ciudad_codigo,
+            a.LOCCIUORD         AS          localidad_ciudad_orden,
+            a.LOCCIUNOM         AS          localidad_ciudad_nombre,
+            a.LOCCIUOBS         AS          localidad_ciudad_observacion,
+            a.LOCCIUCUS         AS          localidad_ciudad_alta_usuario,
+            a.LOCCIUCFH         AS          localidad_ciudad_alta_fecha_hora,
+            a.LOCCIUCIP         AS          localidad_ciudad_alta_ip,
+
+            a.LOCCIUAUS         AS          auditoria_usuario,
+            a.LOCCIUAFH         AS          auditoria_fecha_hora,
+            a.LOCCIUAIP         AS          auditoria_ip,
+
+            b.DOMFICCOD         AS          tipo_estado_codigo,
+            b.DOMFICORD         AS          tipo_estado_orden,
+            b.DOMFICNOI         AS          tipo_estado_nombre_ingles,
+            b.DOMFICNOC         AS          tipo_estado_nombre_castellano,
+            b.DOMFICNOP         AS          tipo_estado_nombre_portugues,
+            b.DOMFICPAT         AS          tipo_estado_path,
+            b.DOMFICPAR         AS          tipo_estado_parametro,
+            b.DOMFICVAL         AS          tipo_estado_dominio,
+            b.DOMFICOBS         AS          tipo_estado_observacion,
+
+            c.LOCPAICOD         AS          localidad_pais_codigo,
+            c.LOCPAIORD         AS          localidad_pais_orden,
+            c.LOCPAINOM         AS          localidad_pais_nombre,
+            c.LOCPAIPAT         AS          localidad_pais_path,
+            c.LOCPAIIC2         AS          localidad_pais_iso_char2,
+            c.LOCPAIIC3         AS          localidad_pais_iso_char3,
+            c.LOCPAIIN3         AS          localidad_pais_iso_num3,
+            c.LOCPAIOBS         AS          localidad_pais_observacion
+            
+            FROM [adm].[LOCCIU] a
+            INNER JOIN [adm].[DOMFIC] b ON a.LOCCIUEST = b.DOMFICCOD
+            INNER JOIN [adm].[LOCPAI] c ON a.LOCCIUPAC = c.LOCPAICOD
+
+            ORDER BY a.LOCCIUCOD DESC";
+
+        try {
+            $connMSSQL  = getConnectionMSSQLv2();
+
+            $stmtMSSQL00= $connMSSQL->prepare($sql00);
+            $stmtMSSQL00->execute();
+            
+            while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
+                $detalle    = array(
+                    'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
+                    'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
+                    'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
+                    'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+                    'localidad_ciudad_alta_usuario'     => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_usuario'])), 
+                    'localidad_ciudad_alta_fecha_hora'  => $rowMSSQL00['localidad_ciudad_alta_fecha_hora'],
+                    'localidad_ciudad_alta_ip'          => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_ip'])),
+
+                    'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
+                    'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
+                    'auditoria_ip'                      => trim(strtoupper($rowMSSQL00['auditoria_ip'])),
+
+                    'tipo_estado_codigo'                => $rowMSSQL00['tipo_estado_codigo'],
+                    'tipo_estado_orden'                 => $rowMSSQL00['tipo_estado_orden'],
+                    'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_ingles']))),
+                    'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_castellano']))),
+                    'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_portugues']))),
+                    'tipo_estado_path'                  => trim(strtolower($rowMSSQL00['tipo_estado_path'])),
+                    'tipo_estado_parametro'             => $rowMSSQL00['tipo_estado_parametro'],
+                    'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_dominio']))),
+                    'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_observacion']))),
+
+                    'localidad_pais_codigo'             => $rowMSSQL00['localidad_pais_codigo'],
+                    'localidad_pais_orden'              => $rowMSSQL00['localidad_pais_orden'],
+                    'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_nombre']))),
+                    'localidad_pais_path'               => trim(strtolower($rowMSSQL00['localidad_pais_path'])),
+                    'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char2']))),
+                    'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char3']))),
+                    'localidad_pais_iso_num3'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_num3']))),
+                    'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion'])))
+                );
+
+                $result[]   = $detalle;
+            }
+
+            if (isset($result)){
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } else {
+                $detalle = array(
+                    'localidad_ciudad_codigo'           => '',
+                    'localidad_ciudad_orden'            => '',
+                    'localidad_ciudad_nombre'           => '',
+                    'localidad_ciudad_observacion'      => '',
+
+                    'auditoria_usuario'                 => '',
+                    'auditoria_fecha_hora'              => '',
+                    'auditoria_ip'                      => '',
+
+                    'tipo_estado_codigo'                => '',
+                    'tipo_estado_orden'                 => '',
+                    'tipo_estado_nombre_ingles'         => '',
+                    'tipo_estado_nombre_castellano'     => '',
+                    'tipo_estado_nombre_portugues'      => '',
+                    'tipo_estado_path'                  => '',
+                    'tipo_estado_parametro'             => '',
+                    'tipo_estado_dominio'               => '',
+                    'tipo_estado_observacion'           => '',
+
+                    'localidad_pais_codigo'             => '',
+                    'localidad_pais_orden'              => '',
+                    'localidad_pais_nombre'             => '',
+                    'localidad_pais_path'               => '',
+                    'localidad_pais_iso_char2'          => '',
+                    'localidad_pais_iso_char3'          => '',
+                    'localidad_pais_iso_num3'           => '',
+                    'localidad_pais_observacion'        => ''
+                );
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+            $stmtMSSQL00->closeCursor();
+            $stmtMSSQL00 = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/000/localidadciudad/codigo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT
+                a.LOCCIUCOD         AS          localidad_ciudad_codigo,
+                a.LOCCIUORD         AS          localidad_ciudad_orden,
+                a.LOCCIUNOM         AS          localidad_ciudad_nombre,
+                a.LOCCIUOBS         AS          localidad_ciudad_observacion,
+                a.LOCCIUCUS         AS          localidad_ciudad_alta_usuario,
+                a.LOCCIUCFH         AS          localidad_ciudad_alta_fecha_hora,
+                a.LOCCIUCIP         AS          localidad_ciudad_alta_ip,
+
+                a.LOCCIUAUS         AS          auditoria_usuario,
+                a.LOCCIUAFH         AS          auditoria_fecha_hora,
+                a.LOCCIUAIP         AS          auditoria_ip,
+
+                b.DOMFICCOD         AS          tipo_estado_codigo,
+                b.DOMFICORD         AS          tipo_estado_orden,
+                b.DOMFICNOI         AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC         AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP         AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT         AS          tipo_estado_path,
+                b.DOMFICPAR         AS          tipo_estado_parametro,
+                b.DOMFICVAL         AS          tipo_estado_dominio,
+                b.DOMFICOBS         AS          tipo_estado_observacion,
+
+                c.LOCPAICOD         AS          localidad_pais_codigo,
+                c.LOCPAIORD         AS          localidad_pais_orden,
+                c.LOCPAINOM         AS          localidad_pais_nombre,
+                c.LOCPAIPAT         AS          localidad_pais_path,
+                c.LOCPAIIC2         AS          localidad_pais_iso_char2,
+                c.LOCPAIIC3         AS          localidad_pais_iso_char3,
+                c.LOCPAIIN3         AS          localidad_pais_iso_num3,
+                c.LOCPAIOBS         AS          localidad_pais_observacion
+                
+                FROM [adm].[LOCCIU] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LOCCIUEST = b.DOMFICCOD
+                INNER JOIN [adm].[LOCPAI] c ON a.LOCCIUPAC = c.LOCPAICOD
+
+                ORDER BY a.LOCCIUCOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL00->execute();
+                
+                while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
+                    $detalle    = array(
+                        'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
+                        'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
+                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
+                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+                        'localidad_ciudad_alta_usuario'     => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_usuario'])), 
+                        'localidad_ciudad_alta_fecha_hora'  => $rowMSSQL00['localidad_ciudad_alta_fecha_hora'],
+                        'localidad_ciudad_alta_ip'          => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_ip'])),
+
+                        'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
+                        'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
+                        'auditoria_ip'                      => trim(strtoupper($rowMSSQL00['auditoria_ip'])),
+
+                        'tipo_estado_codigo'                => $rowMSSQL00['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL00['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL00['tipo_estado_path'])),
+                        'tipo_estado_parametro'             => $rowMSSQL00['tipo_estado_parametro'],
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_dominio']))),
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_observacion']))),
+
+                        'localidad_pais_codigo'             => $rowMSSQL00['localidad_pais_codigo'],
+                        'localidad_pais_orden'              => $rowMSSQL00['localidad_pais_orden'],
+                        'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_nombre']))),
+                        'localidad_pais_path'               => trim(strtolower($rowMSSQL00['localidad_pais_path'])),
+                        'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char2']))),
+                        'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char3']))),
+                        'localidad_pais_iso_num3'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_num3']))),
+                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion'])))
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'localidad_ciudad_codigo'           => '',
+                        'localidad_ciudad_orden'            => '',
+                        'localidad_ciudad_nombre'           => '',
+                        'localidad_ciudad_observacion'      => '',
+
+                        'auditoria_usuario'                 => '',
+                        'auditoria_fecha_hora'              => '',
+                        'auditoria_ip'                      => '',
+
+                        'tipo_estado_codigo'                => '',
+                        'tipo_estado_orden'                 => '',
+                        'tipo_estado_nombre_ingles'         => '',
+                        'tipo_estado_nombre_castellano'     => '',
+                        'tipo_estado_nombre_portugues'      => '',
+                        'tipo_estado_path'                  => '',
+                        'tipo_estado_parametro'             => '',
+                        'tipo_estado_dominio'               => '',
+                        'tipo_estado_observacion'           => '',
+
+                        'localidad_pais_codigo'             => '',
+                        'localidad_pais_orden'              => '',
+                        'localidad_pais_nombre'             => '',
+                        'localidad_pais_path'               => '',
+                        'localidad_pais_iso_char2'          => '',
+                        'localidad_pais_iso_char3'          => '',
+                        'localidad_pais_iso_num3'           => '',
+                        'localidad_pais_observacion'        => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL00 = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        }else{
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }  
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->get('/v2/000/auditoria/{dominio}', function($request) {
         require __DIR__.'/../src/connect.php';
 
@@ -16280,3 +16800,1180 @@
         
         return $json;
     });
+
+/*MODULO VACUNACION*/
+    $app->get('/v2/700/vacuna/listado', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $sql00  = "SELECT 
+            a.VACFICCOD             AS          vacuna_codigo, 
+            a.VACFICORD             AS          vacuna_orden, 
+            a.VACFICNOM             AS          vacuna_nombre, 
+            a.VACFICDOS             AS          vacuna_cantidad_dosis, 
+            a.VACFICOBS             AS          vacuna_observacion, 
+            a.VACFICCUS             AS          vacuna_alta_usuario, 
+            a.VACFICCFH             AS          vacuna_alta_fecha_hora, 
+            a.VACFICCIP             AS          vacuna_alta_ip, 
+            
+            a.VACFICAUS             AS          auditoria_usuario, 
+            a.VACFICAFH             AS          auditoria_fecha_hora, 
+            a.VACFICAIP             AS          auditoria_ip,
+            
+            b.DOMFICCOD             AS          tipo_estado_codigo,
+            b.DOMFICORD             AS          tipo_estado_orden,
+            b.DOMFICNOI             AS          tipo_estado_nombre_ingles,
+            b.DOMFICNOC             AS          tipo_estado_nombre_castellano,
+            b.DOMFICNOP             AS          tipo_estado_nombre_portugues,
+            b.DOMFICPAT             AS          tipo_estado_path,
+            b.DOMFICVAL             AS          tipo_estado_dominio,
+            b.DOMFICPAR             AS          tipo_estado_parametro,
+            b.DOMFICOBS             AS          tipo_estado_observacion,
+            
+            c.LOCPAICOD             AS          localidad_pais_codigo,
+            c.LOCPAIORD             AS          localidad_pais_orden,
+            c.LOCPAINOM             AS          localidad_pais_nombre,
+            c.LOCPAIPAT             AS          localidad_pais_path,
+            c.LOCPAIIC2             AS          localidad_pais_iso_char2,
+            c.LOCPAIIC3             AS          localidad_pais_iso_char3,
+            c.LOCPAIIN3             AS          localidad_pais_iso_num3,
+            c.LOCPAIOBS             AS          localidad_pais_observacion
+            
+            FROM [vac].[VACFIC] a
+            INNER JOIN [adm].[DOMFIC] b ON a.VACFICEST  =   b.DOMFICCOD
+            INNER JOIN [adm].[LOCPAI] c ON a.VACFICPAC  =   c.LOCPAICOD
+            
+            ORDER BY VACFICCOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute(); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+
+                    $detalle    = array(
+
+                        'vacuna_codigo'                     =>  $rowMSSQL['vacuna_codigo'],
+                        'vacuna_orden'                      =>  $rowMSSQL['vacuna_orden'],    	
+                        'vacuna_nombre'                     =>  trim($rowMSSQL['vacuna_nombre']),  
+                        'vacuna_cantidad_dosis'             =>  $rowMSSQL['vacuna_cantidad_dosis'],	
+                        'vacuna_observacion'                =>  trim($rowMSSQL['vacuna_observacion']),
+                        'vacuna_alta_usuario'               =>  trim($rowMSSQL['vacuna_alta_usuario']),
+                        'vacuna_alta_fecha_hora'            =>	$rowMSSQL['vacuna_alta_fecha_hora'],    
+                        'vacuna_alta_ip'                    =>  trim($rowMSSQL['vacuna_alta_ip']),
+
+                        'auditoria_usuario'                 =>  trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'              =>	$rowMSSQL['auditoria_fecha_hora'],    
+                        'auditoria_ip'                      =>  trim($rowMSSQL['auditoria_ip']),
+
+                        'tipo_estado_codigo'                => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
+                        'tipo_estado_parametro'             => $rowMSSQL['tipo_estado_parametro'],
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+
+                        'localidad_pais_codigo'             => $rowMSSQL['localidad_pais_codigo'],
+                        'localidad_pais_orden'              => $rowMSSQL['localidad_pais_orden'],
+                        'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_nombre']))),
+                        'localidad_pais_path'               => trim(strtolower($rowMSSQL['localidad_pais_path'])),
+                        'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char2']))),
+                        'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char3']))),
+                        'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_num3'])))),
+                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion']))),
+
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'vacuna_codigo'                     =>  '',
+                        'vacuna_orden'                      =>  '',    	
+                        'vacuna_nombre'                     =>  '',  
+                        'vacuna_cantidad_dosis'             =>  '',	
+                        'vacuna_observacion'                =>  '',
+                        'vacuna_alta_usuario'               =>  '',
+                        'vacuna_alta_fecha_hora'            =>	'',    
+                        'vacuna_alta_ip'                    =>  '',
+
+                        'auditoria_usuario'                 =>  '',
+                        'auditoria_fecha_hora'              =>	'',    
+                        'auditoria_ip'                      =>  '',
+
+                        'tipo_estado_codigo'                => '',
+                        'tipo_estado_orden'                 => '',
+                        'tipo_estado_nombre_ingles'         => '',
+                        'tipo_estado_nombre_castellano'     => '',
+                        'tipo_estado_nombre_portugues'      => '',
+                        'tipo_estado_path'                  => '',
+                        'tipo_estado_dominio'               => '', 
+                        'tipo_estado_parametro'             => '',
+                        'tipo_estado_observacion'           => '',
+
+                        'localidad_pais_codigo'             => '',
+                        'localidad_pais_orden'              => '',
+                        'localidad_pais_nombre'             => '',
+                        'localidad_pais_path'               => '',
+                        'localidad_pais_iso_char2'          => '',
+                        'localidad_pais_iso_char3'          => '',
+                        'localidad_pais_iso_num3'           => '',
+                        'localidad_pais_observacion'        => ''
+
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/700/vacuna/codigo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+
+        if (isset($val01)) {  
+            $sql00  = "SELECT 
+                a.VACFICCOD             AS          vacuna_codigo, 
+                a.VACFICORD             AS          vacuna_orden, 
+                a.VACFICNOM             AS          vacuna_nombre, 
+                a.VACFICDOS             AS          vacuna_cantidad_dosis, 
+                a.VACFICOBS             AS          vacuna_observacion, 
+                a.VACFICCUS             AS          vacuna_alta_usuario, 
+                a.VACFICCFH             AS          vacuna_alta_fecha_hora, 
+                a.VACFICCIP             AS          vacuna_alta_ip, 
+                
+                a.VACFICAUS             AS          auditoria_usuario, 
+                a.VACFICAFH             AS          auditoria_fecha_hora, 
+                a.VACFICAIP             AS          auditoria_ip,
+                
+                b.DOMFICCOD             AS          tipo_estado_codigo,
+                b.DOMFICORD             AS          tipo_estado_orden,
+                b.DOMFICNOI             AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC             AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP             AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT             AS          tipo_estado_path,
+                b.DOMFICVAL             AS          tipo_estado_dominio,
+                b.DOMFICPAR             AS          tipo_estado_parametro,
+                b.DOMFICOBS             AS          tipo_estado_observacion,
+                
+                c.LOCPAICOD             AS          localidad_pais_codigo,
+                c.LOCPAIORD             AS          localidad_pais_orden,
+                c.LOCPAINOM             AS          localidad_pais_nombre,
+                c.LOCPAIPAT             AS          localidad_pais_path,
+                c.LOCPAIIC2             AS          localidad_pais_iso_char2,
+                c.LOCPAIIC3             AS          localidad_pais_iso_char3,
+                c.LOCPAIIN3             AS          localidad_pais_iso_num3,
+                c.LOCPAIOBS             AS          localidad_pais_observacion
+                
+                FROM [vac].[VACFIC] a
+                INNER JOIN [adm].[DOMFIC] b ON a.VACFICEST  =   b.DOMFICCOD
+                INNER JOIN [adm].[LOCPAI] c ON a.VACFICPAC  =   c.LOCPAICOD
+
+                WHERE VACFICCOD = ?
+                
+                ORDER BY VACFICCOD DESC";
+
+                try {
+                    $connMSSQL  = getConnectionMSSQLv2();
+                    $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                    $stmtMSSQL->execute([$val01]); 
+
+                    while ($rowMSSQL = $stmtMSSQL->fetch()) {
+
+                        $detalle    = array(
+
+                            'vacuna_codigo'                     =>  $rowMSSQL['vacuna_codigo'],
+                            'vacuna_orden'                      =>  $rowMSSQL['vacuna_orden'],    	
+                            'vacuna_nombre'                     =>  trim($rowMSSQL['vacuna_nombre']),  
+                            'vacuna_cantidad_dosis'             =>  $rowMSSQL['vacuna_cantidad_dosis'],	
+                            'vacuna_observacion'                =>  trim($rowMSSQL['vacuna_observacion']),
+                            'vacuna_alta_usuario'               =>  trim($rowMSSQL['vacuna_alta_usuario']),
+                            'vacuna_alta_fecha_hora'            =>	$rowMSSQL['vacuna_alta_fecha_hora'],    
+                            'vacuna_alta_ip'                    =>  trim($rowMSSQL['vacuna_alta_ip']),
+
+                            'auditoria_usuario'                 =>  trim($rowMSSQL['auditoria_usuario']),
+                            'auditoria_fecha_hora'              =>	$rowMSSQL['auditoria_fecha_hora'],    
+                            'auditoria_ip'                      =>  trim($rowMSSQL['auditoria_ip']),
+
+                            'tipo_estado_codigo'                => $rowMSSQL['tipo_estado_codigo'],
+                            'tipo_estado_orden'                 => $rowMSSQL['tipo_estado_orden'],
+                            'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                            'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                            'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                            'tipo_estado_path'                  => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                            'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
+                            'tipo_estado_parametro'             => $rowMSSQL['tipo_estado_parametro'],
+                            'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+
+                            'localidad_pais_codigo'             => $rowMSSQL['localidad_pais_codigo'],
+                            'localidad_pais_orden'              => $rowMSSQL['localidad_pais_orden'],
+                            'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_nombre']))),
+                            'localidad_pais_path'               => trim(strtolower($rowMSSQL['localidad_pais_path'])),
+                            'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char2']))),
+                            'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char3']))),
+                            'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_num3'])))),
+                            'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion'])))
+
+                        );
+
+                        $result[]   = $detalle;
+                    }
+
+                    if (isset($result)){
+                        header("Content-Type: application/json; charset=utf-8");
+                        $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                    } else {
+                        $detalle = array(
+                            'vacuna_codigo'                     =>  '',
+                            'vacuna_orden'                      =>  '',    	
+                            'vacuna_nombre'                     =>  '',  
+                            'vacuna_cantidad_dosis'             =>  '',	
+                            'vacuna_observacion'                =>  '',
+                            'vacuna_alta_usuario'               =>  '',
+                            'vacuna_alta_fecha_hora'            =>	'',    
+                            'vacuna_alta_ip'                    =>  '',
+
+                            'auditoria_usuario'                 =>  '',
+                            'auditoria_fecha_hora'              =>	'',    
+                            'auditoria_ip'                      =>  '',
+
+                            'tipo_estado_codigo'                => '',
+                            'tipo_estado_orden'                 => '',
+                            'tipo_estado_nombre_ingles'         => '',
+                            'tipo_estado_nombre_castellano'     => '',
+                            'tipo_estado_nombre_portugues'      => '',
+                            'tipo_estado_path'                  => '',
+                            'tipo_estado_dominio'               => '', 
+                            'tipo_estado_parametro'             => '',
+                            'tipo_estado_observacion'           => '',
+
+                            'localidad_pais_codigo'             => '',
+                            'localidad_pais_orden'              => '',
+                            'localidad_pais_nombre'             => '',
+                            'localidad_pais_path'               => '',
+                            'localidad_pais_iso_char2'          => '',
+                            'localidad_pais_iso_char3'          => '',
+                            'localidad_pais_iso_num3'           => '',
+                            'localidad_pais_observacion'        => ''
+
+                        );
+
+                        header("Content-Type: application/json; charset=utf-8");
+                        $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                    }
+
+                    $stmtMSSQL->closeCursor();
+                    $stmtMSSQL = null;
+                } catch (PDOException $e) {
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+        }else{
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION); 
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/700/vacunacabecera/listado', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $sql00  = "SELECT 
+            a.VACVCACOD                     AS          vacuna_cabecera_codigo, 
+            a.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
+            a.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
+            a.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
+            a.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
+            a.VACVCAOBS                     AS          vacuna_cabecera_observacion, 
+            a.VACVCACUS                     AS          vacuna_cabecera_alta_usuario, 
+            a.VACVCACFH                     AS          vacuna_cabecera_alta_fecha_hora, 
+            a.VACVCACIP                     AS          vacuna_cabecera_alta_ip, 
+            
+            a.VACVCAAUS                     AS          auditoria_usuario, 
+            a.VACVCAAFH                     AS          auditoria_fecha_hora, 
+            a.VACVCAAIP                     AS          auditoria_ip,
+            
+            b.DOMFICCOD                     AS          tipo_estado_codigo,
+            b.DOMFICORD                     AS          tipo_estado_orden,
+            b.DOMFICNOI                     AS          tipo_estado_nombre_ingles,
+            b.DOMFICNOC                     AS          tipo_estado_nombre_castellano,
+            b.DOMFICNOP                     AS          tipo_estado_nombre_portugues,
+            b.DOMFICPAT                     AS          tipo_estado_path,
+            b.DOMFICVAL                     AS          tipo_estado_dominio,
+            b.DOMFICPAR                     AS          tipo_estado_parametro,
+            b.DOMFICOBS                     AS          tipo_estado_observacion,
+            
+            c.competitionFifaId             AS          competicion_codigo,
+            c.superiorCompetitionFifaId     AS          competicion_codigo_padre,
+            c.status                        AS          competicion_estado,
+            c.internationalName             AS          competicion_nombre,
+            
+            d.teamFifaId                    AS          equipo_codigo,
+            d.status                        AS          equipo_estado,
+            d.internationalName             AS          equipo_nombre,
+            
+            e.personFifaId                  AS          persona_codigo,
+            e.personType                    AS          persona_tipo,
+            e.internationalFirstName        AS          persona_nombre,
+            e.internationalLastName         AS          persona_apellido,
+            e.gender                        AS          persona_genero,
+            e.dateOfBirth                   AS          persona_fecha_nacimiento,
+            e.playerPosition                AS          persona_funcion,
+            
+            f.VACFICCOD                     AS          vacuna_codigo, 
+            f.VACFICORD                     AS          vacuna_orden, 
+            f.VACFICNOM                     AS          vacuna_nombre, 
+            f.VACFICDOS                     AS          vacuna_cantidad_dosis, 
+            f.VACFICOBS                     AS          vacuna_observacion
+            
+            FROM [vac].[VACVCA] a
+            INNER JOIN [adm].[DOMFIC] b ON a.VACVCAEST          =   b.DOMFICCOD
+            INNER JOIN [comet].[competitions] c ON a.VACVCACOC  =   c.competitionFifaId
+            INNER JOIN [comet].[teams] d ON a.VACVCAEQC         =   d.teamFifaId  
+            INNER JOIN [comet].[persons] e ON a.VACVCAPEC       =   e.personFifaId
+            INNER JOIN [vac].[VACFIC] f ON a.VACVCAVAC          =   f.VACFICCOD
+            
+            ORDER BY a.VACVCACOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute(); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                       
+                    if ($rowMSSQL['vacuna_cabecera_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_cabecera_fecha'] == null){
+                        $vacuna_cabecera_fecha_1 = '';
+                        $vacuna_cabecera_fecha_2 = '';
+                    } else {
+                        $vacuna_cabecera_fecha_1 = $rowMSSQL['vacuna_cabecera_fecha'];
+                        $vacuna_cabecera_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_cabecera_fecha']));
+                    }
+                    
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+                    
+                    $detalle    = array(
+
+                        'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
+                        'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
+                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
+                        'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
+                        'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
+                        'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
+                        'vacuna_cabecera_observacion'       =>  trim($rowMSSQL['vacuna_cabecera_alta_observacion']),
+                        'vacuna_cabecera_alta_usuario'      =>  trim($rowMSSQL['vacuna_cabecera_alta_usuario']),
+                        'vacuna_cabecera_alta_fecha_hora'   =>	$rowMSSQL['vacuna_cabecera_alta_fecha_hora'],    
+                        'vacuna_cabecera_alta_ip'           =>  trim($rowMSSQL['vacuna_cabecera_alta_ip']),
+
+                        'auditoria_usuario'                 =>  trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'              =>	$rowMSSQL['auditoria_fecha_hora'],    
+                        'auditoria_ip'                      =>  trim($rowMSSQL['auditoria_ip']),
+
+                        'tipo_estado_codigo'                => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
+                        'tipo_estado_parametro'             => $rowMSSQL['tipo_estado_parametro'],
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+
+                        'competicion_codigo'                =>  $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'          =>  $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                =>  trim($rowMSSQL['competicion_estado']),
+                        'competicion_nombre'                =>  trim($rowMSSQL['competicion_nombre']),
+
+                        'equipo_codigo'                     =>  $rowMSSQL['equipo_codigo'],
+                        'equipo_estado'                     =>  $rowMSSQL['equipo_estado'],
+                        'equipo_nombre'                     =>  trim($rowMSSQL['equipo_nombre']),
+
+                        'persona_codigo'                    => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                      => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                    => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
+                        'persona_apellido'                  => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                        'persona_completo'                  => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
+                        'persona_genero'                    => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                        'persona_fecha_nacimiento_1'        => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'        => $persona_fecha_nacimiento_2,
+                        'persona_funcion'                   => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+
+                        'vacuna_codigo'                     =>  $rowMSSQL['vacuna_codigo'],
+                        'vacuna_orden'                      =>  $rowMSSQL['vacuna_orden'],    	
+                        'vacuna_nombre'                     =>  trim($rowMSSQL['vacuna_nombre']),  
+                        'vacuna_cantidad_dosis'             =>  $rowMSSQL['vacuna_cantidad_dosis'],	
+                        'vacuna_observacion'                =>  trim($rowMSSQL['vacuna_observacion'])
+
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'vacuna_cabecera_codigo'            =>  '',    
+                        'vacuna_cabecera_encuentro_codigo'  =>  '',      	
+                        'vacuna_cabecera_adquirio_covid'          =>  '',    
+                        'vacuna_cabecera_fecha_1'           =>  '', 
+                        'vacuna_cabecera_fecha_2'           =>  '', 	
+                        'vacuna_cabecera_dosis_aplicada'    =>  '',  
+                        'vacuna_cabecera_observacion'       =>  '',  
+                        'vacuna_cabecera_alta_usuario'      =>  '',  
+                        'vacuna_cabecera_alta_fecha_hora'   =>  '',	    
+                        'vacuna_cabecera_alta_ip'           =>  '',  
+
+                        'auditoria_usuario'                 =>  '',
+                        'auditoria_fecha_hora'              =>	'',    
+                        'auditoria_ip'                      =>  '',
+
+                        'competicion_codigo'                =>  '',
+                        'competicion_codigo_padre'          =>  '',
+                        'competicion_estado'                =>  '',
+                        'competicion_nombre'                =>  '',
+
+                        'equipo_codigo'                     =>  '',
+                        'equipo_estado'                     =>  '',
+                        'equipo_nombre'                     =>  '',
+
+                        'persona_codigo'                    =>  '',
+                        'persona_tipo'                      =>  '',
+                        'persona_nombre'                    =>  '',
+                        'persona_apellido'                  =>  '',
+                        'persona_completo'                  =>  '',
+                        'persona_genero'                    =>  '',
+                        'persona_fecha_nacimiento_1'        =>  '',
+                        'persona_fecha_nacimiento_2'        =>  '',
+                        'persona_funcion'                   =>  '',
+
+                        'tipo_estado_codigo'                =>  '',
+                        'tipo_estado_orden'                 =>  '',
+                        'tipo_estado_nombre_ingles'         =>  '',
+                        'tipo_estado_nombre_castellano'     =>  '',
+                        'tipo_estado_nombre_portugues'      =>  '',
+                        'tipo_estado_path'                  =>  '',
+                        'tipo_estado_dominio'               =>  '', 
+                        'tipo_estado_parametro'             =>  '',
+                        'tipo_estado_observacion'           =>  '',
+
+                        'vacuna_codigo'                     =>  '',
+                        'vacuna_orden'                      =>  '',    	
+                        'vacuna_nombre'                     =>  '',  
+                        'vacuna_cantidad_dosis'             =>  '',	
+                        'vacuna_observacion'                =>  ''
+
+
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/700/vacunacabecera/codigo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+
+        if (isset($val01)) { 
+            $sql00  = "SELECT 
+                a.VACVCACOD                     AS          vacuna_cabecera_codigo, 
+                a.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
+                a.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
+                a.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
+                a.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
+                a.VACVCAOBS                     AS          vacuna_cabecera_observacion, 
+                a.VACVCACUS                     AS          vacuna_cabecera_alta_usuario, 
+                a.VACVCACFH                     AS          vacuna_cabecera_alta_fecha_hora, 
+                a.VACVCACIP                     AS          vacuna_cabecera_alta_ip, 
+                
+                a.VACVCAAUS                     AS          auditoria_usuario, 
+                a.VACVCAAFH                     AS          auditoria_fecha_hora, 
+                a.VACVCAAIP                     AS          auditoria_ip,
+                
+                b.DOMFICCOD                     AS          tipo_estado_codigo,
+                b.DOMFICORD                     AS          tipo_estado_orden,
+                b.DOMFICNOI                     AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC                     AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP                     AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT                     AS          tipo_estado_path,
+                b.DOMFICVAL                     AS          tipo_estado_dominio,
+                b.DOMFICPAR                     AS          tipo_estado_parametro,
+                b.DOMFICOBS                     AS          tipo_estado_observacion,
+                
+                c.competitionFifaId             AS          competicion_codigo,
+                c.superiorCompetitionFifaId     AS          competicion_codigo_padre,
+                c.status                        AS          competicion_estado,
+                c.internationalName             AS          competicion_nombre,
+                
+                d.teamFifaId                    AS          equipo_codigo,
+                d.status                        AS          equipo_estado,
+                d.internationalName             AS          equipo_nombre,
+                
+                e.personFifaId                  AS          persona_codigo,
+                e.personType                    AS          persona_tipo,
+                e.internationalFirstName        AS          persona_nombre,
+                e.internationalLastName         AS          persona_apellido,
+                e.gender                        AS          persona_genero,
+                e.dateOfBirth                   AS          persona_fecha_nacimiento,
+                e.playerPosition                AS          persona_funcion,
+                
+                f.VACFICCOD                     AS          vacuna_codigo, 
+                f.VACFICORD                     AS          vacuna_orden, 
+                f.VACFICNOM                     AS          vacuna_nombre, 
+                f.VACFICDOS                     AS          vacuna_cantidad_dosis, 
+                f.VACFICOBS                     AS          vacuna_observacion
+                
+                FROM [vac].[VACVCA] a
+                INNER JOIN [adm].[DOMFIC] b ON a.VACVCAEST          =   b.DOMFICCOD
+                INNER JOIN [comet].[competitions] c ON a.VACVCACOC  =   c.competitionFifaId
+                INNER JOIN [comet].[teams] d ON a.VACVCAEQC         =   d.teamFifaId  
+                INNER JOIN [comet].[persons] e ON a.VACVCAPEC       =   e.personFifaId
+                INNER JOIN [vac].[VACFIC] f ON a.VACVCAVAC          =   f.VACFICCOD
+
+                WHERE a.VACVCACOD = ?
+                
+                ORDER BY a.VACVCACOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                       
+                    if ($rowMSSQL['vacuna_cabecera_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_cabecera_fecha'] == null){
+                        $vacuna_cabecera_fecha_1 = '';
+                        $vacuna_cabecera_fecha_2 = '';
+                    } else {
+                        $vacuna_cabecera_fecha_1 = $rowMSSQL['vacuna_cabecera_fecha'];
+                        $vacuna_cabecera_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_cabecera_fecha']));
+                    }
+                    
+                    if ($rowMSSQL['persona_fecha_nacimiento'] == '1900-01-01' || $rowMSSQL['persona_fecha_nacimiento'] == null){
+                        $persona_fecha_nacimiento_1 = '';
+                        $persona_fecha_nacimiento_2 = '';
+                    } else {
+                        $persona_fecha_nacimiento_1 = $rowMSSQL['persona_fecha_nacimiento'];
+                        $persona_fecha_nacimiento_2 = date('d/m/Y', strtotime($rowMSSQL['persona_fecha_nacimiento']));
+                    }
+                    
+                    $detalle    = array(
+
+                        'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
+                        'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
+                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
+                        'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
+                        'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
+                        'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
+                        'vacuna_cabecera_observacion'       =>  trim($rowMSSQL['vacuna_cabecera_alta_observacion']),
+                        'vacuna_cabecera_alta_usuario'      =>  trim($rowMSSQL['vacuna_cabecera_alta_usuario']),
+                        'vacuna_cabecera_alta_fecha_hora'   =>	$rowMSSQL['vacuna_cabecera_alta_fecha_hora'],    
+                        'vacuna_cabecera_alta_ip'           =>  trim($rowMSSQL['vacuna_cabecera_alta_ip']),
+
+                        'auditoria_usuario'                 =>  trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'              =>	$rowMSSQL['auditoria_fecha_hora'],    
+                        'auditoria_ip'                      =>  trim($rowMSSQL['auditoria_ip']),
+
+                        'tipo_estado_codigo'                => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
+                        'tipo_estado_parametro'             => $rowMSSQL['tipo_estado_parametro'],
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+
+                        'competicion_codigo'                =>  $rowMSSQL['competicion_codigo'],
+                        'competicion_codigo_padre'          =>  $rowMSSQL['competicion_codigo_padre'],
+                        'competicion_estado'                =>  trim($rowMSSQL['competicion_estado']),
+                        'competicion_nombre'                =>  trim($rowMSSQL['competicion_nombre']),
+
+                        'equipo_codigo'                     =>  $rowMSSQL['equipo_codigo'],
+                        'equipo_estado'                     =>  $rowMSSQL['equipo_estado'],
+                        'equipo_nombre'                     =>  trim($rowMSSQL['equipo_nombre']),
+
+                        'persona_codigo'                    => $rowMSSQL['persona_codigo'],
+                        'persona_tipo'                      => strtoupper(strtolower(trim($rowMSSQL['persona_tipo']))),
+                        'persona_nombre'                    => strtoupper(strtolower(trim($rowMSSQL['persona_nombre']))),
+                        'persona_apellido'                  => strtoupper(strtolower(trim($rowMSSQL['persona_apellido']))),
+                        'persona_completo'                  => trim(strtoupper(strtolower($rowMSSQL['persona_apellido']))).', '.trim(strtoupper(strtolower($rowMSSQL['persona_nombre']))),
+                        'persona_genero'                    => strtoupper(strtolower(trim($rowMSSQL['persona_genero']))),
+                        'persona_fecha_nacimiento_1'        => $persona_fecha_nacimiento_1,
+                        'persona_fecha_nacimiento_2'        => $persona_fecha_nacimiento_2,
+                        'persona_funcion'                   => strtoupper(strtolower(trim($rowMSSQL['persona_funcion']))),
+
+                        'vacuna_codigo'                     =>  $rowMSSQL['vacuna_codigo'],
+                        'vacuna_orden'                      =>  $rowMSSQL['vacuna_orden'],    	
+                        'vacuna_nombre'                     =>  trim($rowMSSQL['vacuna_nombre']),  
+                        'vacuna_cantidad_dosis'             =>  $rowMSSQL['vacuna_cantidad_dosis'],	
+                        'vacuna_observacion'                =>  trim($rowMSSQL['vacuna_observacion'])
+
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'vacuna_cabecera_codigo'            =>  '',    
+                        'vacuna_cabecera_encuentro_codigo'  =>  '',      	
+                        'vacuna_cabecera_adquirio_covid'          =>  '',    
+                        'vacuna_cabecera_fecha_1'           =>  '', 
+                        'vacuna_cabecera_fecha_2'           =>  '', 	
+                        'vacuna_cabecera_dosis_aplicada'    =>  '',  
+                        'vacuna_cabecera_observacion'       =>  '',  
+                        'vacuna_cabecera_alta_usuario'      =>  '',  
+                        'vacuna_cabecera_alta_fecha_hora'   =>  '',	    
+                        'vacuna_cabecera_alta_ip'           =>  '',  
+
+                        'auditoria_usuario'                 =>  '',
+                        'auditoria_fecha_hora'              =>	'',    
+                        'auditoria_ip'                      =>  '',
+
+                        'competicion_codigo'                =>  '',
+                        'competicion_codigo_padre'          =>  '',
+                        'competicion_estado'                =>  '',
+                        'competicion_nombre'                =>  '',
+
+                        'equipo_codigo'                     =>  '',
+                        'equipo_estado'                     =>  '',
+                        'equipo_nombre'                     =>  '',
+
+                        'persona_codigo'                    =>  '',
+                        'persona_tipo'                      =>  '',
+                        'persona_nombre'                    =>  '',
+                        'persona_apellido'                  =>  '',
+                        'persona_completo'                  =>  '',
+                        'persona_genero'                    =>  '',
+                        'persona_fecha_nacimiento_1'        =>  '',
+                        'persona_fecha_nacimiento_2'        =>  '',
+                        'persona_funcion'                   =>  '',
+
+                        'tipo_estado_codigo'                =>  '',
+                        'tipo_estado_orden'                 =>  '',
+                        'tipo_estado_nombre_ingles'         =>  '',
+                        'tipo_estado_nombre_castellano'     =>  '',
+                        'tipo_estado_nombre_portugues'      =>  '',
+                        'tipo_estado_path'                  =>  '',
+                        'tipo_estado_dominio'               =>  '', 
+                        'tipo_estado_parametro'             =>  '',
+                        'tipo_estado_observacion'           =>  '',
+
+                        'vacuna_codigo'                     =>  '',
+                        'vacuna_orden'                      =>  '',    	
+                        'vacuna_nombre'                     =>  '',  
+                        'vacuna_cantidad_dosis'             =>  '',	
+                        'vacuna_observacion'                =>  ''
+
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        }else{
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION); 
+        }   
+        
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/700/vacunadetalle/listado', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $sql00  = "SELECT 
+            a.VACVDECOD                     AS          vacuna_detalle_codigo, 
+            a.VACVDEORD                     AS          vacuna_detalle_orden, 
+            a.VACVDENOM                     AS          vacuna_detalle_nombre, 
+            a.VACVDELUG                     AS          vacuna_detalle_lugar, 
+            a.VACVDEADJ                     AS          vacuna_detalle_adjunto, 
+            a.VACVDEOBS                     AS          vacuna_detalle_observacion, 
+            a.VACVDECUS                     AS          vacuna_detalle_alta_usuario, 
+            a.VACVDECFH                     AS          vacuna_detalle_alta_fecha_hora, 
+            a.VACVDECIP                     AS          vacuna_detalle_alta_ip, 
+            
+            a.VACVDEAUS                     AS          auditoria_usuario, 
+            a.VACVDEAFH                     AS          auditoria_fecha_hora, 
+            a.VACVDEAIP                     AS          auditoria_ip,
+            
+            b.DOMFICCOD                     AS          tipo_estado_codigo,
+            b.DOMFICORD                     AS          tipo_estado_orden,
+            b.DOMFICNOI                     AS          tipo_estado_nombre_ingles,
+            b.DOMFICNOC                     AS          tipo_estado_nombre_castellano,
+            b.DOMFICNOP                     AS          tipo_estado_nombre_portugues,
+            b.DOMFICPAT                     AS          tipo_estado_path,
+            b.DOMFICVAL                     AS          tipo_estado_dominio,
+            b.DOMFICPAR                     AS          tipo_estado_parametro,
+            b.DOMFICOBS                     AS          tipo_estado_observacion,
+            
+            c.DOMFICCOD                     AS          tipo_dosis_codigo,
+            c.DOMFICORD                     AS          tipo_dosis_orden,
+            c.DOMFICNOI                     AS          tipo_dosis_nombre_ingles,
+            c.DOMFICNOC                     AS          tipo_dosis_nombre_castellano,
+            c.DOMFICNOP                     AS          tipo_dosis_nombre_portugues,
+            c.DOMFICPAT                     AS          tipo_dosis_path,
+            c.DOMFICVAL                     AS          tipo_dosis_dominio,
+            c.DOMFICPAR                     AS          tipo_dosis_parametro,
+            c.DOMFICOBS                     AS          tipo_dosis_observacion,
+            
+            d.LOCCIUCOD                     AS          localidad_ciudad_codigo,
+            d.LOCCIUORD                     AS          localidad_ciudad_orden,
+            d.LOCCIUNOM                     AS          localidad_ciudad_nombre,
+            d.LOCCIUOBS                     AS          localidad_ciudad_observacion,
+            
+            e.LOCPAICOD                     AS          localidad_pais_codigo,
+            e.LOCPAIORD                     AS          localidad_pais_orden,
+            e.LOCPAINOM                     AS          localidad_pais_nombre,
+            e.LOCPAIPAT                     AS          localidad_pais_path,
+            e.LOCPAIIC2                     AS          localidad_pais_iso_char2,
+            e.LOCPAIIC3                     AS          localidad_pais_iso_char3,
+            e.LOCPAIIN3                     AS          localidad_pais_iso_num3,
+            e.LOCPAIOBS                     AS          localidad_pais_observacion,
+            
+            f.VACVCACOD                     AS          vacuna_cabecera_codigo, 
+            f.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
+            f.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
+            f.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
+            f.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
+            f.VACVCAOBS                     AS          vacuna_cabecera_observacion 
+            
+            FROM [vac].[VACVDE] a
+            INNER JOIN [adm].[DOMFIC] b ON a.VACVDEEST     =   b.DOMFICCOD
+            INNER JOIN [adm].[DOMFIC] c ON a.VACVDETDC     =   c.DOMFICCOD
+            INNER JOIN [adm].[LOCCIU] d ON a.VACVDECIC     =   d.LOCCIUCOD
+            INNER JOIN [adm].[LOCPAI] e ON d.LOCCIUPAC     =   e.LOCPAICOD
+            INNER JOIN [vac].[VACVCA] f ON a.VACVDECAC     =   f.VACVCACOD
+            
+            ORDER BY a.VACVDECOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute(); 
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    $detalle    = array(
+
+                        'vacuna_detalle_codigo'             =>  $rowMSSQL['vacuna_detalle_codigo'],
+                        'vacuna_detalle_orden'              =>  $rowMSSQL['vacuna_detalle_orden'],    	
+                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']),  
+                        'vacuna_detalle_lugar'              =>  trim($rowMSSQL['vacuna_detalle_lugar']),
+                        'vacuna_detalle_adjunto'            =>  trim(strtolower($rowMSSQL['vacuna_detalle_adjunto'])),
+                        'vacuna_detalle_observacion'        =>  trim($rowMSSQL['vacuna_detalle_observacion']),
+                        'vacuna_detalle_alta_usuario'       =>  trim($rowMSSQL['vacuna_detalle_alta_usuario']),
+                        'vacuna_detalle_alta_fecha_hora'    =>	$rowMSSQL['vacuna_detalle_alta_fecha_hora'],    
+                        'vacuna_detalle_alta_ip'            =>  trim($rowMSSQL['vacuna_detalle_alta_ip']),
+
+                        'auditoria_usuario'                 =>  trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'              =>	$rowMSSQL['auditoria_fecha_hora'],    
+                        'auditoria_ip'                      =>  trim($rowMSSQL['auditoria_ip']),
+
+                        'tipo_estado_codigo'                => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
+                        'tipo_estado_parametro'             => $rowMSSQL['tipo_estado_parametro'],
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+
+                        'tipo_dosis_codigo'                 => $rowMSSQL['tipo_dosis_codigo'],
+                        'tipo_dosis_orden'                  => $rowMSSQL['tipo_dosis_orden'],
+                        'tipo_dosis_nombre_ingles'          => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_nombre_ingles']))),
+                        'tipo_dosis_nombre_castellano'      => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_nombre_castellano']))),
+                        'tipo_dosis_nombre_portugues'       => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_nombre_portugues']))),
+                        'tipo_dosis_path'                   => trim(strtolower($rowMSSQL['tipo_dosis_path'])),
+                        'tipo_dosis_dominio'                => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_dominio']))), 
+                        'tipo_dosis_parametro'              => $rowMSSQL['tipo_dosis_parametro'],
+                        'tipo_dosis_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_observacion']))),
+
+                        'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
+                        'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
+                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
+                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+
+                        'localidad_pais_codigo'             => $rowMSSQL['localidad_pais_codigo'],
+                        'localidad_pais_orden'              => $rowMSSQL['localidad_pais_orden'],
+                        'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_nombre']))),
+                        'localidad_pais_path'               => trim(strtolower($rowMSSQL['localidad_pais_path'])),
+                        'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char2']))),
+                        'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char3']))),
+                        'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_num3'])))),
+                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion']))),
+
+                        
+                        'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
+                        'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
+                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
+                        'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
+                        'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
+                        'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
+                        'vacuna_cabecera_observacion'       =>  trim($rowMSSQL['vacuna_cabecera_alta_observacion'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        
+                        'vacuna_detalle_codigo'             =>  '',
+                        'vacuna_detalle_orden'              =>  '',    	
+                        'vacuna_detalle_nombre'             =>  '',  
+                        'vacuna_detalle_lugar'              =>  '',
+                        'vacuna_detalle_adjunto'            =>  '',
+                        'vacuna_detalle_observacion'        =>  '',
+                        'vacuna_detalle_alta_usuario'       =>  '',
+                        'vacuna_detalle_alta_fecha_hora'    =>	'',    
+                        'vacuna_detalle_alta_ip'            =>  '',
+
+                        'auditoria_usuario'                 =>  '',
+                        'auditoria_fecha_hora'              =>	'',    
+                        'auditoria_ip'                      =>  '',
+
+                        'tipo_estado_codigo'                =>  '',
+                        'tipo_estado_orden'                 =>  '',
+                        'tipo_estado_nombre_ingles'         =>  '',
+                        'tipo_estado_nombre_castellano'     =>  '',
+                        'tipo_estado_nombre_portugues'      =>  '',
+                        'tipo_estado_path'                  =>  '',
+                        'tipo_estado_dominio'               =>  '', 
+                        'tipo_estado_parametro'             =>  '',
+                        'tipo_estado_observacion'           =>  '',
+
+                        'tipo_dosis_codigo'                 =>  '',
+                        'tipo_dosis_orden'                  =>  '',
+                        'tipo_dosis_nombre_ingles'          =>  '',
+                        'tipo_dosis_nombre_castellano'      =>  '',
+                        'tipo_dosis_nombre_portugues'       =>  '',
+                        'tipo_dosis_path'                   =>  '',
+                        'tipo_dosis_dominio'                =>  '', 
+                        'tipo_dosis_parametro'              =>  '',
+                        'tipo_dosis_observacion'            =>  '',
+
+                        'localidad_ciudad_codigo'           =>  '',
+                        'localidad_ciudad_orden'            =>  '',
+                        'localidad_ciudad_nombre'           =>  '',
+                        'localidad_ciudad_observacion'      =>  '',
+
+                        'localidad_pais_codigo'             =>  '',
+                        'localidad_pais_orden'              =>  '',
+                        'localidad_pais_nombre'             =>  '',
+                        'localidad_pais_path'               =>  '',
+                        'localidad_pais_iso_char2'          =>  '',
+                        'localidad_pais_iso_char3'          =>  '',
+                        'localidad_pais_iso_num3'           =>  '',
+                        'localidad_pais_observacion'        =>  '',
+
+                        
+                        'vacuna_cabecera_codigo'            =>  '',
+                        'vacuna_cabecera_encuentro_codigo'  =>  '',    	
+                        'vacuna_cabecera_adquirio_covid'          =>  '',  
+                        'vacuna_cabecera_fecha_1'           =>  '',
+                        'vacuna_cabecera_fecha_2'           =>  '',	
+                        'vacuna_cabecera_dosis_aplicada'    =>  '',
+                        'vacuna_cabecera_observacion'       =>  ''
+
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/700/vacunadetalle/codigo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+
+        if(isset($val01)){
+        
+            $sql00  = "SELECT 
+                a.VACVDECOD                     AS          vacuna_detalle_codigo, 
+                a.VACVDEORD                     AS          vacuna_detalle_orden, 
+                a.VACVDENOM                     AS          vacuna_detalle_nombre, 
+                a.VACVDELUG                     AS          vacuna_detalle_lugar, 
+                a.VACVDEADJ                     AS          vacuna_detalle_adjunto, 
+                a.VACVDEOBS                     AS          vacuna_detalle_observacion, 
+                a.VACVDECUS                     AS          vacuna_detalle_alta_usuario, 
+                a.VACVDECFH                     AS          vacuna_detalle_alta_fecha_hora, 
+                a.VACVDECIP                     AS          vacuna_detalle_alta_ip, 
+                
+                a.VACVDEAUS                     AS          auditoria_usuario, 
+                a.VACVDEAFH                     AS          auditoria_fecha_hora, 
+                a.VACVDEAIP                     AS          auditoria_ip,
+                
+                b.DOMFICCOD                     AS          tipo_estado_codigo,
+                b.DOMFICORD                     AS          tipo_estado_orden,
+                b.DOMFICNOI                     AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC                     AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP                     AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT                     AS          tipo_estado_path,
+                b.DOMFICVAL                     AS          tipo_estado_dominio,
+                b.DOMFICPAR                     AS          tipo_estado_parametro,
+                b.DOMFICOBS                     AS          tipo_estado_observacion,
+                
+                c.DOMFICCOD                     AS          tipo_dosis_codigo,
+                c.DOMFICORD                     AS          tipo_dosis_orden,
+                c.DOMFICNOI                     AS          tipo_dosis_nombre_ingles,
+                c.DOMFICNOC                     AS          tipo_dosis_nombre_castellano,
+                c.DOMFICNOP                     AS          tipo_dosis_nombre_portugues,
+                c.DOMFICPAT                     AS          tipo_dosis_path,
+                c.DOMFICVAL                     AS          tipo_dosis_dominio,
+                c.DOMFICPAR                     AS          tipo_dosis_parametro,
+                c.DOMFICOBS                     AS          tipo_dosis_observacion,
+                
+                d.LOCCIUCOD                     AS          localidad_ciudad_codigo,
+                d.LOCCIUORD                     AS          localidad_ciudad_orden,
+                d.LOCCIUNOM                     AS          localidad_ciudad_nombre,
+                d.LOCCIUOBS                     AS          localidad_ciudad_observacion,
+                
+                e.LOCPAICOD                     AS          localidad_pais_codigo,
+                e.LOCPAIORD                     AS          localidad_pais_orden,
+                e.LOCPAINOM                     AS          localidad_pais_nombre,
+                e.LOCPAIPAT                     AS          localidad_pais_path,
+                e.LOCPAIIC2                     AS          localidad_pais_iso_char2,
+                e.LOCPAIIC3                     AS          localidad_pais_iso_char3,
+                e.LOCPAIIN3                     AS          localidad_pais_iso_num3,
+                e.LOCPAIOBS                     AS          localidad_pais_observacion,
+                
+                f.VACVCACOD                     AS          vacuna_cabecera_codigo, 
+                f.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
+                f.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
+                f.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
+                f.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
+                f.VACVCAOBS                     AS          vacuna_cabecera_observacion 
+                
+                FROM [vac].[VACVDE] a
+                INNER JOIN [adm].[DOMFIC] b ON a.VACVDEEST     =   b.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] c ON a.VACVDETDC     =   c.DOMFICCOD
+                INNER JOIN [adm].[LOCCIU] d ON a.VACVDECIC     =   d.LOCCIUCOD
+                INNER JOIN [adm].[LOCPAI] e ON d.LOCCIUPAC     =   e.LOCPAICOD
+                INNER JOIN [vac].[VACVCA] f ON a.VACVDECAC     =   f.VACVCACOD
+                
+                ORDER BY a.VACVDECOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]); 
+
+                while ($rowMSSQL    = $stmtMSSQL->fetch()) {
+                    $detalle        = array(
+
+                        'vacuna_detalle_codigo'             =>  $rowMSSQL['vacuna_detalle_codigo'],
+                        'vacuna_detalle_orden'              =>  $rowMSSQL['vacuna_detalle_orden'],    	
+                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']),  
+                        'vacuna_detalle_lugar'              =>  trim($rowMSSQL['vacuna_detalle_lugar']),
+                        'vacuna_detalle_adjunto'            =>  trim(strtolower($rowMSSQL['vacuna_detalle_adjunto'])),
+                        'vacuna_detalle_observacion'        =>  trim($rowMSSQL['vacuna_detalle_observacion']),
+                        'vacuna_detalle_alta_usuario'       =>  trim($rowMSSQL['vacuna_detalle_alta_usuario']),
+                        'vacuna_detalle_alta_fecha_hora'    =>	$rowMSSQL['vacuna_detalle_alta_fecha_hora'],    
+                        'vacuna_detalle_alta_ip'            =>  trim($rowMSSQL['vacuna_detalle_alta_ip']),
+
+                        'auditoria_usuario'                 =>  trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'              =>	$rowMSSQL['auditoria_fecha_hora'],    
+                        'auditoria_ip'                      =>  trim($rowMSSQL['auditoria_ip']),
+
+                        'tipo_estado_codigo'                => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
+                        'tipo_estado_parametro'             => $rowMSSQL['tipo_estado_parametro'],
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+
+                        'tipo_dosis_codigo'                 => $rowMSSQL['tipo_dosis_codigo'],
+                        'tipo_dosis_orden'                  => $rowMSSQL['tipo_dosis_orden'],
+                        'tipo_dosis_nombre_ingles'          => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_nombre_ingles']))),
+                        'tipo_dosis_nombre_castellano'      => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_nombre_castellano']))),
+                        'tipo_dosis_nombre_portugues'       => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_nombre_portugues']))),
+                        'tipo_dosis_path'                   => trim(strtolower($rowMSSQL['tipo_dosis_path'])),
+                        'tipo_dosis_dominio'                => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_dominio']))), 
+                        'tipo_dosis_parametro'              => $rowMSSQL['tipo_dosis_parametro'],
+                        'tipo_dosis_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_observacion']))),
+
+                        'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
+                        'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
+                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
+                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+
+                        'localidad_pais_codigo'             => $rowMSSQL['localidad_pais_codigo'],
+                        'localidad_pais_orden'              => $rowMSSQL['localidad_pais_orden'],
+                        'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_nombre']))),
+                        'localidad_pais_path'               => trim(strtolower($rowMSSQL['localidad_pais_path'])),
+                        'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char2']))),
+                        'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char3']))),
+                        'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_num3'])))),
+                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion']))),
+
+                        
+                        'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
+                        'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
+                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
+                        'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
+                        'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
+                        'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
+                        'vacuna_cabecera_observacion'       =>  trim($rowMSSQL['vacuna_cabecera_alta_observacion'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        
+                        'vacuna_detalle_codigo'             =>  '',
+                        'vacuna_detalle_orden'              =>  '',    	
+                        'vacuna_detalle_nombre'             =>  '',  
+                        'vacuna_detalle_lugar'              =>  '',
+                        'vacuna_detalle_adjunto'            =>  '',
+                        'vacuna_detalle_observacion'        =>  '',
+                        'vacuna_detalle_alta_usuario'       =>  '',
+                        'vacuna_detalle_alta_fecha_hora'    =>	'',    
+                        'vacuna_detalle_alta_ip'            =>  '',
+
+                        'auditoria_usuario'                 =>  '',
+                        'auditoria_fecha_hora'              =>	'',    
+                        'auditoria_ip'                      =>  '',
+
+                        'tipo_estado_codigo'                =>  '',
+                        'tipo_estado_orden'                 =>  '',
+                        'tipo_estado_nombre_ingles'         =>  '',
+                        'tipo_estado_nombre_castellano'     =>  '',
+                        'tipo_estado_nombre_portugues'      =>  '',
+                        'tipo_estado_path'                  =>  '',
+                        'tipo_estado_dominio'               =>  '', 
+                        'tipo_estado_parametro'             =>  '',
+                        'tipo_estado_observacion'           =>  '',
+
+                        'tipo_dosis_codigo'                 =>  '',
+                        'tipo_dosis_orden'                  =>  '',
+                        'tipo_dosis_nombre_ingles'          =>  '',
+                        'tipo_dosis_nombre_castellano'      =>  '',
+                        'tipo_dosis_nombre_portugues'       =>  '',
+                        'tipo_dosis_path'                   =>  '',
+                        'tipo_dosis_dominio'                =>  '', 
+                        'tipo_dosis_parametro'              =>  '',
+                        'tipo_dosis_observacion'            =>  '',
+
+                        'localidad_ciudad_codigo'           =>  '',
+                        'localidad_ciudad_orden'            =>  '',
+                        'localidad_ciudad_nombre'           =>  '',
+                        'localidad_ciudad_observacion'      =>  '',
+
+                        'localidad_pais_codigo'             =>  '',
+                        'localidad_pais_orden'              =>  '',
+                        'localidad_pais_nombre'             =>  '',
+                        'localidad_pais_path'               =>  '',
+                        'localidad_pais_iso_char2'          =>  '',
+                        'localidad_pais_iso_char3'          =>  '',
+                        'localidad_pais_iso_num3'           =>  '',
+                        'localidad_pais_observacion'        =>  '',
+
+                        
+                        'vacuna_cabecera_codigo'            =>  '',
+                        'vacuna_cabecera_encuentro_codigo'  =>  '',    	
+                        'vacuna_cabecera_adquirio_covid'          =>  '',  
+                        'vacuna_cabecera_fecha_1'           =>  '',
+                        'vacuna_cabecera_fecha_2'           =>  '',	
+                        'vacuna_cabecera_dosis_aplicada'    =>  '',
+                        'vacuna_cabecera_observacion'       =>  ''
+
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        }else{
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION); 
+        }    
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+
