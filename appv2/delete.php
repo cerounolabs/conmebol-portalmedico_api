@@ -502,7 +502,7 @@
 
     /*MODULO VACUNACION*/
 
-    /*$app->delete('/v2/700/vacuna/{codigo}', function($request) {
+    $app->delete('/v2/700/vacuna/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val00      = $request->getAttribute('codigo'); 
@@ -668,4 +668,3 @@
         
         return $json;
     });
-*/
