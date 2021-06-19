@@ -985,7 +985,7 @@
                     VACVCAPOS = ?, 
                     VACVCAFEC = ?, 
                     VACVCADAP = ?, 
-                    ACVCAOBS  = ?, 
+                    VACVCAOBS  = ?, 
                     VACVCAAUS = ?, 
                     VACVCAAFH = GETDATE(), 
                     VACVCAAIP = ? WHERE VACVCACOD = ?";                                                                                                                                        
