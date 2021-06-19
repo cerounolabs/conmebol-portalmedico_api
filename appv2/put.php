@@ -976,7 +976,20 @@
 
             switch ($val00_1) {
                 case 1:
-                    $sql00  = "UPDATE [vac].[VACVCA] SET VACVCAEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR = ?), VACVCACOC = ?, VACVCAENC = ?, VACVCAEQC = ?, VACVCAPEC = ?, VACVCAVAC = ?, VACVCAPOS = ?, VACVCAFEC = ?, VACVCADAP = ?, VACVCAOBS = ?, VACVCAAUS = ?, VACVCAAFH = GETDATE(), VACVCAAIP = ? WHERE VACVCACOD = ?";                                                                                                                                        
+                    $sql00  = "UPDATE [vac].[VACVCA] SET VACVCAEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR = ?), 
+                    VACVCACOC = ?, 
+                    VACVCAENC = ?, 
+                    VACVCAEQC = ?, 
+                    VACVCAPEC = ?, 
+                    VACVCAVAC = ?, 
+                    VACVCAPOS = ?, 
+                    VACVCAFEC = ?, 
+                    VACVCADAP = ?, 
+                    VACVCAOBS = ?, 
+                    VACVCAAUS = ?, 
+                    VACVCAAFH = GETDATE(), 
+                    VACVCAAIP = ? 
+                    WHERE VACVCACOD = ?";                                                                                                                                        
                     break;
 
                 case 2;
