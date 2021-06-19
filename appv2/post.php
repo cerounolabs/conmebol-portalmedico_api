@@ -1379,7 +1379,7 @@
             SELECT (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?),         ?,         ?,         ?,          ?,         ?,         ?,         ?,          ?, GETDATE(),        ?,         ?, GETDATE(),        ?
             WHERE NOT EXISTS (SELECT *FROM [vac].[VACVDE] WHERE VACVDETDC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?) AND VACVDECAC = ?)";                                                                            
 
-            $sql03  = "SELECT MAX(VACVDECOD) AS vacuna_codigo FROM [vac].[VACVDE]";
+            $sql03  = "SELECT MAX(VACVDECOD) AS vacuna_detalle_codigo FROM [vac].[VACVDE]";
             
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
