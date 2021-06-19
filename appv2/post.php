@@ -1304,10 +1304,9 @@
             $sql02  = "SELECT MAX(VACVCACOD) AS vacuna_cabecera_codigo FROM [vac].[VACVCA]";
 
             $sql03  = "INSERT INTO [vac].[VACVDE](                                                     VACVDEEST,                                                                                    VACVDETDC,                                               VACVDECIC, VACVDECAC, VACVDEORD,  VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
-            VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ? ), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ? ), (SELECT LOCCIUCOD FROM adm.LOCCIU WHERE LOCCIUPAR = 0),          ?,        ?,      ''    ,         ?,  GETDATE(),        ?,         ?, GETDATE(),      ?)";
+            SELECT (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ? ), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ? ), (SELECT LOCCIUCOD FROM adm.LOCCIU WHERE LOCCIUPAR = 0),          ?,        ?,      ''    ,         ?,  GETDATE(),        ?,         ?, GETDATE(),      ?)
+            WHERE NOT EXISTS (SELECT * FROM [vac].[VACVDE] WHERE VACVDETDC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?) AND VACVDECAC = ?)";
                                             
-
-            
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
@@ -1325,7 +1324,7 @@
                $codigo          =   $row_mssql02['vacuna_cabecera_codigo'];
 
                 for ($i=0; $i < $VACFICDOS; $i++) { 
-                    $stmtMSSQL03->execute([$val01, ($i+1), $codigo , ($i+1), $val11, $val13, $aud01, $aud03]);
+                    $stmtMSSQL03->execute([$val01, ($i+1), $codigo , ($i+1), $val11, $val13, $aud01, $aud03, ($i+1), $codigo]);
                 }
                 
                 header("Content-Type: application/json; charset=utf-8");
