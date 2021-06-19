@@ -1300,7 +1300,7 @@
             
             /*$sql01  = "INSERT INTO [vac].[VACVCA](                                                      VACVCAEST, VACVCACOC, VACVCAENC, VACVCAEQC, VACVCAPEC, VACVCAVAC, VACVCAPOS, VACVCAFEC, VACVCADAP, VACVCAOBS, VACVCACUS, VACVCACFH, VACVCACIP, VACVCAAUS, VACVCAAFH, VACVCAAIP) 
             VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR =  ?),         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(),         ?)";
-*/
+            */
             $sql02  = "SELECT MAX(VACVCACOD) AS vacuna_cabecera_codigo FROM [vac].[VACVCA]";
 
             $sql03  = "INSERT INTO [vac].[VACVDE](                                                     VACVDEEST,                                                                                    VACVDETDC,                                               VACVDECIC, VACVDECAC, VACVDEORD,  VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
@@ -1317,12 +1317,12 @@
 
                 $stmtMSSQL->execute([$val05]);
                 $row_mssql00    =   $stmtMSSQL->fetch(PDO::FETCH_ASSOC);
-                $VACFICDOS      =   $row_mssql00['vacuna_cantidad_dosis'];
+                $VACFICDOS      =   intval($row_mssql00['vacuna_cantidad_dosis']);
 
                // $stmtMSSQL01->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $val11, $val13, $aud01, $aud03]);
                $stmtMSSQL02->execute();
                $row_mssql02     =   $stmtMSSQL02->fetch(PDO::FETCH_ASSOC);
-                $codigo         =   $row_mssql02['vacuna_cabecera_codigo'];
+               $codigo          =   $row_mssql02['vacuna_cabecera_codigo'];
 
                 for ($i=0; $i < $VACFICDOS; $i++) { 
                     $stmtMSSQL03->execute([$val01, ($i+1), $codigo , ($i+1), $val11, $val13, $aud01, $aud03]);
@@ -1394,23 +1394,26 @@
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val04]);
                 $row_mssql      =   $stmtMSSQL->fetch(PDO::FETCH_ASSOC);
                 $VACVCAVAC      =   $row_mssql['vacuna_codigo'];
-                $stmtMSSQL->execute([$val04]);
+                
                 //$stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03]); 
 
                 $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
+                $stmtMSSQL01->execute([$VACVCAVAC]);
                 $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
                 $VACFICDOS      =   $row_mssql01['vacuna_cantidad_dosis']+1;
-                $stmtMSSQL01->execute([$VACVCAVAC]);
-
+                
                 $stmtMSSQL03    =   $connMSSQL->prepare($sql03);
                 $stmtMSSQL03->execute();
                 $row_mssql03    =   $stmtMSSQL03->fetch(PDO::FETCH_ASSOC);
                 $codigo         =   $row_mssql03['vacuna_detalle_codigo'];
 
+                $stmtMSSQL02    =   $connMSSQL->prepare($sql02);
+
                 for ($i=0; $i < $VACFICDOS; $i++) { 
-                    $stmtMSSQL02->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $val02, $val04, $aud01, $aud03]);
+                    $stmtMSSQL02->execute([$val01, ($i+1), $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $val02, $val04, $aud01, $aud03]);
                 }
 
                 header("Content-Type: application/json; charset=utf-8");
