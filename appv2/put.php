@@ -948,7 +948,7 @@
         return $json;
     });
 
-    /*$app->put('/v2/700/vacunacabecera/{codigo}', function($request) {
+    $app->put('/v2/700/vacunacabecera/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $val00      = $request->getAttribute('codigo'); 
@@ -965,7 +965,7 @@
         $val10      = trim($request->getParsedBody()['vacuna_cabecera_observacion']);
         $val11      = trim($request->getParsedBody()['vacuna_cabecera_alta_usuario']);
         $val12      = $request->getParsedBody()['vacuna_cabecera_alta_fecha_hora'];
-        $val13      = trim($request->getParsedBody()['vacuna_cabecera_alta_ip']);     
+        $val13      = trim($request->getParsedBody()['vacuna_cabecera_alta_ip']);   
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -975,18 +975,25 @@
             $sql00  = "";
 
             switch ($val00_1) {
-                case 1:
+                /*case 1:
                     $sql00  = "UPDATE [vac].[VACVCA] SET VACVCAEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR = ?), 
                     VACVCACOC = ?, 
                     VACVCAENC = ?, 
                     VACVCAEQC = ?, 
                     VACVCAPEC = ?, 
-                    VACVCAVAC = ?, VACVCAPOS = ?, VACVCAFEC = ?, VACVCADAP = ?, VACVCAOBS = ?, VACVCAAUS = ?, VACVCAAFH = GETDATE(), VACVCAAIP = ? WHERE VACVCACOD = ?";                                                                                                                                        
-                    break;
+                    VACVCAVAC = ?, 
+                    VACVCAPOS = ?, 
+                    VACVCAFEC = ?, 
+                    VACVCADAP = ?, 
+                    ACVCAOBS  = ?, 
+                    VACVCAAUS = ?, 
+                    VACVCAAFH = GETDATE(), 
+                    VACVCAAIP = ? WHERE VACVCACOD = ?";                                                                                                                                        
+                break;*/
 
                 case 2;
                     $sql00  = "UPDATE [vac].[VACVCA] SET VACVCAEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR = ?), VACVCAAUS = ?, VACVCAAFH = GETDATE(), VACVCAAIP = ? WHERE VACVCACOD = ?";
-                    break;
+                break;
             }   
             
             try {
@@ -994,13 +1001,13 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
                 switch ($val00_1) {
-                    case 1:
-                       // $stmtMSSQL->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $aud01, $aud03, $val00]);
-                    break;
+                    /*case 1:
+                        $stmtMSSQL->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $aud01, $aud03, $val00]);
+                    break;*/
 
                     case 2:
-                        //$stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
-                        break;
+                        $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
+                    break;
                 }
                 
                 header("Content-Type: application/json; charset=utf-8");
@@ -1021,7 +1028,7 @@
         $connMSSQL  = null;
         
         return $json;
-    });*/
+    });
 
     $app->put('/v2/700/vacunacabecera/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
