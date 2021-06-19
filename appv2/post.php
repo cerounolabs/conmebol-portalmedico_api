@@ -1317,7 +1317,7 @@
 
                 $stmtMSSQL->execute([$val05]);
                 $row_mssql00    =   $stmtMSSQL->fetch(PDO::FETCH_ASSOC);
-                $VACFICDOS      =   $row_mssql00['vacuna_cantidad_dosis'] + 1;
+                $VACFICDOS      =   $row_mssql00['vacuna_cantidad_dosis'];
 
                // $stmtMSSQL01->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $val11, $val13, $aud01, $aud03]);
                $stmtMSSQL02->execute();
