@@ -1301,7 +1301,6 @@
             $sql01  = "INSERT INTO [vac].[VACVCA](                                                      VACVCAEST, VACVCACOC, VACVCAENC, VACVCAEQC, VACVCAPEC, VACVCAVAC, VACVCAPOS, VACVCAFEC, VACVCADAP, VACVCAOBS, VACVCACUS, VACVCACFH, VACVCACIP, VACVCAAUS, VACVCAAFH, VACVCAAIP) 
             VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR =  ?),         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(),         ?)";
 
-                                                                                                            
             $sql02  = "INSERT INTO [vac].[VACVDE](                                                     VACVDEEST,                                                                                    VACVDETDC,                                               VACVDECIC, VACVDECAC, VACVDEORD,  VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
             VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ? ), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ? ), (SELECT LOCCIUCOD FROM adm.LOCCIU WHERE LOCCIUPAR = 0),          ?,        ?,      ''    ,         ?,  GETDATE(),        ?,         ?, GETDATE(),      ?)";
                                             
@@ -1318,7 +1317,7 @@
                 $row_mssql00    =   $stmtMSSQL->fetch(PDO::FETCH_ASSOC);
                 $VACFICDOS      =   $row_mssql00['vacuna_cantidad_dosis'] + 1;
 
-                $stmtMSSQL01->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $val11, $val12, $val13]);
+                $stmtMSSQL01->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $val11, $val13, $aud01, $aud03]);
                 $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
                 $codigo         =   $row_mssql01['vacuna_cabecera_codigo'];
 
