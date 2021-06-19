@@ -16807,7 +16807,7 @@
 
 /*MODULO VACUNACION*/
 
-   /* $app->get('/v2/700/vacuna/listado', function($request) {
+   $app->get('/v2/900/vacuna/listado', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $sql00  = "SELECT 
@@ -16854,7 +16854,7 @@
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
                 $stmtMSSQL->execute(); 
 
-               /* while ($rowMSSQL = $stmtMSSQL->fetch()) {
+               while ($rowMSSQL = $stmtMSSQL->fetch()) {
 
                     $detalle    = array(
 
@@ -16948,9 +16948,9 @@
         $connMSSQL  = null;
         
         return $json;
-    });*/
+    });
 
-    $app->get('/v2/700/vacuna/codigo/{codigo}', function($request) {
+    $app->get('/v2/900/vacuna/codigo/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
         $val01      = $request->getAttribute('codigo');
