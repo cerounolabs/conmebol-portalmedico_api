@@ -1392,17 +1392,17 @@
                 $stmtMSSQL01->execute([$VACVCAVAC]);
                 $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
                 $VACFICDOS      =   intval($row_mssql01['vacuna_cantidad_dosis']);
-                
-                $stmtMSSQL03    =   $connMSSQL->prepare($sql03);
-                $stmtMSSQL03->execute();
-                $row_mssql03    =   $stmtMSSQL03->fetch(PDO::FETCH_ASSOC);
-                $codigo         =   $row_mssql03['vacuna_detalle_codigo'];
 
                 $stmtMSSQL02    =   $connMSSQL->prepare($sql02);
 
                 for ($i=0; $i < $VACFICDOS; $i++) { 
                     $stmtMSSQL02->execute([$val01, ($i+1), $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03, ($i+1), $val04]);
                 }
+
+                $stmtMSSQL03    =   $connMSSQL->prepare($sql03);
+                $stmtMSSQL03->execute();
+                $row_mssql03    =   $stmtMSSQL03->fetch(PDO::FETCH_ASSOC);
+                $codigo         =   $row_mssql03['vacuna_detalle_codigo'];
 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
