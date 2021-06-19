@@ -1220,7 +1220,7 @@
 
         if (isset($val01) && isset($val02)  && isset($val04) && isset($val05)) {
             $sql00  = "INSERT INTO [vac].[VACFIC](                                                       VACFICEST, VACFICPAC, VACFICORD, VACFICNOM, VACFICDOS, VACFICOBS, VACFICCUS, VACFICCFH, VACFICCIP, VACFICAUS, VACFICAFH, VACFICAIP) 
-                        VALUES((SELECT DOMFICCOD adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?),         ?,         ?,        ?,          ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(), ?)";
+                        VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?),         ?,         ?,        ?,          ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(), ?)";
                 
             $sql01  = "SELECT MAX(VACFICCOD) AS vacuna_codigo FROM [vac].[VACFIC]";
             

@@ -897,7 +897,7 @@
             switch ($val00_1) {
                 case 1:
                     $sql00  = "UPDATE [vac].[VACFIC] SET 
-                    VACFICEST = (SELECT DOMFICCOD adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?), 
+                    VACFICEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACUNAESTADO' AND DOMFICPAR = ?), 
                     VACFICPAC = ?, 
                     VACFICORD = ?, 
                     VACFICNOM = ?, 
