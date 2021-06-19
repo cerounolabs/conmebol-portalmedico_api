@@ -1298,18 +1298,20 @@
                 FROM [vac].[VACFIC] 
                 WHERE VACFICCOD = ?";
             
-            $sql01  = "INSERT INTO [vac].[VACVCA](                                                      VACVCAEST, VACVCACOC, VACVCAENC, VACVCAEQC, VACVCAPEC, VACVCAVAC, VACVCAPOS, VACVCAFEC, VACVCADAP, VACVCAOBS, VACVCACUS, VACVCACFH, VACVCACIP, VACVCAAUS, VACVCAAFH, VACVCAAIP) 
+            /*$sql01  = "INSERT INTO [vac].[VACVCA](                                                      VACVCAEST, VACVCACOC, VACVCAENC, VACVCAEQC, VACVCAPEC, VACVCAVAC, VACVCAPOS, VACVCAFEC, VACVCADAP, VACVCAOBS, VACVCACUS, VACVCACFH, VACVCACIP, VACVCAAUS, VACVCAAFH, VACVCAAIP) 
             VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR =  ?),         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?,         ?, GETDATE(),         ?,         ?, GETDATE(),         ?)";
+*/
+            $sql02  = "SELECT MAX(VACVCACOD) AS vacuna_cabecera_codigo FROM [vac].[VACVCA]";
 
-            $sql02  = "INSERT INTO [vac].[VACVDE](                                                     VACVDEEST,                                                                                    VACVDETDC,                                               VACVDECIC, VACVDECAC, VACVDEORD,  VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
+            $sql03  = "INSERT INTO [vac].[VACVDE](                                                     VACVDEEST,                                                                                    VACVDETDC,                                               VACVDECIC, VACVDECAC, VACVDEORD,  VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
             VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ? ), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ? ), (SELECT LOCCIUCOD FROM adm.LOCCIU WHERE LOCCIUPAR = 0),          ?,        ?,      ''    ,         ?,  GETDATE(),        ?,         ?, GETDATE(),      ?)";
                                             
-            $sql03  = "SELECT MAX(VACVCACOD) AS vacuna_codigo FROM [vac].[VACVCA]";
+           
             
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
-                $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
+                //$stmtMSSQL01    =   $connMSSQL->prepare($sql01);
                 $stmtMSSQL02    =   $connMSSQL->prepare($sql02);
                 $stmtMSSQL03    =   $connMSSQL->prepare($sql03);
 
@@ -1317,24 +1319,24 @@
                 $row_mssql00    =   $stmtMSSQL->fetch(PDO::FETCH_ASSOC);
                 $VACFICDOS      =   $row_mssql00['vacuna_cantidad_dosis'] + 1;
 
-                $stmtMSSQL01->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $val11, $val13, $aud01, $aud03]);
-                $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
-                $codigo         =   $row_mssql01['vacuna_cabecera_codigo'];
+               // $stmtMSSQL01->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $val11, $val13, $aud01, $aud03]);
+                $row_mssql02    =   $stmtMSSQL02->fetch(PDO::FETCH_ASSOC);
+                $codigo         =   $row_mssql02['vacuna_cabecera_codigo'];
 
                 for ($i=0; $i < $VACFICDOS; $i++) { 
-                    $stmtMSSQL02->execute([$val01, ($i+1), $val05, ($i+1), $val11, $val13, $aud01, $aud03]);
+                    $stmtMSSQL03->execute([$val01, ($i+1), $codigo , ($i+1), $val11, $val13, $aud01, $aud03]);
                 }
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
 
                 $stmtMSSQL->closeCursor();
-                $stmtMSSQL01->closeCursor();
+                //$stmtMSSQL01->closeCursor();
                 $stmtMSSQL02->closeCursor();
                 $stmtMSSQL03->closeCursor();
                 
                 $stmtMSSQL  = null;
-                $stmtMSSQL01= null;
+                //$stmtMSSQL01= null;
                 $stmtMSSQL02= null;
                 $stmtMSSQL03= null;
             } catch (PDOException $e) {
