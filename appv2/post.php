@@ -1380,7 +1380,6 @@
             WHERE NOT EXISTS (SELECT *FROM [vac].[VACVDE] WHERE VACVDETDC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?) AND VACVDECAC = ?)";                                                                            
 
             $sql03  = "SELECT MAX(VACVDECOD) AS vacuna_codigo FROM [vac].[VACVDE]";
-
             
             try {
                 $connMSSQL      =   getConnectionMSSQLv2();
@@ -1388,13 +1387,11 @@
                 $stmtMSSQL->execute([$val04]);
                 $row_mssql      =   $stmtMSSQL->fetch(PDO::FETCH_ASSOC);
                 $VACVCAVAC      =   $row_mssql['vacuna_codigo'];
-                
-                //$stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03]); 
 
                 $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
                 $stmtMSSQL01->execute([$VACVCAVAC]);
                 $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
-                $VACFICDOS      =   $row_mssql01['vacuna_cantidad_dosis']+1;
+                $VACFICDOS      =   intval($row_mssql01['vacuna_cantidad_dosis']);
                 
                 $stmtMSSQL03    =   $connMSSQL->prepare($sql03);
                 $stmtMSSQL03->execute();
@@ -1404,7 +1401,7 @@
                 $stmtMSSQL02    =   $connMSSQL->prepare($sql02);
 
                 for ($i=0; $i < $VACFICDOS; $i++) { 
-                    $stmtMSSQL02->execute([$val01, ($i+1), $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $val02, $val04, $aud01, $aud03]);
+                    $stmtMSSQL02->execute([$val01, ($i+1), $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03, ($i+1), $val04]);
                 }
 
                 header("Content-Type: application/json; charset=utf-8");
