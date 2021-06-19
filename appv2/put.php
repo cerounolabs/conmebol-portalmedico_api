@@ -974,7 +974,7 @@
         if (isset($val00) && isset($val00_1)) {
             $sql00  = "";
 
-            /*switch ($val00_1) {
+            switch ($val00_1) {
                 case 1:
                     $sql00  = "UPDATE [vac].[VACVCA] SET VACVCAEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR = ?), 
                     VACVCACOC = ?, 
@@ -994,13 +994,13 @@
                 case 2;
                     $sql00  = "UPDATE [vac].[VACVCA] SET VACVCAEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACCABECERAESTADO' AND DOMFICPAR = ?), VACVCAAUS = ?, VACVCAAFH = GETDATE(), VACVCAAIP = ? WHERE VACVCACOD = ?";
                 break;
-            }  */ 
+            }  
             
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
                 $stmtMSSQL  = $connMSSQL->prepare($sql00);
 
-                /*switch ($val00_1) {
+                switch ($val00_1) {
                     case 1:
                         $stmtMSSQL->execute([$val01, $val02, $val06, $val03, $val04, $val05, $val07, $val08, $val09, $val10, $aud01, $aud03, $val00]);
                     break;
@@ -1008,7 +1008,7 @@
                     case 2:
                         $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
                     break;
-                }*/
+                }
                 
                 header("Content-Type: application/json; charset=utf-8");
                 $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
