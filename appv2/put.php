@@ -920,7 +920,7 @@
 
                 switch ($val00_1) {
                     case 1:
-                        $stmtMSSQL->execute([$val01, $val02, $val06, $val05, $val03, $val04, $val07, $val08, $aud01, $aud03, $val00]);
+                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $aud01, $aud03, $val00]);
                     break;
 
                     case 2:
