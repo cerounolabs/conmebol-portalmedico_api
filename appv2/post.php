@@ -1304,7 +1304,7 @@
             $sql02  = "SELECT MAX(VACVCACOD) AS vacuna_cabecera_codigo FROM [vac].[VACVCA]";
 
             $sql03  = "INSERT INTO [vac].[VACVDE](                                                     VACVDEEST,                                                                                    VACVDETDC,                                               VACVDECIC, VACVDECAC, VACVDEORD,  VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
-            SELECT (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ? ), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ? ), (SELECT LOCCIUCOD FROM adm.LOCCIU WHERE LOCCIUPAR = 0),          ?,        ?,      ''    ,         ?,  GETDATE(),        ?,         ?, GETDATE(),      ?)
+            SELECT (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ? ), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ? ), (SELECT LOCCIUCOD FROM adm.LOCCIU WHERE LOCCIUPAR = 0),          ?,        ?,      ''    ,         ?,  GETDATE(),        ?,         ?, GETDATE(),      ?
             WHERE NOT EXISTS (SELECT * FROM [vac].[VACVDE] WHERE VACVDETDC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?) AND VACVDECAC = ?)";
                                             
             try {
