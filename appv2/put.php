@@ -948,7 +948,7 @@
         return $json;
     });
 
-    $app->put('/v2/700/vacunacabecera/{codigo}', function($request) {
+    /*$app->put('/v2/700/vacunacabecera/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
         
         $val00      = $request->getAttribute('codigo'); 
@@ -1015,7 +1015,7 @@
         $connMSSQL  = null;
         
         return $json;
-    });
+    });*/
 
     $app->put('/v2/700/vacunadetalle/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
