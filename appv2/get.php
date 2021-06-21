@@ -349,7 +349,7 @@
                     'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion']))),
                     'localidad_pais_alta_usuario'       => trim(strtoupper($rowMSSQL00['localidad_pais_alta_usuario'])),
                     'localidad_pais_alta_fecha_hora'    => $rowMSSQL00['localidad_pais_alta_fecha_hora'],
-                    'localidad_pais_alta_auditoria_ip'  => trim(strtoupper($rowMSSQL00['localidad_pais_alta_auditoria_ip'])),
+                    'localidad_pais_alta_ip'            => trim(strtoupper($rowMSSQL00['localidad_pais_alta_ip'])),
 
                     'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
                     'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
@@ -474,7 +474,7 @@
                         'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion']))),
                         'localidad_pais_alta_usuario'       => trim(strtoupper($rowMSSQL00['localidad_pais_alta_usuario'])),
                         'localidad_pais_alta_fecha_hora'    => $rowMSSQL00['localidad_pais_alta_fecha_hora'],
-                        'localidad_pais_alta_auditoria_ip'  => trim(strtoupper($rowMSSQL00['localidad_pais_alta_auditoria_ip'])),
+                        'localidad_pais_alta_ip'  => trim(strtoupper($rowMSSQL00['localidad_pais_alta_ip'])),
 
                         'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
                         'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
@@ -551,6 +551,7 @@
             a.LOCCIUCOD         AS          localidad_ciudad_codigo,
             a.LOCCIUORD         AS          localidad_ciudad_orden,
             a.LOCCIUNOM         AS          localidad_ciudad_nombre,
+            a.LOCCIUPAR         AS          localidad_ciudad_parametro,
             a.LOCCIUOBS         AS          localidad_ciudad_observacion,
             a.LOCCIUCUS         AS          localidad_ciudad_alta_usuario,
             a.LOCCIUCFH         AS          localidad_ciudad_alta_fecha_hora,
@@ -595,6 +596,7 @@
                 $detalle    = array(
                     'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
                     'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
+                    'localidad_ciudad_parametro'        => $rowMSSQL00['localidad_ciudad_parametro'],
                     'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
                     'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
                     'localidad_ciudad_alta_usuario'     => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_usuario'])), 
@@ -635,6 +637,7 @@
                 $detalle = array(
                     'localidad_ciudad_codigo'           => '',
                     'localidad_ciudad_orden'            => '',
+                    'localidad_ciudad_parametro'        => '',
                     'localidad_ciudad_nombre'           => '',
                     'localidad_ciudad_observacion'      => '',
 
@@ -687,6 +690,7 @@
             $sql00  = "SELECT
                 a.LOCCIUCOD         AS          localidad_ciudad_codigo,
                 a.LOCCIUORD         AS          localidad_ciudad_orden,
+                a.LOCCIUPAR         AS          localidad_ciudad_parametro,
                 a.LOCCIUNOM         AS          localidad_ciudad_nombre,
                 a.LOCCIUOBS         AS          localidad_ciudad_observacion,
                 a.LOCCIUCUS         AS          localidad_ciudad_alta_usuario,
@@ -734,6 +738,7 @@
                     $detalle    = array(
                         'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
                         'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
+                        'localidad_ciudad_parametro'        => $rowMSSQL00['localidad_ciudad_parametro'],
                         'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
                         'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
                         'localidad_ciudad_alta_usuario'     => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_usuario'])), 
@@ -774,6 +779,7 @@
                     $detalle = array(
                         'localidad_ciudad_codigo'           => '',
                         'localidad_ciudad_orden'            => '',
+                        'localidad_ciudad_parametro'        => '',
                         'localidad_ciudad_nombre'           => '',
                         'localidad_ciudad_observacion'      => '',
 
