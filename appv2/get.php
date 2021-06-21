@@ -17911,7 +17911,6 @@
             e.LOCPAIOBS                     AS          localidad_pais_observacion,
             
             f.VACVCACOD                     AS          vacuna_cabecera_codigo, 
-            f.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
             f.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
             f.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
             f.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
@@ -17983,9 +17982,8 @@
                         'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion']))),
 
                         
-                        'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
-                        'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
-                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
+                        'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],  	
+                        'vacuna_cabecera_adquirio_covid'    =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
                         'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
                         'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
                         'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
@@ -18050,9 +18048,8 @@
                         'localidad_pais_observacion'        =>  '',
 
                         
-                        'vacuna_cabecera_codigo'            =>  '',
-                        'vacuna_cabecera_encuentro_codigo'  =>  '',    	
-                        'vacuna_cabecera_adquirio_covid'          =>  '',  
+                        'vacuna_cabecera_codigo'            =>  '',  	
+                        'vacuna_cabecera_adquirio_covid'    =>  '',  
                         'vacuna_cabecera_fecha_1'           =>  '',
                         'vacuna_cabecera_fecha_2'           =>  '',	
                         'vacuna_cabecera_dosis_aplicada'    =>  '',
@@ -18133,7 +18130,6 @@
                 e.LOCPAIOBS                     AS          localidad_pais_observacion,
                 
                 f.VACVCACOD                     AS          vacuna_cabecera_codigo, 
-                f.VACVCAENC                     AS          vacuna_cabecera_encuentro_codigo, 
                 f.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
                 f.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
                 f.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
@@ -18205,9 +18201,8 @@
                         'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion']))),
 
                         
-                        'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],
-                        'vacuna_cabecera_encuentro_codigo'  =>  $rowMSSQL['vacuna_cabecera_encuentro_codigo'],    	
-                        'vacuna_cabecera_adquirio_covid'          =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
+                        'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],   	
+                        'vacuna_cabecera_adquirio_covid'    =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
                         'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
                         'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
                         'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
@@ -18272,9 +18267,303 @@
                         'localidad_pais_observacion'        =>  '',
 
                         
-                        'vacuna_cabecera_codigo'            =>  '',
-                        'vacuna_cabecera_encuentro_codigo'  =>  '',    	
-                        'vacuna_cabecera_adquirio_covid'          =>  '',  
+                        'vacuna_cabecera_codigo'            =>  '',   	
+                        'vacuna_cabecera_adquirio_covid'    =>  '',  
+                        'vacuna_cabecera_fecha_1'           =>  '',
+                        'vacuna_cabecera_fecha_2'           =>  '',	
+                        'vacuna_cabecera_dosis_aplicada'    =>  '',
+                        'vacuna_cabecera_observacion'       =>  ''
+
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        }else{
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION); 
+        }    
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v2/900/vacunadetalle/equipo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+
+        if(isset($val01)){
+
+            if ($val01 == 39393){
+                $sql00  = "SELECT 
+                a.VACVDECOD                     AS          vacuna_detalle_codigo, 
+                a.VACVDEORD                     AS          vacuna_detalle_orden, 
+                a.VACVDENOM                     AS          vacuna_detalle_nombre, 
+                a.VACVDELUG                     AS          vacuna_detalle_lugar, 
+                a.VACVDEADJ                     AS          vacuna_detalle_adjunto, 
+                a.VACVDEOBS                     AS          vacuna_detalle_observacion, 
+                a.VACVDECUS                     AS          vacuna_detalle_alta_usuario, 
+                a.VACVDECFH                     AS          vacuna_detalle_alta_fecha_hora, 
+                a.VACVDECIP                     AS          vacuna_detalle_alta_ip, 
+                
+                a.VACVDEAUS                     AS          auditoria_usuario, 
+                a.VACVDEAFH                     AS          auditoria_fecha_hora, 
+                a.VACVDEAIP                     AS          auditoria_ip,
+                
+                b.DOMFICCOD                     AS          tipo_estado_codigo,
+                b.DOMFICORD                     AS          tipo_estado_orden,
+                b.DOMFICNOI                     AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC                     AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP                     AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT                     AS          tipo_estado_path,
+                b.DOMFICVAL                     AS          tipo_estado_dominio,
+                b.DOMFICPAR                     AS          tipo_estado_parametro,
+                b.DOMFICOBS                     AS          tipo_estado_observacion,
+                
+                c.DOMFICCOD                     AS          tipo_dosis_codigo,
+                c.DOMFICORD                     AS          tipo_dosis_orden,
+                c.DOMFICNOI                     AS          tipo_dosis_nombre_ingles,
+                c.DOMFICNOC                     AS          tipo_dosis_nombre_castellano,
+                c.DOMFICNOP                     AS          tipo_dosis_nombre_portugues,
+                c.DOMFICPAT                     AS          tipo_dosis_path,
+                c.DOMFICVAL                     AS          tipo_dosis_dominio,
+                c.DOMFICPAR                     AS          tipo_dosis_parametro,
+                c.DOMFICOBS                     AS          tipo_dosis_observacion,
+                
+                d.LOCCIUCOD                     AS          localidad_ciudad_codigo,
+                d.LOCCIUORD                     AS          localidad_ciudad_orden,
+                d.LOCCIUNOM                     AS          localidad_ciudad_nombre,
+                d.LOCCIUOBS                     AS          localidad_ciudad_observacion,
+                
+                e.LOCPAICOD                     AS          localidad_pais_codigo,
+                e.LOCPAIORD                     AS          localidad_pais_orden,
+                e.LOCPAINOM                     AS          localidad_pais_nombre,
+                e.LOCPAIPAT                     AS          localidad_pais_path,
+                e.LOCPAIIC2                     AS          localidad_pais_iso_char2,
+                e.LOCPAIIC3                     AS          localidad_pais_iso_char3,
+                e.LOCPAIIN3                     AS          localidad_pais_iso_num3,
+                e.LOCPAIOBS                     AS          localidad_pais_observacion,
+                
+                f.VACVCACOD                     AS          vacuna_cabecera_codigo, 
+                f.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
+                f.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
+                f.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
+                f.VACVCAOBS                     AS          vacuna_cabecera_observacion 
+                
+                FROM [vac].[VACVDE] a
+                INNER JOIN [adm].[DOMFIC] b ON a.VACVDEEST     =   b.DOMFICCOD
+                INNER JOIN [adm].[DOMFIC] c ON a.VACVDETDC     =   c.DOMFICCOD
+                INNER JOIN [adm].[LOCCIU] d ON a.VACVDECIC     =   d.LOCCIUCOD
+                INNER JOIN [adm].[LOCPAI] e ON d.LOCCIUPAC     =   e.LOCPAICOD
+                INNER JOIN [vac].[VACVCA] f ON a.VACVDECAC     =   f.VACVCACOD
+                
+                ORDER BY a.VACVDECOD DESC";
+
+            }else{
+                $sql00  = "SELECT 
+                    a.VACVDECOD                     AS          vacuna_detalle_codigo, 
+                    a.VACVDEORD                     AS          vacuna_detalle_orden, 
+                    a.VACVDENOM                     AS          vacuna_detalle_nombre, 
+                    a.VACVDELUG                     AS          vacuna_detalle_lugar, 
+                    a.VACVDEADJ                     AS          vacuna_detalle_adjunto, 
+                    a.VACVDEOBS                     AS          vacuna_detalle_observacion, 
+                    a.VACVDECUS                     AS          vacuna_detalle_alta_usuario, 
+                    a.VACVDECFH                     AS          vacuna_detalle_alta_fecha_hora, 
+                    a.VACVDECIP                     AS          vacuna_detalle_alta_ip, 
+                    
+                    a.VACVDEAUS                     AS          auditoria_usuario, 
+                    a.VACVDEAFH                     AS          auditoria_fecha_hora, 
+                    a.VACVDEAIP                     AS          auditoria_ip,
+                    
+                    b.DOMFICCOD                     AS          tipo_estado_codigo,
+                    b.DOMFICORD                     AS          tipo_estado_orden,
+                    b.DOMFICNOI                     AS          tipo_estado_nombre_ingles,
+                    b.DOMFICNOC                     AS          tipo_estado_nombre_castellano,
+                    b.DOMFICNOP                     AS          tipo_estado_nombre_portugues,
+                    b.DOMFICPAT                     AS          tipo_estado_path,
+                    b.DOMFICVAL                     AS          tipo_estado_dominio,
+                    b.DOMFICPAR                     AS          tipo_estado_parametro,
+                    b.DOMFICOBS                     AS          tipo_estado_observacion,
+                    
+                    c.DOMFICCOD                     AS          tipo_dosis_codigo,
+                    c.DOMFICORD                     AS          tipo_dosis_orden,
+                    c.DOMFICNOI                     AS          tipo_dosis_nombre_ingles,
+                    c.DOMFICNOC                     AS          tipo_dosis_nombre_castellano,
+                    c.DOMFICNOP                     AS          tipo_dosis_nombre_portugues,
+                    c.DOMFICPAT                     AS          tipo_dosis_path,
+                    c.DOMFICVAL                     AS          tipo_dosis_dominio,
+                    c.DOMFICPAR                     AS          tipo_dosis_parametro,
+                    c.DOMFICOBS                     AS          tipo_dosis_observacion,
+                    
+                    d.LOCCIUCOD                     AS          localidad_ciudad_codigo,
+                    d.LOCCIUORD                     AS          localidad_ciudad_orden,
+                    d.LOCCIUNOM                     AS          localidad_ciudad_nombre,
+                    d.LOCCIUOBS                     AS          localidad_ciudad_observacion,
+                    
+                    e.LOCPAICOD                     AS          localidad_pais_codigo,
+                    e.LOCPAIORD                     AS          localidad_pais_orden,
+                    e.LOCPAINOM                     AS          localidad_pais_nombre,
+                    e.LOCPAIPAT                     AS          localidad_pais_path,
+                    e.LOCPAIIC2                     AS          localidad_pais_iso_char2,
+                    e.LOCPAIIC3                     AS          localidad_pais_iso_char3,
+                    e.LOCPAIIN3                     AS          localidad_pais_iso_num3,
+                    e.LOCPAIOBS                     AS          localidad_pais_observacion,
+                    
+                    f.VACVCACOD                     AS          vacuna_cabecera_codigo, 
+                    f.VACVCAPOS                     AS          vacuna_cabecera_adquirio_covid, 
+                    f.VACVCAFEC                     AS          vacuna_cabecera_fecha, 
+                    f.VACVCADAP                     AS          vacuna_cabecera_dosis_aplicada, 
+                    f.VACVCAOBS                     AS          vacuna_cabecera_observacion 
+                    
+                    FROM [vac].[VACVDE] a
+                    INNER JOIN [adm].[DOMFIC] b ON a.VACVDEEST     =   b.DOMFICCOD
+                    INNER JOIN [adm].[DOMFIC] c ON a.VACVDETDC     =   c.DOMFICCOD
+                    INNER JOIN [adm].[LOCCIU] d ON a.VACVDECIC     =   d.LOCCIUCOD
+                    INNER JOIN [adm].[LOCPAI] e ON d.LOCCIUPAC     =   e.LOCPAICOD
+                    INNER JOIN [vac].[VACVCA] f ON a.VACVDECAC     =   f.VACVCACOD
+
+                    WHERE f.VACVCAEQC = ?
+                    
+                    ORDER BY a.VACVDECOD DESC";
+            }
+            try {
+                $connMSSQL  = getConnectionMSSQLv2();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+
+                if ($val01 == 39393){
+                    $stmtMSSQL->execute();
+                }else{
+                    $stmtMSSQL->execute([$val01]);
+                }
+
+                while ($rowMSSQL    = $stmtMSSQL->fetch()) {
+                    $detalle        = array(
+
+                        'vacuna_detalle_codigo'             =>  $rowMSSQL['vacuna_detalle_codigo'],
+                        'vacuna_detalle_orden'              =>  $rowMSSQL['vacuna_detalle_orden'],    	
+                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']),  
+                        'vacuna_detalle_lugar'              =>  trim($rowMSSQL['vacuna_detalle_lugar']),
+                        'vacuna_detalle_adjunto'            =>  trim(strtolower($rowMSSQL['vacuna_detalle_adjunto'])),
+                        'vacuna_detalle_observacion'        =>  trim($rowMSSQL['vacuna_detalle_observacion']),
+                        'vacuna_detalle_alta_usuario'       =>  trim($rowMSSQL['vacuna_detalle_alta_usuario']),
+                        'vacuna_detalle_alta_fecha_hora'    =>	$rowMSSQL['vacuna_detalle_alta_fecha_hora'],    
+                        'vacuna_detalle_alta_ip'            =>  trim($rowMSSQL['vacuna_detalle_alta_ip']),
+
+                        'auditoria_usuario'                 =>  trim($rowMSSQL['auditoria_usuario']),
+                        'auditoria_fecha_hora'              =>	$rowMSSQL['auditoria_fecha_hora'],    
+                        'auditoria_ip'                      =>  trim($rowMSSQL['auditoria_ip']),
+
+                        'tipo_estado_codigo'                => $rowMSSQL['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL['tipo_estado_path'])),
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_dominio']))), 
+                        'tipo_estado_parametro'             => $rowMSSQL['tipo_estado_parametro'],
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL['tipo_estado_observacion']))),
+
+                        'tipo_dosis_codigo'                 => $rowMSSQL['tipo_dosis_codigo'],
+                        'tipo_dosis_orden'                  => $rowMSSQL['tipo_dosis_orden'],
+                        'tipo_dosis_nombre_ingles'          => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_nombre_ingles']))),
+                        'tipo_dosis_nombre_castellano'      => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_nombre_castellano']))),
+                        'tipo_dosis_nombre_portugues'       => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_nombre_portugues']))),
+                        'tipo_dosis_path'                   => trim(strtolower($rowMSSQL['tipo_dosis_path'])),
+                        'tipo_dosis_dominio'                => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_dominio']))), 
+                        'tipo_dosis_parametro'              => $rowMSSQL['tipo_dosis_parametro'],
+                        'tipo_dosis_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_observacion']))),
+
+                        'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
+                        'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
+                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
+                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+
+                        'localidad_pais_codigo'             => $rowMSSQL['localidad_pais_codigo'],
+                        'localidad_pais_orden'              => $rowMSSQL['localidad_pais_orden'],
+                        'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_nombre']))),
+                        'localidad_pais_path'               => trim(strtolower($rowMSSQL['localidad_pais_path'])),
+                        'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char2']))),
+                        'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_char3']))),
+                        'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_num3'])))),
+                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion']))),
+
+                        
+                        'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],    	
+                        'vacuna_cabecera_adquirio_covid'    =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
+                        'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
+                        'vacuna_cabecera_fecha_2'           =>  $vacuna_cabecera_fecha_2,	
+                        'vacuna_cabecera_dosis_aplicada'    =>  $rowMSSQL['vacuna_cabecera_dosis_aplicada'],
+                        'vacuna_cabecera_observacion'       =>  trim($rowMSSQL['vacuna_cabecera_alta_observacion'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        
+                        'vacuna_detalle_codigo'             =>  '',
+                        'vacuna_detalle_orden'              =>  '',    	
+                        'vacuna_detalle_nombre'             =>  '',  
+                        'vacuna_detalle_lugar'              =>  '',
+                        'vacuna_detalle_adjunto'            =>  '',
+                        'vacuna_detalle_observacion'        =>  '',
+                        'vacuna_detalle_alta_usuario'       =>  '',
+                        'vacuna_detalle_alta_fecha_hora'    =>	'',    
+                        'vacuna_detalle_alta_ip'            =>  '',
+
+                        'auditoria_usuario'                 =>  '',
+                        'auditoria_fecha_hora'              =>	'',    
+                        'auditoria_ip'                      =>  '',
+
+                        'tipo_estado_codigo'                =>  '',
+                        'tipo_estado_orden'                 =>  '',
+                        'tipo_estado_nombre_ingles'         =>  '',
+                        'tipo_estado_nombre_castellano'     =>  '',
+                        'tipo_estado_nombre_portugues'      =>  '',
+                        'tipo_estado_path'                  =>  '',
+                        'tipo_estado_dominio'               =>  '', 
+                        'tipo_estado_parametro'             =>  '',
+                        'tipo_estado_observacion'           =>  '',
+
+                        'tipo_dosis_codigo'                 =>  '',
+                        'tipo_dosis_orden'                  =>  '',
+                        'tipo_dosis_nombre_ingles'          =>  '',
+                        'tipo_dosis_nombre_castellano'      =>  '',
+                        'tipo_dosis_nombre_portugues'       =>  '',
+                        'tipo_dosis_path'                   =>  '',
+                        'tipo_dosis_dominio'                =>  '', 
+                        'tipo_dosis_parametro'              =>  '',
+                        'tipo_dosis_observacion'            =>  '',
+
+                        'localidad_ciudad_codigo'           =>  '',
+                        'localidad_ciudad_orden'            =>  '',
+                        'localidad_ciudad_nombre'           =>  '',
+                        'localidad_ciudad_observacion'      =>  '',
+
+                        'localidad_pais_codigo'             =>  '',
+                        'localidad_pais_orden'              =>  '',
+                        'localidad_pais_nombre'             =>  '',
+                        'localidad_pais_path'               =>  '',
+                        'localidad_pais_iso_char2'          =>  '',
+                        'localidad_pais_iso_char3'          =>  '',
+                        'localidad_pais_iso_num3'           =>  '',
+                        'localidad_pais_observacion'        =>  '',
+
+                        
+                        'vacuna_cabecera_codigo'            =>  '',  	
+                        'vacuna_cabecera_adquirio_covid'    =>  '',  
                         'vacuna_cabecera_fecha_1'           =>  '',
                         'vacuna_cabecera_fecha_2'           =>  '',	
                         'vacuna_cabecera_dosis_aplicada'    =>  '',
