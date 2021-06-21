@@ -565,7 +565,7 @@
         $val03      = $request->getParsedBody()['equipo_codigo'];
         $val04      = $request->getParsedBody()['persona_codigo'];
         $val05      = $request->getParsedBody()['vacuna_codigo'];
-        $val06      = $request->getParsedBody()['vacuna_cabecera_encuentro_codigo'];
+        $val06      = $request->getParsedBody()['encuentro_codigo'];
         $val07      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_adquirio_covid'])));
         $val08      = $request->getParsedBody()['vacuna_cabecera_fecha'];
         $val09      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_dosis_aplicada'])));
@@ -578,7 +578,7 @@
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
         $aud03      = trim($request->getParsedBody()['auditoria_ip']);
 
-        if (isset($val00) && isset($val01) && isset($val02)  && isset($val03) && isset($val04) && isset($val05) && isset($val06) && isset($val07) && isset($val09)) {
+        if (isset($val00) && isset($val01) && isset($val03) && isset($val04) && isset($val05) && isset($val07) && isset($val09)) {
             $sql00  = "UPDATE [vac].[VACVCA] SET VACVCAAUS = ?,	VACVCAAFH = GETDATE(), VACVCAAIP = ? WHERE VACVCACOD = ?";
             $sql01  = "DELETE FROM [vac].[VACVCA] WHERE VACVCACOD = ?";
 

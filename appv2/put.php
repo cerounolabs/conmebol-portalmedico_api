@@ -958,7 +958,7 @@
         $val03      = $request->getParsedBody()['equipo_codigo'];
         $val04      = $request->getParsedBody()['persona_codigo'];
         $val05      = $request->getParsedBody()['vacuna_codigo'];
-        $val06      = $request->getParsedBody()['vacuna_cabecera_encuentro_codigo'];
+        $val06      = $request->getParsedBody()['encuentro_codigo'];
         $val07      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_adquirio_covid'])));
         $val08      = $request->getParsedBody()['vacuna_cabecera_fecha'];
         $val09      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_dosis_aplicada'])));

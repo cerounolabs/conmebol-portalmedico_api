@@ -1265,7 +1265,7 @@
         $val03      = $request->getParsedBody()['equipo_codigo'];
         $val04      = $request->getParsedBody()['persona_codigo'];
         $val05      = $request->getParsedBody()['vacuna_codigo'];
-        $val06      = $request->getParsedBody()['vacuna_cabecera_encuentro_codigo'];
+        $val06      = $request->getParsedBody()['encuentro_codigo'];
         $val07      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_adquirio_covid'])));
         $val08      = $request->getParsedBody()['vacuna_cabecera_fecha'];
         $val09      = strtoupper(strtolower(trim($request->getParsedBody()['vacuna_cabecera_dosis_aplicada'])));
@@ -1286,7 +1286,7 @@
             $val09 = 'NO';
         }
 
-        if (isset($val01) && isset($val02)  && isset($val03) && isset($val04) && isset($val05) && isset($val06) && isset($val07) && isset($val09)) {
+        if (isset($val01) && isset($val03) && isset($val04) && isset($val05) && isset($val07) && isset($val09)) {
             
             $sql00  = "SELECT VACFICDOS AS vacuna_cantidad_dosis FROM [vac].[VACFIC] WHERE VACFICCOD = ?";
             
@@ -1303,7 +1303,7 @@
                 $connMSSQL      =   getConnectionMSSQLv2();
                 $stmtMSSQL      =   $connMSSQL->prepare($sql00);
                 $stmtMSSQL01    =   $connMSSQL->prepare($sql01);
-                $stmtMSSQL02     =   $connMSSQL->prepare($sql02);
+                $stmtMSSQL02    =   $connMSSQL->prepare($sql02);
                 $stmtMSSQL03    =   $connMSSQL->prepare($sql03);
 
                 $stmtMSSQL->execute([$val05]);
