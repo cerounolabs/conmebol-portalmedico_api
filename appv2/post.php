@@ -1376,7 +1376,7 @@
 
             $sql01  = "SELECT VACFICDOS AS vacuna_cantidad_dosis FROM [vac].[VACFIC] WHERE VACFICCOD = ?";
 
-            $sql02  = "INSERT INTO [vac].[VACVDE](                                                    VACVDEEST,                                                                                   VACVDETDC, VACVDECIC, VACVDECAC, VACVDEORD,  VACVDENOM, VACDEFEC, VACVDELUG, VACVDEADJ, VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
+            $sql02  = "INSERT INTO [vac].[VACVDE](                                                    VACVDEEST,                                                                                   VACVDETDC, VACVDECIC, VACVDECAC, VACVDEORD,  VACVDENOM, VACVDEFEC, VACVDELUG, VACVDEADJ, VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
             SELECT (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?),         ?,         ?,         ?,          ?,         ?,        ?,         ?,         ?,          ?, GETDATE(),        ?,         ?, GETDATE(),        ?
             WHERE NOT EXISTS (SELECT *FROM [vac].[VACVDE] WHERE VACVDETDC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?) AND VACVDECAC = ?)";                                                                            
 
