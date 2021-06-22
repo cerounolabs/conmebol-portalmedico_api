@@ -18573,6 +18573,8 @@
                 INNER JOIN [adm].[LOCCIU] d ON a.VACVDECIC     =   d.LOCCIUCOD
                 INNER JOIN [adm].[LOCPAI] e ON d.LOCCIUPAC     =   e.LOCPAICOD
                 INNER JOIN [vac].[VACVCA] f ON a.VACVDECAC     =   f.VACVCACOD
+
+                WHERE a.VACVDECOD = ?
                 
                 ORDER BY a.VACVDECOD DESC";
 
