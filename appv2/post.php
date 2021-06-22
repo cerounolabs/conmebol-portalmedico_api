@@ -1354,12 +1354,13 @@
         $val04      = $request->getParsedBody()['vacuna_cabecera_codigo'];
         $val05      = $request->getParsedBody()['vacuna_detalle_orden'];
         $val06      = trim($request->getParsedBody()['vacuna_detalle_nombre']);
-        $val07      = trim($request->getParsedBody()['vacuna_detalle_lugar']);
-        $val08      = trim($request->getParsedBody()['vacuna_detalle_adjunto']);
-        $val09      = trim($request->getParsedBody()['vacuna_detalle_observacion']);
-        $val10      = trim($request->getParsedBody()['vacuna_detalle_alta_usuario']);
-        $val11      = $request->getParsedBody()['vacuna_detalle_alta_fecha_hora'];
-        $val12      = trim($request->getParsedBody()['vacuna_detalle_alta_ip']);     
+        $val07      = $request->getParsedBody()['vacuna_detalle_fecha'];
+        $val08      = trim($request->getParsedBody()['vacuna_detalle_lugar']);
+        $val09      = trim($request->getParsedBody()['vacuna_detalle_adjunto']);
+        $val10      = trim($request->getParsedBody()['vacuna_detalle_observacion']);
+        $val11      = trim($request->getParsedBody()['vacuna_detalle_alta_usuario']);
+        $val12      = $request->getParsedBody()['vacuna_detalle_alta_fecha_hora'];
+        $val13      = trim($request->getParsedBody()['vacuna_detalle_alta_ip']);       
 
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
@@ -1375,8 +1376,8 @@
 
             $sql01  = "SELECT VACFICDOS AS vacuna_cantidad_dosis FROM [vac].[VACFIC] WHERE VACFICCOD = ?";
 
-            $sql02  = "INSERT INTO [vac].[VACVDE](                                                    VACVDEEST,                                                                                   VACVDETDC, VACVDECIC, VACVDECAC, VACVDEORD,  VACVDENOM, VACVDELUG, VACVDEADJ, VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
-            SELECT (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?),         ?,         ?,         ?,          ?,         ?,         ?,         ?,          ?, GETDATE(),        ?,         ?, GETDATE(),        ?
+            $sql02  = "INSERT INTO [vac].[VACVDE](                                                    VACVDEEST,                                                                                   VACVDETDC, VACVDECIC, VACVDECAC, VACVDEORD,  VACVDENOM, VACDEFEC, VACVDELUG, VACVDEADJ, VACVDEOBS, VACVDECUS, VACVDECFH, VACVDECIP, VACVDEAUS, VACVDEAFH, VACVDEAIP) 
+            SELECT (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ?), (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?),         ?,         ?,         ?,          ?,         ?,        ?,         ?,         ?,          ?, GETDATE(),        ?,         ?, GETDATE(),        ?
             WHERE NOT EXISTS (SELECT *FROM [vac].[VACVDE] WHERE VACVDETDC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?) AND VACVDECAC = ?)";                                                                            
 
             $sql03  = "SELECT MAX(VACVDECOD) AS vacuna_detalle_codigo FROM [vac].[VACVDE]";
@@ -1396,7 +1397,7 @@
                 $stmtMSSQL02    =   $connMSSQL->prepare($sql02);
 
                 for ($i=0; $i < $VACFICDOS; $i++) { 
-                    $stmtMSSQL02->execute([$val01, ($i+1), $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val12, $aud01, $aud03, ($i+1), $val04]);
+                    $stmtMSSQL02->execute([$val01, ($i+1), $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $val11, $val13, $aud01, $aud03, ($i+1), $val04]);
                 }
 
                 $stmtMSSQL03    =   $connMSSQL->prepare($sql03);

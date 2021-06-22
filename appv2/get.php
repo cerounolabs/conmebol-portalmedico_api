@@ -18297,6 +18297,7 @@
             a.VACVDECOD                     AS          vacuna_detalle_codigo, 
             a.VACVDEORD                     AS          vacuna_detalle_orden, 
             a.VACVDENOM                     AS          vacuna_detalle_nombre, 
+            a.VACVDEFEC                     AS          vacuna_detalle_fecha,
             a.VACVDELUG                     AS          vacuna_detalle_lugar, 
             a.VACVDEADJ                     AS          vacuna_detalle_adjunto, 
             a.VACVDEOBS                     AS          vacuna_detalle_observacion, 
@@ -18363,11 +18364,30 @@
                 $stmtMSSQL->execute(); 
 
                 while ($rowMSSQL = $stmtMSSQL->fetch()) {
+
+                    if ($rowMSSQL['vacuna_detalle_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_detalle_fecha'] == null){
+                        $vacuna_detalle_fecha_1 = '';
+                        $vacuna_detalle_fecha_2 = '';
+                    } else {
+                        $vacuna_detalle_fecha_1 = $rowMSSQL['vacuna_detalle_fecha'];
+                        $vacuna_detalle_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_detalle_fecha']));
+                    }
+
+                    if ($rowMSSQL['vacuna_cabecera_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_cabecera_fecha'] == null){
+                        $vacuna_cabecera_fecha_1 = '';
+                        $vacuna_cabecera_fecha_2 = '';
+                    } else {
+                        $vacuna_cabecera_fecha_1 = $rowMSSQL['vacuna_cabecera_fecha'];
+                        $vacuna_cabecera_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_cabecera_fecha']));
+                    }
+
                     $detalle    = array(
 
                         'vacuna_detalle_codigo'             =>  $rowMSSQL['vacuna_detalle_codigo'],
                         'vacuna_detalle_orden'              =>  $rowMSSQL['vacuna_detalle_orden'],    	
-                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']),  
+                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']), 
+                        'vacuna_detalle_fecha_1'            =>  $vacuna_detalle_fecha_1,
+                        'vacuna_detalle_fecha_2'            =>  $vacuna_detalle_fecha_2,
                         'vacuna_detalle_lugar'              =>  trim($rowMSSQL['vacuna_detalle_lugar']),
                         'vacuna_detalle_adjunto'            =>  trim(strtolower($rowMSSQL['vacuna_detalle_adjunto'])),
                         'vacuna_detalle_observacion'        =>  trim($rowMSSQL['vacuna_detalle_observacion']),
@@ -18433,7 +18453,9 @@
                         
                         'vacuna_detalle_codigo'             =>  '',
                         'vacuna_detalle_orden'              =>  '',    	
-                        'vacuna_detalle_nombre'             =>  '',  
+                        'vacuna_detalle_nombre'             =>  '',
+                        'vacuna_detalle_fecha_1'            =>  '',
+                        'vacuna_detalle_fecha_2'            =>  '',
                         'vacuna_detalle_lugar'              =>  '',
                         'vacuna_detalle_adjunto'            =>  '',
                         'vacuna_detalle_observacion'        =>  '',
@@ -18516,6 +18538,7 @@
                 a.VACVDECOD                     AS          vacuna_detalle_codigo, 
                 a.VACVDEORD                     AS          vacuna_detalle_orden, 
                 a.VACVDENOM                     AS          vacuna_detalle_nombre, 
+                a.VACVDEFEC                     AS          vacuna_detalle_fecha,
                 a.VACVDELUG                     AS          vacuna_detalle_lugar, 
                 a.VACVDEADJ                     AS          vacuna_detalle_adjunto, 
                 a.VACVDEOBS                     AS          vacuna_detalle_observacion, 
@@ -18584,11 +18607,29 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL    = $stmtMSSQL->fetch()) {
+                    
+                    if ($rowMSSQL['vacuna_detalle_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_detalle_fecha'] == null){
+                        $vacuna_detalle_fecha_1 = '';
+                        $vacuna_detalle_fecha_2 = '';
+                    } else {
+                        $vacuna_detalle_fecha_1 = $rowMSSQL['vacuna_detalle_fecha'];
+                        $vacuna_detalle_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_detalle_fecha']));
+                    }
+
+                    if ($rowMSSQL['vacuna_cabecera_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_cabecera_fecha'] == null){
+                        $vacuna_cabecera_fecha_1 = '';
+                        $vacuna_cabecera_fecha_2 = '';
+                    } else {
+                        $vacuna_cabecera_fecha_1 = $rowMSSQL['vacuna_cabecera_fecha'];
+                        $vacuna_cabecera_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_cabecera_fecha']));
+                    }
                     $detalle        = array(
 
                         'vacuna_detalle_codigo'             =>  $rowMSSQL['vacuna_detalle_codigo'],
                         'vacuna_detalle_orden'              =>  $rowMSSQL['vacuna_detalle_orden'],    	
-                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']),  
+                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']),
+                        'vacuna_detalle_fecha_1'            =>  $vacuna_detalle_fecha_1,
+                        'vacuna_detalle_fecha_2'            =>  $vacuna_detalle_fecha_2,  
                         'vacuna_detalle_lugar'              =>  trim($rowMSSQL['vacuna_detalle_lugar']),
                         'vacuna_detalle_adjunto'            =>  trim(strtolower($rowMSSQL['vacuna_detalle_adjunto'])),
                         'vacuna_detalle_observacion'        =>  trim($rowMSSQL['vacuna_detalle_observacion']),
@@ -18634,7 +18675,6 @@
                         'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL['localidad_pais_iso_num3'])))),
                         'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL['localidad_pais_observacion']))),
 
-                        
                         'vacuna_cabecera_codigo'            =>  $rowMSSQL['vacuna_cabecera_codigo'],   	
                         'vacuna_cabecera_adquirio_covid'    =>  trim($rowMSSQL['vacuna_cabecera_adquirio_covid']),  
                         'vacuna_cabecera_fecha_1'           =>  $vacuna_cabecera_fecha_1,
@@ -18654,7 +18694,9 @@
                         
                         'vacuna_detalle_codigo'             =>  '',
                         'vacuna_detalle_orden'              =>  '',    	
-                        'vacuna_detalle_nombre'             =>  '',  
+                        'vacuna_detalle_nombre'             =>  '', 
+                        'vacuna_detalle_fecha_1'            =>  '',
+                        'vacuna_detalle_fecha_2'            =>  '', 
                         'vacuna_detalle_lugar'              =>  '',
                         'vacuna_detalle_adjunto'            =>  '',
                         'vacuna_detalle_observacion'        =>  '',
@@ -18740,7 +18782,8 @@
                 $sql00  = "SELECT 
                 a.VACVDECOD                     AS          vacuna_detalle_codigo, 
                 a.VACVDEORD                     AS          vacuna_detalle_orden, 
-                a.VACVDENOM                     AS          vacuna_detalle_nombre, 
+                a.VACVDENOM                     AS          vacuna_detalle_nombre,
+                a.VACVDEFEC                     AS          vacuna_detalle_fecha, 
                 a.VACVDELUG                     AS          vacuna_detalle_lugar, 
                 a.VACVDEADJ                     AS          vacuna_detalle_adjunto, 
                 a.VACVDEOBS                     AS          vacuna_detalle_observacion, 
@@ -18806,6 +18849,7 @@
                     a.VACVDECOD                     AS          vacuna_detalle_codigo, 
                     a.VACVDEORD                     AS          vacuna_detalle_orden, 
                     a.VACVDENOM                     AS          vacuna_detalle_nombre, 
+                    a.VACVDEFEC                     AS          vacuna_detalle_fecha, 
                     a.VACVDELUG                     AS          vacuna_detalle_lugar, 
                     a.VACVDEADJ                     AS          vacuna_detalle_adjunto, 
                     a.VACVDEOBS                     AS          vacuna_detalle_observacion, 
@@ -18879,11 +18923,29 @@
                 }
 
                 while ($rowMSSQL    = $stmtMSSQL->fetch()) {
+
+                    if ($rowMSSQL['vacuna_detalle_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_detalle_fecha'] == null){
+                        $vacuna_detalle_fecha_1 = '';
+                        $vacuna_detalle_fecha_2 = '';
+                    } else {
+                        $vacuna_detalle_fecha_1 = $rowMSSQL['vacuna_detalle_fecha'];
+                        $vacuna_detalle_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_detalle_fecha']));
+                    }
+
+                    if ($rowMSSQL['vacuna_cabecera_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_cabecera_fecha'] == null){
+                        $vacuna_cabecera_fecha_1 = '';
+                        $vacuna_cabecera_fecha_2 = '';
+                    } else {
+                        $vacuna_cabecera_fecha_1 = $rowMSSQL['vacuna_cabecera_fecha'];
+                        $vacuna_cabecera_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_cabecera_fecha']));
+                    }
                     $detalle        = array(
 
                         'vacuna_detalle_codigo'             =>  $rowMSSQL['vacuna_detalle_codigo'],
                         'vacuna_detalle_orden'              =>  $rowMSSQL['vacuna_detalle_orden'],    	
-                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']),  
+                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']),
+                        'vacuna_detalle_fecha_1'            =>  $vacuna_detalle_fecha_1,
+                        'vacuna_detalle_fecha_2'            =>  $vacuna_detalle_fecha_2,
                         'vacuna_detalle_lugar'              =>  trim($rowMSSQL['vacuna_detalle_lugar']),
                         'vacuna_detalle_adjunto'            =>  trim(strtolower($rowMSSQL['vacuna_detalle_adjunto'])),
                         'vacuna_detalle_observacion'        =>  trim($rowMSSQL['vacuna_detalle_observacion']),
@@ -18949,7 +19011,9 @@
                         
                         'vacuna_detalle_codigo'             =>  '',
                         'vacuna_detalle_orden'              =>  '',    	
-                        'vacuna_detalle_nombre'             =>  '',  
+                        'vacuna_detalle_nombre'             =>  '', 
+                        'vacuna_detalle_fecha_1'            =>  '',
+                        'vacuna_detalle_fecha_2'            =>  '', 
                         'vacuna_detalle_lugar'              =>  '',
                         'vacuna_detalle_adjunto'            =>  '',
                         'vacuna_detalle_observacion'        =>  '',
@@ -19034,7 +19098,8 @@
             $sql00  = "SELECT 
                 a.VACVDECOD                     AS          vacuna_detalle_codigo, 
                 a.VACVDEORD                     AS          vacuna_detalle_orden, 
-                a.VACVDENOM                     AS          vacuna_detalle_nombre, 
+                a.VACVDENOM                     AS          vacuna_detalle_nombre,
+                a.VACVDEFEC                     AS          vacuna_detalle_fecha, 
                 a.VACVDELUG                     AS          vacuna_detalle_lugar, 
                 a.VACVDEADJ                     AS          vacuna_detalle_adjunto, 
                 a.VACVDEOBS                     AS          vacuna_detalle_observacion, 
@@ -19095,7 +19160,7 @@
 
                 WHERE a.VACVDECAC = ?
                 
-                ORDER BY a.VACVDECOD DESC";
+                ORDER BY c.DOMFICPAR ASC";
 
             try {
                 $connMSSQL  = getConnectionMSSQLv2();
@@ -19103,11 +19168,30 @@
                 $stmtMSSQL->execute([$val01]); 
 
                 while ($rowMSSQL    = $stmtMSSQL->fetch()) {
+
+                    if ($rowMSSQL['vacuna_detalle_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_detalle_fecha'] == null){
+                        $vacuna_detalle_fecha_1 = '';
+                        $vacuna_detalle_fecha_2 = '';
+                    } else {
+                        $vacuna_detalle_fecha_1 = $rowMSSQL['vacuna_detalle_fecha'];
+                        $vacuna_detalle_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_detalle_fecha']));
+                    }
+
+                    if ($rowMSSQL['vacuna_cabecera_fecha'] == '1900-01-01' || $rowMSSQL['vacuna_cabecera_fecha'] == null){
+                        $vacuna_cabecera_fecha_1 = '';
+                        $vacuna_cabecera_fecha_2 = '';
+                    } else {
+                        $vacuna_cabecera_fecha_1 = $rowMSSQL['vacuna_cabecera_fecha'];
+                        $vacuna_cabecera_fecha_2 = date('d/m/Y', strtotime($rowMSSQL['vacuna_cabecera_fecha']));
+                    }
+
                     $detalle        = array(
 
                         'vacuna_detalle_codigo'             =>  $rowMSSQL['vacuna_detalle_codigo'],
                         'vacuna_detalle_orden'              =>  $rowMSSQL['vacuna_detalle_orden'],    	
-                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']),  
+                        'vacuna_detalle_nombre'             =>  trim($rowMSSQL['vacuna_detalle_nombre']), 
+                        'vacuna_detalle_fecha_1'            =>  $vacuna_detalle_fecha_1,
+                        'vacuna_detalle_fecha_2'            =>  $vacuna_detalle_fecha_2,
                         'vacuna_detalle_lugar'              =>  trim($rowMSSQL['vacuna_detalle_lugar']),
                         'vacuna_detalle_adjunto'            =>  trim(strtolower($rowMSSQL['vacuna_detalle_adjunto'])),
                         'vacuna_detalle_observacion'        =>  trim($rowMSSQL['vacuna_detalle_observacion']),
@@ -19173,7 +19257,9 @@
                         
                         'vacuna_detalle_codigo'             =>  '',
                         'vacuna_detalle_orden'              =>  '',    	
-                        'vacuna_detalle_nombre'             =>  '',  
+                        'vacuna_detalle_nombre'             =>  '', 
+                        'vacuna_detalle_fecha_1'            =>  '',
+                        'vacuna_detalle_fecha_2'            =>  '', 
                         'vacuna_detalle_lugar'              =>  '',
                         'vacuna_detalle_adjunto'            =>  '',
                         'vacuna_detalle_observacion'        =>  '',
