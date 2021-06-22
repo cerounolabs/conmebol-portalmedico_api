@@ -623,12 +623,13 @@
         $val04      = $request->getParsedBody()['vacuna_cabecera_codigo'];
         $val05      = $request->getParsedBody()['vacuna_detalle_orden'];
         $val06      = trim($request->getParsedBody()['vacuna_detalle_nombre']);
-        $val07      = trim($request->getParsedBody()['vacuna_detalle_lugar']);
-        $val08      = trim($request->getParsedBody()['vacuna_detalle_adjunto']);
-        $val09      = trim($request->getParsedBody()['vacuna_detalle_observacion']);
-        $val10      = trim($request->getParsedBody()['vacuna_detalle_alta_usuario']);
-        $val11      = $request->getParsedBody()['vacuna_detalle_alta_fecha_hora'];
-        $val12      = trim($request->getParsedBody()['vacuna_detalle_alta_ip']);     
+        $val07      = $request->getParsedBody()['vacuna_detalle_fecha'];
+        $val08      = trim($request->getParsedBody()['vacuna_detalle_lugar']);
+        $val09      = trim($request->getParsedBody()['vacuna_detalle_adjunto']);
+        $val10      = trim($request->getParsedBody()['vacuna_detalle_observacion']);
+        $val11      = trim($request->getParsedBody()['vacuna_detalle_alta_usuario']);
+        $val12      = $request->getParsedBody()['vacuna_detalle_alta_fecha_hora'];
+        $val13      = trim($request->getParsedBody()['vacuna_detalle_alta_ip']);      
     
         $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
         $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
