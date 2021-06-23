@@ -18419,10 +18419,10 @@
                         'tipo_dosis_parametro'              => $rowMSSQL['tipo_dosis_parametro'],
                         'tipo_dosis_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_observacion']))),
 
-                        'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
-                        'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
-                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
-                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+                        'localidad_ciudad_codigo'           => $rowMSSQL['localidad_ciudad_codigo'],
+                        'localidad_ciudad_orden'            => $rowMSSQL['localidad_ciudad_orden'],
+                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL['localidad_ciudad_nombre']))),
+                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL['localidad_ciudad_observacion'])),
 
                         'localidad_pais_codigo'             => $rowMSSQL['localidad_pais_codigo'],
                         'localidad_pais_orden'              => $rowMSSQL['localidad_pais_orden'],
@@ -18661,10 +18661,10 @@
                         'tipo_dosis_parametro'              => $rowMSSQL['tipo_dosis_parametro'],
                         'tipo_dosis_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_observacion']))),
 
-                        'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
-                        'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
-                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
-                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+                        'localidad_ciudad_codigo'           => $rowMSSQL['localidad_ciudad_codigo'],
+                        'localidad_ciudad_orden'            => $rowMSSQL['localidad_ciudad_orden'],
+                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL['localidad_ciudad_nombre']))),
+                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL['localidad_ciudad_observacion'])),
 
                         'localidad_pais_codigo'             => $rowMSSQL['localidad_pais_codigo'],
                         'localidad_pais_orden'              => $rowMSSQL['localidad_pais_orden'],
@@ -18977,10 +18977,10 @@
                         'tipo_dosis_parametro'              => $rowMSSQL['tipo_dosis_parametro'],
                         'tipo_dosis_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_observacion']))),
 
-                        'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
-                        'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
-                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
-                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+                        'localidad_ciudad_codigo'           => $rowMSSQL['localidad_ciudad_codigo'],
+                        'localidad_ciudad_orden'            => $rowMSSQL['localidad_ciudad_orden'],
+                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL['localidad_ciudad_nombre']))),
+                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL['localidad_ciudad_observacion'])),
 
                         'localidad_pais_codigo'             => $rowMSSQL['localidad_pais_codigo'],
                         'localidad_pais_orden'              => $rowMSSQL['localidad_pais_orden'],
@@ -19223,10 +19223,10 @@
                         'tipo_dosis_parametro'              => $rowMSSQL['tipo_dosis_parametro'],
                         'tipo_dosis_observacion'            => trim(strtoupper(strtolower($rowMSSQL['tipo_dosis_observacion']))),
 
-                        'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
-                        'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
-                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
-                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+                        'localidad_ciudad_codigo'           => $rowMSSQL['localidad_ciudad_codigo'],
+                        'localidad_ciudad_orden'            => $rowMSSQL['localidad_ciudad_orden'],
+                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL['localidad_ciudad_nombre']))),
+                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL['localidad_ciudad_observacion'])),
 
                         'localidad_pais_codigo'             => $rowMSSQL['localidad_pais_codigo'],
                         'localidad_pais_orden'              => $rowMSSQL['localidad_pais_orden'],
