@@ -1059,9 +1059,7 @@
             switch ($val00_1) {
                 case 1:
                     $sql00  = "UPDATE [vac].[VACVDE] SET VACVDEEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEESTADO' AND DOMFICPAR = ?), 
-                    VACVDETDC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?), 
                     VACVDECIC = ?, 
-                    VACVDECAC = ?, 
                     VACVDEORD = ?, 
                     VACVDENOM = ?, 
                     VACVDEFEC = ?,
@@ -1071,9 +1069,7 @@
                     VACVDEAUS = ?, 
                     VACVDEAFH = GETDATE(), 
                     VACVDEAIP = ? 
-                    FROM vac.VACVDE WHERE VACVDECOD = ? 
-                    AND NOT EXISTS (SELECT * FROM [vac].[VACVDE] WHERE VACVDETDC = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'VACVACDETALLEDOSIS' AND DOMFICPAR = ?) 
-                    AND VACVDECAC = ?)";                                                                                                                                
+                    WHERE VACVDECOD = ?";                                                                                                                                
                     break;
 
                 case 2;
@@ -1087,7 +1083,7 @@
 
                 switch ($val00_1) {
                     case 1:
-                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val10, $aud01, $aud03, $val00, $val02, $val04]);
+                        $stmtMSSQL->execute([$val01, $val03, $val05, $val06, $val07, $val08, $val09, $val10, $aud01, $aud03, $val00, $val02, $val04]);
                     break;
 
                     case 2:
