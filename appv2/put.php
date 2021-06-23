@@ -1043,7 +1043,7 @@
         $val06      = trim($request->getParsedBody()['vacuna_detalle_nombre']);
         $val07      = $request->getParsedBody()['vacuna_detalle_fecha'];
         $val08      = trim($request->getParsedBody()['vacuna_detalle_lugar']);
-        $val09      = trim($request->getParsedBody()['vacuna_detalle_adjunto']);
+        $val09      = trim(strtolower($request->getParsedBody()['vacuna_detalle_adjunto']));
         $val10      = trim($request->getParsedBody()['vacuna_detalle_observacion']);
         $val11      = trim($request->getParsedBody()['vacuna_detalle_alta_usuario']);
         $val12      = $request->getParsedBody()['vacuna_detalle_alta_fecha_hora'];
