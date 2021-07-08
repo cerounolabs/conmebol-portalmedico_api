@@ -44,6 +44,115 @@
         return $json;
     });
 
+    $app->delete('/v1/000/localidadpais/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val00      = $request->getAttribute('codigo'); 
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_orden'];
+        $val03      = trim($request->getParsedBody()['localidad_pais_nombre']);
+        $val04      = trim($request->getParsedBody()['localidad_pais_path']);
+        $val05      = trim($request->getParsedBody()['localidad_pais_iso_char2']);
+        $val06      = trim($request->getParsedBody()['localidad_pais_iso_char3']);
+        $val07      = trim($request->getParsedBody()['localidad_pais_iso_num3']);
+        $val08      = trim($request->getParsedBody()['localidad_pais_observacion']);
+        $val09      = trim($request->getParsedBody()['localidad_pais_alta_usuario']);
+        $val10      = $request->getParsedBody()['localidad_pais_alta_fecha_hora'];
+        $val11      = trim($request->getParsedBody()['localidad_pais_alta_ip']);
+
+    
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if (isset($val01) && isset($val02)) {
+            $sql00  = "UPDATE [adm].[LOCPAI] SET LOCPAIAUS = ?,	LOCPAIAFH = GETDATE(), LOCPAIAIP = ? WHERE LOCPAICOD = ?";
+            $sql01  = "DELETE FROM [adm].[LOCPAI] WHERE LOCPAICOD = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL00->execute([$aud01, $aud03, $val00]);
+                $stmtMSSQL01->execute([$val00]);
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success DELETE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error DELETE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });  
+
+    $app->delete('/v1/000/localidadciudad/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val00      = $request->getAttribute('codigo'); 
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_codigo'];
+        $val03      = $request->getParsedBody()['localidad_ciudad_orden'];
+        $val04      = $request->getParsedBody()['localidad_ciudad_parametro'];
+        $val05      = trim($request->getParsedBody()['localidad_ciudad_nombre']);
+        $val06      = trim($request->getParsedBody()['localidad_ciudad_observacion']);
+        $val07      = trim($request->getParsedBody()['localidad_ciudad_alta_usuario']);
+        $val08      = $request->getParsedBody()['localidad_ciudad_alta_fecha_hora'];
+        $val09      = trim($request->getParsedBody()['localidad_ciudad_alta_ip']);
+    
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if (isset($val00) && isset($val01) && isset($val02) && isset($val04) && isset($val05)) {
+            $sql00  = "UPDATE [adm].[LOCCIU] SET LOCCIUAUS = ?,	LOCCIUAFH = GETDATE(), LOCCIUAIP = ? WHERE LOCCIUCOD = ?";
+            $sql01  = "DELETE FROM [adm].[LOCCIU] WHERE LOCCIUCOD = ?";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL01= $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL00->execute([$aud01, $aud03, $val00]);
+                $stmtMSSQL01->execute([$val00]);
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL00 = null;
+                $stmtMSSQL01 = null;
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success DELETE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error DELETE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });  
+
     $app->delete('/v1/100/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';
 
