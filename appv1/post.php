@@ -268,6 +268,128 @@
         return $json;
     });
 
+    $app->post('/v1/000/localidadpais', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_orden'];
+        $val03      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_nombre'])));
+        $val04      = trim(strtolower($request->getParsedBody()['localidad_pais_path']));
+        $val05      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_iso_char2'])));
+        $val06      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_iso_char3'])));
+        $val07      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_iso_num3'])));
+        $val08      = trim($request->getParsedBody()['localidad_pais_observacion']);
+        $val09      = trim($request->getParsedBody()['localidad_pais_alta_usuario']);
+        $val10      = $request->getParsedBody()['localidad_pais_alta_fecha_hora'];
+        $val11      = trim($request->getParsedBody()['localidad_pais_alta_ip']);
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if ($val02  == 0 && $val02 == null){
+            $val02  = 999;
+        }
+
+        if (isset($val01) && isset($val03)) {
+            $sql00  = "INSERT INTO [adm].[LOCPAI] (                                                       LOCPAIEST,  LOCPAIORD, LOCPAINOM, LOCPAIPAT, LOCPAIIC2, LOCPAIIC3, LOCPAIIN3, LOCPAIOBS, LOCPAICUS, LOCPAICFH, LOCPAICIP, LOCPAIAUS, LOCPAIAFH, LOCPAIAIP) 
+            VALUES ((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADPAISESTADO' AND DOMFICPAR = ?),          ?,         ?,         ?,         ?,        ?,         ?,          ?,         ?,  GETDATE(),        ?,         ?, GETDATE(),         ?)";
+
+            $sql01  = "SELECT MAX(LOCPAICOD) AS localidad_pais_codigo FROM [adm].[LOCPAI]";
+
+            try {
+                $connMSSQL      = getConnectionMSSQLv1();
+                $stmtMSSQL      = $connMSSQL->prepare($sql00);
+                $stmtMSSQL01    = $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $val09, $val11, $aud01, $aud03]); 
+                $stmtMSSQL01->execute();
+
+                $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+                $codigo         =   $row_mssql01['localidad_pais_codigo'];
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL      = null;
+                $stmtMSSQL01    = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->post('/v1/000/localidadciudad', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_codigo'];
+        $val03      = $request->getParsedBody()['localidad_ciudad_orden'];
+        $val04      = $request->getParsedBody()['localidad_ciudad_parametro'];
+        $val05      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_ciudad_nombre'])));
+        $val06      = trim($request->getParsedBody()['localidad_ciudad_observacion']);
+        $val07      = trim($request->getParsedBody()['localidad_ciudad_alta_usuario']);
+        $val08      = $request->getParsedBody()['localidad_ciudad_alta_fecha_hora'];
+        $val09      = trim($request->getParsedBody()['localidad_ciudad_alta_ip']);
+
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+
+        if ($val03  == 0 && $val03 == null){
+            $val03  = 999;
+        }
+
+        if (isset($val01) && isset($val02) && isset($val04) && isset($val05)) {
+            $sql00  = "INSERT INTO [adm].[LOCCIU](                                                         LOCCIUEST, LOCCIUPAC,  LOCCIUORD,  LOCCIUPAR, LOCCIUNOM, LOCCIUOBS, LOCCIUCUS, LOCCIUCFH, LOCCIUCIP, LOCCIUAUS, LOCCIUAFH, LOCCIUAIP) 
+            VALUES((SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADCIUDADESTADO' AND DOMFICPAR = ?),         ?,          ?,         ?,         ?,         ?,         ?,  GETDATE(),       ?,          ?, GETDATE(),        ?)";
+
+            $sql01  = "SELECT MAX(LOCCIUCOD) AS localidad_ciudad_codigo FROM [adm].[LOCCIU]";
+
+            try {
+                $connMSSQL      = getConnectionMSSQLv1();
+                $stmtMSSQL      = $connMSSQL->prepare($sql00);
+                $stmtMSSQL01    = $connMSSQL->prepare($sql01);
+
+                $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val09, $aud01, $aud03]); 
+                $stmtMSSQL01->execute();
+
+                $row_mssql01    =   $stmtMSSQL01->fetch(PDO::FETCH_ASSOC);
+                $codigo         =   $row_mssql01['localidad_ciudad_codigo'];
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success INSERT', 'codigo' => $codigo), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL01->closeCursor();
+
+                $stmtMSSQL      = null;
+                $stmtMSSQL01    = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error INSERT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->post('/v1/100', function($request) {
         require __DIR__.'/../src/connect.php';
 

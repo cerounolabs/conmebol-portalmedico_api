@@ -56,6 +56,147 @@
         
         return $json;
     });
+    
+    $app->put('/v1/000/localidadpais/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val00      = $request->getAttribute('codigo'); 
+        $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_orden'];
+        $val03      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_nombre'])));
+        $val04      = trim(strtolower($request->getParsedBody()['localidad_pais_path']));
+        $val05      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_iso_char2'])));
+        $val06      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_iso_char3'])));
+        $val07      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_pais_iso_num3'])));
+        $val08      = trim($request->getParsedBody()['localidad_pais_observacion']);
+        $val09      = trim($request->getParsedBody()['localidad_pais_alta_usuario']);
+        $val10      = $request->getParsedBody()['localidad_pais_alta_fecha_hora'];
+        $val11      = trim($request->getParsedBody()['localidad_pais_alta_ip']);
+    
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+    
+        if (isset($val00) && isset($val00_1)) {
+            $sql00  = "";
+    
+            switch ($val00_1) {
+                case 1:
+                    $sql00  = "UPDATE [adm].[LOCPAI] SET LOCPAIEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADPAISESTADO' AND DOMFICPAR = ?), LOCPAIORD = ?, LOCPAINOM = ?, LOCPAIPAT = ?, LOCPAIIC2 = ?, LOCPAIIC3 = ?, LOCPAIIN3 = ?, LOCPAIOBS = ?, LOCPAIAUS  = ?, LOCPAIAFH = GETDATE(), LOCPAIAIP  = ? WHERE LOCPAICOD = ?";
+                    break;
+    
+                case 2;
+                    $sql00  = "UPDATE [adm].[LOCPAI] SET LOCPAIEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADPAISESTADO' AND DOMFICPAR = ?), LOCPAIAUS = ?, LOCPAIAFH = GETDATE(), LOCPAIAIP = ? WHERE LOCPAICOD = ?";
+                    break;
+            }   
+            
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+    
+                switch ($val00_1) {
+                    case 1:
+                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $val07, $val08, $aud01, $aud03, $val00]);
+                    break;
+    
+                    case 2:
+                        $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
+                        break;
+                }
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+    
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->put('/v1/000/localidadciudad/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $val00      = $request->getAttribute('codigo'); 
+        $val00_1    = $request->getParsedBody()['tipo_accion_codigo'];
+        $val01      = $request->getParsedBody()['tipo_estado_parametro'];
+        $val02      = $request->getParsedBody()['localidad_pais_codigo'];
+        $val03      = $request->getParsedBody()['localidad_ciudad_orden'];
+        $val04      = $request->getParsedBody()['localidad_ciudad_parametro'];
+        $val05      = trim(strtoupper(strtolower($request->getParsedBody()['localidad_ciudad_nombre'])));
+        $val06      = trim($request->getParsedBody()['localidad_ciudad_observacion']);
+        $val07      = trim($request->getParsedBody()['localidad_ciudad_alta_usuario']);
+        $val08      = $request->getParsedBody()['localidad_ciudad_alta_fecha_hora'];
+        $val09      = trim($request->getParsedBody()['localidad_ciudad_alta_ip']);
+    
+        $aud01      = trim($request->getParsedBody()['auditoria_usuario']);
+        $aud02      = $request->getParsedBody()['auditoria_fecha_hora'];
+        $aud03      = trim($request->getParsedBody()['auditoria_ip']);
+    
+        if (isset($val00) && isset($val00_1)) {
+            $sql00  = "";
+    
+            switch ($val00_1) {
+                case 1:
+                    $sql00  = "UPDATE [adm].[LOCCIU] SET LOCCIUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADCIUDADESTADO' AND DOMFICPAR = ?), 
+                    LOCCIUPAC = ?, 
+                    LOCCIUORD = ?, 
+                    LOCCIUPAR = ?, 
+                    LOCCIUNOM = ?, 
+                    LOCCIUOBS = ?, 
+                    LOCCIUAUS = ?, 
+                    LOCCIUAFH = GETDATE(),
+                    LOCCIUAIP = ? 
+                    WHERE LOCCIUCOD = ?";
+                    break;
+    
+                case 2;
+                    $sql00  = "UPDATE [adm].[LOCCIU] SET LOCCIUEST = (SELECT DOMFICCOD FROM adm.DOMFIC WHERE DOMFICVAL = 'ADMLOCALIDADPAISESTADO' AND DOMFICPAR = ?), LOCCIUAUS = ?, LOCCIUAFH = GETDATE(), LOCCIUAIP = ? WHERE LOCCIUCOD = ?";
+                    break;
+            }   
+            
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+    
+                switch ($val00_1) {
+                    case 1:
+                        $stmtMSSQL->execute([$val01, $val02, $val03, $val04, $val05, $val06, $aud01, $aud03, $val00]);
+                    break;
+    
+                    case 2:
+                        $stmtMSSQL->execute([$val01, $aud01, $aud03, $val00]);
+                        break;
+                }
+                
+                header("Content-Type: application/json; charset=utf-8");
+                $json       = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success UPDATE', 'codigo' => $val00), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+    
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error UPDATE: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+    
+        $connMSSQL  = null;
+        
+        return $json;
+    });
 
     $app->put('/v1/100/{codigo}', function($request) {
         require __DIR__.'/../src/connect.php';

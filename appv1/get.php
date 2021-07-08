@@ -296,6 +296,536 @@
         return $json;
     });
 
+    $app->get('/v1/000/localidadpais/listado', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $sql00  = "SELECT
+            a.LOCPAICOD         AS          localidad_pais_codigo,
+            a.LOCPAIORD         AS          localidad_pais_orden,
+            a.LOCPAINOM         AS          localidad_pais_nombre,
+            a.LOCPAIPAT         AS          localidad_pais_path,
+            a.LOCPAIIC2         AS          localidad_pais_iso_char2,
+            a.LOCPAIIC3         AS          localidad_pais_iso_char3,
+            a.LOCPAIIN3         AS          localidad_pais_iso_num3,
+            a.LOCPAIOBS         AS          localidad_pais_observacion,
+            a.LOCPAICUS         AS          localidad_pais_alta_usuario,
+            a.LOCPAICFH         AS          localidad_pais_alta_fecha_hora,
+            a.LOCPAICIP         AS          localidad_pais_alta_ip,
+
+            a.LOCPAIAUS         AS          auditoria_usuario,
+            a.LOCPAIAFH         AS          auditoria_fecha_hora,
+            a.LOCPAIAIP         AS          auditoria_ip,
+
+            b.DOMFICCOD         AS          tipo_estado_codigo,
+            b.DOMFICORD         AS          tipo_estado_orden,
+            b.DOMFICNOI         AS          tipo_estado_nombre_ingles,
+            b.DOMFICNOC         AS          tipo_estado_nombre_castellano,
+            b.DOMFICNOP         AS          tipo_estado_nombre_portugues,
+            b.DOMFICPAT         AS          tipo_estado_path,
+            b.DOMFICPAR         AS          tipo_estado_parametro,
+            b.DOMFICVAL         AS          tipo_estado_dominio,
+            b.DOMFICOBS         AS          tipo_estado_observacion
+            
+            FROM [adm].[LOCPAI] a
+            INNER JOIN [adm].[DOMFIC] b ON a.LOCPAIEST = b.DOMFICCOD
+
+            ORDER BY a.LOCPAICOD DESC";
+
+        try {
+            $connMSSQL  = getConnectionMSSQLv1();
+
+            $stmtMSSQL00= $connMSSQL->prepare($sql00);
+            $stmtMSSQL00->execute();
+            
+            while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
+                $detalle    = array(
+                    'localidad_pais_codigo'             => $rowMSSQL00['localidad_pais_codigo'],
+                    'localidad_pais_orden'              => $rowMSSQL00['localidad_pais_orden'],
+                    'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_nombre']))),
+                    'localidad_pais_path'               => trim(strtolower($rowMSSQL00['localidad_pais_path'])),
+                    'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char2']))),
+                    'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char3']))),
+                    'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_num3'])))),
+                    'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion']))),
+                    'localidad_pais_alta_usuario'       => trim(strtoupper($rowMSSQL00['localidad_pais_alta_usuario'])),
+                    'localidad_pais_alta_fecha_hora'    => $rowMSSQL00['localidad_pais_alta_fecha_hora'],
+                    'localidad_pais_alta_ip'            => trim(strtoupper($rowMSSQL00['localidad_pais_alta_ip'])),
+
+                    'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
+                    'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
+                    'auditoria_ip'                      => trim(strtoupper($rowMSSQL00['auditoria_ip'])),
+
+                    'tipo_estado_codigo'                => $rowMSSQL00['tipo_estado_codigo'],
+                    'tipo_estado_orden'                 => $rowMSSQL00['tipo_estado_orden'],
+                    'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_ingles']))),
+                    'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_castellano']))),
+                    'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_portugues']))),
+                    'tipo_estado_path'                  => trim(strtolower($rowMSSQL00['tipo_estado_path'])),
+                    'tipo_estado_parametro'             => $rowMSSQL00['tipo_estado_parametro'],
+                    'tipo_estado_icono'                 => trim(strtolower($rowMSSQL00['tipo_estado_icono'])),
+                    'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_dominio']))),
+                    'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_observacion'])))
+
+                );
+
+                $result[]   = $detalle;
+            }
+
+            if (isset($result)){
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } else {
+                $detalle = array(
+                    'localidad_pais_codigo'             => '',
+                    'localidad_pais_orden'              => '',
+                    'localidad_pais_nombre'             => '',
+                    'localidad_pais_path'               => '',
+                    'localidad_pais_iso_char2'          => '',
+                    'localidad_pais_iso_char3'          => '',
+                    'localidad_pais_iso_num3'           => '',
+                    'localidad_pais_observacion'        => '',
+
+                    'auditoria_usuario'                 => '',
+                    'auditoria_fecha_hora'              => '',
+                    'auditoria_ip'                      => '',
+
+                    'tipo_estado_codigo'                => '',
+                    'tipo_estado_orden'                 => '',
+                    'tipo_estado_nombre_ingles'         => '',
+                    'tipo_estado_nombre_castellano'     => '',
+                    'tipo_estado_nombre_portugues'      => '',
+                    'tipo_estado_path'                  => '',
+                    'tipo_estado_parametro'             => '',
+                    'tipo_estado_dominio'               => '',
+                    'tipo_estado_observacion'           => ''
+                );
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+            $stmtMSSQL00->closeCursor();
+            $stmtMSSQL00 = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/000/localidadpais/codigo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT
+                a.LOCPAICOD         AS          localidad_pais_codigo,
+                a.LOCPAIORD         AS          localidad_pais_orden,
+                a.LOCPAINOM         AS          localidad_pais_nombre,
+                a.LOCPAIPAT         AS          localidad_pais_path,
+                a.LOCPAIIC2         AS          localidad_pais_iso_char2,
+                a.LOCPAIIC3         AS          localidad_pais_iso_char3,
+                a.LOCPAIIN3         AS          localidad_pais_iso_num3,
+                a.LOCPAIOBS         AS          localidad_pais_observacion,
+                a.LOCPAICUS         AS          localidad_pais_alta_usuario,
+                a.LOCPAICFH         AS          localidad_pais_alta_fecha_hora,
+                a.LOCPAICIP         AS          localidad_pais_alta_ip,
+
+                a.LOCPAIAUS         AS          auditoria_usuario,
+                a.LOCPAIAFH         AS          auditoria_fecha_hora,
+                a.LOCPAIAIP         AS          auditoria_ip,
+
+                b.DOMFICCOD         AS          tipo_estado_codigo,
+                b.DOMFICORD         AS          tipo_estado_orden,
+                b.DOMFICNOI         AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC         AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP         AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT         AS          tipo_estado_path,
+                b.DOMFICPAR         AS          tipo_estado_parametro,
+                b.DOMFICVAL         AS          tipo_estado_dominio,
+                b.DOMFICOBS         AS          tipo_estado_observacion
+                
+                FROM [adm].[LOCPAI] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LOCPAIEST = b.DOMFICCOD
+
+                WHERE a.LOCPAICOD = ?
+
+                ORDER BY a.LOCPAICOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL00->execute([$val01]);
+                
+                while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
+                    $detalle    = array(
+                        'localidad_pais_codigo'             => $rowMSSQL00['localidad_pais_codigo'],
+                        'localidad_pais_orden'              => $rowMSSQL00['localidad_pais_orden'],
+                        'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_nombre']))),
+                        'localidad_pais_path'               => trim(strtolower($rowMSSQL00['localidad_pais_path'])),
+                        'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char2']))),
+                        'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char3']))),
+                        'localidad_pais_iso_num3'           => sprintf("%03d", trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_num3'])))),
+                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion']))),
+                        'localidad_pais_alta_usuario'       => trim(strtoupper($rowMSSQL00['localidad_pais_alta_usuario'])),
+                        'localidad_pais_alta_fecha_hora'    => $rowMSSQL00['localidad_pais_alta_fecha_hora'],
+                        'localidad_pais_alta_ip'  => trim(strtoupper($rowMSSQL00['localidad_pais_alta_ip'])),
+
+                        'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
+                        'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
+                        'auditoria_ip'                      => trim(strtoupper($rowMSSQL00['auditoria_ip'])),
+
+                        'tipo_estado_codigo'                => $rowMSSQL00['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL00['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL00['tipo_estado_path'])),
+                        'tipo_estado_parametro'             => $rowMSSQL00['tipo_estado_parametro'],
+                        'tipo_estado_icono'                 => trim(strtolower($rowMSSQL00['tipo_estado_icono'])),
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_dominio']))),
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_observacion'])))
+
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'localidad_pais_codigo'             => '',
+                        'localidad_pais_orden'              => '',
+                        'localidad_pais_nombre'             => '',
+                        'localidad_pais_path'               => '',
+                        'localidad_pais_iso_char2'          => '',
+                        'localidad_pais_iso_char3'          => '',
+                        'localidad_pais_iso_num3'           => '',
+                        'localidad_pais_observacion'        => '',
+
+                        'auditoria_usuario'                 => '',
+                        'auditoria_fecha_hora'              => '',
+                        'auditoria_ip'                      => '',
+
+                        'tipo_estado_codigo'                => '',
+                        'tipo_estado_orden'                 => '',
+                        'tipo_estado_nombre_ingles'         => '',
+                        'tipo_estado_nombre_castellano'     => '',
+                        'tipo_estado_nombre_portugues'      => '',
+                        'tipo_estado_path'                  => '',
+                        'tipo_estado_parametro'             => '',
+                        'tipo_estado_dominio'               => '',
+                        'tipo_estado_observacion'           => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL00 = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        }else{
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }  
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/000/localidadciudad/listado', function($request) {
+        require __DIR__.'/../src/connect.php';
+        
+        $sql00  = "SELECT
+            a.LOCCIUCOD         AS          localidad_ciudad_codigo,
+            a.LOCCIUORD         AS          localidad_ciudad_orden,
+            a.LOCCIUNOM         AS          localidad_ciudad_nombre,
+            a.LOCCIUPAR         AS          localidad_ciudad_parametro,
+            a.LOCCIUOBS         AS          localidad_ciudad_observacion,
+            a.LOCCIUCUS         AS          localidad_ciudad_alta_usuario,
+            a.LOCCIUCFH         AS          localidad_ciudad_alta_fecha_hora,
+            a.LOCCIUCIP         AS          localidad_ciudad_alta_ip,
+
+            a.LOCCIUAUS         AS          auditoria_usuario,
+            a.LOCCIUAFH         AS          auditoria_fecha_hora,
+            a.LOCCIUAIP         AS          auditoria_ip,
+
+            b.DOMFICCOD         AS          tipo_estado_codigo,
+            b.DOMFICORD         AS          tipo_estado_orden,
+            b.DOMFICNOI         AS          tipo_estado_nombre_ingles,
+            b.DOMFICNOC         AS          tipo_estado_nombre_castellano,
+            b.DOMFICNOP         AS          tipo_estado_nombre_portugues,
+            b.DOMFICPAT         AS          tipo_estado_path,
+            b.DOMFICPAR         AS          tipo_estado_parametro,
+            b.DOMFICVAL         AS          tipo_estado_dominio,
+            b.DOMFICOBS         AS          tipo_estado_observacion,
+
+            c.LOCPAICOD         AS          localidad_pais_codigo,
+            c.LOCPAIORD         AS          localidad_pais_orden,
+            c.LOCPAINOM         AS          localidad_pais_nombre,
+            c.LOCPAIPAT         AS          localidad_pais_path,
+            c.LOCPAIIC2         AS          localidad_pais_iso_char2,
+            c.LOCPAIIC3         AS          localidad_pais_iso_char3,
+            c.LOCPAIIN3         AS          localidad_pais_iso_num3,
+            c.LOCPAIOBS         AS          localidad_pais_observacion
+            
+            FROM [adm].[LOCCIU] a
+            INNER JOIN [adm].[DOMFIC] b ON a.LOCCIUEST = b.DOMFICCOD
+            INNER JOIN [adm].[LOCPAI] c ON a.LOCCIUPAC = c.LOCPAICOD
+
+            ORDER BY a.LOCCIUCOD DESC";
+
+        try {
+            $connMSSQL  = getConnectionMSSQLv1();
+
+            $stmtMSSQL00= $connMSSQL->prepare($sql00);
+            $stmtMSSQL00->execute();
+            
+            while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
+                $detalle    = array(
+                    'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
+                    'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
+                    'localidad_ciudad_parametro'        => $rowMSSQL00['localidad_ciudad_parametro'],
+                    'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
+                    'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+                    'localidad_ciudad_alta_usuario'     => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_usuario'])), 
+                    'localidad_ciudad_alta_fecha_hora'  => $rowMSSQL00['localidad_ciudad_alta_fecha_hora'],
+                    'localidad_ciudad_alta_ip'          => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_ip'])),
+
+                    'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
+                    'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
+                    'auditoria_ip'                      => trim(strtoupper($rowMSSQL00['auditoria_ip'])),
+
+                    'tipo_estado_codigo'                => $rowMSSQL00['tipo_estado_codigo'],
+                    'tipo_estado_orden'                 => $rowMSSQL00['tipo_estado_orden'],
+                    'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_ingles']))),
+                    'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_castellano']))),
+                    'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_portugues']))),
+                    'tipo_estado_path'                  => trim(strtolower($rowMSSQL00['tipo_estado_path'])),
+                    'tipo_estado_parametro'             => $rowMSSQL00['tipo_estado_parametro'],
+                    'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_dominio']))),
+                    'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_observacion']))),
+
+                    'localidad_pais_codigo'             => $rowMSSQL00['localidad_pais_codigo'],
+                    'localidad_pais_orden'              => $rowMSSQL00['localidad_pais_orden'],
+                    'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_nombre']))),
+                    'localidad_pais_path'               => trim(strtolower($rowMSSQL00['localidad_pais_path'])),
+                    'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char2']))),
+                    'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char3']))),
+                    'localidad_pais_iso_num3'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_num3']))),
+                    'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion'])))
+                );
+
+                $result[]   = $detalle;
+            }
+
+            if (isset($result)){
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } else {
+                $detalle = array(
+                    'localidad_ciudad_codigo'           => '',
+                    'localidad_ciudad_orden'            => '',
+                    'localidad_ciudad_parametro'        => '',
+                    'localidad_ciudad_nombre'           => '',
+                    'localidad_ciudad_observacion'      => '',
+
+                    'auditoria_usuario'                 => '',
+                    'auditoria_fecha_hora'              => '',
+                    'auditoria_ip'                      => '',
+
+                    'tipo_estado_codigo'                => '',
+                    'tipo_estado_orden'                 => '',
+                    'tipo_estado_nombre_ingles'         => '',
+                    'tipo_estado_nombre_castellano'     => '',
+                    'tipo_estado_nombre_portugues'      => '',
+                    'tipo_estado_path'                  => '',
+                    'tipo_estado_parametro'             => '',
+                    'tipo_estado_dominio'               => '',
+                    'tipo_estado_observacion'           => '',
+
+                    'localidad_pais_codigo'             => '',
+                    'localidad_pais_orden'              => '',
+                    'localidad_pais_nombre'             => '',
+                    'localidad_pais_path'               => '',
+                    'localidad_pais_iso_char2'          => '',
+                    'localidad_pais_iso_char3'          => '',
+                    'localidad_pais_iso_num3'           => '',
+                    'localidad_pais_observacion'        => ''
+                );
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+            $stmtMSSQL00->closeCursor();
+            $stmtMSSQL00 = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/000/localidadciudad/codigo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+        
+        if (isset($val01)) {
+            $sql00  = "SELECT
+                a.LOCCIUCOD         AS          localidad_ciudad_codigo,
+                a.LOCCIUORD         AS          localidad_ciudad_orden,
+                a.LOCCIUPAR         AS          localidad_ciudad_parametro,
+                a.LOCCIUNOM         AS          localidad_ciudad_nombre,
+                a.LOCCIUOBS         AS          localidad_ciudad_observacion,
+                a.LOCCIUCUS         AS          localidad_ciudad_alta_usuario,
+                a.LOCCIUCFH         AS          localidad_ciudad_alta_fecha_hora,
+                a.LOCCIUCIP         AS          localidad_ciudad_alta_ip,
+
+                a.LOCCIUAUS         AS          auditoria_usuario,
+                a.LOCCIUAFH         AS          auditoria_fecha_hora,
+                a.LOCCIUAIP         AS          auditoria_ip,
+
+                b.DOMFICCOD         AS          tipo_estado_codigo,
+                b.DOMFICORD         AS          tipo_estado_orden,
+                b.DOMFICNOI         AS          tipo_estado_nombre_ingles,
+                b.DOMFICNOC         AS          tipo_estado_nombre_castellano,
+                b.DOMFICNOP         AS          tipo_estado_nombre_portugues,
+                b.DOMFICPAT         AS          tipo_estado_path,
+                b.DOMFICPAR         AS          tipo_estado_parametro,
+                b.DOMFICVAL         AS          tipo_estado_dominio,
+                b.DOMFICOBS         AS          tipo_estado_observacion,
+
+                c.LOCPAICOD         AS          localidad_pais_codigo,
+                c.LOCPAIORD         AS          localidad_pais_orden,
+                c.LOCPAINOM         AS          localidad_pais_nombre,
+                c.LOCPAIPAT         AS          localidad_pais_path,
+                c.LOCPAIIC2         AS          localidad_pais_iso_char2,
+                c.LOCPAIIC3         AS          localidad_pais_iso_char3,
+                c.LOCPAIIN3         AS          localidad_pais_iso_num3,
+                c.LOCPAIOBS         AS          localidad_pais_observacion
+                
+                FROM [adm].[LOCCIU] a
+                INNER JOIN [adm].[DOMFIC] b ON a.LOCCIUEST = b.DOMFICCOD
+                INNER JOIN [adm].[LOCPAI] c ON a.LOCCIUPAC = c.LOCPAICOD
+                
+                WHERE LOCCIUCOD = ?
+
+                ORDER BY a.LOCCIUCOD DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+
+                $stmtMSSQL00= $connMSSQL->prepare($sql00);
+                $stmtMSSQL00->execute([$val01]);
+                
+                while ($rowMSSQL00 = $stmtMSSQL00->fetch()) {
+                    $detalle    = array(
+                        'localidad_ciudad_codigo'           => $rowMSSQL00['localidad_ciudad_codigo'],
+                        'localidad_ciudad_orden'            => $rowMSSQL00['localidad_ciudad_orden'],
+                        'localidad_ciudad_parametro'        => $rowMSSQL00['localidad_ciudad_parametro'],
+                        'localidad_ciudad_nombre'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_ciudad_nombre']))),
+                        'localidad_ciudad_observacion'      => trim(strtolower($rowMSSQL00['localidad_ciudad_observacion'])),
+                        'localidad_ciudad_alta_usuario'     => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_usuario'])), 
+                        'localidad_ciudad_alta_fecha_hora'  => $rowMSSQL00['localidad_ciudad_alta_fecha_hora'],
+                        'localidad_ciudad_alta_ip'          => trim(strtoupper($rowMSSQL00['localidad_ciudad_alta_ip'])),
+
+                        'auditoria_usuario'                 => trim(strtoupper($rowMSSQL00['auditoria_usuario'])),
+                        'auditoria_fecha_hora'              => $rowMSSQL00['auditoria_fecha_hora'],
+                        'auditoria_ip'                      => trim(strtoupper($rowMSSQL00['auditoria_ip'])),
+
+                        'tipo_estado_codigo'                => $rowMSSQL00['tipo_estado_codigo'],
+                        'tipo_estado_orden'                 => $rowMSSQL00['tipo_estado_orden'],
+                        'tipo_estado_nombre_ingles'         => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_ingles']))),
+                        'tipo_estado_nombre_castellano'     => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_castellano']))),
+                        'tipo_estado_nombre_portugues'      => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_nombre_portugues']))),
+                        'tipo_estado_path'                  => trim(strtolower($rowMSSQL00['tipo_estado_path'])),
+                        'tipo_estado_parametro'             => $rowMSSQL00['tipo_estado_parametro'],
+                        'tipo_estado_dominio'               => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_dominio']))),
+                        'tipo_estado_observacion'           => trim(strtoupper(strtolower($rowMSSQL00['tipo_estado_observacion']))),
+
+                        'localidad_pais_codigo'             => $rowMSSQL00['localidad_pais_codigo'],
+                        'localidad_pais_orden'              => $rowMSSQL00['localidad_pais_orden'],
+                        'localidad_pais_nombre'             => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_nombre']))),
+                        'localidad_pais_path'               => trim(strtolower($rowMSSQL00['localidad_pais_path'])),
+                        'localidad_pais_iso_char2'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char2']))),
+                        'localidad_pais_iso_char3'          => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_char3']))),
+                        'localidad_pais_iso_num3'           => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_iso_num3']))),
+                        'localidad_pais_observacion'        => trim(strtoupper(strtolower($rowMSSQL00['localidad_pais_observacion'])))
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'localidad_ciudad_codigo'           => '',
+                        'localidad_ciudad_orden'            => '',
+                        'localidad_ciudad_parametro'        => '',
+                        'localidad_ciudad_nombre'           => '',
+                        'localidad_ciudad_observacion'      => '',
+
+                        'auditoria_usuario'                 => '',
+                        'auditoria_fecha_hora'              => '',
+                        'auditoria_ip'                      => '',
+
+                        'tipo_estado_codigo'                => '',
+                        'tipo_estado_orden'                 => '',
+                        'tipo_estado_nombre_ingles'         => '',
+                        'tipo_estado_nombre_castellano'     => '',
+                        'tipo_estado_nombre_portugues'      => '',
+                        'tipo_estado_path'                  => '',
+                        'tipo_estado_parametro'             => '',
+                        'tipo_estado_dominio'               => '',
+                        'tipo_estado_observacion'           => '',
+
+                        'localidad_pais_codigo'             => '',
+                        'localidad_pais_orden'              => '',
+                        'localidad_pais_nombre'             => '',
+                        'localidad_pais_path'               => '',
+                        'localidad_pais_iso_char2'          => '',
+                        'localidad_pais_iso_char3'          => '',
+                        'localidad_pais_iso_num3'           => '',
+                        'localidad_pais_observacion'        => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL00->closeCursor();
+                $stmtMSSQL00 = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        }else{
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }  
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
     $app->get('/v1/000/auditoria/{dominio}', function($request) {
         require __DIR__.'/../src/connect.php';
 
