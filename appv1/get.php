@@ -16106,7 +16106,425 @@
         return $json;
     });
 
-    
+    $app->get('/v1/400/acreditacion/equipo/estadio/listado', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $sql00  = "SELECT 
+            a.facilityFifaId            AS      equipo_estadio_codigo,
+            a.status                    AS      equipo_estadio_estado,
+            a.internationalName         AS      equipo_estadio_nombre_fifa,
+            a.internationalShortName    AS      equipo_estadio_nombre_corto_fifa,
+            a.name                      AS      equipo_estadio_nombre,
+            a.shortName                 AS      equipo_estadio_nombre_corto,
+            a.town                      AS      equipo_estadio_nombre_ciudad,
+            a.placeName                 AS      equipo_estadio_nombre_distrito,
+            a.regionName                AS      equipo_estadio_nombre_region,
+            a.language                  AS      equipo_estadio_lenguaje,
+            a.address                   AS      equipo_estadio_direccion,
+            a.webAddress                AS      equipo_estadio_direccion_web,
+            a.email                     AS      equipo_estadio_email,
+            a.phone                     AS      equipo_estadio_telefono,
+            a.capacity                  AS      equipo_estadio_capacidad,
+            a.discipline                AS      equipo_estadio_disciplina,
+            a.groundNature              AS      equipo_estadio_naturealeza_terrestre,
+            a.latitude                  AS      equipo_estadio_latitud,
+            a.longitude                 AS      equipo_estadio_longitud,
+            a.length                    AS      equipo_estadio_largor,
+            a.orderNumber               AS      equipo_estadio_numero_orden,
+            a.width                     AS      equipo_estadio_ancho,
+            a.lastUpdate                AS      equipo_estadio_ultima_actualizacion,
+            
+            b.facilityFifaId            AS      equipo_estadio_padre_codigo,
+            b.status                    AS      equipo_estadio_padre_estado,
+            b.internationalName         AS      equipo_estadio_padre_nombre_fifa,
+            b.internationalShortName    AS      equipo_estadio_padre_nombre_corto_fifa,
+            b.name                      AS      equipo_estadio_padre_nombre,
+            b.shortName                 AS      equipo_estadio_padre_nombre_corto,
+            b.town                      AS      equipo_estadio_padre_nombre_ciudad,
+            b.placeName                 AS      equipo_estadio_padre_nombre_distrito,
+            b.regionName                AS      equipo_estadio_padre_nombre_region,
+            b.language                  AS      equipo_estadio_padre_lenguaje,
+            b.address                   AS      equipo_estadio_padre_direccion,
+            b.webAddress                AS      equipo_estadio_padre_direccion_web,
+            b.email                     AS      equipo_estadio_padre_email,
+            b.phone                     AS      equipo_estadio_padre_telefono,
+            b.capacity                  AS      equipo_estadio_padre_capacidad,
+            b.discipline                AS      equipo_estadio_padre_disciplina,
+            b.groundNature              AS      equipo_estadio_padre_naturealeza_terrestre,
+            b.latitude                  AS      equipo_estadio_padre_latitud,
+            b.longitude                 AS      equipo_estadio_padre_longitud,
+            b.length                    AS      equipo_estadio_padre_largor,
+            b.orderNumber               AS      equipo_estadio_padre_numero_orden,
+            b.width                     AS      equipo_estadio_padre_ancho,
+            b.lastUpdate                AS      equipo_estadio_padre_ultima_actualizacion,
+            
+            c.organisationFifaId        AS      organizacion_codigo,
+            c.organisationName          AS      organizacion_nombre
+            
+            
+            FROM [comet].[facilities] a
+            LEFT JOIN [comet].[facilities] b ON a.facilityFifaId        = b.facilityFifaId
+            LEFT JOIN [comet].[organisations] c ON a.organisationFifaId = c.organisationFifaId
+            
+            ORDER BY a.facilityFifaId DESC";
+
+        try {
+            $connMSSQL  = getConnectionMSSQLv1();
+            $stmtMSSQL  = $connMSSQL->prepare($sql00);
+            $stmtMSSQL->execute();
+
+            while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                if ($rowMSSQL['equipo_estadio_ultima_actualizacion'] == '1900-01-01' || $rowMSSQL['equipo_estadio_ultima_actualizacion'] == null){
+                    $equipo_estadio_ultima_actualizacion_1 = '';
+                    $equipo_estadio_ultima_actualizacion_2 = '';
+                } else {
+                    $equipo_estadio_ultima_actualizacion_1 = $rowMSSQL['equipo_estadio_ultima_actualizacion'];
+                    $equipo_estadio_ultima_actualizacion_2 = date('d/m/Y', strtotime($rowMSSQL['equipo_estadio_ultima_actualizacion']));
+                }
+
+                if ($rowMSSQL['equipo_estadio_padre_ultima_actualizacion'] == '1900-01-01' || $rowMSSQL['equipo_estadio_padre_ultima_actualizacion'] == null){
+                    $equipo_estadio_padre_ultima_actualizacion_1 = '';
+                    $equipo_estadio_padre_ultima_actualizacion_2 = '';
+                } else {
+                    $equipo_estadio_padre_ultima_actualizacion_1 = $rowMSSQL['equipo_estadio_padre_ultima_actualizacion'];
+                    $equipo_estadio_padre_ultima_actualizacion_2 = date('d/m/Y', strtotime($rowMSSQL['equipo_estadio_padre_ultima_actualizacion']));
+                }
+
+                $detalle    = array(
+                    'equipo_estadio_codigo'                         => $rowMSSQL['equipo_estadio_codigo'],
+                    'equipo_estadio_estado'                         => trim($rowMSSQL['equipo_estadio_estado']),
+                    'equipo_estadio_nombre_fifa'                    => trim($rowMSSQL['equipo_estadio_nombre_fifa']),
+                    'equipo_estadio_nombre_corto_fifa'              => trim($rowMSSQL['equipo_estadio_nombre_corto_fifa']),
+                    'equipo_estadio_nombre'                         => trim($rowMSSQL['equipo_estadio_nombre']),
+                    'equipo_estadio_lenguaje'                       => trim($rowMSSQL['equipo_estadio_lenguaje']),
+                    'equipo_estadio_direccion'                      => trim($rowMSSQL['equipo_estadio_direccion']),
+                    'equipo_estadio_direccion_web'                  => trim(strtolower($rowMSSQL['equipo_estadio_direccion_web'])),
+                    'equipo_estadio_email'                          => trim($rowMSSQL['equipo_estadio_email']),
+                    'equipo_estadio_telefono'                       => trim($rowMSSQL['equipo_estadio_telefono']),
+                    'equipo_estadio_capacidad'                      => $rowMSSQL['equipo_estadio_capacidad'],
+                    'equipo_estadio_disciplina'                     => trim($rowMSSQL['equipo_estadio_disciplina']),
+                    'equipo_estadio_naturealeza_terrestre'          => trim($rowMSSQL['equipo_estadio_naturealeza_terrestre']),
+                    'equipo_estadio_latitud'                        => $rowMSSQL['equipo_estadio_latitud'],
+                    'equipo_estadio_longitud'                       => $rowMSSQL['equipo_estadio_longitud'],
+                    'equipo_estadio_largor'                         => $rowMSSQL['equipo_estadio_largor'],
+                    'equipo_estadio_numero_orden'                   => $rowMSSQL['equipo_estadio_numero_orden'],
+                    'equipo_estadio_ancho'                          => $rowMSSQL['equipo_estadio_ancho'],
+                    'equipo_estadio_ancho'                          => $rowMSSQL['equipo_estadio_ancho'],
+                    'equipo_estadio_ultima_actualizacion_1'         => $equipo_estadio_ultima_actualizacion_1,
+                    'equipo_estadio_ultima_actualizacion_2'         => $equipo_estadio_ultima_actualizacion_2,
+
+                    'equipo_estadio_padre_codigo'                   => $rowMSSQL['equipo_estadio_padre_codigo'],
+                    'equipo_estadio_padre_estado'                   => trim($rowMSSQL['equipo_estadio_padre_estado']),
+                    'equipo_estadio_padre_nombre_fifa'              => trim($rowMSSQL['equipo_estadio_padre_nombre_fifa']),
+                    'equipo_estadio_padre_nombre_corto_fifa'        => trim($rowMSSQL['equipo_estadio_padre_nombre_corto_fifa']),
+                    'equipo_estadio_padre_nombre'                   => trim($rowMSSQL['equipo_estadio_padre_nombre']),
+                    'equipo_estadio_padre_lenguaje'                 => trim($rowMSSQL['equipo_estadio_padre_lenguaje']),
+                    'equipo_estadio_padre_direccion'                => trim($rowMSSQL['equipo_estadio_padre_direccion']),
+                    'equipo_estadio_padre_direccion_web'            => trim(strtolower($rowMSSQL['equipo_estadio_padre_direccion_web'])),
+                    'equipo_estadio_padre_email'                    => trim($rowMSSQL['equipo_estadio_padre_email']),
+                    'equipo_estadio_padre_telefono'                 => trim($rowMSSQL['equipo_estadio_padre_telefono']),
+                    'equipo_estadio_padre_capacidad'                => $rowMSSQL['equipo_estadio_padre_capacidad'],
+                    'equipo_estadio_padre_disciplina'               => trim($rowMSSQL['equipo_estadio_padre_disciplina']),
+                    'equipo_estadio_padre_naturealeza_terrestre'    => trim($rowMSSQL['equipo_estadio_padre_naturealeza_terrestre']),
+                    'equipo_estadio_padre_latitud'                  => $rowMSSQL['equipo_estadio_padre_latitud'],
+                    'equipo_estadio_padre_longitud'                 => $rowMSSQL['equipo_estadio_padre_longitud'],
+                    'equipo_estadio_padre_largor'                   => $rowMSSQL['equipo_estadio_padre_largor'],
+                    'equipo_estadio_padre_numero_orden'             => $rowMSSQL['equipo_estadio_padre_numero_orden'],
+                    'equipo_estadio_padre_ancho'                    => $rowMSSQL['equipo_estadio_padre_ancho'],
+                    'equipo_estadio_padre_ancho'                    => $rowMSSQL['equipo_estadio_padre_ancho'],
+                    'equipo_estadio_padre_ultima_actualizacion_1'   => $equipo_estadio_padre_ultima_actualizacion_1,
+                    'equipo_estadio_padre_ultima_actualizacion_2'   => $equipo_estadio_padre_ultima_actualizacion_2,
+                    
+                    'organizacion_codigo'                           => $rowMSSQL['organizacion_codigo'],
+                    'organizacion_nombre'                           => trim($rowMSSQL['organizacion_nombre'])
+                );
+
+                $result[]   = $detalle;
+            }
+
+            if (isset($result)){
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            } else {
+                $detalle = array(
+                    'equipo_estadio_codigo'                         => '',
+                    'equipo_estadio_estado'                         => '',
+                    'equipo_estadio_nombre_fifa'                    => '',
+                    'equipo_estadio_nombre_corto_fifa'              => '',
+                    'equipo_estadio_nombre'                         => '',
+                    'equipo_estadio_lenguaje'                       => '',
+                    'equipo_estadio_direccion'                      => '',
+                    'equipo_estadio_direccion_web'                  => '',
+                    'equipo_estadio_email'                          => '',
+                    'equipo_estadio_telefono'                       => '',
+                    'equipo_estadio_capacidad'                      => '',
+                    'equipo_estadio_disciplina'                     => '',
+                    'equipo_estadio_naturealeza_terrestre'          => '',
+                    'equipo_estadio_latitud'                        => '',
+                    'equipo_estadio_longitud'                       => '',
+                    'equipo_estadio_largor'                         => '',
+                    'equipo_estadio_numero_orden'                   => '',
+                    'equipo_estadio_ancho'                          => '',
+                    'equipo_estadio_ancho'                          => '',
+                    'equipo_estadio_ultima_actualizacion_1'         => '',
+                    'equipo_estadio_ultima_actualizacion_2'         => '',
+
+                    'equipo_estadio_padre_codigo'                   => '',
+                    'equipo_estadio_padre_estado'                   => '',
+                    'equipo_estadio_padre_nombre_fifa'              => '',
+                    'equipo_estadio_padre_nombre_corto_fifa'        => '',
+                    'equipo_estadio_padre_nombre'                   => '',
+                    'equipo_estadio_padre_lenguaje'                 => '',
+                    'equipo_estadio_padre_direccion'                => '',
+                    'equipo_estadio_padre_direccion_web'            => '',
+                    'equipo_estadio_padre_email'                    => '',
+                    'equipo_estadio_padre_telefono'                 => '',
+                    'equipo_estadio_padre_capacidad'                => '',
+                    'equipo_estadio_padre_disciplina'               => '',
+                    'equipo_estadio_padre_naturealeza_terrestre'    => '',
+                    'equipo_estadio_padre_latitud'                  => '',
+                    'equipo_estadio_padre_longitud'                 => '',
+                    'equipo_estadio_padre_largor'                   => '',
+                    'equipo_estadio_padre_numero_orden'             => '',
+                    'equipo_estadio_padre_ancho'                    => '',
+                    'equipo_estadio_padre_ancho'                    => '',
+                    'equipo_estadio_padre_ultima_actualizacion_1'   => '',
+                    'equipo_estadio_padre_ultima_actualizacion_2'   => '',
+                    
+                    'organizacion_codigo'                           => '',
+                    'organizacion_nombre'                           => ''
+                );
+
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+
+            $stmtMSSQL->closeCursor();
+            $stmtMSSQL = null;
+        } catch (PDOException $e) {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
+    $app->get('/v1/400/acreditacion/equipo/estadio/codigo/{codigo}', function($request) {
+        require __DIR__.'/../src/connect.php';
+
+        $val01      = $request->getAttribute('codigo');
+
+        if (isset($val01)) {
+            $sql00  = "SELECT 
+                a.facilityFifaId            AS      equipo_estadio_codigo,
+                a.status                    AS      equipo_estadio_estado,
+                a.internationalName         AS      equipo_estadio_nombre_fifa,
+                a.internationalShortName    AS      equipo_estadio_nombre_corto_fifa,
+                a.name                      AS      equipo_estadio_nombre,
+                a.shortName                 AS      equipo_estadio_nombre_corto,
+                a.town                      AS      equipo_estadio_nombre_ciudad,
+                a.placeName                 AS      equipo_estadio_nombre_distrito,
+                a.regionName                AS      equipo_estadio_nombre_region,
+                a.language                  AS      equipo_estadio_lenguaje,
+                a.address                   AS      equipo_estadio_direccion,
+                a.webAddress                AS      equipo_estadio_direccion_web,
+                a.email                     AS      equipo_estadio_email,
+                a.phone                     AS      equipo_estadio_telefono,
+                a.capacity                  AS      equipo_estadio_capacidad,
+                a.discipline                AS      equipo_estadio_disciplina,
+                a.groundNature              AS      equipo_estadio_naturealeza_terrestre,
+                a.latitude                  AS      equipo_estadio_latitud,
+                a.longitude                 AS      equipo_estadio_longitud,
+                a.length                    AS      equipo_estadio_largor,
+                a.orderNumber               AS      equipo_estadio_numero_orden,
+                a.width                     AS      equipo_estadio_ancho,
+                a.lastUpdate                AS      equipo_estadio_ultima_actualizacion,
+                
+                b.facilityFifaId            AS      equipo_estadio_padre_codigo,
+                b.status                    AS      equipo_estadio_padre_estado,
+                b.internationalName         AS      equipo_estadio_padre_nombre_fifa,
+                b.internationalShortName    AS      equipo_estadio_padre_nombre_corto_fifa,
+                b.name                      AS      equipo_estadio_padre_nombre,
+                b.shortName                 AS      equipo_estadio_padre_nombre_corto,
+                b.town                      AS      equipo_estadio_padre_nombre_ciudad,
+                b.placeName                 AS      equipo_estadio_padre_nombre_distrito,
+                b.regionName                AS      equipo_estadio_padre_nombre_region,
+                b.language                  AS      equipo_estadio_padre_lenguaje,
+                b.address                   AS      equipo_estadio_padre_direccion,
+                b.webAddress                AS      equipo_estadio_padre_direccion_web,
+                b.email                     AS      equipo_estadio_padre_email,
+                b.phone                     AS      equipo_estadio_padre_telefono,
+                b.capacity                  AS      equipo_estadio_padre_capacidad,
+                b.discipline                AS      equipo_estadio_padre_disciplina,
+                b.groundNature              AS      equipo_estadio_padre_naturealeza_terrestre,
+                b.latitude                  AS      equipo_estadio_padre_latitud,
+                b.longitude                 AS      equipo_estadio_padre_longitud,
+                b.length                    AS      equipo_estadio_padre_largor,
+                b.orderNumber               AS      equipo_estadio_padre_numero_orden,
+                b.width                     AS      equipo_estadio_padre_ancho,
+                b.lastUpdate                AS      equipo_estadio_padre_ultima_actualizacion,
+                
+                c.organisationFifaId        AS      organizacion_codigo,
+                c.organisationName          AS      organizacion_nombre
+                
+                
+                FROM [comet].[facilities] a
+                LEFT JOIN [comet].[facilities] b ON a.facilityFifaId        = b.facilityFifaId
+                LEFT JOIN [comet].[organisations] c ON a.organisationFifaId = c.organisationFifaId
+
+                WHERE a.facilityFifaId = ?
+                
+                ORDER BY a.facilityFifaId DESC";
+
+            try {
+                $connMSSQL  = getConnectionMSSQLv1();
+                $stmtMSSQL  = $connMSSQL->prepare($sql00);
+                $stmtMSSQL->execute([$val01]);
+
+                while ($rowMSSQL = $stmtMSSQL->fetch()) {
+                    if ($rowMSSQL['equipo_estadio_ultima_actualizacion'] == '1900-01-01' || $rowMSSQL['equipo_estadio_ultima_actualizacion'] == null){
+                        $equipo_estadio_ultima_actualizacion_1 = '';
+                        $equipo_estadio_ultima_actualizacion_2 = '';
+                    } else {
+                        $equipo_estadio_ultima_actualizacion_1 = $rowMSSQL['equipo_estadio_ultima_actualizacion'];
+                        $equipo_estadio_ultima_actualizacion_2 = date('d/m/Y', strtotime($rowMSSQL['equipo_estadio_ultima_actualizacion']));
+                    }
+
+                    if ($rowMSSQL['equipo_estadio_padre_ultima_actualizacion'] == '1900-01-01' || $rowMSSQL['equipo_estadio_padre_ultima_actualizacion'] == null){
+                        $equipo_estadio_padre_ultima_actualizacion_1 = '';
+                        $equipo_estadio_padre_ultima_actualizacion_2 = '';
+                    } else {
+                        $equipo_estadio_padre_ultima_actualizacion_1 = $rowMSSQL['equipo_estadio_padre_ultima_actualizacion'];
+                        $equipo_estadio_padre_ultima_actualizacion_2 = date('d/m/Y', strtotime($rowMSSQL['equipo_estadio_padre_ultima_actualizacion']));
+                    }
+
+                    $detalle    = array(
+                        'equipo_estadio_codigo'                         => $rowMSSQL['equipo_estadio_codigo'],
+                        'equipo_estadio_estado'                         => trim($rowMSSQL['equipo_estadio_estado']),
+                        'equipo_estadio_nombre_fifa'                    => trim($rowMSSQL['equipo_estadio_nombre_fifa']),
+                        'equipo_estadio_nombre_corto_fifa'              => trim($rowMSSQL['equipo_estadio_nombre_corto_fifa']),
+                        'equipo_estadio_nombre'                         => trim($rowMSSQL['equipo_estadio_nombre']),
+                        'equipo_estadio_lenguaje'                       => trim($rowMSSQL['equipo_estadio_lenguaje']),
+                        'equipo_estadio_direccion'                      => trim($rowMSSQL['equipo_estadio_direccion']),
+                        'equipo_estadio_direccion_web'                  => trim(strtolower($rowMSSQL['equipo_estadio_direccion_web'])),
+                        'equipo_estadio_email'                          => trim($rowMSSQL['equipo_estadio_email']),
+                        'equipo_estadio_telefono'                       => trim($rowMSSQL['equipo_estadio_telefono']),
+                        'equipo_estadio_capacidad'                      => $rowMSSQL['equipo_estadio_capacidad'],
+                        'equipo_estadio_disciplina'                     => trim($rowMSSQL['equipo_estadio_disciplina']),
+                        'equipo_estadio_naturealeza_terrestre'          => trim($rowMSSQL['equipo_estadio_naturealeza_terrestre']),
+                        'equipo_estadio_latitud'                        => $rowMSSQL['equipo_estadio_latitud'],
+                        'equipo_estadio_longitud'                       => $rowMSSQL['equipo_estadio_longitud'],
+                        'equipo_estadio_largor'                         => $rowMSSQL['equipo_estadio_largor'],
+                        'equipo_estadio_numero_orden'                   => $rowMSSQL['equipo_estadio_numero_orden'],
+                        'equipo_estadio_ancho'                          => $rowMSSQL['equipo_estadio_ancho'],
+                        'equipo_estadio_ancho'                          => $rowMSSQL['equipo_estadio_ancho'],
+                        'equipo_estadio_ultima_actualizacion_1'         => $equipo_estadio_ultima_actualizacion_1,
+                        'equipo_estadio_ultima_actualizacion_2'         => $equipo_estadio_ultima_actualizacion_2,
+
+                        'equipo_estadio_padre_codigo'                   => $rowMSSQL['equipo_estadio_padre_codigo'],
+                        'equipo_estadio_padre_estado'                   => trim($rowMSSQL['equipo_estadio_padre_estado']),
+                        'equipo_estadio_padre_nombre_fifa'              => trim($rowMSSQL['equipo_estadio_padre_nombre_fifa']),
+                        'equipo_estadio_padre_nombre_corto_fifa'        => trim($rowMSSQL['equipo_estadio_padre_nombre_corto_fifa']),
+                        'equipo_estadio_padre_nombre'                   => trim($rowMSSQL['equipo_estadio_padre_nombre']),
+                        'equipo_estadio_padre_lenguaje'                 => trim($rowMSSQL['equipo_estadio_padre_lenguaje']),
+                        'equipo_estadio_padre_direccion'                => trim($rowMSSQL['equipo_estadio_padre_direccion']),
+                        'equipo_estadio_padre_direccion_web'            => trim(strtolower($rowMSSQL['equipo_estadio_padre_direccion_web'])),
+                        'equipo_estadio_padre_email'                    => trim($rowMSSQL['equipo_estadio_padre_email']),
+                        'equipo_estadio_padre_telefono'                 => trim($rowMSSQL['equipo_estadio_padre_telefono']),
+                        'equipo_estadio_padre_capacidad'                => $rowMSSQL['equipo_estadio_padre_capacidad'],
+                        'equipo_estadio_padre_disciplina'               => trim($rowMSSQL['equipo_estadio_padre_disciplina']),
+                        'equipo_estadio_padre_naturealeza_terrestre'    => trim($rowMSSQL['equipo_estadio_padre_naturealeza_terrestre']),
+                        'equipo_estadio_padre_latitud'                  => $rowMSSQL['equipo_estadio_padre_latitud'],
+                        'equipo_estadio_padre_longitud'                 => $rowMSSQL['equipo_estadio_padre_longitud'],
+                        'equipo_estadio_padre_largor'                   => $rowMSSQL['equipo_estadio_padre_largor'],
+                        'equipo_estadio_padre_numero_orden'             => $rowMSSQL['equipo_estadio_padre_numero_orden'],
+                        'equipo_estadio_padre_ancho'                    => $rowMSSQL['equipo_estadio_padre_ancho'],
+                        'equipo_estadio_padre_ancho'                    => $rowMSSQL['equipo_estadio_padre_ancho'],
+                        'equipo_estadio_padre_ultima_actualizacion_1'   => $equipo_estadio_padre_ultima_actualizacion_1,
+                        'equipo_estadio_padre_ultima_actualizacion_2'   => $equipo_estadio_padre_ultima_actualizacion_2,
+                        
+                        'organizacion_codigo'                           => $rowMSSQL['organizacion_codigo'],
+                        'organizacion_nombre'                           => trim($rowMSSQL['organizacion_nombre'])
+                    );
+
+                    $result[]   = $detalle;
+                }
+
+                if (isset($result)){
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                } else {
+                    $detalle = array(
+                        'equipo_estadio_codigo'                         => '',
+                        'equipo_estadio_estado'                         => '',
+                        'equipo_estadio_nombre_fifa'                    => '',
+                        'equipo_estadio_nombre_corto_fifa'              => '',
+                        'equipo_estadio_nombre'                         => '',
+                        'equipo_estadio_lenguaje'                       => '',
+                        'equipo_estadio_direccion'                      => '',
+                        'equipo_estadio_direccion_web'                  => '',
+                        'equipo_estadio_email'                          => '',
+                        'equipo_estadio_telefono'                       => '',
+                        'equipo_estadio_capacidad'                      => '',
+                        'equipo_estadio_disciplina'                     => '',
+                        'equipo_estadio_naturealeza_terrestre'          => '',
+                        'equipo_estadio_latitud'                        => '',
+                        'equipo_estadio_longitud'                       => '',
+                        'equipo_estadio_largor'                         => '',
+                        'equipo_estadio_numero_orden'                   => '',
+                        'equipo_estadio_ancho'                          => '',
+                        'equipo_estadio_ancho'                          => '',
+                        'equipo_estadio_ultima_actualizacion_1'         => '',
+                        'equipo_estadio_ultima_actualizacion_2'         => '',
+
+                        'equipo_estadio_padre_codigo'                   => '',
+                        'equipo_estadio_padre_estado'                   => '',
+                        'equipo_estadio_padre_nombre_fifa'              => '',
+                        'equipo_estadio_padre_nombre_corto_fifa'        => '',
+                        'equipo_estadio_padre_nombre'                   => '',
+                        'equipo_estadio_padre_lenguaje'                 => '',
+                        'equipo_estadio_padre_direccion'                => '',
+                        'equipo_estadio_padre_direccion_web'            => '',
+                        'equipo_estadio_padre_email'                    => '',
+                        'equipo_estadio_padre_telefono'                 => '',
+                        'equipo_estadio_padre_capacidad'                => '',
+                        'equipo_estadio_padre_disciplina'               => '',
+                        'equipo_estadio_padre_naturealeza_terrestre'    => '',
+                        'equipo_estadio_padre_latitud'                  => '',
+                        'equipo_estadio_padre_longitud'                 => '',
+                        'equipo_estadio_padre_largor'                   => '',
+                        'equipo_estadio_padre_numero_orden'             => '',
+                        'equipo_estadio_padre_ancho'                    => '',
+                        'equipo_estadio_padre_ancho'                    => '',
+                        'equipo_estadio_padre_ultima_actualizacion_1'   => '',
+                        'equipo_estadio_padre_ultima_actualizacion_2'   => '',
+                        
+                        'organizacion_codigo'                           => '',
+                        'organizacion_nombre'                           => ''
+                    );
+
+                    header("Content-Type: application/json; charset=utf-8");
+                    $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+                }
+
+                $stmtMSSQL->closeCursor();
+                $stmtMSSQL = null;
+            } catch (PDOException $e) {
+                header("Content-Type: application/json; charset=utf-8");
+                $json = json_encode(array('code' => 204, 'status' => 'failure', 'message' => 'Error SELECT: '.$e), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+            }
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            $json = json_encode(array('code' => 400, 'status' => 'error', 'message' => 'Verifique, algún campo esta vacio.'), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        }
+
+        $connMSSQL  = null;
+        
+        return $json;
+    });
+
 /*MODULO VACUNACION*/
     $app->get('/v1/900/vacuna/listado', function($request) {
         require __DIR__.'/../src/connect.php';
