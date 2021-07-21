@@ -16327,6 +16327,7 @@
                     'equipo_estadio_estado'                         => trim($rowMSSQL['equipo_estadio_estado']),
                     'equipo_estadio_nombre_fifa'                    => trim($rowMSSQL['equipo_estadio_nombre_fifa']),
                     'equipo_estadio_nombre_corto_fifa'              => trim($rowMSSQL['equipo_estadio_nombre_corto_fifa']),
+                    'equipo_estadio_nombre_ciudad'                  => trim($rowMSSQL['equipo_estadio_nombre_ciudad']),
                     'equipo_estadio_nombre'                         => trim($rowMSSQL['equipo_estadio_nombre']),
                     'equipo_estadio_lenguaje'                       => trim($rowMSSQL['equipo_estadio_lenguaje']),
                     'equipo_estadio_direccion'                      => trim($rowMSSQL['equipo_estadio_direccion']),
@@ -16349,6 +16350,7 @@
                     'equipo_estadio_padre_estado'                   => trim($rowMSSQL['equipo_estadio_padre_estado']),
                     'equipo_estadio_padre_nombre_fifa'              => trim($rowMSSQL['equipo_estadio_padre_nombre_fifa']),
                     'equipo_estadio_padre_nombre_corto_fifa'        => trim($rowMSSQL['equipo_estadio_padre_nombre_corto_fifa']),
+                    'equipo_estadio_padre_nombre_ciudad'            => trim($rowMSSQL['equipo_estadio_padre_nombre_ciudad']),
                     'equipo_estadio_padre_nombre'                   => trim($rowMSSQL['equipo_estadio_padre_nombre']),
                     'equipo_estadio_padre_lenguaje'                 => trim($rowMSSQL['equipo_estadio_padre_lenguaje']),
                     'equipo_estadio_padre_direccion'                => trim($rowMSSQL['equipo_estadio_padre_direccion']),
@@ -16383,6 +16385,7 @@
                     'equipo_estadio_estado'                         => '',
                     'equipo_estadio_nombre_fifa'                    => '',
                     'equipo_estadio_nombre_corto_fifa'              => '',
+                    'equipo_estadio_nombre_ciudad'                  => '',
                     'equipo_estadio_nombre'                         => '',
                     'equipo_estadio_lenguaje'                       => '',
                     'equipo_estadio_direccion'                      => '',
@@ -16405,6 +16408,7 @@
                     'equipo_estadio_padre_estado'                   => '',
                     'equipo_estadio_padre_nombre_fifa'              => '',
                     'equipo_estadio_padre_nombre_corto_fifa'        => '',
+                    'equipo_estadio_padre_nombre_ciudad'            => '',
                     'equipo_estadio_padre_nombre'                   => '',
                     'equipo_estadio_padre_lenguaje'                 => '',
                     'equipo_estadio_padre_direccion'                => '',
@@ -16537,6 +16541,7 @@
                         'equipo_estadio_estado'                         => trim($rowMSSQL['equipo_estadio_estado']),
                         'equipo_estadio_nombre_fifa'                    => trim($rowMSSQL['equipo_estadio_nombre_fifa']),
                         'equipo_estadio_nombre_corto_fifa'              => trim($rowMSSQL['equipo_estadio_nombre_corto_fifa']),
+                        'equipo_estadio_nombre_ciudad'                  => trim($rowMSSQL['equipo_estadio_nombre_ciudad']),
                         'equipo_estadio_nombre'                         => trim($rowMSSQL['equipo_estadio_nombre']),
                         'equipo_estadio_lenguaje'                       => trim($rowMSSQL['equipo_estadio_lenguaje']),
                         'equipo_estadio_direccion'                      => trim($rowMSSQL['equipo_estadio_direccion']),
@@ -16554,11 +16559,12 @@
                         'equipo_estadio_ancho'                          => $rowMSSQL['equipo_estadio_ancho'],
                         'equipo_estadio_ultima_actualizacion_1'         => $equipo_estadio_ultima_actualizacion_1,
                         'equipo_estadio_ultima_actualizacion_2'         => $equipo_estadio_ultima_actualizacion_2,
-
+    
                         'equipo_estadio_padre_codigo'                   => $rowMSSQL['equipo_estadio_padre_codigo'],
                         'equipo_estadio_padre_estado'                   => trim($rowMSSQL['equipo_estadio_padre_estado']),
                         'equipo_estadio_padre_nombre_fifa'              => trim($rowMSSQL['equipo_estadio_padre_nombre_fifa']),
                         'equipo_estadio_padre_nombre_corto_fifa'        => trim($rowMSSQL['equipo_estadio_padre_nombre_corto_fifa']),
+                        'equipo_estadio_padre_nombre_ciudad'            => trim($rowMSSQL['equipo_estadio_padre_nombre_ciudad']),
                         'equipo_estadio_padre_nombre'                   => trim($rowMSSQL['equipo_estadio_padre_nombre']),
                         'equipo_estadio_padre_lenguaje'                 => trim($rowMSSQL['equipo_estadio_padre_lenguaje']),
                         'equipo_estadio_padre_direccion'                => trim($rowMSSQL['equipo_estadio_padre_direccion']),
@@ -16580,10 +16586,10 @@
                         'organizacion_codigo'                           => $rowMSSQL['organizacion_codigo'],
                         'organizacion_nombre'                           => trim($rowMSSQL['organizacion_nombre'])
                     );
-
+    
                     $result[]   = $detalle;
                 }
-
+    
                 if (isset($result)){
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 200, 'status' => 'ok', 'message' => 'Success SELECT', 'data' => $result), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
@@ -16593,6 +16599,7 @@
                         'equipo_estadio_estado'                         => '',
                         'equipo_estadio_nombre_fifa'                    => '',
                         'equipo_estadio_nombre_corto_fifa'              => '',
+                        'equipo_estadio_nombre_ciudad'                  => '',
                         'equipo_estadio_nombre'                         => '',
                         'equipo_estadio_lenguaje'                       => '',
                         'equipo_estadio_direccion'                      => '',
@@ -16610,11 +16617,12 @@
                         'equipo_estadio_ancho'                          => '',
                         'equipo_estadio_ultima_actualizacion_1'         => '',
                         'equipo_estadio_ultima_actualizacion_2'         => '',
-
+    
                         'equipo_estadio_padre_codigo'                   => '',
                         'equipo_estadio_padre_estado'                   => '',
                         'equipo_estadio_padre_nombre_fifa'              => '',
                         'equipo_estadio_padre_nombre_corto_fifa'        => '',
+                        'equipo_estadio_padre_nombre_ciudad'            => '',
                         'equipo_estadio_padre_nombre'                   => '',
                         'equipo_estadio_padre_lenguaje'                 => '',
                         'equipo_estadio_padre_direccion'                => '',
@@ -16636,7 +16644,6 @@
                         'organizacion_codigo'                           => '',
                         'organizacion_nombre'                           => ''
                     );
-
                     header("Content-Type: application/json; charset=utf-8");
                     $json = json_encode(array('code' => 204, 'status' => 'ok', 'message' => 'No hay registros', 'data' => $detalle), JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
                 }
